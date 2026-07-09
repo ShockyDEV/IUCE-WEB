@@ -13,7 +13,7 @@ import { buttonClassName } from "@/components/ui/button";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { CoverImage } from "@/components/news/cover-image";
 import { getPublishedNews } from "@/lib/news-service";
-import { getBlock } from "@/lib/content-blocks-service";
+import { getBlock, getBlockText } from "@/lib/content-blocks-service";
 import { cn } from "@/lib/cn";
 
 export const dynamic = "force-dynamic";
@@ -51,11 +51,15 @@ const quickAccess = [
 ];
 
 export default async function HomePage() {
-  // Últimas 3 noticias publicadas + párrafo del hero (gestionados desde el panel).
-  const [latestNews, heroParrafo] = await Promise.all([
-    getPublishedNews().then((n) => n.slice(0, 3)),
-    getBlock("inicio", "hero-parrafo"),
-  ]);
+  // Últimas 3 noticias + hero editable desde el panel (Contenido → Páginas).
+  const [latestNews, heroEyebrow, heroTitulo, heroParrafo] = await Promise.all(
+    [
+      getPublishedNews().then((n) => n.slice(0, 3)),
+      getBlockText("inicio", "hero-eyebrow"),
+      getBlockText("inicio", "hero-titulo"),
+      getBlock("inicio", "hero-parrafo"),
+    ],
+  );
   return (
     <>
       {/* Hero */}
@@ -63,10 +67,10 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-6 pb-[68px] pt-16 lg:grid-cols-[1.05fr_1fr]">
           <div>
             <p className="mb-3.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-              Instituto Universitario de Investigación · USAL
+              {heroEyebrow}
             </p>
             <h1 className="mb-[18px] text-balance text-4xl font-bold leading-tight tracking-tight text-ink sm:text-[44px]">
-              Investigación e innovación en Educación Superior
+              {heroTitulo}
             </h1>
             <div
               className="page-block mb-7 max-w-[52ch] text-base leading-relaxed text-gray-600"

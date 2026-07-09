@@ -24,3 +24,20 @@ export async function getBlock(
     return fallback;
   }
 }
+
+/**
+ * Variante para textos planos (títulos, eyebrows, líneas de datos): devuelve
+ * el bloque sin etiquetas HTML, para poder inyectarlo dentro de <h1>, <p>…
+ */
+export async function getBlockText(
+  pageSlug: string,
+  blockKey: string,
+): Promise<string> {
+  const html = await getBlock(pageSlug, blockKey);
+  return html
+    .replace(/<br\s*\/?\s*>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .trim();
+}

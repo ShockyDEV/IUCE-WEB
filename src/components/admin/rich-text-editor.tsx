@@ -1,16 +1,22 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import { TableKit } from "@tiptap/extension-table";
 import Image from "@tiptap/extension-image";
+import TextAlign from "@tiptap/extension-text-align";
 import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
   Bold,
   Image as ImageIcon,
   Italic,
   Link as LinkIcon,
   List,
   ListOrdered,
+  Loader2,
   Quote,
   Redo2,
   Strikethrough,
@@ -18,6 +24,7 @@ import {
   Underline as UnderlineIcon,
   Undo2,
 } from "lucide-react";
+import toast from "react-hot-toast";
 import { cn } from "@/lib/cn";
 
 interface RichTextEditorProps {
@@ -64,6 +71,9 @@ function Divider() {
 }
 
 function Toolbar({ editor }: Readonly<{ editor: Editor }>) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
   function setLink() {
     const previous = editor.getAttributes("link").href as string | undefined;
     const url = window.prompt("URL del enlace:", previous ?? "https://");
@@ -75,10 +85,30 @@ function Toolbar({ editor }: Readonly<{ editor: Editor }>) {
     editor.chain().focus().setLink({ href: url }).run();
   }
 
-  function addImage() {
-    const url = window.prompt("URL de la imagen (súbela antes en Archivos):");
-    if (!url) return;
-    editor.chain().focus().setImage({ src: url }).run();
+  /**
+   * Botón de imagen: abre el selector de archivos, sube a Archivos
+   * (/api/admin/files) e inserta la imagen en el punto del cursor.
+   */
+  async function uploadAndInsert(file: File) {
+    setUploading(true);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch("/api/admin/files", {
+        method: "POST",
+        body: form,
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error ?? "No se pudo subir la imagen");
+      editor.chain().focus().setImage({ src: json.item.url }).run();
+      toast.success("Imagen subida e insertada");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "No se pudo subir la imagen",
+      );
+    } finally {
+      setUploading(false);
+    }
   }
 
   const headingValue = editor.isActive("heading", { level: 2 })
@@ -182,15 +212,61 @@ function Toolbar({ editor }: Readonly<{ editor: Editor }>) {
       <Divider />
 
       <ToolbarButton
+        label="Alinear a la izquierda"
+        active={editor.isActive({ textAlign: "left" })}
+        onClick={() => editor.chain().focus().setTextAlign("left").run()}
+      >
+        <AlignLeft className="h-[15px] w-[15px]" aria-hidden="true" />
+      </ToolbarButton>
+      <ToolbarButton
+        label="Centrar"
+        active={editor.isActive({ textAlign: "center" })}
+        onClick={() => editor.chain().focus().setTextAlign("center").run()}
+      >
+        <AlignCenter className="h-[15px] w-[15px]" aria-hidden="true" />
+      </ToolbarButton>
+      <ToolbarButton
+        label="Alinear a la derecha"
+        active={editor.isActive({ textAlign: "right" })}
+        onClick={() => editor.chain().focus().setTextAlign("right").run()}
+      >
+        <AlignRight className="h-[15px] w-[15px]" aria-hidden="true" />
+      </ToolbarButton>
+
+      <Divider />
+
+      <ToolbarButton
         label="Enlace"
         active={editor.isActive("link")}
         onClick={setLink}
       >
         <LinkIcon className="h-[15px] w-[15px]" aria-hidden="true" />
       </ToolbarButton>
-      <ToolbarButton label="Imagen" onClick={addImage}>
-        <ImageIcon className="h-[15px] w-[15px]" aria-hidden="true" />
+      <ToolbarButton
+        label="Insertar imagen (se sube a Archivos)"
+        disabled={uploading}
+        onClick={() => fileRef.current?.click()}
+      >
+        {uploading ? (
+          <Loader2
+            className="h-[15px] w-[15px] animate-spin"
+            aria-hidden="true"
+          />
+        ) : (
+          <ImageIcon className="h-[15px] w-[15px]" aria-hidden="true" />
+        )}
       </ToolbarButton>
+      <input
+        ref={fileRef}
+        type="file"
+        accept=".jpg,.jpeg,.png,.webp,.gif,.svg"
+        className="hidden"
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) uploadAndInsert(f);
+          e.target.value = "";
+        }}
+      />
       <ToolbarButton
         label="Tabla"
         active={editor.isActive("table")}
@@ -218,7 +294,12 @@ export function RichTextEditor({
   minHeight = 260,
 }: Readonly<RichTextEditorProps>) {
   const editor = useEditor({
-    extensions: [StarterKit, TableKit, Image],
+    extensions: [
+      StarterKit,
+      TableKit,
+      Image,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+    ],
     content: value,
     immediatelyRender: false,
     editorProps: {

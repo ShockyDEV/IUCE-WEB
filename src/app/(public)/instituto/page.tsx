@@ -18,6 +18,7 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SectionSubnav } from "@/components/layout/section-subnav";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import Image from "next/image";
+import { MapEmbed } from "@/components/ui/map-embed";
 import { InitialsAvatar } from "@/components/ui/initials-avatar";
 import {
   MembersGrid,
@@ -169,12 +170,13 @@ async function getMiembros(): Promise<PublicMember[]> {
         name: m.name,
         area: [m.role, m.area].filter(Boolean).join(" · "),
         photo: m.photo,
+        portalUrl: m.portalUrl,
       }));
     }
   } catch {
     // BD no disponible
   }
-  return miembrosFallback.map((m) => ({ ...m, photo: null }));
+  return miembrosFallback.map((m) => ({ ...m, photo: null, portalUrl: null }));
 }
 
 const contacto = [
@@ -532,9 +534,8 @@ export default async function InstitutoPage() {
               </div>
             </div>
           </div>
-          <ImagePlaceholder
-            icon={MapPin}
-            label="Mapa — cómo llegar al Edificio Solís"
+          <MapEmbed
+            title="Mapa — cómo llegar al Edificio Solís"
             className="min-h-[320px] w-full"
           />
         </div>

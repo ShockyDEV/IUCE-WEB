@@ -55,6 +55,8 @@ interface ExportMember {
   email: string | null;
   photoPath: string | null;
   group: string | null;
+  /** Perfil en produccioncientifica.usal.es (enlace de la web original). */
+  portalUrl?: string | null;
 }
 
 // ─── Utilidades ────────────────────────────────────────────────────────────
@@ -359,6 +361,7 @@ async function migrateMembers(groupIds: Map<string, string>) {
       area: m.area,
       email: m.email || null,
       photo: photoUrl,
+      portalUrl: m.portalUrl || null,
       order,
       active: true,
       groupId: m.group ? (groupIds.get(m.group) ?? null) : null,

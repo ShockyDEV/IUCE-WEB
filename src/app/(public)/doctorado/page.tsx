@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import {
+  BookOpenCheck,
   Bot,
   CalendarRange,
   ClipboardCheck,
   Cog,
+  Fingerprint,
   Library,
   Lightbulb,
   Mail,
@@ -11,6 +13,7 @@ import {
   MousePointerClick,
   Stethoscope,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { buttonClassName } from "@/components/ui/button";
@@ -41,6 +44,7 @@ interface GroupMini {
   acronym: string;
   desc: string;
   chip: string | null;
+  logo: string | null;
 }
 
 /** Grupos del gestor (lista oficial de 9 como fallback sin BD). */
@@ -54,6 +58,7 @@ async function getGrupos(): Promise<GroupMini[]> {
         acronym: g.acronym,
         desc: g.name,
         chip: g.chip,
+        logo: g.logo,
       }));
     }
   } catch {
@@ -63,8 +68,46 @@ async function getGrupos(): Promise<GroupMini[]> {
     acronym: g.acronym,
     desc: g.name,
     chip: g.chip ?? null,
+    logo: g.logo ?? null,
   }));
 }
+
+interface Coordinator {
+  name: string;
+  photo: string | null;
+  email: string | null;
+  portalUrl: string | null;
+}
+
+/** Coordinador del programa (García Peñalvo), con foto y enlaces del gestor. */
+async function getCoordinador(): Promise<Coordinator> {
+  const fallback: Coordinator = {
+    name: "Francisco José García Peñalvo",
+    photo: null,
+    email: "fgarcia@usal.es",
+    portalUrl:
+      "https://produccioncientifica.usal.es/investigadores/56361/detalle",
+  };
+  try {
+    const row = await prisma.member.findFirst({
+      where: { role: "Subdirector" },
+    });
+    if (row) {
+      return {
+        name: row.name,
+        photo: row.photo,
+        email: row.email,
+        portalUrl: row.portalUrl ?? fallback.portalUrl,
+      };
+    }
+  } catch {
+    // BD no disponible
+  }
+  return fallback;
+}
+
+/** ORCID del coordinador (no consta en el export; verificar con el IUCE). */
+const COORDINATOR_ORCID = "https://orcid.org/0000-0001-9987-5584";
 
 const pasos = [
   {
@@ -85,10 +128,11 @@ const pasos = [
 ];
 
 export default async function DoctoradoPage() {
-  // Bloque editable desde el gestor (doctorado:programa) + grupos del gestor
-  const [programa, grupos] = await Promise.all([
+  // Bloque editable (doctorado:programa) + grupos y coordinador del gestor
+  const [programa, grupos, coordinador] = await Promise.all([
     getBlock("doctorado", "programa"),
     getGrupos(),
+    getCoordinador(),
   ]);
 
   return (
@@ -187,6 +231,18 @@ export default async function DoctoradoPage() {
                 key={g.acronym}
                 className="rounded-xl border border-gray-200 bg-surface-page p-5 shadow-sm"
               >
+                {g.logo ? (
+                  // Placa blanca fija: logos oscuros visibles también en
+                  // modo oscuro.
+                  <div className="mb-3 flex h-12 items-center rounded-md bg-white px-2.5">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={g.logo}
+                      alt={`Logotipo de ${g.acronym}`}
+                      className="max-h-9 max-w-[130px] object-contain"
+                    />
+                  </div>
+                ) : null}
                 <div className="mb-2 flex items-center justify-between">
                   <p className="text-base font-bold text-ink">{g.acronym}</p>
                   {g.chip ? (
@@ -233,22 +289,59 @@ export default async function DoctoradoPage() {
 
           <aside className="flex flex-col gap-4">
             <div className="rounded-xl border border-gray-200 border-t-[3px] border-t-usal-red bg-surface-card p-6 shadow-sm">
-              <p className="mb-1 text-xs font-bold uppercase tracking-wider text-usal-red">
+              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-usal-red">
                 Coordinación
               </p>
-              <p className="mb-0.5 text-base font-semibold text-gray-900">
-                Francisco José García Peñalvo
-              </p>
-              <p className="mb-3.5 text-xs text-gray-500">
-                Coordinador del programa · Subdirector del IUCE
-              </p>
-              <a
-                href="mailto:fgarcia@usal.es"
-                className="inline-flex items-center gap-1.5 text-sm text-iuce-blue hover:underline"
-              >
-                <Mail className="h-3.5 w-3.5" aria-hidden="true" />
-                fgarcia@usal.es
-              </a>
+              <div className="mb-3.5 flex items-center gap-4">
+                {coordinador.photo ? (
+                  <Image
+                    src={coordinador.photo}
+                    alt={`Fotografía de ${coordinador.name}`}
+                    width={72}
+                    height={72}
+                    className="h-[72px] w-[72px] flex-none rounded-full object-cover"
+                  />
+                ) : null}
+                <div>
+                  <p className="text-base font-semibold text-gray-900">
+                    {coordinador.name}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Coordinador del programa · Subdirector del IUCE
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                {coordinador.email ? (
+                  <a
+                    href={`mailto:${coordinador.email}`}
+                    className="inline-flex items-center gap-1.5 text-sm text-iuce-blue hover:underline"
+                  >
+                    <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+                    {coordinador.email}
+                  </a>
+                ) : null}
+                {coordinador.portalUrl ? (
+                  <a
+                    href={coordinador.portalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-sm text-iuce-blue hover:underline"
+                  >
+                    <BookOpenCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                    Producción científica (Portal USAL) ↗
+                  </a>
+                ) : null}
+                <a
+                  href={COORDINATOR_ORCID}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm text-iuce-blue hover:underline"
+                >
+                  <Fingerprint className="h-3.5 w-3.5" aria-hidden="true" />
+                  ORCID ↗
+                </a>
+              </div>
             </div>
             <div className="rounded-xl border border-gray-200 bg-surface-tinted px-6 py-5">
               <div className="mb-2 flex items-center gap-3">

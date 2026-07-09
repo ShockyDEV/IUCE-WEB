@@ -42,9 +42,45 @@ export const PAGE_BLOCKS: PageDef[] = [
     label: "Inicio — Portada",
     blocks: [
       {
+        blockKey: "hero-eyebrow",
+        title: "Portada — antetítulo (línea roja pequeña)",
+        defaultContent: `<p>Instituto Universitario de Investigación · USAL</p>`,
+      },
+      {
+        blockKey: "hero-titulo",
+        title: "Portada — título principal",
+        defaultContent: `<p>Instituto Universitario de Ciencias de la Educación</p>`,
+      },
+      {
         blockKey: "hero-parrafo",
         title: "Portada — párrafo de presentación",
         defaultContent: `<p>El IUCE es el instituto interdisciplinar de la Universidad de Salamanca dedicado a la investigación científica en Educación, el desarrollo tecnológico y la transferencia al ámbito educativo.</p>`,
+      },
+    ],
+  },
+  {
+    pageSlug: "contacto",
+    label: "Contacto",
+    blocks: [
+      {
+        blockKey: "intro",
+        title: "Contacto — párrafo de cabecera",
+        defaultContent: `<p>La Secretaría del Instituto atiende consultas sobre formación, investigación, doctorado y uso de espacios.</p>`,
+      },
+      {
+        blockKey: "direccion",
+        title: "Contacto — dirección postal",
+        defaultContent: `<p>Paseo de Canalejas, 169 · Edificio Solís, 1.ª planta<br>37008 Salamanca</p>`,
+      },
+      {
+        blockKey: "telefonos",
+        title: "Contacto — teléfonos",
+        defaultContent: `<p>+34 923 294 634 (Secretaría)<br>+34 923 294 500, ext. 4634 (centralita USAL)</p>`,
+      },
+      {
+        blockKey: "horario",
+        title: "Contacto — horario de Secretaría",
+        defaultContent: `<p>Lunes a viernes, 9:00–14:00</p>`,
       },
     ],
   },

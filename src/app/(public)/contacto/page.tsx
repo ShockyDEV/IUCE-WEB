@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
-import { ImagePlaceholder } from "@/components/ui/image-placeholder";
+import { MapEmbed } from "@/components/ui/map-embed";
 import { ContactForm } from "@/components/contact/contact-form";
+import { getBlock } from "@/lib/content-blocks-service";
 
 export const metadata: Metadata = {
   title: "Contacto",
@@ -10,26 +11,28 @@ export const metadata: Metadata = {
     "Contacta con la Secretaría del IUCE: formación, investigación, doctorado y uso de espacios. Paseo de Canalejas 169, Salamanca.",
 };
 
-const datos = [
-  {
-    icon: MapPin,
-    title: "Dirección",
-    lines: [
-      "Paseo de Canalejas, 169 · Edificio Solís, 1.ª planta",
-      "37008 Salamanca",
-    ],
-  },
-  {
-    icon: Phone,
-    title: "Teléfono",
-    lines: [
-      "+34 923 294 634 (Secretaría)",
-      "+34 923 294 500, ext. 4634 (centralita USAL)",
-    ],
-  },
-];
+export const dynamic = "force-dynamic";
 
-export default function ContactoPage() {
+export default async function ContactoPage() {
+  // Todos los textos de datos salen del gestor (Contenido → Páginas → Contacto).
+  const [intro, direccion, telefonos, horario] = await Promise.all([
+    getBlock("contacto", "intro"),
+    getBlock("contacto", "direccion"),
+    getBlock("contacto", "telefonos"),
+    getBlock("contacto", "horario"),
+  ]);
+
+  const datos = [
+    { icon: MapPin, title: "Dirección", html: direccion },
+    { icon: Phone, title: "Teléfono", html: telefonos },
+    {
+      icon: Mail,
+      title: "Correo electrónico",
+      html: `<p><a href="mailto:iuce@usal.es">iuce@usal.es</a></p>`,
+    },
+    { icon: Clock, title: "Horario de Secretaría", html: horario },
+  ];
+
   return (
     <>
       {/* Cabecera */}
@@ -44,12 +47,12 @@ export default function ContactoPage() {
             Contacto
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
-            Habla con el IUCE
+            Contacta con el IUCE
           </h1>
-          <p className="max-w-[70ch] text-base leading-relaxed text-gray-600">
-            La Secretaría del Instituto atiende consultas sobre formación,
-            investigación, doctorado y uso de espacios.
-          </p>
+          <div
+            className="page-block max-w-[70ch] text-base leading-relaxed text-gray-600"
+            dangerouslySetInnerHTML={{ __html: intro }}
+          />
         </div>
       </section>
 
@@ -68,57 +71,16 @@ export default function ContactoPage() {
                     <p className="text-sm font-semibold text-gray-900">
                       {d.title}
                     </p>
-                    <p className="mt-0.5 text-sm leading-normal text-gray-600">
-                      {d.lines.map((line, i) => (
-                        <span key={line}>
-                          {i > 0 ? <br /> : null}
-                          {line}
-                        </span>
-                      ))}
-                    </p>
+                    <div
+                      className="page-block mt-0.5 text-sm leading-normal text-gray-600"
+                      dangerouslySetInnerHTML={{ __html: d.html }}
+                    />
                   </div>
                 </div>
               );
             })}
 
-            <div className="flex items-start gap-3.5">
-              <span className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-md bg-iuce-blue-pale text-ink">
-                <Mail className="h-[18px] w-[18px]" aria-hidden="true" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-gray-900">
-                  Correo electrónico
-                </p>
-                <p className="mt-0.5 text-sm text-gray-600">
-                  <a
-                    href="mailto:iuce@usal.es"
-                    className="text-iuce-blue hover:underline"
-                  >
-                    iuce@usal.es
-                  </a>
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3.5">
-              <span className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-md bg-iuce-blue-pale text-ink">
-                <Clock className="h-[18px] w-[18px]" aria-hidden="true" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-gray-900">
-                  Horario de Secretaría
-                </p>
-                <p className="mt-0.5 text-sm leading-normal text-gray-600">
-                  Lunes a viernes, 9:00–14:00
-                </p>
-              </div>
-            </div>
-
-            <ImagePlaceholder
-              icon={MapPin}
-              label="Mapa — Edificio Solís, Paseo de Canalejas 169"
-              className="h-[240px] w-full"
-            />
+            <MapEmbed className="h-[280px]" />
 
             <div className="rounded-md border border-gray-200 border-l-[3px] border-l-usal-red bg-surface-card px-[18px] py-3.5">
               <p className="text-sm leading-relaxed text-gray-600">

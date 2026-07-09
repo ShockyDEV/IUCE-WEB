@@ -64,16 +64,17 @@ model ContentBlock {
 }
 
 model Member {
-  id      String         @id @default(cuid())
-  name    String
-  area    String?
-  email   String?
-  photo   String?
-  role    String? // Directora, Subdirector, Secretario, null = miembro
-  active  Boolean        @default(true)
-  order   Int            @default(0)
-  groupId String?
-  group   ResearchGroup? @relation(fields: [groupId], references: [id])
+  id        String         @id @default(cuid())
+  name      String
+  area      String?
+  email     String?
+  photo     String?
+  portalUrl String? // perfil en produccioncientifica.usal.es
+  role      String? // Directora, Subdirector, Secretario, null = miembro
+  active    Boolean        @default(true)
+  order     Int            @default(0)
+  groupId   String?
+  group     ResearchGroup? @relation(fields: [groupId], references: [id])
 }
 
 model ResearchGroup {

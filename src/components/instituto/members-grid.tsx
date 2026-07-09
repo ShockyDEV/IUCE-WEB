@@ -9,6 +9,8 @@ export interface PublicMember {
   name: string;
   area: string;
   photo: string | null;
+  /** Perfil en el Portal de Investigación de la USAL (si consta). */
+  portalUrl: string | null;
 }
 
 function initialsOf(name: string) {
@@ -58,35 +60,58 @@ export function MembersGrid({
       </p>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((m) => (
-          <div
-            key={m.name}
-            className="flex items-center gap-4 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm"
-          >
-            {m.photo ? (
-              <Image
-                src={m.photo}
-                alt=""
-                width={64}
-                height={64}
-                className="h-16 w-16 flex-none rounded-full object-cover"
-              />
-            ) : (
-              <InitialsAvatar
-                initials={initialsOf(m.name)}
-                className="h-16 w-16 text-lg"
-              />
-            )}
-            <div className="min-w-0">
-              <p className="text-[15px] font-semibold leading-snug text-gray-900">
-                {m.name}
-              </p>
-              <p className="mt-0.5 truncate text-[13px] text-gray-500">
-                {m.area}
-              </p>
+        {filtered.map((m) => {
+          const inner = (
+            <>
+              {m.photo ? (
+                <Image
+                  src={m.photo}
+                  alt=""
+                  width={64}
+                  height={64}
+                  className="h-16 w-16 flex-none rounded-full object-cover"
+                />
+              ) : (
+                <InitialsAvatar
+                  initials={initialsOf(m.name)}
+                  className="h-16 w-16 text-lg"
+                />
+              )}
+              <div className="min-w-0">
+                <p className="text-[15px] font-semibold leading-snug text-gray-900">
+                  {m.name}
+                </p>
+                <p className="mt-0.5 truncate text-[13px] text-gray-500">
+                  {m.area}
+                </p>
+                {m.portalUrl ? (
+                  <p className="mt-0.5 text-xs text-iuce-blue">
+                    Producción científica ↗
+                  </p>
+                ) : null}
+              </div>
+            </>
+          );
+          const cardClass =
+            "flex items-center gap-4 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm";
+          // Como en la web original: la ficha enlaza a su perfil en el
+          // Portal de Investigación de la USAL.
+          return m.portalUrl ? (
+            <a
+              key={m.name}
+              href={m.portalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${cardClass} transition-all hover:border-brand-400 hover:shadow-md`}
+            >
+              {inner}
+            </a>
+          ) : (
+            <div key={m.name} className={cardClass}>
+              {inner}
             </div>
-          </div>
-        ))}
+          );
+        })}
         {filtered.length === 0 ? (
           <p className="col-span-full py-8 text-center text-sm text-gray-400">
             Sin resultados para «{query}».
