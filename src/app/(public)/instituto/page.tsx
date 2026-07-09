@@ -19,6 +19,10 @@ import { SectionSubnav } from "@/components/layout/section-subnav";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { InitialsAvatar } from "@/components/ui/initials-avatar";
 import { buttonClassName } from "@/components/ui/button";
+import { getBlock } from "@/lib/content-blocks-service";
+import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Instituto",
@@ -73,33 +77,47 @@ const direccion = [
   },
 ];
 
-const miembros = [
+// Miembros por defecto (si la BD no está disponible); en producción salen
+// del gestor (Equipo y miembros).
+const miembrosFallback = [
   {
-    initials: "MR",
     name: "María José Rodríguez Conde",
     area: "Métodos de Investigación y Diagnóstico en Educación",
   },
+  { name: "Fernando Martínez Abad", area: "Evaluación educativa · Grupo GRIAL" },
   {
-    initials: "FM",
-    name: "Fernando Martínez Abad",
-    area: "Evaluación educativa · Grupo GRIAL",
-  },
-  {
-    initials: "EM",
     name: "Erla Mariela Morales Morgado",
     area: "Tecnología educativa · Grupo GRIAL",
   },
+  { name: "Susana Olmos Migueláñez", area: "Directora · Evaluación educativa" },
   {
-    initials: "SO",
-    name: "Susana Olmos Migueláñez",
-    area: "Directora · Evaluación educativa",
-  },
-  {
-    initials: "FG",
     name: "Francisco José García Peñalvo",
     area: "Director del grupo GRIAL · Informática",
   },
 ];
+
+function initialsOf(name: string) {
+  const parts = name.trim().split(/\s+/);
+  return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
+}
+
+async function getMiembros(): Promise<Array<{ name: string; area: string }>> {
+  try {
+    const rows = await prisma.member.findMany({
+      where: { active: true },
+      orderBy: [{ order: "asc" }, { name: "asc" }],
+    });
+    if (rows.length > 0) {
+      return rows.map((m) => ({
+        name: m.name,
+        area: [m.role, m.area].filter(Boolean).join(" · "),
+      }));
+    }
+  } catch {
+    // BD no disponible
+  }
+  return miembrosFallback;
+}
 
 const contacto = [
   {
@@ -137,7 +155,14 @@ const instalaciones = [
   },
 ];
 
-export default function InstitutoPage() {
+export default async function InstitutoPage() {
+  // Bloques editables desde el panel (Contenido → Páginas) + miembros del gestor
+  const [perfilIntro, edificioTexto, miembros] = await Promise.all([
+    getBlock("instituto", "perfil-intro"),
+    getBlock("instituto", "edificio"),
+    getMiembros(),
+  ]);
+
   return (
     <>
       {/* Cabecera */}
@@ -170,28 +195,11 @@ export default function InstitutoPage() {
             <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
               Perfil
             </h2>
-            <p className="mb-3.5 text-base leading-relaxed text-gray-600">
-              En su origen, el Instituto se crea como centro de referencia
-              nacional de investigación y apoyo a la formación inicial y
-              permanente del profesorado no universitario (antiguo ICE, 1969).
-              Desde la década de los años 80 se perfila como un centro
-              especializado exclusivamente en educación universitaria.
-            </p>
-            <p className="mb-3.5 text-base leading-relaxed text-gray-600">
-              A raíz de la aprobación de la LOU (2001, modificada en 2007), los
-              Institutos Universitarios de Investigación se conforman como
-              piezas clave del desarrollo de las Universidades, en paralelo a
-              Escuelas, Facultades y Departamentos. El IUCE es verificado como
-              Instituto de Investigación por la Agencia para la Calidad del
-              Sistema Universitario de Castilla y León (ACSUCYL) en junio de
-              2008.
-            </p>
-            <p className="mb-7 text-base leading-relaxed text-gray-600">
-              Ante la transformación de la Universidad hacia el Espacio Europeo
-              de Educación Superior, el IUCE investiga, forma e informa para
-              avanzar en el conocimiento de los procesos de
-              enseñanza-aprendizaje, centrados en el estudiante.
-            </p>
+            <div
+              className="page-block mb-7 text-base leading-relaxed text-gray-600"
+              // Bloque editable desde el gestor (instituto:perfil-intro)
+              dangerouslySetInnerHTML={{ __html: perfilIntro }}
+            />
             <h3 className="mb-3.5 text-lg font-semibold text-gray-900">
               Funciones del Instituto
             </h3>
@@ -353,7 +361,7 @@ export default function InstitutoPage() {
                 key={m.name}
                 className="flex items-center gap-3.5 rounded-xl border border-gray-200 bg-surface-card px-[18px] py-4 shadow-sm"
               >
-                <InitialsAvatar initials={m.initials} />
+                <InitialsAvatar initials={initialsOf(m.name)} />
                 <div>
                   <p className="text-sm font-semibold text-gray-900">
                     {m.name}
@@ -511,16 +519,11 @@ export default function InstitutoPage() {
             <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
               Edificio histórico
             </h2>
-            <p className="mb-3.5 text-base leading-relaxed text-gray-600">
-              La sede del IUCE se encuentra en el Edificio Solís, en el Paseo de
-              Canalejas. El Instituto ocupa la primera planta, donde conviven
-              los espacios de dirección, investigación y formación.
-            </p>
-            <p className="text-base leading-relaxed text-gray-600">
-              El edificio forma parte del patrimonio de la Universidad de
-              Salamanca, cuya historia se extiende a lo largo de más de ocho
-              siglos al servicio del conocimiento.
-            </p>
+            <div
+              className="page-block text-base leading-relaxed text-gray-600"
+              // Bloque editable desde el gestor (instituto:edificio)
+              dangerouslySetInnerHTML={{ __html: edificioTexto }}
+            />
           </div>
           <ImagePlaceholder
             label="Foto histórica del Edificio Solís"

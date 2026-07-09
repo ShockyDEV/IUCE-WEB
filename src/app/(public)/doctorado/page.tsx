@@ -14,6 +14,9 @@ import {
 import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { buttonClassName } from "@/components/ui/button";
+import { getBlock } from "@/lib/content-blocks-service";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Doctorado",
@@ -72,7 +75,10 @@ const pasos = [
   },
 ];
 
-export default function DoctoradoPage() {
+export default async function DoctoradoPage() {
+  // Bloque editable desde el gestor (doctorado:programa)
+  const programa = await getBlock("doctorado", "programa");
+
   return (
     <>
       {/* Cabecera */}
@@ -89,14 +95,10 @@ export default function DoctoradoPage() {
           <h1 className="mb-3.5 max-w-[24ch] text-balance text-4xl font-bold leading-tight tracking-tight text-ink">
             Formación en la Sociedad del Conocimiento
           </h1>
-          <p className="mb-6 max-w-[75ch] text-base leading-relaxed text-gray-600">
-            Configurado en el seno del IUCE, el programa nace con la vocación de
-            presentar los procesos de enseñanza-aprendizaje como auténticos
-            motores de la Sociedad del Conocimiento, en simbiosis con los
-            avances tecnológicos más punteros. Un enfoque totalmente
-            interdisciplinar que reúne a investigadores de la práctica totalidad
-            de las ramas de conocimiento.
-          </p>
+          <div
+            className="page-block mb-6 max-w-[75ch] text-base leading-relaxed text-gray-600"
+            dangerouslySetInnerHTML={{ __html: programa }}
+          />
           <div className="flex flex-wrap items-center gap-3">
             <a
               href="https://knowledgesociety.usal.es"

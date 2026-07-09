@@ -161,6 +161,31 @@ body {
 }
 
 /* --------------------------------------------------------------------------
+   Bloques de página editables desde el gestor (Contenido → Páginas).
+   -------------------------------------------------------------------------- */
+.page-block p {
+  margin: 0 0 14px;
+}
+
+.page-block p:last-child {
+  margin-bottom: 0;
+}
+
+.page-block strong {
+  color: var(--gray-900);
+}
+
+.page-block a {
+  color: var(--iuce-blue);
+}
+
+.page-block ul,
+.page-block ol {
+  margin: 0 0 14px;
+  padding-left: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
    Contenido editable del editor TipTap (panel de administración).
    -------------------------------------------------------------------------- */
 .rte-content p {

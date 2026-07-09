@@ -12,7 +12,10 @@ import {
 } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { buttonClassName } from "@/components/ui/button";
+import { getBlock } from "@/lib/content-blocks-service";
 import { cn } from "@/lib/cn";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Formación",
@@ -76,7 +79,10 @@ const ediciones = [
   { code: "M2", title: "Módulo 2", when: "Julio (dentro del Plan General)" },
 ];
 
-export default function FormacionPage() {
+export default async function FormacionPage() {
+  // Bloque editable desde el gestor (formacion:intro)
+  const intro = await getBlock("formacion", "intro");
+
   return (
     <>
       {/* Cabecera */}
@@ -92,12 +98,10 @@ export default function FormacionPage() {
             <h1 className="mb-3.5 text-balance text-4xl font-bold leading-tight tracking-tight text-ink">
               Plan de Formación Docente 2026
             </h1>
-            <p className="mb-6 max-w-[60ch] text-base leading-relaxed text-gray-600">
-              A iniciativa del Vicerrectorado de Estudios de Grado y Calidad, el
-              Plan recoge la propuesta institucional de formación inicial y
-              permanente para todo el personal docente e investigador de la
-              Universidad de Salamanca.
-            </p>
+            <div
+              className="page-block mb-6 max-w-[60ch] text-base leading-relaxed text-gray-600"
+              dangerouslySetInnerHTML={{ __html: intro }}
+            />
             <div className="flex flex-wrap items-center gap-3">
               <a href="#" className={buttonClassName({ size: "lg" })}>
                 Programa e inscripciones

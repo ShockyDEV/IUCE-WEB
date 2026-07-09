@@ -12,6 +12,7 @@ import {
 import { buttonClassName } from "@/components/ui/button";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { getPublishedNews } from "@/lib/news-service";
+import { getBlock } from "@/lib/content-blocks-service";
 import { cn } from "@/lib/cn";
 
 export const dynamic = "force-dynamic";
@@ -49,8 +50,11 @@ const quickAccess = [
 ];
 
 export default async function HomePage() {
-  // Últimas 3 noticias publicadas (gestionadas desde el panel).
-  const latestNews = (await getPublishedNews()).slice(0, 3);
+  // Últimas 3 noticias publicadas + párrafo del hero (gestionados desde el panel).
+  const [latestNews, heroParrafo] = await Promise.all([
+    getPublishedNews().then((n) => n.slice(0, 3)),
+    getBlock("inicio", "hero-parrafo"),
+  ]);
   return (
     <>
       {/* Hero */}
@@ -63,11 +67,11 @@ export default async function HomePage() {
             <h1 className="mb-[18px] text-balance text-4xl font-bold leading-tight tracking-tight text-ink sm:text-[44px]">
               Investigación e innovación en Educación Superior
             </h1>
-            <p className="mb-7 max-w-[52ch] text-base leading-relaxed text-gray-600">
-              El IUCE es el instituto interdisciplinar de la Universidad de
-              Salamanca dedicado a la investigación científica en Educación, el
-              desarrollo tecnológico y la transferencia al ámbito educativo.
-            </p>
+            <div
+              className="page-block mb-7 max-w-[52ch] text-base leading-relaxed text-gray-600"
+              // Bloque editable desde el gestor (inicio:hero-parrafo)
+              dangerouslySetInnerHTML={{ __html: heroParrafo }}
+            />
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/instituto"
