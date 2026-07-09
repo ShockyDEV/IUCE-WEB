@@ -95,7 +95,15 @@ página por página. Para verlos, servir esa carpeta con un estático
       miembros salen de la BD (con fallback al contenido semilla)
 - [x] SEO (`sitemap.xml`, `robots.txt`, metadata OG), tests Vitest (22) y
       build de producción verificado
-- [ ] i18n EN (campos `*En` previstos en el esquema; auto-traducción al
-      guardar, patrón mupes) — pendiente
-- [ ] Fotografía real (los huecos `ImagePlaceholder` esperan las fotos que
-      aporte el IUCE) y despliegue (Docker app + Apache + SSL)
+- [x] **Histórico migrado desde la web original** (export WordPress
+      2010–2026): 212 noticias con sus imágenes (`scripts/
+      migrate-wordpress.ts`, idempotente), 72 miembros con foto y los
+      9 grupos de investigación oficiales verificados (GRIAL UIC 081,
+      OCA UIC 313, VisualMed, GROUSAL, DIDEROT, CaUSAL, MOVERE, EduDIG,
+      INDIE) con sus logos. `/noticias` con filtros por categoría y
+      paginación reales; buscador de miembros en `/instituto`.
+- [x] **Auto-traducción ES→EN al guardar** (patrón mupes): DeepL vía
+      `DEEPL_API_KEY` (sin clave se omite); rellena `*En` en noticias y
+      bloques `:en`; `/api/admin/translate` bajo demanda
+- [ ] Rutas públicas `/en/...` que sirvan los campos `*En` — pendiente
+- [ ] Despliegue (Docker app + Apache + SSL) y repo en GitHub
