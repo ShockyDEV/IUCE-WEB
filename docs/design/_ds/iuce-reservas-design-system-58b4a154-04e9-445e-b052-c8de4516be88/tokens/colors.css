@@ -1,0 +1,79 @@
+/* ==========================================================================
+   IUCE Reservas — Color tokens
+   Ground truth: tailwind.config.ts (usal, iuce, brand, semantic scales)
+   + IUCE / USAL logo colors.
+   ========================================================================== */
+:root {
+  /* --- Brand: IUCE blue --- */
+  --iuce-blue: #3B7DD8;        /* interactive accent, links, focus */
+  --iuce-blue-dark: #1B3A5C;   /* primary buttons, headings ink */
+  --iuce-blue-pale: #EFF4FB;   /* tinted surfaces, info badges */
+
+  /* --- Brand: USAL red --- */
+  --usal-red: #C8102E;         /* institutional accent, admin, CTAs */
+  --usal-red-dark: #A00D24;    /* hover on red */
+
+  /* --- Brand scale (blue ramp) --- */
+  --brand-50:  #F2F7FE;
+  --brand-100: #E3EEFB;
+  --brand-400: #7DAFEA;        /* focus ring */
+  --brand-500: #3B7DD8;
+  --brand-700: #1B3A5C;
+  --brand-800: #142E4A;
+
+  /* --- Neutrals (gray ramp, Tailwind-aligned) --- */
+  --gray-50:  #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-900: #111827;
+  --gray-950: #030712;
+  --white: #FFFFFF;
+
+  /* --- Semantic: success --- */
+  --success-50:  #ECFDF3;
+  --success-500: #12B76A;
+  --success-700: #027A48;
+
+  /* --- Semantic: warning --- */
+  --warning-50:  #FFFAEB;
+  --warning-500: #F79009;
+  --warning-700: #B54708;
+
+  /* --- Semantic: danger --- */
+  --danger-50:  #FEF3F2;
+  --danger-500: #D92D20;
+  --danger-700: #B42318;
+
+  /* --- Space accent colors (from seed.ts) --- */
+  --space-red: #C8102E;
+  --space-blue: #3B7DD8;
+  --space-navy: #1B3A5C;
+  --space-slate: #333333;
+
+  /* ---------- Semantic aliases ---------- */
+  --text-heading: var(--gray-900);
+  --text-body: var(--gray-600);
+  --text-muted: var(--gray-500);
+  --text-subtle: var(--gray-400);
+  --text-on-brand: var(--white);
+  --text-link: var(--iuce-blue);
+
+  --surface-page: var(--gray-50);
+  --surface-card: var(--white);
+  --surface-tinted: var(--iuce-blue-pale);
+  --surface-inverse: var(--gray-950);
+
+  --border-default: var(--gray-200);
+  --border-strong: var(--gray-300);
+  --border-input: var(--gray-300);
+
+  --accent-primary: var(--iuce-blue-dark);
+  --accent-interactive: var(--iuce-blue);
+  --accent-institutional: var(--usal-red);
+  --focus-ring: var(--brand-400);
+}

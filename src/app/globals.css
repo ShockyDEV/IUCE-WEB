@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Tokens de diseño del IUCE (fuente de verdad: docs/design/_ds/…/tokens/*.css)
+   Capa semántica en variables CSS. El modo oscuro (.dark en <html>) solo
+   redefine el subconjunto necesario; los alias (--surface-*, --text-*) se
+   resuelven en cascada y siguen al tema automáticamente.
+   ========================================================================== */
+:root {
+  /* Marca — azul IUCE */
+  --iuce-blue: #3b7dd8;
+  --iuce-blue-dark: #1b3a5c;
+  --iuce-blue-pale: #eff4fb;
+
+  /* Marca — rojo USAL */
+  --usal-red: #c8102e;
+  --usal-red-dark: #a00d24;
+
+  /* Neutros (rampa Tailwind) */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --gray-950: #030712;
+
+  /* Superficies */
+  --surface-page: var(--gray-50);
+  --surface-card: #ffffff;
+  --surface-tinted: var(--iuce-blue-pale);
+  --surface-inverse: var(--gray-950);
+
+  /* Tinta de titulares/logo */
+  --brand-ink: var(--iuce-blue-dark);
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+
+  /* Tipografía */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Modo oscuro. Coincide con la dirección visual del prototipo:
+   neutros reasignados, superficies propias, azul/rojo suavizados.
+   -------------------------------------------------------------------------- */
+html.dark {
+  color-scheme: dark;
+
+  --gray-50: #0e1b2a;
+  --gray-100: #182a3f;
+  --gray-200: #23374f;
+  --gray-300: #31485f;
+  --gray-400: #6e8399;
+  --gray-500: #8ca0b4;
+  --gray-600: #aebfcf;
+  --gray-700: #c6d3e0;
+  --gray-800: #d8e2ee;
+  --gray-900: #eff4fa;
+
+  --surface-page: #0b1724;
+  --surface-card: #13253a;
+  --iuce-blue-pale: #152a42;
+
+  --iuce-blue: #7dafea;
+  --usal-red: #e56276;
+  --usal-red-dark: #c8102e;
+  --brand-ink: #a9c7ee;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+html,
+body {
+  font-family: var(--font-sans);
+}
+
+body {
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+}

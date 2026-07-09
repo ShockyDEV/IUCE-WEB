@@ -1,0 +1,303 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/core/**",
+              "components/layout/**",
+              "ui_kits/iuce-reservas/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|key|ref|className|style|children)$/]",
+        "message": "<Badge> doesn't accept that prop. Declared props: variant."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|size|key|ref|className|style|children)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: variant, size."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Icon'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|size|color|strokeWidth|key|ref|className|style|children)$/]",
+        "message": "<Icon> doesn't accept that prop. Declared props: name, size, color, strokeWidth."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='InstitutionalFooter'] > JSXAttribute > JSXIdentifier[name!=/^(?:iuceLogoSrc|usalLogoSrc|phone|email|key|ref|className|style|children)$/]",
+        "message": "<InstitutionalFooter> doesn't accept that prop. Declared props: iuceLogoSrc, usalLogoSrc, phone, email."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='NavbarUser'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|email|role|key|ref|className|style|children)$/]",
+        "message": "<NavbarUser> doesn't accept that prop. Declared props: name, email, role."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='NavbarUser'] > JSXAttribute[name.name='role'] > Literal[value!=/^(?:USER|ADMIN|SUPER_ADMIN)$/]",
+        "message": "<NavbarUser> role must be one of 'USER' | 'ADMIN' | 'SUPER_ADMIN'."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "Badge": {
+        "replaces": []
+      },
+      "Button": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "Icon": {
+        "replaces": []
+      },
+      "Input": {
+        "replaces": []
+      },
+      "InstitutionalFooter": {
+        "replaces": []
+      },
+      "NavbarUser": {
+        "replaces": []
+      },
+      "Textarea": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--accent-institutional",
+      "--accent-interactive",
+      "--accent-primary",
+      "--border-default",
+      "--border-input",
+      "--border-strong",
+      "--brand-100",
+      "--brand-400",
+      "--brand-50",
+      "--brand-500",
+      "--brand-700",
+      "--brand-800",
+      "--container-max",
+      "--danger-50",
+      "--danger-500",
+      "--danger-700",
+      "--ease-default",
+      "--focus-ring",
+      "--font-mono",
+      "--font-sans",
+      "--gray-100",
+      "--gray-200",
+      "--gray-300",
+      "--gray-400",
+      "--gray-50",
+      "--gray-500",
+      "--gray-600",
+      "--gray-700",
+      "--gray-900",
+      "--gray-950",
+      "--iuce-blue",
+      "--iuce-blue-dark",
+      "--iuce-blue-pale",
+      "--leading-normal",
+      "--leading-relaxed",
+      "--leading-snug",
+      "--leading-tight",
+      "--navbar-height",
+      "--press-scale",
+      "--radius-full",
+      "--radius-lg",
+      "--radius-md",
+      "--radius-sm",
+      "--ring-offset",
+      "--ring-width",
+      "--shadow-md",
+      "--shadow-sm",
+      "--space-1",
+      "--space-1-5",
+      "--space-10",
+      "--space-16",
+      "--space-2",
+      "--space-3",
+      "--space-4",
+      "--space-5",
+      "--space-6",
+      "--space-8",
+      "--space-blue",
+      "--space-navy",
+      "--space-red",
+      "--space-slate",
+      "--success-50",
+      "--success-500",
+      "--success-700",
+      "--surface-card",
+      "--surface-inverse",
+      "--surface-page",
+      "--surface-tinted",
+      "--text-2xl",
+      "--text-2xs",
+      "--text-3xl",
+      "--text-4xl",
+      "--text-5xl",
+      "--text-base",
+      "--text-body",
+      "--text-heading",
+      "--text-lg",
+      "--text-link",
+      "--text-muted",
+      "--text-on-brand",
+      "--text-sm",
+      "--text-subtle",
+      "--text-xl",
+      "--text-xs",
+      "--tracking-normal",
+      "--tracking-tight",
+      "--tracking-wider",
+      "--transition-fast",
+      "--usal-red",
+      "--usal-red-dark",
+      "--warning-50",
+      "--warning-500",
+      "--warning-700",
+      "--weight-bold",
+      "--weight-medium",
+      "--weight-normal",
+      "--weight-semibold",
+      "--white"
+    ],
+    "tokenKinds": {
+      "--iuce-blue": "color",
+      "--iuce-blue-dark": "color",
+      "--iuce-blue-pale": "color",
+      "--usal-red": "color",
+      "--usal-red-dark": "color",
+      "--brand-50": "color",
+      "--brand-100": "color",
+      "--brand-400": "color",
+      "--brand-500": "color",
+      "--brand-700": "color",
+      "--brand-800": "color",
+      "--gray-50": "color",
+      "--gray-100": "color",
+      "--gray-200": "color",
+      "--gray-300": "color",
+      "--gray-400": "color",
+      "--gray-500": "color",
+      "--gray-600": "color",
+      "--gray-700": "color",
+      "--gray-900": "color",
+      "--gray-950": "color",
+      "--white": "color",
+      "--success-50": "color",
+      "--success-500": "color",
+      "--success-700": "color",
+      "--warning-50": "color",
+      "--warning-500": "color",
+      "--warning-700": "color",
+      "--danger-50": "color",
+      "--danger-500": "color",
+      "--danger-700": "color",
+      "--space-red": "spacing",
+      "--space-blue": "spacing",
+      "--space-navy": "spacing",
+      "--space-slate": "spacing",
+      "--text-heading": "font",
+      "--text-body": "font",
+      "--text-muted": "font",
+      "--text-subtle": "font",
+      "--text-on-brand": "font",
+      "--text-link": "font",
+      "--surface-page": "color",
+      "--surface-card": "color",
+      "--surface-tinted": "color",
+      "--surface-inverse": "color",
+      "--border-default": "color",
+      "--border-strong": "color",
+      "--border-input": "color",
+      "--accent-primary": "color",
+      "--accent-interactive": "color",
+      "--accent-institutional": "color",
+      "--focus-ring": "color",
+      "--font-sans": "font",
+      "--font-mono": "font",
+      "--text-2xs": "font",
+      "--text-xs": "font",
+      "--text-sm": "font",
+      "--text-base": "font",
+      "--text-lg": "font",
+      "--text-xl": "font",
+      "--text-2xl": "font",
+      "--text-3xl": "font",
+      "--text-4xl": "font",
+      "--text-5xl": "font",
+      "--weight-normal": "font",
+      "--weight-medium": "font",
+      "--weight-semibold": "font",
+      "--weight-bold": "font",
+      "--leading-tight": "font",
+      "--leading-snug": "font",
+      "--leading-normal": "font",
+      "--leading-relaxed": "font",
+      "--tracking-tight": "font",
+      "--tracking-normal": "font",
+      "--tracking-wider": "font",
+      "--space-1": "spacing",
+      "--space-1-5": "spacing",
+      "--space-2": "spacing",
+      "--space-3": "spacing",
+      "--space-4": "spacing",
+      "--space-5": "spacing",
+      "--space-6": "spacing",
+      "--space-8": "spacing",
+      "--space-10": "spacing",
+      "--space-16": "spacing",
+      "--radius-sm": "radius",
+      "--radius-md": "radius",
+      "--radius-lg": "radius",
+      "--radius-full": "radius",
+      "--shadow-sm": "shadow",
+      "--shadow-md": "shadow",
+      "--ring-width": "spacing",
+      "--ring-offset": "spacing",
+      "--container-max": "spacing",
+      "--navbar-height": "spacing",
+      "--transition-fast": "other",
+      "--ease-default": "other",
+      "--press-scale": "other"
+    },
+    "fontFamilies": []
+  }
+}

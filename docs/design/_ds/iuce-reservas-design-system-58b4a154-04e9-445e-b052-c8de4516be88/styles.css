@@ -1,0 +1,7 @@
+/* ==========================================================================
+   IUCE Reservas Design System — global entry point.
+   Consumers link ONLY this file. Keep it as @import lines.
+   ========================================================================== */
+@import "tokens/colors.css";
+@import "tokens/typography.css";
+@import "tokens/spacing.css";

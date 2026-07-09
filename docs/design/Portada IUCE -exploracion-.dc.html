@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/colors.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/typography.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/styles.css">
+<script src="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="image-slot.js"></script>
+<style>
+body{margin:0;background:#f0eee9;font-family:var(--font-sans,system-ui,sans-serif)}
+a{color:var(--iuce-blue)}a:hover{color:var(--iuce-blue-dark)}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}
+.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}
+.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}
+.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t0" style="padding:28px 44px 22px;background:#fff">
+  <div style="display:flex;gap:40px;align-items:flex-start;max-width:1240px">
+    <div style="flex:none;width:340px">
+      <p style="margin:0 0 6px;font:600 10px/1 ui-monospace,Menlo,monospace;letter-spacing:.08em;color:#C8102E">REDISEÑO WEB IUCE · EXPLORACIÓN DE PORTADA</p>
+      <h1 style="margin:0;font:700 20px/1.25 system-ui,sans-serif;color:#111827">4 direcciones para la home de iuce.usal.es</h1>
+    </div>
+    <ul style="margin:0;padding:0 0 0 16px;font:12.5px/1.7 system-ui,sans-serif;color:#4B5563;columns:2;column-gap:36px;max-width:760px">
+      <li>Base visual: sistema <strong>IUCE Reservas</strong> (navy #1B3A5C / azul #3B7DD8), granate USAL #C8102E solo como acento institucional.</li>
+      <li>Tipografía system-ui, igual que el producto en producción — sin webfonts.</li>
+      <li>Contenido real extraído de iuce.usal.es (noticias, equipo, textos del Instituto).</li>
+      <li>Las zonas de foto son huecos: <strong>arrastra ahí tus imágenes reales</strong> y quedan guardadas.</li>
+      <li>Las variaciones exploran <strong>estructura del hero</strong> y <strong>densidad</strong>, de menos a más densa: <a class="dv-oid" href="#1c">1c</a> → <a class="dv-oid" href="#1a">1a</a> → <a class="dv-oid" href="#1b">1b</a> → <a class="dv-oid" href="#1d">1d</a>.</li>
+      <li>Modo oscuro, resto de páginas y panel admin: siguientes tandas, sobre la dirección elegida.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Portada — estructura del hero × densidad de información</span></div>
+<div class="dv-opts">
+
+  <!-- ============ 1a — Institucional clásico ============ -->
+  <div class="dv-opt" id="1a">
+    <div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Institucional clásico — hero partido texto/foto · densidad media</div>
+    <div class="dv-card" style="width:1280px">
+      <div style="height:3px;background:var(--usal-red)"></div>
+      <header style="display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 40px;border-bottom:1px solid var(--border-default);background:var(--white)">
+        <img src="assets/iuce-logo.png" alt="IUCE — Universidad de Salamanca" style="height:38px;width:auto">
+        <nav aria-label="Principal" style="display:flex;align-items:center;gap:26px;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--gray-600)">
+          <a href="#1a" style="color:var(--iuce-blue-dark);text-decoration:none;border-bottom:2px solid var(--usal-red);padding:22px 0 20px">Inicio</a>
+          <a href="#1a" style="color:inherit;text-decoration:none">Instituto</a>
+          <a href="#1a" style="color:inherit;text-decoration:none">Investigación</a>
+          <a href="#1a" style="color:inherit;text-decoration:none">Formación</a>
+          <a href="#1a" style="color:inherit;text-decoration:none">Eventos</a>
+          <a href="#1a" style="color:inherit;text-decoration:none">Doctorado</a>
+          <a href="#1a" style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:4px">EKS <i data-lucide="external-link" width="12" height="12"></i></a>
+          <a href="#1a" style="color:inherit;text-decoration:none">Contacto</a>
+        </nav>
+        <div style="display:flex;align-items:center;gap:14px;color:var(--gray-500)">
+          <i data-lucide="search" width="18" height="18"></i>
+          <span style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--gray-700)">ES <span style="color:var(--gray-300);font-weight:400">·</span> <span style="color:var(--gray-400);font-weight:400">EN</span></span>
+        </div>
+      </header>
+
+      <div style="display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;padding:64px 40px 68px;background:var(--white)">
+        <div>
+          <p style="margin:0 0 14px;font-size:var(--text-xs);font-weight:var(--weight-bold);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--usal-red)">Instituto Universitario de Investigación · USAL</p>
+          <h2 style="margin:0 0 18px;font-size:44px;line-height:var(--leading-tight);letter-spacing:var(--tracking-tight);font-weight:var(--weight-bold);color:var(--iuce-blue-dark);text-wrap:balance">Investigación e innovación en Educación Superior</h2>
+          <p style="margin:0 0 28px;font-size:var(--text-base);line-height:var(--leading-relaxed);color:var(--text-body);max-width:52ch">El IUCE es el instituto interdisciplinar de la Universidad de Salamanca dedicado a la investigación científica en Educación, el desarrollo tecnológico y la transferencia al ámbito educativo.</p>
+          <div style="display:flex;align-items:center;gap:12px">
+            <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" size="lg" hint-size="200px,48px">Conoce el Instituto</x-import>
+            <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="outline" size="lg" hint-size="240px,48px">Plan de Formación Docente</x-import>
+          </div>
+          <div style="display:flex;gap:24px;margin-top:32px;padding-top:20px;border-top:1px solid var(--gray-100);font-size:var(--text-xs);color:var(--text-muted)">
+            <span style="display:inline-flex;align-items:center;gap:6px"><i data-lucide="landmark" width="14" height="14" style="color:var(--usal-red)"></i>Origen ICE, 1969</span>
+            <span style="display:inline-flex;align-items:center;gap:6px"><i data-lucide="shield-check" width="14" height="14" style="color:var(--usal-red)"></i>Verificado ACSUCYL, 2008</span>
+            <span style="display:inline-flex;align-items:center;gap:6px"><i data-lucide="map-pin" width="14" height="14" style="color:var(--usal-red)"></i>Edificio Solís, Salamanca</span>
+          </div>
+        </div>
+        <div style="position:relative">
+          <image-slot id="slot-1a-hero" shape="rounded" radius="12" placeholder="Foto del Edificio Solís" style="width:100%;height:380px"></image-slot>
+          <div style="position:absolute;left:-1px;bottom:22px;background:var(--iuce-blue-dark);color:var(--white);font-size:var(--text-xs);padding:8px 14px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;pointer-events:none">Paseo de Canalejas 169 · Edificio Solís, 1.ª planta</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface-page);border-top:1px solid var(--border-default);border-bottom:1px solid var(--border-default);padding:36px 40px">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          <a href="#1a" style="text-decoration:none;background:var(--white);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-sm)">
+            <span style="width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--iuce-blue-dark)"><i data-lucide="microscope" width="20" height="20"></i></span>
+            <span style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-heading)">Investigación</span>
+            <span style="font-size:var(--text-xs);line-height:var(--leading-snug);color:var(--text-muted)">Grupos, proyectos y publicaciones en Educación Superior</span>
+          </a>
+          <a href="#1a" style="text-decoration:none;background:var(--white);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-sm)">
+            <span style="width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--iuce-blue-dark)"><i data-lucide="graduation-cap" width="20" height="20"></i></span>
+            <span style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-heading)">Formación</span>
+            <span style="font-size:var(--text-xs);line-height:var(--leading-snug);color:var(--text-muted)">Plan de Formación Docente del PDI y actividades formativas</span>
+          </a>
+          <a href="#1a" style="text-decoration:none;background:var(--white);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-sm)">
+            <span style="width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--iuce-blue-dark)"><i data-lucide="book-open" width="20" height="20"></i></span>
+            <span style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-heading)">Doctorado</span>
+            <span style="font-size:var(--text-xs);line-height:var(--leading-snug);color:var(--text-muted)">Programas de doctorado vinculados al Instituto</span>
+          </a>
+          <a href="#1a" style="text-decoration:none;background:var(--white);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-sm)">
+            <span style="width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--usal-red)"><i data-lucide="calendar-check" width="20" height="20"></i></span>
+            <span style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-heading)">Reserva de espacios</span>
+            <span style="font-size:var(--text-xs);line-height:var(--leading-snug);color:var(--text-muted)">Aulas y salas del IUCE — reservas.iuce.usal.es</span>
+          </a>
+        </div>
+      </div>
+
+      <div style="padding:52px 40px 60px;background:var(--white)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px">
+          <h3 style="margin:0;font-size:var(--text-2xl);font-weight:var(--weight-bold);letter-spacing:var(--tracking-tight);color:var(--text-heading)">Actualidad</h3>
+          <a href="#1a" style="font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--iuce-blue);text-decoration:none">Ver todas las noticias →</a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+          <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface-card);box-shadow:var(--shadow-sm)">
+            <div style="height:150px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-400)"><i data-lucide="image" width="26" height="26"></i></div>
+            <div style="padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:8px;font-size:var(--text-xs)"><span style="background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);border-radius:var(--radius-full);padding:2px 10px;font-weight:var(--weight-medium)">Congresos</span><span style="color:var(--text-subtle)">20 abr 2026</span></div>
+              <h4 style="margin:0;font-size:var(--text-base);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">XXII Congreso Internacional de Tecnología, Conocimiento y Sociedad</h4>
+              <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-normal);color:var(--text-body)">La Universidad del Egeo celebró en Rodas la edición 2026, en modalidad híbrida y bilingüe.</p>
+            </div>
+          </article>
+          <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface-card);box-shadow:var(--shadow-sm)">
+            <div style="height:150px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-400)"><i data-lucide="image" width="26" height="26"></i></div>
+            <div style="padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:8px;font-size:var(--text-xs)"><span style="background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);border-radius:var(--radius-full);padding:2px 10px;font-weight:var(--weight-medium)">Congresos</span><span style="color:var(--text-subtle)">19 mar 2026</span></div>
+              <h4 style="margin:0;font-size:var(--text-base);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">I Congreso Internacional sobre Evaluación Educativa</h4>
+              <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-normal);color:var(--text-body)">Bilbao acogió la primera edición, organizada por el ISEI-IVEI y el Gobierno Vasco.</p>
+            </div>
+          </article>
+          <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface-card);box-shadow:var(--shadow-sm)">
+            <div style="height:150px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-400)"><i data-lucide="image" width="26" height="26"></i></div>
+            <div style="padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:8px;font-size:var(--text-xs)"><span style="background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);border-radius:var(--radius-full);padding:2px 10px;font-weight:var(--weight-medium)">Innovación docente</span><span style="color:var(--text-subtle)">14 mar 2026</span></div>
+              <h4 style="margin:0;font-size:var(--text-base);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">El IUCE, en la III Jornada de Innovación Docente JIDUCYL26</h4>
+              <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-normal);color:var(--text-body)">Bajo el lema «De la experiencia a la evidencia», Burgos reunió a más de 300 docentes.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div style="background:var(--surface-tinted);border-top:1px solid var(--border-default);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:32px">
+        <div style="display:flex;align-items:center;gap:18px">
+          <span style="width:46px;height:46px;border-radius:var(--radius-md);background:var(--iuce-blue-dark);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:var(--weight-bold);font-size:var(--text-sm)">EKS</span>
+          <div>
+            <p style="margin:0;font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-heading)">Education in the Knowledge Society</p>
+            <p style="margin:2px 0 0;font-size:var(--text-sm);color:var(--text-body)">La revista científica del IUCE: investigación interdisciplinar sobre la Sociedad del Conocimiento.</p>
+          </div>
+        </div>
+        <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="outline" hint-size="180px,40px">Visitar la revista ↗</x-import>
+      </div>
+
+      <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.InstitutionalFooter" hint-size="100%,150px"></x-import>
+    </div>
+  </div>
+
+  <!-- ============ 1b — Navy panorámico ============ -->
+  <div class="dv-opt" id="1b">
+    <div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Navy panorámico — hero de banda completa + tarjetas flotantes · densidad media-alta</div>
+    <div class="dv-card" style="width:1280px">
+      <header style="display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 40px;background:var(--iuce-blue-dark)">
+        <img src="assets/iuce-logo-white.webp" alt="IUCE — Universidad de Salamanca" style="height:34px;width:auto">
+        <nav aria-label="Principal" style="display:flex;align-items:center;gap:24px;font-size:var(--text-sm);font-weight:var(--weight-medium);color:rgba(255,255,255,.78)">
+          <a href="#1b" style="color:var(--white);text-decoration:none">Inicio</a>
+          <a href="#1b" style="color:inherit;text-decoration:none">Instituto</a>
+          <a href="#1b" style="color:inherit;text-decoration:none">Investigación</a>
+          <a href="#1b" style="color:inherit;text-decoration:none">Formación</a>
+          <a href="#1b" style="color:inherit;text-decoration:none">Eventos</a>
+          <a href="#1b" style="color:inherit;text-decoration:none">Doctorado</a>
+          <a href="#1b" style="color:inherit;text-decoration:none">EKS</a>
+          <a href="#1b" style="color:inherit;text-decoration:none">Contacto</a>
+        </nav>
+        <div style="display:flex;align-items:center;gap:14px;color:rgba(255,255,255,.7)">
+          <i data-lucide="search" width="18" height="18"></i>
+          <span style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--white)">ES <span style="opacity:.4">·</span> <span style="opacity:.55;font-weight:400">EN</span></span>
+        </div>
+      </header>
+
+      <div style="background:linear-gradient(180deg,var(--iuce-blue-dark) 0%,var(--brand-800) 100%);padding:72px 40px 96px;position:relative">
+        <div style="max-width:820px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+            <span style="width:28px;height:3px;background:var(--usal-red);border-radius:2px"></span>
+            <p style="margin:0;font-size:var(--text-xs);font-weight:var(--weight-bold);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:rgba(255,255,255,.65)">Universidad de Salamanca</p>
+          </div>
+          <h2 style="margin:0 0 18px;font-size:var(--text-5xl);line-height:var(--leading-tight);letter-spacing:var(--tracking-tight);font-weight:var(--weight-bold);color:var(--white);text-wrap:balance">Instituto Universitario de Ciencias de la Educación</h2>
+          <p style="margin:0 0 30px;font-size:var(--text-lg);line-height:var(--leading-relaxed);color:rgba(255,255,255,.8);max-width:60ch">Investigación interdisciplinar en Educación Superior, desarrollo tecnológico y transferencia al ámbito educativo desde 1969.</p>
+          <div style="display:flex;align-items:center;gap:12px">
+            <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="secondary" size="lg" hint-size="200px,48px">Conoce el Instituto</x-import>
+            <a href="#1b" style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 24px;border:1px solid rgba(255,255,255,.35);border-radius:var(--radius-md);color:var(--white);font-size:var(--text-base);font-weight:var(--weight-medium);text-decoration:none">Actividades formativas <i data-lucide="arrow-right" width="16" height="16"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:0 40px;margin-top:-44px;position:relative">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          <a href="#1b" style="text-decoration:none;background:var(--white);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:18px 20px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-md)">
+            <span style="flex:none;width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--iuce-blue-dark)"><i data-lucide="microscope" width="20" height="20"></i></span>
+            <span><span style="display:block;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">Investigación</span><span style="display:block;font-size:var(--text-xs);color:var(--text-muted)">Grupos y proyectos</span></span>
+          </a>
+          <a href="#1b" style="text-decoration:none;background:var(--white);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:18px 20px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-md)">
+            <span style="flex:none;width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--iuce-blue-dark)"><i data-lucide="graduation-cap" width="20" height="20"></i></span>
+            <span><span style="display:block;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">Formación</span><span style="display:block;font-size:var(--text-xs);color:var(--text-muted)">Plan de Formación Docente</span></span>
+          </a>
+          <a href="#1b" style="text-decoration:none;background:var(--white);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:18px 20px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-md)">
+            <span style="flex:none;width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--iuce-blue-dark)"><i data-lucide="book-open" width="20" height="20"></i></span>
+            <span><span style="display:block;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">Doctorado</span><span style="display:block;font-size:var(--text-xs);color:var(--text-muted)">Programas vinculados</span></span>
+          </a>
+          <a href="#1b" style="text-decoration:none;background:var(--white);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:18px 20px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-md)">
+            <span style="flex:none;width:38px;height:38px;border-radius:var(--radius-md);background:#FBEFF1;display:flex;align-items:center;justify-content:center;color:var(--usal-red)"><i data-lucide="calendar-check" width="20" height="20"></i></span>
+            <span><span style="display:block;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">Reserva de espacios</span><span style="display:block;font-size:var(--text-xs);color:var(--text-muted)">reservas.iuce.usal.es</span></span>
+          </a>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:40px;padding:44px 40px 56px;background:var(--white)">
+        <div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px">
+            <h3 style="margin:0;font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--text-heading)">Actualidad</h3>
+            <a href="#1b" style="font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--iuce-blue);text-decoration:none">Ver todas →</a>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <article style="display:flex;gap:18px;padding:16px 0;border-top:1px solid var(--gray-100)">
+              <div style="flex:none;width:132px;height:88px;border-radius:var(--radius-md);background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-400)"><i data-lucide="image" width="20" height="20"></i></div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:var(--text-xs);color:var(--text-subtle)">Congresos · 20 abr 2026</span>
+                <h4 style="margin:0;font-size:var(--text-base);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">XXII Congreso Internacional de Tecnología, Conocimiento y Sociedad</h4>
+                <p style="margin:0;font-size:var(--text-sm);color:var(--text-body)">Edición híbrida y bilingüe celebrada en Rodas por la Universidad del Egeo.</p>
+              </div>
+            </article>
+            <article style="display:flex;gap:18px;padding:16px 0;border-top:1px solid var(--gray-100)">
+              <div style="flex:none;width:132px;height:88px;border-radius:var(--radius-md);background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-400)"><i data-lucide="image" width="20" height="20"></i></div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:var(--text-xs);color:var(--text-subtle)">Congresos · 19 mar 2026</span>
+                <h4 style="margin:0;font-size:var(--text-base);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">I Congreso Internacional sobre Evaluación Educativa, en Bilbao</h4>
+                <p style="margin:0;font-size:var(--text-sm);color:var(--text-body)">Organizado por el ISEI-IVEI junto al Departamento de Educación del Gobierno Vasco.</p>
+              </div>
+            </article>
+            <article style="display:flex;gap:18px;padding:16px 0;border-top:1px solid var(--gray-100)">
+              <div style="flex:none;width:132px;height:88px;border-radius:var(--radius-md);background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-400)"><i data-lucide="image" width="20" height="20"></i></div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:var(--text-xs);color:var(--text-subtle)">Innovación docente · 14 mar 2026</span>
+                <h4 style="margin:0;font-size:var(--text-base);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">El IUCE, en la III Jornada JIDUCYL26 «De la experiencia a la evidencia»</h4>
+                <p style="margin:0;font-size:var(--text-sm);color:var(--text-body)">Más de 300 docentes de las universidades públicas de Castilla y León, en Burgos.</p>
+              </div>
+            </article>
+            <article style="display:flex;gap:18px;padding:16px 0;border-top:1px solid var(--gray-100)">
+              <div style="flex:none;width:132px;height:88px;border-radius:var(--radius-md);background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-400)"><i data-lucide="image" width="20" height="20"></i></div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:var(--text-xs);color:var(--text-subtle)">Premios · 21 nov 2025</span>
+                <h4 style="margin:0;font-size:var(--text-base);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">Premio Ennova Health para el grupo VisualMed System</h4>
+                <p style="margin:0;font-size:var(--text-sm);color:var(--text-body)">Entregado en el Real Teatro del Retiro de Madrid.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+        <aside style="display:flex;flex-direction:column;gap:16px">
+          <h3 style="margin:0 0 2px;font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--text-heading)">Agenda</h3>
+          <div style="border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:16px;display:flex;gap:14px;align-items:center;background:var(--surface-card)">
+            <span style="flex:none;width:44px;height:44px;border-radius:var(--radius-md);background:var(--iuce-blue-dark);color:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:var(--weight-bold);letter-spacing:.04em">2026<span style="font-size:var(--text-xs)">SAL</span></span>
+            <div>
+              <p style="margin:0;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">ICED26 — International Consortium for Educational Development</p>
+              <p style="margin:2px 0 0;font-size:var(--text-xs);color:var(--text-muted)">Salamanca · organizado con el IUCE</p>
+            </div>
+          </div>
+          <div style="border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:16px;display:flex;gap:14px;align-items:center;background:var(--surface-card)">
+            <span style="flex:none;width:44px;height:44px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);display:flex;align-items:center;justify-content:center"><i data-lucide="graduation-cap" width="20" height="20"></i></span>
+            <div>
+              <p style="margin:0;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">Plan de Formación Docente 2026-27</p>
+              <p style="margin:2px 0 0;font-size:var(--text-xs);color:var(--text-muted)">Convocatoria e inscripciones</p>
+            </div>
+          </div>
+          <div style="border:1px solid var(--border-default);border-left:3px solid var(--usal-red);border-radius:var(--radius-md);padding:16px;background:var(--surface-card)">
+            <p style="margin:0 0 4px;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">EKS — Education in the Knowledge Society</p>
+            <p style="margin:0 0 10px;font-size:var(--text-xs);color:var(--text-muted)">Revista científica del IUCE, acceso abierto.</p>
+            <a href="#1b" style="font-size:var(--text-xs);font-weight:var(--weight-medium);color:var(--iuce-blue);text-decoration:none">Visitar revista.usal.es ↗</a>
+          </div>
+        </aside>
+      </div>
+
+      <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.InstitutionalFooter" hint-size="100%,150px"></x-import>
+    </div>
+  </div>
+
+  <!-- ============ 1c — Editorial ligero ============ -->
+  <div class="dv-opt" id="1c">
+    <div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Editorial ligero — hero tipográfico centrado · densidad baja</div>
+    <div class="dv-card" style="width:1280px">
+      <div style="height:2px;background:var(--usal-red)"></div>
+      <header style="display:flex;align-items:center;justify-content:space-between;height:76px;padding:0 48px;background:var(--white)">
+        <img src="assets/iuce-logo.png" alt="IUCE — Universidad de Salamanca" style="height:40px;width:auto">
+        <nav aria-label="Principal" style="display:flex;align-items:center;gap:28px;font-size:var(--text-sm);color:var(--gray-500)">
+          <a href="#1c" style="color:var(--text-heading);text-decoration:none;font-weight:var(--weight-medium)">Inicio</a>
+          <a href="#1c" style="color:inherit;text-decoration:none">Instituto</a>
+          <a href="#1c" style="color:inherit;text-decoration:none">Investigación</a>
+          <a href="#1c" style="color:inherit;text-decoration:none">Formación</a>
+          <a href="#1c" style="color:inherit;text-decoration:none">Doctorado</a>
+          <a href="#1c" style="color:inherit;text-decoration:none">EKS</a>
+          <a href="#1c" style="color:inherit;text-decoration:none">Contacto</a>
+          <span style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--gray-700)">ES · <span style="color:var(--gray-400);font-weight:400">EN</span></span>
+        </nav>
+      </header>
+
+      <div style="padding:88px 48px 64px;text-align:center;background:var(--white)">
+        <p style="margin:0 0 18px;font-size:var(--text-xs);font-weight:var(--weight-bold);letter-spacing:.12em;text-transform:uppercase;color:var(--usal-red)">Instituto Universitario de Ciencias de la Educación</p>
+        <h2 style="margin:0 auto 22px;font-size:56px;line-height:1.08;letter-spacing:var(--tracking-tight);font-weight:var(--weight-bold);color:var(--iuce-blue-dark);max-width:20ch;text-wrap:balance">La investigación educativa de la Universidad de Salamanca</h2>
+        <p style="margin:0 auto 30px;font-size:var(--text-lg);line-height:var(--leading-relaxed);color:var(--text-muted);max-width:56ch">Un instituto interdisciplinar dedicado a la Educación Superior: investigación, formación del profesorado y transferencia, desde 1969.</p>
+        <div style="display:flex;justify-content:center;gap:32px;font-size:var(--text-base);font-weight:var(--weight-medium)">
+          <a href="#1c" style="color:var(--iuce-blue-dark);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1.5px">Conoce el Instituto</a>
+          <a href="#1c" style="color:var(--iuce-blue-dark);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1.5px">Plan de Formación Docente</a>
+          <a href="#1c" style="color:var(--iuce-blue-dark);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1.5px">Revista EKS</a>
+        </div>
+      </div>
+
+      <div style="padding:0 48px 72px;background:var(--white)">
+        <image-slot id="slot-1c-hero" shape="rounded" radius="14" placeholder="Panorámica — patio o fachada del Edificio Solís" style="width:100%;height:420px"></image-slot>
+      </div>
+
+      <div style="padding:0 48px 72px;background:var(--white)">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px;border-top:1px solid var(--gray-200);padding-top:40px">
+          <div>
+            <p style="margin:0 0 10px;font-size:var(--text-sm);font-weight:var(--weight-bold);color:var(--usal-red)">01</p>
+            <h3 style="margin:0 0 8px;font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-heading)">Investigación</h3>
+            <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-relaxed);color:var(--text-body)">Grupos y proyectos interdisciplinares sobre procesos de formación en Educación Superior y tecnología educativa.</p>
+          </div>
+          <div>
+            <p style="margin:0 0 10px;font-size:var(--text-sm);font-weight:var(--weight-bold);color:var(--usal-red)">02</p>
+            <h3 style="margin:0 0 8px;font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-heading)">Formación</h3>
+            <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-relaxed);color:var(--text-body)">Formación inicial y permanente del personal docente e investigador, con el Vicerrectorado de Estudios de Grado y Calidad.</p>
+          </div>
+          <div>
+            <p style="margin:0 0 10px;font-size:var(--text-sm);font-weight:var(--weight-bold);color:var(--usal-red)">03</p>
+            <h3 style="margin:0 0 8px;font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-heading)">Transferencia</h3>
+            <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-relaxed);color:var(--text-body)">Colaboración con universidades, administraciones y entidades educativas de Europa y Latinoamérica.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:0 48px 80px;background:var(--white)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--gray-200);padding-top:40px;margin-bottom:8px">
+          <h3 style="margin:0;font-size:var(--text-2xl);font-weight:var(--weight-bold);letter-spacing:var(--tracking-tight);color:var(--text-heading)">Actualidad</h3>
+          <a href="#1c" style="font-size:var(--text-sm);color:var(--iuce-blue);text-decoration:none">Todas las noticias →</a>
+        </div>
+        <div>
+          <a href="#1c" style="display:grid;grid-template-columns:150px 1fr auto;gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--gray-100);text-decoration:none">
+            <span style="font-size:var(--text-xs);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--text-subtle)">20 abr 2026</span>
+            <span style="font-size:var(--text-xl);line-height:var(--leading-snug);color:var(--text-heading)">XXII Congreso Internacional de Tecnología, Conocimiento y Sociedad</span>
+            <i data-lucide="arrow-right" width="18" height="18" style="color:var(--usal-red)"></i>
+          </a>
+          <a href="#1c" style="display:grid;grid-template-columns:150px 1fr auto;gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--gray-100);text-decoration:none">
+            <span style="font-size:var(--text-xs);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--text-subtle)">19 mar 2026</span>
+            <span style="font-size:var(--text-xl);line-height:var(--leading-snug);color:var(--text-heading)">I Congreso Internacional sobre Evaluación Educativa, en Bilbao</span>
+            <i data-lucide="arrow-right" width="18" height="18" style="color:var(--usal-red)"></i>
+          </a>
+          <a href="#1c" style="display:grid;grid-template-columns:150px 1fr auto;gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--gray-100);text-decoration:none">
+            <span style="font-size:var(--text-xs);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--text-subtle)">14 mar 2026</span>
+            <span style="font-size:var(--text-xl);line-height:var(--leading-snug);color:var(--text-heading)">El IUCE, en la III Jornada de Innovación Docente JIDUCYL26</span>
+            <i data-lucide="arrow-right" width="18" height="18" style="color:var(--usal-red)"></i>
+          </a>
+          <a href="#1c" style="display:grid;grid-template-columns:150px 1fr auto;gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--gray-100);text-decoration:none">
+            <span style="font-size:var(--text-xs);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--text-subtle)">21 nov 2025</span>
+            <span style="font-size:var(--text-xl);line-height:var(--leading-snug);color:var(--text-heading)">Premio Ennova Health para el grupo VisualMed System</span>
+            <i data-lucide="arrow-right" width="18" height="18" style="color:var(--usal-red)"></i>
+          </a>
+        </div>
+      </div>
+
+      <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.InstitutionalFooter" hint-size="100%,150px"></x-import>
+    </div>
+  </div>
+
+  <!-- ============ 1d — Portal denso ============ -->
+  <div class="dv-opt" id="1d">
+    <div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Portal denso — hero compacto + mosaico de noticias y agenda · densidad alta</div>
+    <div class="dv-card" style="width:1280px">
+      <div style="display:flex;align-items:center;justify-content:space-between;height:34px;padding:0 40px;background:var(--iuce-blue-dark);font-size:var(--text-xs);color:rgba(255,255,255,.75)">
+        <span>Universidad de Salamanca · Instituto Universitario de Investigación</span>
+        <div style="display:flex;align-items:center;gap:18px">
+          <a href="#1d" style="color:inherit;text-decoration:none">Reserva de espacios</a>
+          <a href="#1d" style="color:inherit;text-decoration:none">idUSAL</a>
+          <span style="color:var(--white);font-weight:var(--weight-semibold)">ES <span style="opacity:.5">·</span> <span style="opacity:.6;font-weight:400">EN</span></span>
+        </div>
+      </div>
+      <header style="display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 40px;border-bottom:1px solid var(--border-default);background:var(--white)">
+        <img src="assets/iuce-logo.png" alt="IUCE — Universidad de Salamanca" style="height:36px;width:auto">
+        <nav aria-label="Principal" style="display:flex;align-items:center;gap:22px;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--gray-600)">
+          <a href="#1d" style="color:var(--iuce-blue-dark);text-decoration:none">Inicio</a>
+          <a href="#1d" style="color:inherit;text-decoration:none">Instituto</a>
+          <a href="#1d" style="color:inherit;text-decoration:none">Investigación</a>
+          <a href="#1d" style="color:inherit;text-decoration:none">Formación</a>
+          <a href="#1d" style="color:inherit;text-decoration:none">Eventos</a>
+          <a href="#1d" style="color:inherit;text-decoration:none">Doctorado</a>
+          <a href="#1d" style="color:inherit;text-decoration:none">EKS</a>
+          <a href="#1d" style="color:inherit;text-decoration:none">Noticias</a>
+          <a href="#1d" style="color:inherit;text-decoration:none">Contacto</a>
+        </nav>
+        <div style="display:flex;align-items:center;gap:8px;border:1px solid var(--border-input);border-radius:var(--radius-sm);padding:7px 12px;color:var(--gray-400);width:180px">
+          <i data-lucide="search" width="15" height="15"></i>
+          <span style="font-size:var(--text-xs)">Buscar…</span>
+        </div>
+      </header>
+
+      <div style="background:var(--surface-tinted);border-bottom:1px solid var(--border-default);padding:36px 40px;display:flex;align-items:center;justify-content:space-between;gap:40px">
+        <div style="max-width:640px">
+          <h2 style="margin:0 0 10px;font-size:var(--text-3xl);line-height:var(--leading-tight);letter-spacing:var(--tracking-tight);font-weight:var(--weight-bold);color:var(--iuce-blue-dark)">Investigación e innovación en Educación Superior</h2>
+          <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-normal);color:var(--text-body)">Instituto interdisciplinar de la USAL: investigación educativa, formación del profesorado y transferencia. Origen ICE 1969 · verificado ACSUCYL 2008.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex:none">
+          <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" hint-size="170px,40px">Conoce el Instituto</x-import>
+          <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="outline" hint-size="150px,40px">Formación PDI</x-import>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 344px;gap:28px;padding:32px 40px 48px;background:var(--surface-page)">
+        <div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px">
+            <h3 style="margin:0;font-size:var(--text-lg);font-weight:var(--weight-bold);color:var(--text-heading)">Actualidad</h3>
+            <a href="#1d" style="font-size:var(--text-xs);font-weight:var(--weight-medium);color:var(--iuce-blue);text-decoration:none">Ver todas →</a>
+          </div>
+          <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);overflow:hidden;background:var(--white);box-shadow:var(--shadow-sm);margin-bottom:16px">
+            <image-slot id="slot-1d-featured" shape="rect" placeholder="Imagen de la noticia destacada" style="width:100%;height:240px"></image-slot>
+            <div style="padding:18px 22px 20px">
+              <div style="display:flex;align-items:center;gap:8px;font-size:var(--text-xs);margin-bottom:8px"><span style="background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);border-radius:var(--radius-full);padding:2px 10px;font-weight:var(--weight-medium)">Congresos</span><span style="color:var(--text-subtle)">20 abr 2026</span></div>
+              <h4 style="margin:0 0 6px;font-size:var(--text-xl);line-height:var(--leading-snug);font-weight:var(--weight-bold);color:var(--text-heading)">La USAL, en la XXII edición del Congreso Internacional de Tecnología, Conocimiento y Sociedad</h4>
+              <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-normal);color:var(--text-body)">La Universidad del Egeo celebró en Rodas (Grecia) la edición 2026, en modalidad híbrida y bilingüe, con participación del profesorado del IUCE.</p>
+            </div>
+          </article>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--white);box-shadow:var(--shadow-sm);padding:16px 18px">
+              <div style="font-size:var(--text-xs);color:var(--text-subtle);margin-bottom:6px">Congresos · 19 mar 2026</div>
+              <h4 style="margin:0;font-size:var(--text-sm);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">I Congreso Internacional sobre Evaluación Educativa, en Bilbao</h4>
+            </article>
+            <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--white);box-shadow:var(--shadow-sm);padding:16px 18px">
+              <div style="font-size:var(--text-xs);color:var(--text-subtle);margin-bottom:6px">Innovación docente · 14 mar 2026</div>
+              <h4 style="margin:0;font-size:var(--text-sm);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">JIDUCYL26: «De la experiencia a la evidencia», en Burgos</h4>
+            </article>
+            <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--white);box-shadow:var(--shadow-sm);padding:16px 18px">
+              <div style="font-size:var(--text-xs);color:var(--text-subtle);margin-bottom:6px">Premios · 21 nov 2025</div>
+              <h4 style="margin:0;font-size:var(--text-sm);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">Premio Ennova Health para el grupo VisualMed System</h4>
+            </article>
+            <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--white);box-shadow:var(--shadow-sm);padding:16px 18px">
+              <div style="font-size:var(--text-xs);color:var(--text-subtle);margin-bottom:6px">Institucional</div>
+              <h4 style="margin:0;font-size:var(--text-sm);line-height:var(--leading-snug);font-weight:var(--weight-semibold);color:var(--text-heading)">El IUCE renueva su web institucional</h4>
+            </article>
+          </div>
+        </div>
+
+        <aside style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between">
+            <h3 style="margin:0;font-size:var(--text-lg);font-weight:var(--weight-bold);color:var(--text-heading)">Agenda</h3>
+            <a href="#1d" style="font-size:var(--text-xs);font-weight:var(--weight-medium);color:var(--iuce-blue);text-decoration:none">Calendario →</a>
+          </div>
+          <div style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--white);box-shadow:var(--shadow-sm);padding:14px 16px;display:flex;gap:12px;align-items:center">
+            <span style="flex:none;width:40px;height:40px;border-radius:var(--radius-md);background:var(--iuce-blue-dark);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:var(--weight-bold)">2026</span>
+            <div>
+              <p style="margin:0;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">ICED26 · Salamanca</p>
+              <p style="margin:1px 0 0;font-size:var(--text-xs);color:var(--text-muted)">Congreso internacional de desarrollo educativo</p>
+            </div>
+          </div>
+          <div style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--white);box-shadow:var(--shadow-sm);padding:14px 16px;display:flex;gap:12px;align-items:center">
+            <span style="flex:none;width:40px;height:40px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);display:flex;align-items:center;justify-content:center"><i data-lucide="graduation-cap" width="19" height="19"></i></span>
+            <div>
+              <p style="margin:0;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">Plan de Formación Docente 2026-27</p>
+              <p style="margin:1px 0 0;font-size:var(--text-xs);color:var(--text-muted)">Convocatoria e inscripciones abiertas</p>
+            </div>
+          </div>
+          <div style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--white);box-shadow:var(--shadow-sm);padding:14px 16px;display:flex;gap:12px;align-items:center">
+            <span style="flex:none;width:40px;height:40px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);display:flex;align-items:center;justify-content:center"><i data-lucide="users" width="19" height="19"></i></span>
+            <div>
+              <p style="margin:0;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">Seminarios de investigación IUCE</p>
+              <p style="margin:1px 0 0;font-size:var(--text-xs);color:var(--text-muted)">Programa del semestre</p>
+            </div>
+          </div>
+
+          <h3 style="margin:10px 0 0;font-size:var(--text-lg);font-weight:var(--weight-bold);color:var(--text-heading)">Accesos rápidos</h3>
+          <div style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--white);box-shadow:var(--shadow-sm);overflow:hidden">
+            <a href="#1d" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--gray-700);text-decoration:none;border-bottom:1px solid var(--gray-100)">Miembros del Instituto <i data-lucide="chevron-right" width="15" height="15" style="color:var(--gray-400)"></i></a>
+            <a href="#1d" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--gray-700);text-decoration:none;border-bottom:1px solid var(--gray-100)">Grupos de investigación <i data-lucide="chevron-right" width="15" height="15" style="color:var(--gray-400)"></i></a>
+            <a href="#1d" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--gray-700);text-decoration:none;border-bottom:1px solid var(--gray-100)">Revista EKS <i data-lucide="external-link" width="15" height="15" style="color:var(--gray-400)"></i></a>
+            <a href="#1d" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--gray-700);text-decoration:none">Reserva de espacios <i data-lucide="external-link" width="15" height="15" style="color:var(--gray-400)"></i></a>
+          </div>
+
+          <div style="border:1px solid var(--border-default);border-left:3px solid var(--usal-red);border-radius:var(--radius-md);background:var(--white);padding:14px 16px;font-size:var(--text-xs);line-height:var(--leading-relaxed);color:var(--text-body)">
+            <p style="margin:0 0 2px;font-weight:var(--weight-semibold);color:var(--text-heading);font-size:var(--text-sm)">Secretaría del IUCE</p>
+            Paseo de Canalejas 169, Edificio Solís, 1.ª planta · 37008 Salamanca<br>
+            +34 923 294 634 · iuce@usal.es
+          </div>
+        </aside>
+      </div>
+
+      <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.InstitutionalFooter" hint-size="100%,150px"></x-import>
+    </div>
+  </div>
+
+</div>
+<p class="dv-next">Prueba a pedirme: «la <a class="dv-oid" href="#1a">1a</a> pero con el hero navy de <a class="dv-oid" href="#1b">1b</a>» · «más granate en <a class="dv-oid" href="#1c">1c</a>» · «versión oscura de la elegida» · «sigue con Instituto, Formación y Doctorado sobre la <a class="dv-oid" href="#1b">1b</a>»</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    let tries = 0;
+    const tick = () => {
+      const done = !!(window.lucide && window.lucide.createIcons);
+      if (done) { try { window.lucide.createIcons(); } catch (e) {} }
+      tries += 1;
+      if (tries < 25) setTimeout(tick, 400);
+    };
+    tick();
+  }
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

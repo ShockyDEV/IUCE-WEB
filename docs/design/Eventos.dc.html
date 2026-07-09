@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/colors.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/typography.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/styles.css">
+<script src="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="image-slot.js"></script>
+<style>
+html{color-scheme:light}
+body{margin:0;background:var(--surface-page);font-family:var(--font-sans,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif);-webkit-font-smoothing:antialiased}
+a{color:var(--text-link)}a:hover{color:var(--brand-ink)}
+:root{--brand-ink:var(--iuce-blue-dark)}
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --gray-50:#0E1B2A;--gray-100:#182A3F;--gray-200:#23374F;--gray-300:#31485F;--gray-400:#6E8399;--gray-500:#8CA0B4;--gray-600:#AEBFCF;--gray-700:#C6D3E0;--gray-900:#EFF4FA;
+  --surface-page:#0B1724;--surface-card:#13253A;--iuce-blue-pale:#152A42;
+  --iuce-blue:#7DAFEA;--usal-red:#E56276;--usal-red-dark:#C8102E;
+  --brand-ink:#A9C7EE;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);--shadow-md:0 4px 10px rgba(0,0,0,.5);
+}
+.only-dark{display:none !important}
+html[data-theme="dark"] .only-dark{display:inline-flex !important}
+html[data-theme="dark"] .only-light{display:none !important}
+</style>
+</helmet>
+
+<a href="#contenido" style="position:absolute;left:-9999px;z-index:100;background:var(--brand-ink);color:#FFFFFF;padding:10px 18px;border-radius:0 0 8px 0;font-size:14px;text-decoration:none" style-focus="left:0;top:0">Saltar al contenido principal</a>
+
+<div style="height:3px;background:var(--usal-red)"></div>
+<header style="position:sticky;top:0;z-index:50;background:var(--surface-card);border-bottom:1px solid var(--border-default)">
+  <div style="max-width:1152px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <a href="Inicio.dc.html" style="display:flex;align-items:center;flex:none" aria-label="IUCE — Inicio">
+      <img class="only-light" src="assets/iuce-logo.png" alt="IUCE — Universidad de Salamanca" style="height:38px;width:auto">
+      <img class="only-dark" src="assets/iuce-logo-white.webp" alt="IUCE — Universidad de Salamanca" style="height:34px;width:auto">
+    </a>
+    <nav aria-label="Navegación principal" style="display:flex;align-items:center;gap:20px;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--gray-600)">
+      <a href="Inicio.dc.html" style="color:inherit;text-decoration:none">Inicio</a>
+      <a href="Instituto.dc.html" style="color:inherit;text-decoration:none">Instituto</a>
+      <a href="Investigacion.dc.html" style="color:inherit;text-decoration:none">Investigación</a>
+      <a href="Formacion.dc.html" style="color:inherit;text-decoration:none">Formación</a>
+      <a href="Eventos.dc.html" aria-current="page" style="color:var(--brand-ink);text-decoration:none;padding:23px 0 21px;border-bottom:2px solid var(--usal-red)">Eventos</a>
+      <a href="Doctorado.dc.html" style="color:inherit;text-decoration:none">Doctorado</a>
+      <a href="https://revistas.usal.es/index.php/eks" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:4px">EKS <i data-lucide="external-link" width="12" height="12" aria-hidden="true"></i></a>
+      <a href="Noticias.dc.html" style="color:inherit;text-decoration:none">Noticias</a>
+      <a href="Contacto.dc.html" style="color:inherit;text-decoration:none">Contacto</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;flex:none">
+      <button aria-label="Buscar" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:none;background:transparent;color:var(--gray-500);cursor:pointer;border-radius:var(--radius-sm)"><i data-lucide="search" width="18" height="18" aria-hidden="true"></i></button>
+      <button onClick="{{ toggleTheme }}" aria-label="Cambiar entre modo claro y oscuro" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--border-default);background:transparent;color:var(--gray-500);cursor:pointer;border-radius:var(--radius-full)">
+        <span class="only-light" style="display:inline-flex"><i data-lucide="moon" width="16" height="16" aria-hidden="true"></i></span>
+        <span class="only-dark"><i data-lucide="sun" width="16" height="16" aria-hidden="true"></i></span>
+      </button>
+      <span style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--gray-700)" aria-label="Selector de idioma">ES <span style="color:var(--gray-300);font-weight:400">·</span> <a href="#" style="color:var(--gray-400);font-weight:400;text-decoration:none">EN</a></span>
+    </div>
+  </div>
+</header>
+
+<main id="contenido">
+<section data-screen-label="Cabecera Eventos" style="background:var(--surface-card);border-bottom:1px solid var(--border-default)">
+  <div style="max-width:1152px;margin:0 auto;padding:48px 24px 32px">
+    <nav aria-label="Miga de pan" style="font-size:var(--text-xs);color:var(--text-subtle);margin-bottom:14px"><a href="Inicio.dc.html" style="color:inherit;text-decoration:none">Inicio</a> <span aria-hidden="true">/</span> <span style="color:var(--text-muted)">Eventos</span></nav>
+    <p style="margin:0 0 10px;font-size:var(--text-xs);font-weight:var(--weight-bold);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--usal-red)">Agenda</p>
+    <h1 style="margin:0 0 14px;font-size:var(--text-4xl);line-height:var(--leading-tight);letter-spacing:var(--tracking-tight);font-weight:var(--weight-bold);color:var(--brand-ink)">Eventos</h1>
+    <p style="margin:0 0 24px;font-size:var(--text-base);line-height:var(--leading-relaxed);color:var(--text-body);max-width:70ch">Congresos, seminarios y jornadas organizados por el IUCE o con participación del Instituto.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap" role="group" aria-label="Filtrar por tipo">
+      <button style="height:34px;padding:0 16px;border:1px solid var(--iuce-blue-dark);background:var(--iuce-blue-dark);color:#FFFFFF;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:var(--weight-medium);font-family:inherit;cursor:pointer">Todos</button>
+      <button style="height:34px;padding:0 16px;border:1px solid var(--border-input);background:var(--surface-card);color:var(--gray-600);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:var(--weight-medium);font-family:inherit;cursor:pointer" style-hover="border-color:var(--brand-400);color:var(--brand-ink)">Congresos</button>
+      <button style="height:34px;padding:0 16px;border:1px solid var(--border-input);background:var(--surface-card);color:var(--gray-600);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:var(--weight-medium);font-family:inherit;cursor:pointer" style-hover="border-color:var(--brand-400);color:var(--brand-ink)">Seminarios</button>
+      <button style="height:34px;padding:0 16px;border:1px solid var(--border-input);background:var(--surface-card);color:var(--gray-600);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:var(--weight-medium);font-family:inherit;cursor:pointer" style-hover="border-color:var(--brand-400);color:var(--brand-ink)">Jornadas</button>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Evento destacado">
+  <div style="max-width:1152px;margin:0 auto;padding:48px 24px 8px">
+    <h2 style="margin:0 0 18px;font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--text-heading)">Destacado</h2>
+    <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--surface-card);box-shadow:var(--shadow-sm);overflow:hidden;display:grid;grid-template-columns:1.2fr 1fr">
+      <div style="padding:32px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:var(--text-xs);font-weight:var(--weight-medium);background:var(--iuce-blue-pale);color:var(--brand-ink);border-radius:var(--radius-full);padding:3px 12px">Congreso</span>
+          <span style="font-size:var(--text-xs);font-weight:var(--weight-medium);background:#DBEAFE;color:#1D4ED8;border-radius:var(--radius-full);padding:3px 12px">Próximo</span>
+        </div>
+        <h3 style="margin:0;font-size:var(--text-2xl);line-height:var(--leading-snug);font-weight:var(--weight-bold);color:var(--brand-ink);text-wrap:balance">ICED26 — International Consortium for Educational Development</h3>
+        <p style="margin:0;font-size:var(--text-base);line-height:var(--leading-relaxed);color:var(--text-body)">Salamanca acoge el congreso internacional de referencia en desarrollo educativo universitario, organizado con la participación del IUCE. Tres días de conferencias, talleres y comunicaciones en torno a la formación docente en Educación Superior.</p>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:var(--text-sm);color:var(--text-muted)">
+          <span style="display:inline-flex;align-items:center;gap:6px"><i data-lucide="calendar" width="15" height="15" style="color:var(--usal-red)" aria-hidden="true"></i>Junio de 2026</span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><i data-lucide="map-pin" width="15" height="15" style="color:var(--usal-red)" aria-hidden="true"></i>Salamanca</span>
+        </div>
+        <div style="margin-top:auto;padding-top:8px">
+          <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="outline" hint-size="190px,40px">Web del congreso ↗</x-import>
+        </div>
+      </div>
+      <image-slot id="slot-ev-iced" shape="rect" placeholder="Imagen ICED26 / Salamanca" style="width:100%;min-height:280px"></image-slot>
+    </article>
+  </div>
+</section>
+
+<section data-screen-label="Próximos eventos">
+  <div style="max-width:1152px;margin:0 auto;padding:40px 24px 8px">
+    <h2 style="margin:0 0 18px;font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--text-heading)">Próximos</h2>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--surface-card);box-shadow:var(--shadow-sm);padding:18px 22px;display:flex;align-items:center;gap:18px">
+        <span style="flex:none;width:56px;height:56px;border-radius:var(--radius-md);background:var(--iuce-blue-dark);color:#FFFFFF;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <span style="font-size:16px;font-weight:var(--weight-bold);line-height:1">22</span>
+          <span style="font-size:10px;letter-spacing:.06em;opacity:.85;margin-top:2px">SEP</span>
+        </span>
+        <div style="flex:1">
+          <h3 style="margin:0 0 3px;font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-heading)">Seminario de investigación — Grupo GRIAL</h3>
+          <p style="margin:0;font-size:var(--text-xs);color:var(--text-muted)">Seminario · Sala de Juntas, IUCE · 12:00</p>
+        </div>
+        <i data-lucide="chevron-right" width="18" height="18" style="color:var(--gray-400)" aria-hidden="true"></i>
+      </article>
+      <article style="border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--surface-card);box-shadow:var(--shadow-sm);padding:18px 22px;display:flex;align-items:center;gap:18px">
+        <span style="flex:none;width:56px;height:56px;border-radius:var(--radius-md);background:var(--iuce-blue-dark);color:#FFFFFF;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <span style="font-size:16px;font-weight:var(--weight-bold);line-height:1">NOV</span>
+          <span style="font-size:10px;letter-spacing:.06em;opacity:.85;margin-top:2px">2026</span>
+        </span>
+        <div style="flex:1">
+          <h3 style="margin:0 0 3px;font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-heading)">Semana Doctoral 2026 — Formación en la Sociedad del Conocimiento</h3>
+          <p style="margin:0;font-size:var(--text-xs);color:var(--text-muted)">Jornada · IUCE, Edificio Solís · Programa por confirmar</p>
+        </div>
+        <i data-lucide="chevron-right" width="18" height="18" style="color:var(--gray-400)" aria-hidden="true"></i>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Eventos celebrados">
+  <div style="max-width:1152px;margin:0 auto;padding:40px 24px 64px">
+    <h2 style="margin:0 0 18px;font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--text-heading)">Celebrados en 2026</h2>
+    <div style="display:flex;flex-direction:column">
+      <article style="display:grid;grid-template-columns:120px 1fr auto;gap:20px;align-items:center;padding:16px 0;border-top:1px solid var(--gray-100)">
+        <span style="font-size:var(--text-xs);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--text-subtle)">16–17 abr</span>
+        <div>
+          <h3 style="margin:0 0 2px;font-size:var(--text-base);font-weight:var(--weight-medium);color:var(--text-heading)">XXII Congreso Internacional de Tecnología, Conocimiento y Sociedad</h3>
+          <p style="margin:0;font-size:var(--text-xs);color:var(--text-muted)">Congreso · Rodas (Grecia) · Universidad del Egeo</p>
+        </div>
+        <span style="font-size:var(--text-xs);font-weight:var(--weight-medium);background:var(--gray-100);color:var(--gray-700);border-radius:var(--radius-full);padding:3px 12px">Celebrado</span>
+      </article>
+      <article style="display:grid;grid-template-columns:120px 1fr auto;gap:20px;align-items:center;padding:16px 0;border-top:1px solid var(--gray-100)">
+        <span style="font-size:var(--text-xs);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--text-subtle)">19–20 mar</span>
+        <div>
+          <h3 style="margin:0 0 2px;font-size:var(--text-base);font-weight:var(--weight-medium);color:var(--text-heading)">I Congreso Internacional sobre Evaluación Educativa</h3>
+          <p style="margin:0;font-size:var(--text-xs);color:var(--text-muted)">Congreso · Bilbao · ISEI-IVEI y Gobierno Vasco</p>
+        </div>
+        <span style="font-size:var(--text-xs);font-weight:var(--weight-medium);background:var(--gray-100);color:var(--gray-700);border-radius:var(--radius-full);padding:3px 12px">Celebrado</span>
+      </article>
+      <article style="display:grid;grid-template-columns:120px 1fr auto;gap:20px;align-items:center;padding:16px 0;border-top:1px solid var(--gray-100);border-bottom:1px solid var(--gray-100)">
+        <span style="font-size:var(--text-xs);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--text-subtle)">13 mar</span>
+        <div>
+          <h3 style="margin:0 0 2px;font-size:var(--text-base);font-weight:var(--weight-medium);color:var(--text-heading)">III Jornada de Innovación Docente JIDUCYL26 — «De la experiencia a la evidencia»</h3>
+          <p style="margin:0;font-size:var(--text-xs);color:var(--text-muted)">Jornada · Burgos · Universidades públicas de Castilla y León</p>
+        </div>
+        <span style="font-size:var(--text-xs);font-weight:var(--weight-medium);background:var(--gray-100);color:var(--gray-700);border-radius:var(--radius-full);padding:3px 12px">Celebrado</span>
+      </article>
+    </div>
+  </div>
+</section>
+</main>
+
+<x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.InstitutionalFooter" hint-size="100%,150px"></x-import>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    if (localStorage.getItem('iuce-theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    let n = 0;
+    const tick = () => {
+      if (window.lucide && window.lucide.createIcons) { try { window.lucide.createIcons(); } catch (e) {} }
+      if (++n < 20) setTimeout(tick, 400);
+    };
+    tick();
+  }
+  renderVals() {
+    return {
+      toggleTheme: () => {
+        const el = document.documentElement;
+        const dark = el.getAttribute('data-theme') === 'dark';
+        if (dark) { el.removeAttribute('data-theme'); localStorage.setItem('iuce-theme', 'light'); }
+        else { el.setAttribute('data-theme', 'dark'); localStorage.setItem('iuce-theme', 'dark'); }
+        if (window.lucide && window.lucide.createIcons) { try { window.lucide.createIcons(); } catch (e) {} }
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

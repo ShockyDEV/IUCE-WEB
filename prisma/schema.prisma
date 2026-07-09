@@ -1,0 +1,127 @@
+// Esquema de datos de la web del IUCE.
+// Base: docs/design/HANDOFF.md → "Esquema Prisma propuesto".
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum EventStatus {
+  UPCOMING
+  PAST
+  CANCELLED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+}
+
+model News {
+  id          String     @id @default(cuid())
+  title       String
+  titleEn     String?
+  slug        String     @unique
+  excerpt     String?
+  excerptEn   String?
+  content     String // HTML de TipTap
+  contentEn   String?
+  coverImage  String?
+  category    String
+  status      NewsStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+// Patrón mupes: contenido editable de páginas estáticas por bloques.
+model ContentBlock {
+  id       String @id @default(cuid())
+  pageSlug String // "instituto", "formacion", "doctorado", "inicio"
+  blockKey String // "perfil-intro", "funciones", … (+ ":en" para inglés)
+  content  String
+
+  @@unique([pageSlug, blockKey])
+}
+
+model Member {
+  id      String         @id @default(cuid())
+  name    String
+  area    String?
+  email   String?
+  photo   String?
+  role    String? // Directora, Subdirector, Secretario, null = miembro
+  active  Boolean        @default(true)
+  order   Int            @default(0)
+  groupId String?
+  group   ResearchGroup? @relation(fields: [groupId], references: [id])
+}
+
+model ResearchGroup {
+  id      String   @id @default(cuid())
+  acronym String
+  name    String
+  nameEn  String?
+  lead    String?
+  url     String?
+  members Member[]
+}
+
+model Event {
+  id       String      @id @default(cuid())
+  title    String
+  titleEn  String?
+  type     String // Congreso, Seminario, Jornada
+  startsAt DateTime
+  endsAt   DateTime?
+  location String?
+  url      String?
+  status   EventStatus @default(UPCOMING)
+}
+
+model FileAsset {
+  id        String   @id @default(cuid())
+  filename  String
+  mimeType  String
+  size      Int
+  url       String
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  body      String
+  status    String   @default("NEW") // NEW | REPLIED
+  createdAt DateTime @default(now())
+}
+
+// Analítica ligera (patrón mupes).
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String?
+  visitorId String
+  date      DateTime @default(now())
+}

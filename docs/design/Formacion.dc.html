@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/colors.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/typography.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/styles.css">
+<script src="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="image-slot.js"></script>
+<style>
+html{color-scheme:light}
+body{margin:0;background:var(--surface-page);font-family:var(--font-sans,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif);-webkit-font-smoothing:antialiased}
+a{color:var(--text-link)}a:hover{color:var(--brand-ink)}
+:root{--brand-ink:var(--iuce-blue-dark)}
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --gray-50:#0E1B2A;--gray-100:#182A3F;--gray-200:#23374F;--gray-300:#31485F;--gray-400:#6E8399;--gray-500:#8CA0B4;--gray-600:#AEBFCF;--gray-700:#C6D3E0;--gray-900:#EFF4FA;
+  --surface-page:#0B1724;--surface-card:#13253A;--iuce-blue-pale:#152A42;
+  --iuce-blue:#7DAFEA;--usal-red:#E56276;--usal-red-dark:#C8102E;
+  --brand-ink:#A9C7EE;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);--shadow-md:0 4px 10px rgba(0,0,0,.5);
+}
+.only-dark{display:none !important}
+html[data-theme="dark"] .only-dark{display:inline-flex !important}
+html[data-theme="dark"] .only-light{display:none !important}
+</style>
+</helmet>
+
+<a href="#contenido" style="position:absolute;left:-9999px;z-index:100;background:var(--brand-ink);color:#FFFFFF;padding:10px 18px;border-radius:0 0 8px 0;font-size:14px;text-decoration:none" style-focus="left:0;top:0">Saltar al contenido principal</a>
+
+<div style="height:3px;background:var(--usal-red)"></div>
+<header style="position:sticky;top:0;z-index:50;background:var(--surface-card);border-bottom:1px solid var(--border-default)">
+  <div style="max-width:1152px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <a href="Inicio.dc.html" style="display:flex;align-items:center;flex:none" aria-label="IUCE — Inicio">
+      <img class="only-light" src="assets/iuce-logo.png" alt="IUCE — Universidad de Salamanca" style="height:38px;width:auto">
+      <img class="only-dark" src="assets/iuce-logo-white.webp" alt="IUCE — Universidad de Salamanca" style="height:34px;width:auto">
+    </a>
+    <nav aria-label="Navegación principal" style="display:flex;align-items:center;gap:20px;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--gray-600)">
+      <a href="Inicio.dc.html" style="color:inherit;text-decoration:none">Inicio</a>
+      <a href="Instituto.dc.html" style="color:inherit;text-decoration:none">Instituto</a>
+      <a href="Investigacion.dc.html" style="color:inherit;text-decoration:none">Investigación</a>
+      <a href="Formacion.dc.html" aria-current="page" style="color:var(--brand-ink);text-decoration:none;padding:23px 0 21px;border-bottom:2px solid var(--usal-red)">Formación</a>
+      <a href="Eventos.dc.html" style="color:inherit;text-decoration:none">Eventos</a>
+      <a href="Doctorado.dc.html" style="color:inherit;text-decoration:none">Doctorado</a>
+      <a href="https://revistas.usal.es/index.php/eks" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:4px">EKS <i data-lucide="external-link" width="12" height="12" aria-hidden="true"></i></a>
+      <a href="Noticias.dc.html" style="color:inherit;text-decoration:none">Noticias</a>
+      <a href="Contacto.dc.html" style="color:inherit;text-decoration:none">Contacto</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;flex:none">
+      <button aria-label="Buscar" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:none;background:transparent;color:var(--gray-500);cursor:pointer;border-radius:var(--radius-sm)"><i data-lucide="search" width="18" height="18" aria-hidden="true"></i></button>
+      <button onClick="{{ toggleTheme }}" aria-label="Cambiar entre modo claro y oscuro" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--border-default);background:transparent;color:var(--gray-500);cursor:pointer;border-radius:var(--radius-full)">
+        <span class="only-light" style="display:inline-flex"><i data-lucide="moon" width="16" height="16" aria-hidden="true"></i></span>
+        <span class="only-dark"><i data-lucide="sun" width="16" height="16" aria-hidden="true"></i></span>
+      </button>
+      <span style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--gray-700)" aria-label="Selector de idioma">ES <span style="color:var(--gray-300);font-weight:400">·</span> <a href="#" style="color:var(--gray-400);font-weight:400;text-decoration:none">EN</a></span>
+    </div>
+  </div>
+</header>
+
+<main id="contenido">
+<section data-screen-label="Cabecera Formación" style="background:var(--surface-card);border-bottom:1px solid var(--border-default)">
+  <div style="max-width:1152px;margin:0 auto;padding:48px 24px 44px;display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center">
+    <div>
+      <nav aria-label="Miga de pan" style="font-size:var(--text-xs);color:var(--text-subtle);margin-bottom:14px"><a href="Inicio.dc.html" style="color:inherit;text-decoration:none">Inicio</a> <span aria-hidden="true">/</span> <span style="color:var(--text-muted)">Formación</span></nav>
+      <p style="margin:0 0 10px;font-size:var(--text-xs);font-weight:var(--weight-bold);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--usal-red)">Formación del profesorado</p>
+      <h1 style="margin:0 0 14px;font-size:var(--text-4xl);line-height:var(--leading-tight);letter-spacing:var(--tracking-tight);font-weight:var(--weight-bold);color:var(--brand-ink);text-wrap:balance">Plan de Formación Docente 2026</h1>
+      <p style="margin:0 0 24px;font-size:var(--text-base);line-height:var(--leading-relaxed);color:var(--text-body);max-width:60ch">A iniciativa del Vicerrectorado de Estudios de Grado y Calidad, el Plan recoge la propuesta institucional de formación inicial y permanente para todo el personal docente e investigador de la Universidad de Salamanca.</p>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" size="lg" hint-size="230px,48px">Programa e inscripciones</x-import>
+        <a href="#inicial" style="display:inline-flex;align-items:center;gap:8px;font-size:var(--text-base);font-weight:var(--weight-medium);color:var(--iuce-blue);text-decoration:none;padding:12px 8px">Formación Docente Inicial <i data-lucide="arrow-down" width="16" height="16" aria-hidden="true"></i></a>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div style="background:var(--surface-page);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:20px">
+        <p style="margin:0;font-size:var(--text-3xl);font-weight:var(--weight-bold);color:var(--brand-ink)">100+</p>
+        <p style="margin:4px 0 0;font-size:var(--text-xs);line-height:var(--leading-snug);color:var(--text-muted)">actividades planificadas en 2026, el plan de mayor magnitud de los últimos años</p>
+      </div>
+      <div style="background:var(--surface-page);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:20px">
+        <p style="margin:0;font-size:var(--text-3xl);font-weight:var(--weight-bold);color:var(--brand-ink)">4</p>
+        <p style="margin:4px 0 0;font-size:var(--text-xs);line-height:var(--leading-snug);color:var(--text-muted)">universidades públicas de Castilla y León coordinadas en la formación inicial</p>
+      </div>
+      <div style="background:var(--surface-page);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:20px;grid-column:1 / -1;display:flex;align-items:center;gap:14px">
+        <span style="width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--usal-red);flex:none"><i data-lucide="history" width="19" height="19" aria-hidden="true"></i></span>
+        <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-snug);color:var(--text-body)">Desde 1969 apoyando la formación del profesorado, primero como ICE y hoy como instituto de investigación.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Destinatarios" style="border-bottom:1px solid var(--border-default)">
+  <div style="max-width:1152px;margin:0 auto;padding:40px 24px">
+    <h2 style="margin:0 0 18px;font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--text-heading)">¿A quién va dirigido?</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:20px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow-sm)">
+        <span style="width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--brand-ink);flex:none"><i data-lucide="users" width="19" height="19" aria-hidden="true"></i></span>
+        <div>
+          <p style="margin:0 0 4px;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">Todo el PDI de la USAL</p>
+          <p style="margin:0;font-size:var(--text-xs);line-height:var(--leading-snug);color:var(--text-muted)">Formación permanente a lo largo de la carrera docente, dentro del Plan General.</p>
+        </div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:20px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow-sm)">
+        <span style="width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--brand-ink);flex:none"><i data-lucide="sprout" width="19" height="19" aria-hidden="true"></i></span>
+        <div>
+          <p style="margin:0 0 4px;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">Profesorado novel</p>
+          <p style="margin:0;font-size:var(--text-xs);line-height:var(--leading-snug);color:var(--text-muted)">Contratos predoctorales, posdoctorales y ayudantes doctores con tareas docentes asignadas.</p>
+        </div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:20px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow-sm)">
+        <span style="width:38px;height:38px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--brand-ink);flex:none"><i data-lucide="badge-check" width="19" height="19" aria-hidden="true"></i></span>
+        <div>
+          <p style="margin:0 0 4px;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-heading)">Profesorado asociado acreditado</p>
+          <p style="margin:0;font-size:var(--text-xs);line-height:var(--leading-snug);color:var(--text-muted)">Con acreditación a ayudante doctor y docencia asignada, para la formación inicial.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Modalidades" style="background:var(--surface-card);border-bottom:1px solid var(--border-default)">
+  <div style="max-width:1152px;margin:0 auto;padding:56px 24px">
+    <h2 style="margin:0 0 6px;font-size:var(--text-2xl);font-weight:var(--weight-bold);letter-spacing:var(--tracking-tight);color:var(--text-heading)">Actividades formativas</h2>
+    <p style="margin:0 0 28px;font-size:var(--text-sm);color:var(--text-muted);max-width:80ch">Tres vías complementarias de formación, organizadas desde el IUCE.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <article style="border:1px solid var(--border-default);border-top:3px solid var(--iuce-blue);border-radius:var(--radius-lg);background:var(--surface-page);padding:24px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow-sm)">
+        <span style="width:40px;height:40px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--brand-ink)"><i data-lucide="calendar-days" width="20" height="20" aria-hidden="true"></i></span>
+        <h3 style="margin:0;font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-heading)">Plan General 2026</h3>
+        <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-relaxed);color:var(--text-body)">Cursos, talleres y seminarios presenciales y en línea a lo largo de todo el año: metodologías docentes, evaluación, tecnología educativa, idiomas o gestión de datos de investigación.</p>
+        <a href="#" style="font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--iuce-blue);text-decoration:none;margin-top:auto">Consultar convocatoria →</a>
+      </article>
+      <article style="border:1px solid var(--border-default);border-top:3px solid var(--iuce-blue);border-radius:var(--radius-lg);background:var(--surface-page);padding:24px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow-sm)">
+        <span style="width:40px;height:40px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--brand-ink)"><i data-lucide="monitor-play" width="20" height="20" aria-hidden="true"></i></span>
+        <h3 style="margin:0;font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-heading)">SPOCs USAL</h3>
+        <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-relaxed);color:var(--text-body)">Cursos online en formato SPOC para la formación autónoma del profesorado, disponibles dentro del Plan de Formación.</p>
+        <a href="#" style="font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--iuce-blue);text-decoration:none;margin-top:auto">Ver catálogo →</a>
+      </article>
+      <article style="border:1px solid var(--border-default);border-top:3px solid var(--usal-red);border-radius:var(--radius-lg);background:var(--surface-page);padding:24px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow-sm)">
+        <span style="width:40px;height:40px;border-radius:var(--radius-md);background:var(--iuce-blue-pale);display:flex;align-items:center;justify-content:center;color:var(--usal-red)"><i data-lucide="map" width="20" height="20" aria-hidden="true"></i></span>
+        <h3 style="margin:0;font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-heading)">Formación Docente Inicial</h3>
+        <p style="margin:0;font-size:var(--text-sm);line-height:var(--leading-relaxed);color:var(--text-body)">Programa conjunto de las universidades públicas de Castilla y León para el profesorado ayudante doctor en su primer año de contrato.</p>
+        <a href="#inicial" style="font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--iuce-blue);text-decoration:none;margin-top:auto">Más información ↓</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="inicial" data-screen-label="Formación Docente Inicial" style="scroll-margin-top:80px">
+  <div style="max-width:1152px;margin:0 auto;padding:56px 24px;display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:start">
+    <div>
+      <p style="margin:0 0 10px;font-size:var(--text-xs);font-weight:var(--weight-bold);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--usal-red)">Universidades públicas de Castilla y León</p>
+      <h2 style="margin:0 0 16px;font-size:var(--text-2xl);font-weight:var(--weight-bold);letter-spacing:var(--tracking-tight);color:var(--text-heading)">Programa de Formación Docente Inicial</h2>
+      <p style="margin:0 0 14px;font-size:var(--text-base);line-height:var(--leading-relaxed);color:var(--text-body)">La LOSU establece que las profesoras y profesores ayudantes doctores deberán realizar, en el primer año de contrato, un curso de formación docente inicial definido por las universidades a través de sus unidades de formación e innovación docente (art. 78.b).</p>
+      <p style="margin:0 0 24px;font-size:var(--text-base);line-height:var(--leading-relaxed);color:var(--text-body)">Para dar respuesta a este contexto, las cuatro unidades de formación de las universidades públicas de Castilla y León —unidas por un convenio de colaboración desde 2012— ejecutan conjuntamente el programa, con ediciones periódicas de cada módulo a lo largo del año.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-md)">
+          <span style="font-size:var(--text-xs);font-weight:var(--weight-bold);color:var(--usal-red);width:42px;flex:none">USAL</span>
+          <span style="font-size:var(--text-sm);color:var(--text-body)">IUCE — Instituto Universitario de Ciencias de la Educación</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-md)">
+          <span style="font-size:var(--text-xs);font-weight:var(--weight-bold);color:var(--text-muted);width:42px;flex:none">UBU</span>
+          <span style="font-size:var(--text-sm);color:var(--text-body)">Instituto de Formación e Innovación Educativa (IFIE)</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-md)">
+          <span style="font-size:var(--text-xs);font-weight:var(--weight-bold);color:var(--text-muted);width:42px;flex:none">ULE</span>
+          <span style="font-size:var(--text-sm);color:var(--text-body)">Escuela de Formación</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-md)">
+          <span style="font-size:var(--text-xs);font-weight:var(--weight-bold);color:var(--text-muted);width:42px;flex:none">UVA</span>
+          <span style="font-size:var(--text-sm);color:var(--text-body)">Centro VirtUVa</span>
+        </div>
+      </div>
+      <p style="margin:0;font-size:var(--text-sm);color:var(--text-muted)">Dudas sobre la formación: <a href="mailto:coord.docencia@usal.es" style="color:var(--iuce-blue);text-decoration:none">coord.docencia@usal.es</a></p>
+    </div>
+    <aside style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm)">
+      <h3 style="margin:0 0 4px;font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-heading)">Ediciones 2026</h3>
+      <p style="margin:0 0 18px;font-size:var(--text-xs);color:var(--text-muted)">Calendario orientativo; cada edición se comunica por correo al profesorado ayudante doctor.</p>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid var(--gray-100)">
+          <span style="width:34px;height:34px;border-radius:var(--radius-full);background:var(--iuce-blue-pale);color:var(--brand-ink);display:flex;align-items:center;justify-content:center;font-size:var(--text-xs);font-weight:var(--weight-bold);flex:none">M4</span>
+          <div><p style="margin:0;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-heading)">Módulos 4 y 5</p><p style="margin:0;font-size:var(--text-xs);color:var(--text-muted)">Ediciones en marzo y mayo</p></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid var(--gray-100)">
+          <span style="width:34px;height:34px;border-radius:var(--radius-full);background:var(--iuce-blue-pale);color:var(--brand-ink);display:flex;align-items:center;justify-content:center;font-size:var(--text-xs);font-weight:var(--weight-bold);flex:none">M1</span>
+          <div><p style="margin:0;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-heading)">Módulo 1</p><p style="margin:0;font-size:var(--text-xs);color:var(--text-muted)">Junio (Plan General) y septiembre</p></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid var(--gray-100)">
+          <span style="width:34px;height:34px;border-radius:var(--radius-full);background:var(--iuce-blue-pale);color:var(--brand-ink);display:flex;align-items:center;justify-content:center;font-size:var(--text-xs);font-weight:var(--weight-bold);flex:none">M2</span>
+          <div><p style="margin:0;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-heading)">Módulo 2</p><p style="margin:0;font-size:var(--text-xs);color:var(--text-muted)">Julio (dentro del Plan General)</p></div>
+        </div>
+      </div>
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--gray-100)">
+        <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="outline" size="sm" hint-size="100%,32px">Ver calendario completo</x-import>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section data-screen-label="CTA contacto formación" style="background:var(--surface-tinted);border-top:1px solid var(--border-default)">
+  <div style="max-width:1152px;margin:0 auto;padding:32px 24px;display:flex;align-items:center;justify-content:space-between;gap:32px">
+    <div style="display:flex;align-items:center;gap:18px">
+      <span style="width:46px;height:46px;border-radius:var(--radius-md);background:var(--iuce-blue-dark);color:#FFFFFF;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="mail-question" width="22" height="22" aria-hidden="true"></i></span>
+      <div>
+        <p style="margin:0;font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-heading)">¿Dudas sobre inscripciones o certificados?</p>
+        <p style="margin:2px 0 0;font-size:var(--text-sm);color:var(--text-body)">La Secretaría del IUCE atiende en el 923 294 634 y en iuce@usal.es.</p>
+      </div>
+    </div>
+    <a href="mailto:iuce@usal.es" style="text-decoration:none;flex:none"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" hint-size="160px,40px">Contactar</x-import></a>
+  </div>
+</section>
+</main>
+
+<x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.InstitutionalFooter" hint-size="100%,150px"></x-import>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    if (localStorage.getItem('iuce-theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    let n = 0;
+    const tick = () => {
+      if (window.lucide && window.lucide.createIcons) { try { window.lucide.createIcons(); } catch (e) {} }
+      if (++n < 20) setTimeout(tick, 400);
+    };
+    tick();
+  }
+  renderVals() {
+    return {
+      toggleTheme: () => {
+        const el = document.documentElement;
+        const dark = el.getAttribute('data-theme') === 'dark';
+        if (dark) { el.removeAttribute('data-theme'); localStorage.setItem('iuce-theme', 'light'); }
+        else { el.setAttribute('data-theme', 'dark'); localStorage.setItem('iuce-theme', 'dark'); }
+        if (window.lucide && window.lucide.createIcons) { try { window.lucide.createIcons(); } catch (e) {} }
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

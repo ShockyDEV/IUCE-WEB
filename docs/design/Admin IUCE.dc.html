@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/colors.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/typography.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/styles.css">
+<script src="_ds/iuce-reservas-design-system-58b4a154-04e9-445e-b052-c8de4516be88/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{margin:0;background:var(--gray-50);font-family:var(--font-sans,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif);-webkit-font-smoothing:antialiased}
+a{color:var(--text-link)}a:hover{color:var(--iuce-blue-dark)}
+input::placeholder,textarea::placeholder{color:var(--gray-400)}
+</style>
+</helmet>
+
+<!-- ============================ LOGIN ============================ -->
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Login admin" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--gray-50)">
+  <div style="width:100%;max-width:420px;display:flex;flex-direction:column;gap:16px">
+    <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:32px">
+      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:24px">
+        <img src="assets/iuce-logo.png" alt="IUCE — Universidad de Salamanca" style="height:44px;width:auto;margin-bottom:14px">
+        <h1 style="margin:0 0 4px;font-size:20px;font-weight:700;color:var(--iuce-blue-dark)">Panel de administración</h1>
+        <p style="margin:0;font-size:13px;color:var(--gray-500)">Gestión de contenidos de iuce.usal.es</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+        <label for="admin-email" style="font-size:13px;font-weight:500;color:var(--gray-700)">Correo electrónico</label>
+        <input id="admin-email" type="email" placeholder="tu@usal.es" autocomplete="email" style="height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <label for="admin-pass" style="font-size:13px;font-weight:500;color:var(--gray-700)">Contraseña</label>
+          <a href="#" style="font-size:12px;color:var(--iuce-blue);text-decoration:none">¿Has olvidado tu contraseña?</a>
+        </div>
+        <input id="admin-pass" type="password" placeholder="••••••••" autocomplete="current-password" style="height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+      </div>
+      <span onClick="{{ goView }}" data-view="dashboard" style="display:block;cursor:pointer">
+        <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" size="lg" hint-size="100%,48px">Iniciar sesión</x-import>
+      </span>
+      <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--gray-100);display:flex;gap:10px;align-items:flex-start">
+        <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="shield-check" size="{{ 16 }}" style="{{ redIcon }}" hint-size="16px,16px"></x-import>
+        <p style="margin:0;font-size:12px;line-height:1.5;color:var(--gray-500)">Acceso restringido a las cuentas de administración autorizadas por el IUCE. Disponer de una cuenta <strong style="color:var(--gray-700)">@usal.es</strong> no da acceso al panel.</p>
+      </div>
+    </div>
+    <div style="border:1px dashed var(--gray-300);border-radius:8px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <p style="margin:0;font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--gray-400)">ACCESO RÁPIDO (DEV)</p>
+      <span onClick="{{ goView }}" data-view="dashboard" style="cursor:pointer">
+        <x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="outline" size="sm" hint-size="200px,32px">Entrar como administradora</x-import>
+      </span>
+    </div>
+    <a href="Inicio.dc.html" style="font-size:13px;color:var(--gray-500);text-decoration:none;text-align:center">← Volver a iuce.usal.es</a>
+  </div>
+</div>
+</sc-if>
+
+<!-- ============================ SHELL ============================ -->
+<sc-if value="{{ isShell }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh">
+
+  <!-- Sidebar -->
+  <aside style="position:fixed;top:0;left:0;bottom:0;width:260px;background:#FFFFFF;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;z-index:30">
+    <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--gray-100);padding:18px 24px">
+      <span onClick="{{ goView }}" data-view="dashboard" style="display:flex;flex-direction:column;gap:2px;cursor:pointer">
+        <img src="assets/iuce-logo.png" alt="IUCE" style="height:30px;width:auto;align-self:flex-start">
+        <span style="font-size:11px;color:var(--gray-500)">Panel de administración</span>
+      </span>
+    </div>
+    <nav aria-label="Navegación del panel" style="flex:1;overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:16px">
+      <sc-for list="{{ navGroups }}" as="group" hint-placeholder-count="5">
+        <div>
+          <sc-if value="{{ group.hasTitle }}" hint-placeholder-val="{{ false }}">
+            <p style="padding:0 12px;margin:0 0 4px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400)">{{ group.title }}</p>
+          </sc-if>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ group.items }}" as="item" hint-placeholder-count="2">
+              <button onClick="{{ goView }}" data-view="{{ item.view }}" style="{{ item.style }}">
+                <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="{{ item.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                <span>{{ item.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="border-top:1px solid var(--gray-100);padding:12px;display:flex;flex-direction:column;gap:2px">
+      <a href="Inicio.dc.html" style="display:flex;align-items:center;gap:12px;border-radius:6px;padding:10px 12px;font-size:14px;font-weight:500;color:var(--gray-600);text-decoration:none" style-hover="background:var(--gray-50);color:var(--gray-900)">
+        <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="external-link" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        Volver al sitio
+      </a>
+      <button onClick="{{ logout }}" style="display:flex;align-items:center;gap:12px;border:none;background:transparent;border-radius:6px;padding:10px 12px;font-size:14px;font-weight:500;color:var(--gray-600);cursor:pointer;font-family:inherit;text-align:left" style-hover="background:var(--gray-50);color:#DC2626">
+        <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="log-out" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div style="padding-left:260px">
+    <header style="position:sticky;top:0;z-index:20;display:flex;height:64px;align-items:center;gap:16px;border-bottom:1px solid var(--gray-200);background:#FFFFFF;padding:0 24px;box-shadow:var(--shadow-sm)">
+      <h1 style="margin:0;font-size:17px;font-weight:600;color:var(--gray-900)">{{ pageTitle }}</h1>
+      <div style="flex:1"></div>
+      <div style="text-align:right">
+        <p style="margin:0;font-size:13px;font-weight:500;color:var(--gray-700)">Susana Olmos Migueláñez</p>
+        <p style="margin:0;font-size:11px;color:var(--gray-500)">solmos@usal.es · Super Administradora</p>
+      </div>
+      <button onClick="{{ logout }}" title="Cerrar sesión" aria-label="Cerrar sesión" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)">
+        <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="log-out" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+      </button>
+    </header>
+
+    <main style="padding:32px;max-width:1200px">
+
+      <!-- ==================== DASHBOARD ==================== -->
+      <sc-if value="{{ viewDashboard }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Admin dashboard" style="display:flex;flex-direction:column;gap:28px">
+        <div>
+          <h2 style="margin:0;font-size:22px;font-weight:700;color:var(--gray-900)">Bienvenida, Susana</h2>
+          <p style="margin:4px 0 0;font-size:14px;color:var(--gray-500)">Resumen del panel de administración del IUCE.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+          <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:24px;display:flex;align-items:center;gap:16px">
+            <span style="display:flex;height:48px;width:48px;align-items:center;justify-content:center;border-radius:8px;background:#EFF6FF;color:#2563EB"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="eye" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+            <div><p style="margin:0;font-size:13px;color:var(--gray-500)">Visitantes hoy</p><p style="margin:0;font-size:24px;font-weight:700;color:var(--gray-900)">128</p></div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:24px;display:flex;align-items:center;gap:16px">
+            <span style="display:flex;height:48px;width:48px;align-items:center;justify-content:center;border-radius:8px;background:#ECFDF5;color:#059669"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trending-up" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+            <div><p style="margin:0;font-size:13px;color:var(--gray-500)">Esta semana</p><p style="margin:0;font-size:24px;font-weight:700;color:var(--gray-900)">942</p></div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:24px;display:flex;align-items:center;gap:16px">
+            <span style="display:flex;height:48px;width:48px;align-items:center;justify-content:center;border-radius:8px;background:#FFFBEB;color:#D97706"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="bar-chart-3" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+            <div><p style="margin:0;font-size:13px;color:var(--gray-500)">Este mes</p><p style="margin:0;font-size:24px;font-weight:700;color:var(--gray-900)">3.804</p></div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+          <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:24px;display:flex;align-items:center;gap:16px">
+            <span style="display:flex;height:48px;width:48px;align-items:center;justify-content:center;border-radius:8px;background:#F0FDF4;color:#16A34A"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="newspaper" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+            <div><p style="margin:0;font-size:13px;color:var(--gray-500)">Noticias publicadas</p><p style="margin:0;font-size:24px;font-weight:700;color:var(--gray-900)">24</p></div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:24px;display:flex;align-items:center;gap:16px">
+            <span style="display:flex;height:48px;width:48px;align-items:center;justify-content:center;border-radius:8px;background:#FAF5FF;color:#9333EA"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="users" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+            <div><p style="margin:0;font-size:13px;color:var(--gray-500)">Miembros</p><p style="margin:0;font-size:24px;font-weight:700;color:var(--gray-900)">38</p></div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:24px;display:flex;align-items:center;gap:16px">
+            <span style="display:flex;height:48px;width:48px;align-items:center;justify-content:center;border-radius:8px;background:#FFF7ED;color:#EA580C"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="microscope" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+            <div><p style="margin:0;font-size:13px;color:var(--gray-500)">Grupos de investigación</p><p style="margin:0;font-size:24px;font-weight:700;color:var(--gray-900)">6</p></div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:24px;display:flex;align-items:center;gap:16px">
+            <span style="display:flex;height:48px;width:48px;align-items:center;justify-content:center;border-radius:8px;background:#FEF2F2;color:var(--usal-red)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="calendar" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+            <div><p style="margin:0;font-size:13px;color:var(--gray-500)">Eventos próximos</p><p style="margin:0;font-size:24px;font-weight:700;color:var(--gray-900)">5</p></div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:24px;display:flex;align-items:center;gap:16px">
+            <span style="display:flex;height:48px;width:48px;align-items:center;justify-content:center;border-radius:8px;background:#ECFEFF;color:#0891B2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="folder-open" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+            <div><p style="margin:0;font-size:13px;color:var(--gray-500)">Archivos subidos</p><p style="margin:0;font-size:24px;font-weight:700;color:var(--gray-900)">112</p></div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:24px;display:flex;align-items:center;gap:16px">
+            <span style="display:flex;height:48px;width:48px;align-items:center;justify-content:center;border-radius:8px;background:#EFF4FB;color:var(--iuce-blue-dark)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="inbox" size="{{ 24 }}" hint-size="24px,24px"></x-import></span>
+            <div><p style="margin:0;font-size:13px;color:var(--gray-500)">Mensajes sin responder</p><p style="margin:0;font-size:24px;font-weight:700;color:var(--gray-900)">2</p></div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm)">
+          <div style="padding:24px 24px 0"><h3 style="margin:0;font-size:16px;font-weight:600;color:var(--gray-900)">Acciones rápidas</h3></div>
+          <div style="padding:20px 24px 24px;display:flex;flex-wrap:wrap;gap:12px">
+            <span onClick="{{ goView }}" data-view="newsEditor" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="primary" hint-size="160px,40px">+ Nueva noticia</x-import></span>
+            <span onClick="{{ goView }}" data-view="events" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="secondary" hint-size="150px,40px">Nuevo evento</x-import></span>
+            <span onClick="{{ goView }}" data-view="files" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="outline" hint-size="150px,40px">Subir archivo</x-import></span>
+            <span onClick="{{ goView }}" data-view="pages" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="ghost" hint-size="200px,40px">Editar contenido de páginas</x-import></span>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm)">
+          <div style="padding:24px 24px 0"><h3 style="margin:0;font-size:15px;font-weight:600;color:var(--gray-900)">Principales fuentes de tráfico</h3></div>
+          <div style="padding:16px 24px 20px;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;font-size:14px"><span style="color:var(--gray-600)">google.com</span><span style="font-weight:500;color:var(--gray-900)">412</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;font-size:14px"><span style="color:var(--gray-600)">usal.es</span><span style="font-weight:500;color:var(--gray-900)">236</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;font-size:14px"><span style="color:var(--gray-600)">Directo</span><span style="font-weight:500;color:var(--gray-900)">198</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;font-size:14px"><span style="color:var(--gray-600)">studium.usal.es</span><span style="font-weight:500;color:var(--gray-900)">84</span></div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ==================== NOTICIAS (LISTA) ==================== -->
+      <sc-if value="{{ viewNews }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin noticias" style="display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;align-items:center;justify-content:flex-end">
+          <span onClick="{{ goView }}" data-view="newsEditor" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="primary" hint-size="160px,40px">+ Nueva noticia</x-import></span>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:24px"><h3 style="margin:0;font-size:16px;font-weight:600;color:var(--gray-900)">Noticias (6)</h3></div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500)">Título</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Categoría</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Estado</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Publicación</th>
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500);width:110px">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900);max-width:380px">XXII Congreso Internacional de Tecnología, Conocimiento y Sociedad</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Congresos</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Publicada</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">20/04/2026</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ goView }}" data-view="newsEditor" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900)">En marcha el Plan de Formación del Profesorado 2026</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Formación</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Publicada</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">15/01/2026</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ goView }}" data-view="newsEditor" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900)">La USAL, en la III Jornada de Innovación Docente JIDUCYL26</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Innovación docente</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Publicada</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">14/03/2026</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ goView }}" data-view="newsEditor" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900)">Premio Ennova Health para el grupo VisualMed System</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Premios</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Publicada</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">21/11/2025</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ goView }}" data-view="newsEditor" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900)">Convocatoria de la Semana Doctoral 2026</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Doctorado</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:var(--gray-100);color:var(--gray-700)">Borrador</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">—</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ goView }}" data-view="newsEditor" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900)">Memoria de actividades 2025</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Institucional</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#FEF9C3;color:#A16207">Archivada</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">10/02/2026</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ goView }}" data-view="newsEditor" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ==================== EDITOR DE NOTICIA ==================== -->
+      <sc-if value="{{ viewNewsEditor }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin editor noticia" style="display:flex;flex-direction:column;gap:24px">
+        <div>
+          <button onClick="{{ goView }}" data-view="news" style="display:inline-flex;align-items:center;gap:8px;border:none;background:transparent;border-radius:6px;padding:8px 12px;font-size:14px;font-weight:500;color:var(--gray-600);cursor:pointer;font-family:inherit" style-hover="background:var(--gray-100)">
+            <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="arrow-left" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+            Volver
+          </button>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm)">
+          <div style="padding:24px 24px 0"><h3 style="margin:0;font-size:16px;font-weight:600;color:var(--gray-900)">Editar noticia</h3></div>
+          <div style="padding:20px 24px 24px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label for="n-title" style="font-size:13px;font-weight:500;color:var(--gray-700)">Título</label>
+                <input id="n-title" type="text" defaultValue="XXII Congreso Internacional de Tecnología, Conocimiento y Sociedad" style="height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label for="n-slug" style="font-size:13px;font-weight:500;color:var(--gray-700)">Slug</label>
+                <input id="n-slug" type="text" defaultValue="xxii-congreso-tecnologia-conocimiento-sociedad" style="height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:var(--gray-600);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label for="n-excerpt" style="font-size:13px;font-weight:500;color:var(--gray-700)">Extracto</label>
+              <textarea id="n-excerpt" rows="3" style="border:1px solid var(--border-input);border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;outline:none;resize:vertical" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">La Universidad del Egeo celebró en Rodas la edición 2026, bilingüe y en modalidad híbrida, con participación del profesorado del IUCE.</textarea>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:13px;font-weight:500;color:var(--gray-700)">Contenido</span>
+              <div>
+                <div style="display:flex;align-items:center;gap:2px;flex-wrap:wrap;border:1px solid var(--border-input);border-radius:6px 6px 0 0;background:var(--gray-50);padding:6px 8px">
+                  <button aria-label="Deshacer" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="undo-2" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <button aria-label="Rehacer" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="redo-2" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <span style="width:1px;height:20px;background:var(--gray-200);margin:0 6px"></span>
+                  <select aria-label="Estilo de párrafo" style="height:30px;border:1px solid var(--border-input);border-radius:4px;font-size:13px;font-family:inherit;color:var(--gray-700);background:#FFFFFF;padding:0 6px">
+                    <option>Párrafo</option><option>Título 2</option><option>Título 3</option>
+                  </select>
+                  <span style="width:1px;height:20px;background:var(--gray-200);margin:0 6px"></span>
+                  <button aria-label="Negrita" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:var(--gray-200);border-radius:4px;color:var(--gray-900);cursor:pointer"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="bold" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <button aria-label="Cursiva" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="italic" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <button aria-label="Subrayado" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="underline" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <button aria-label="Tachado" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="strikethrough" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <span style="width:1px;height:20px;background:var(--gray-200);margin:0 6px"></span>
+                  <button aria-label="Lista" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="list" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <button aria-label="Lista numerada" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="list-ordered" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <button aria-label="Cita" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="quote" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <span style="width:1px;height:20px;background:var(--gray-200);margin:0 6px"></span>
+                  <button aria-label="Enlace" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="link" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <button aria-label="Imagen" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="image" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                  <button aria-label="Tabla" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="table" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+                </div>
+                <div contenteditable="true" style="min-height:260px;border:1px solid var(--border-input);border-top:none;padding:16px 18px;font-size:14.5px;line-height:1.65;color:var(--gray-700);background:#FFFFFF;outline:none">
+                  <p style="margin:0 0 12px">La <strong>Universidad del Egeo</strong> fue la institución anfitriona de la XXII edición del Congreso Internacional de Tecnología, Conocimiento y Sociedad, celebrada los días 16 y 17 de abril de 2026 en la isla de Rodas (Grecia).</p>
+                  <p style="margin:0 0 12px">El congreso, de carácter bilingüe y modalidad híbrida, reunió a investigadores de más de veinte países en torno a los retos de la tecnología en la sociedad contemporánea. El profesorado del IUCE participó con varias comunicaciones sobre evaluación educativa mediada por tecnología.</p>
+                  <p style="margin:0">La próxima edición se celebrará en 2027, con sede aún por confirmar.</p>
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:16px;border:1px solid var(--border-input);border-top:none;border-radius:0 0 6px 6px;background:var(--gray-50);padding:6px 12px;font-size:11px;color:var(--gray-400)">
+                  <span>1.008 caracteres</span><span>163 palabras</span>
+                </div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label for="n-cover" style="font-size:13px;font-weight:500;color:var(--gray-700)">Imagen de portada</label>
+                <div style="display:flex;gap:8px">
+                  <input id="n-cover" type="text" defaultValue="/uploads/congreso-rodas.jpg" style="flex:1;min-width:0;height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:13px;font-family:inherit;color:var(--gray-600);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+                  <button aria-label="Elegir archivo" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--border-input);background:#FFFFFF;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-50)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="folder-open" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label for="n-cat" style="font-size:13px;font-weight:500;color:var(--gray-700)">Categoría</label>
+                <select id="n-cat" style="height:40px;border:1px solid var(--border-input);border-radius:6px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;padding:0 10px">
+                  <option>Congresos</option><option>Formación</option><option>Innovación docente</option><option>Premios</option><option>Doctorado</option><option>Institucional</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label for="n-status" style="font-size:13px;font-weight:500;color:var(--gray-700)">Estado</label>
+                <select id="n-status" style="height:40px;border:1px solid var(--border-input);border-radius:6px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;padding:0 10px">
+                  <option>Publicada</option><option>Borrador</option><option>Archivada</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label for="n-date" style="font-size:13px;font-weight:500;color:var(--gray-700)">Fecha de publicación</label>
+                <input id="n-date" type="date" defaultValue="2026-04-20" style="height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--gray-100)">
+              <span onClick="{{ fakeSave }}" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="primary" hint-size="180px,40px">Guardar cambios</x-import></span>
+              <span onClick="{{ goView }}" data-view="news" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="ghost" hint-size="100px,40px">Cancelar</x-import></span>
+              <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-400)">
+                <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="languages" size="{{ 13 }}" hint-size="13px,13px"></x-import>
+                Se traduce automáticamente al inglés al guardar
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ==================== CONTENIDO DE PÁGINAS ==================== -->
+      <sc-if value="{{ viewPages }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin contenido páginas" style="display:flex;flex-direction:column;gap:24px">
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <label for="page-select" style="font-size:13px;font-weight:500;color:var(--gray-700);flex:none">Página</label>
+          <select id="page-select" style="height:40px;min-width:280px;border:1px solid var(--border-input);border-radius:6px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;padding:0 10px">
+            <option>Instituto — Perfil</option>
+            <option>Instituto — Edificio histórico</option>
+            <option>Inicio — Portada</option>
+            <option>Formación — Plan de Formación Docente</option>
+            <option>Doctorado — Programa</option>
+          </select>
+          <p style="margin:0;font-size:12px;color:var(--gray-500)">Cada página se compone de bloques de texto. Los cambios se guardan por bloque y se traducen automáticamente al inglés.</p>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm)">
+          <div style="padding:20px 24px;display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px">
+              <h3 style="margin:0;font-size:15px;font-weight:600;color:var(--gray-900)">Perfil — introducción</h3>
+              <span title="Cambios sin guardar" style="display:inline-block;width:8px;height:8px;border-radius:999px;background:#FBBF24"></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--gray-400)">
+                <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="languages" size="{{ 12 }}" hint-size="12px,12px"></x-import>
+                Auto EN
+              </span>
+              <span onClick="{{ fakeSave }}" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="primary" size="sm" hint-size="110px,32px">Guardar</x-import></span>
+            </div>
+          </div>
+          <div style="padding:0 24px 24px">
+            <div style="display:flex;align-items:center;gap:2px;flex-wrap:wrap;border:1px solid var(--border-input);border-radius:6px 6px 0 0;background:var(--gray-50);padding:6px 8px">
+              <button aria-label="Negrita" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="bold" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+              <button aria-label="Cursiva" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="italic" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+              <button aria-label="Lista" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="list" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+              <button aria-label="Enlace" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="link" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+            </div>
+            <div contenteditable="true" style="min-height:130px;border:1px solid var(--border-input);border-top:none;padding:14px 16px;font-size:14px;line-height:1.65;color:var(--gray-700);background:#FFFFFF;outline:none">
+              <p style="margin:0 0 10px">En su origen, el Instituto se crea como centro de referencia nacional de investigación y apoyo a la formación inicial y permanente del profesorado no universitario (antiguo ICE, 1969). Desde la década de los años 80 se perfila como un centro especializado exclusivamente en educación universitaria.</p>
+              <p style="margin:0">El IUCE es verificado como Instituto de Investigación por la ACSUCYL en junio de 2008.</p>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:16px;border:1px solid var(--border-input);border-top:none;border-radius:0 0 6px 6px;background:var(--gray-50);padding:6px 12px;font-size:11px;color:var(--gray-400)">
+              <span>486 caracteres</span><span>78 palabras</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm)">
+          <div style="padding:20px 24px;display:flex;align-items:center;justify-content:space-between">
+            <h3 style="margin:0;font-size:15px;font-weight:600;color:var(--gray-900)">Funciones del Instituto</h3>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--gray-400)">
+                <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="languages" size="{{ 12 }}" hint-size="12px,12px"></x-import>
+                Auto EN
+              </span>
+              <span onClick="{{ fakeSave }}" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="outline" size="sm" hint-size="110px,32px">Guardar</x-import></span>
+            </div>
+          </div>
+          <div style="padding:0 24px 24px">
+            <div style="display:flex;align-items:center;gap:2px;flex-wrap:wrap;border:1px solid var(--border-input);border-radius:6px 6px 0 0;background:var(--gray-50);padding:6px 8px">
+              <button aria-label="Negrita" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="bold" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+              <button aria-label="Cursiva" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="italic" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+              <button aria-label="Lista" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="list" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+              <button aria-label="Enlace" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;border-radius:4px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="link" size="{{ 15 }}" hint-size="15px,15px"></x-import></button>
+            </div>
+            <div contenteditable="true" style="min-height:110px;border:1px solid var(--border-input);border-top:none;padding:14px 16px;font-size:14px;line-height:1.65;color:var(--gray-700);background:#FFFFFF;outline:none">
+              <ul style="margin:0;padding-left:20px">
+                <li>Investigación interdisciplinar, básica y aplicada, en el ámbito de la formación y de la educación.</li>
+                <li>Cursos especializados de postgrado y doctorado, y formación del personal investigador.</li>
+                <li>Programas de investigación educativa en colaboración con otras universidades e institutos.</li>
+              </ul>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:16px;border:1px solid var(--border-input);border-top:none;border-radius:0 0 6px 6px;background:var(--gray-50);padding:6px 12px;font-size:11px;color:var(--gray-400)">
+              <span>292 caracteres</span><span>41 palabras</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ==================== MIEMBROS ==================== -->
+      <sc-if value="{{ viewMembers }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin miembros" style="display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+          <div style="display:flex;align-items:center;gap:8px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;background:#FFFFFF;width:300px;height:40px">
+            <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="search" size="{{ 15 }}" style="{{ grayIcon }}" hint-size="15px,15px"></x-import>
+            <input type="text" placeholder="Buscar por nombre o área…" style="border:none;outline:none;flex:1;font-size:14px;font-family:inherit;color:var(--gray-900);background:transparent">
+          </div>
+          <span onClick="{{ fakeSave }}" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="primary" hint-size="170px,40px">+ Nuevo miembro</x-import></span>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:24px"><h3 style="margin:0;font-size:16px;font-weight:600;color:var(--gray-900)">Equipo y miembros (38)</h3></div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500)">Nombre</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Cargo / Área</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Email</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Estado</th>
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500);width:110px">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><div style="display:flex;align-items:center;gap:12px"><span aria-hidden="true" style="width:34px;height:34px;border-radius:999px;background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none">SO</span><span style="font-size:14px;font-weight:500;color:var(--gray-900)">Susana Olmos Migueláñez</span></div></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Directora · Evaluación educativa</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">solmos@usal.es</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Activo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><div style="display:flex;align-items:center;gap:12px"><span aria-hidden="true" style="width:34px;height:34px;border-radius:999px;background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none">FG</span><span style="font-size:14px;font-weight:500;color:var(--gray-900)">Francisco José García Peñalvo</span></div></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Subdirector · Grupo GRIAL</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">fgarcia@usal.es</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Activo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><div style="display:flex;align-items:center;gap:12px"><span aria-hidden="true" style="width:34px;height:34px;border-radius:999px;background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none">JM</span><span style="font-size:14px;font-weight:500;color:var(--gray-900)">Javier Félix Merchán Sánchez-Jara</span></div></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Secretario · E-LECTRA</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">javiermerchan@usal.es</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Activo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><div style="display:flex;align-items:center;gap:12px"><span aria-hidden="true" style="width:34px;height:34px;border-radius:999px;background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none">MR</span><span style="font-size:14px;font-weight:500;color:var(--gray-900)">María José Rodríguez Conde</span></div></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">MIDE · Evaluación educativa</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">mjrconde@usal.es</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Activo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><div style="display:flex;align-items:center;gap:12px"><span aria-hidden="true" style="width:34px;height:34px;border-radius:999px;background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none">FM</span><span style="font-size:14px;font-weight:500;color:var(--gray-900)">Fernando Martínez Abad</span></div></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Grupo GRIAL · Evaluación educativa</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">fma@usal.es</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Activo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><div style="display:flex;align-items:center;gap:12px"><span aria-hidden="true" style="width:34px;height:34px;border-radius:999px;background:var(--iuce-blue-pale);color:var(--iuce-blue-dark);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none">EM</span><span style="font-size:14px;font-weight:500;color:var(--gray-900)">Erla Mariela Morales Morgado</span></div></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Grupo GRIAL · Tecnología educativa</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">eromo@usal.es</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Activo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="padding:14px 24px;border-top:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--gray-500)">
+            <span>Mostrando 6 de 38 miembros</span>
+            <div style="display:flex;gap:8px">
+              <button style="height:32px;padding:0 12px;border:1px solid var(--border-input);background:#FFFFFF;border-radius:6px;font-size:13px;font-family:inherit;color:var(--gray-400);cursor:default">Anterior</button>
+              <button style="height:32px;padding:0 12px;border:1px solid var(--border-input);background:#FFFFFF;border-radius:6px;font-size:13px;font-family:inherit;color:var(--gray-700);cursor:pointer" style-hover="background:var(--gray-50)">Siguiente</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ==================== GRUPOS ==================== -->
+      <sc-if value="{{ viewGroups }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin grupos" style="display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;align-items:center;justify-content:flex-end">
+          <span onClick="{{ fakeSave }}" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="primary" hint-size="160px,40px">+ Nuevo grupo</x-import></span>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:24px"><h3 style="margin:0;font-size:16px;font-weight:600;color:var(--gray-900)">Grupos de investigación (6)</h3></div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500)">Acrónimo</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Nombre</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Responsable</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Miembros</th>
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500);width:110px">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:700;color:var(--iuce-blue-dark)">GRIAL</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Interacción y eLearning · UIC 081</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">F. J. García Peñalvo</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">14</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:700;color:var(--iuce-blue-dark)">GITE</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Grupo de Investigación en Tecnología Educativa</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">A. García-Valcárcel</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">9</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:700;color:var(--iuce-blue-dark)">OCA</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Observatorio de Contenidos Audiovisuales</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">J. J. Igartua</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">11</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:700;color:var(--iuce-blue-dark)">VisualMed System</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Medicina, visualización y tecnología</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">J. A. Juanes</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">7</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:700;color:var(--iuce-blue-dark)">Robótica y Sociedad</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Robótica educativa e impacto social</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">—</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">6</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:700;color:var(--iuce-blue-dark)">E-LECTRA</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Lectura y edición digital</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">J. A. Cordón</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">8</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ==================== EVENTOS ==================== -->
+      <sc-if value="{{ viewEvents }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin eventos" style="display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;align-items:center;justify-content:flex-end">
+          <span onClick="{{ fakeSave }}" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="primary" hint-size="160px,40px">+ Nuevo evento</x-import></span>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:24px"><h3 style="margin:0;font-size:16px;font-weight:600;color:var(--gray-900)">Eventos (5)</h3></div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500)">Evento</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Tipo</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Fecha</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Lugar</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Estado</th>
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500);width:110px">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900)">ICED26 — International Consortium for Educational Development</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#EFF4FB;color:var(--iuce-blue-dark)">Congreso</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">jun 2026</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Salamanca</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DBEAFE;color:#1D4ED8">Próximo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900)">Semana Doctoral 2026</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#EFF4FB;color:var(--iuce-blue-dark)">Jornada</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">nov 2026</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">IUCE, Edificio Solís</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DBEAFE;color:#1D4ED8">Próximo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900)">Seminario de investigación — Grupo GRIAL</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#EFF4FB;color:var(--iuce-blue-dark)">Seminario</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">22 sep 2026</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Sala de Juntas, IUCE</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DBEAFE;color:#1D4ED8">Próximo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900)">III Jornada de Innovación Docente JIDUCYL26</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#EFF4FB;color:var(--iuce-blue-dark)">Jornada</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">13 mar 2026</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Burgos</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:var(--gray-100);color:var(--gray-700)">Celebrado</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray-900)">I Congreso Internacional sobre Evaluación Educativa</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#EFF4FB;color:var(--iuce-blue-dark)">Congreso</span></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">19 mar 2026</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Bilbao</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:var(--gray-100);color:var(--gray-700)">Celebrado</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Editar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ==================== ARCHIVOS ==================== -->
+      <sc-if value="{{ viewFiles }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin archivos" style="display:flex;flex-direction:column;gap:24px">
+        <div style="border:2px dashed var(--gray-300);border-radius:12px;background:#FFFFFF;padding:36px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
+          <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="upload" size="{{ 26 }}" style="{{ grayIcon }}" hint-size="26px,26px"></x-import>
+          <p style="margin:0;font-size:14px;font-weight:500;color:var(--gray-700)">Arrastra archivos aquí o haz clic para subir</p>
+          <p style="margin:0;font-size:12px;color:var(--gray-400)">PDF, imágenes y documentos · máx. 20 MB por archivo</p>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:24px"><h3 style="margin:0;font-size:16px;font-weight:600;color:var(--gray-900)">Archivos (112)</h3></div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500)">Nombre</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Tipo</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Tamaño</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Subido</th>
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500);width:110px">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="file-text" size="{{ 16 }}" style="{{ grayIcon }}" hint-size="16px,16px"></x-import><span style="font-size:14px;font-weight:500;color:var(--gray-900)">reglamento-iuce-2023.pdf</span></div></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">PDF</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">1,2 MB</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">28/06/2023</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeCopy }}" aria-label="Copiar enlace" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="copy" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="file-text" size="{{ 16 }}" style="{{ grayIcon }}" hint-size="16px,16px"></x-import><span style="font-size:14px;font-weight:500;color:var(--gray-900)">plan-formacion-docente-2026.pdf</span></div></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">PDF</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">3,8 MB</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">15/01/2026</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeCopy }}" aria-label="Copiar enlace" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="copy" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="image" size="{{ 16 }}" style="{{ grayIcon }}" hint-size="16px,16px"></x-import><span style="font-size:14px;font-weight:500;color:var(--gray-900)">congreso-rodas.jpg</span></div></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Imagen</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">640 KB</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">20/04/2026</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeCopy }}" aria-label="Copiar enlace" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="copy" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="file-text" size="{{ 16 }}" style="{{ grayIcon }}" hint-size="16px,16px"></x-import><span style="font-size:14px;font-weight:500;color:var(--gray-900)">memoria-actividades-2025.pdf</span></div></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">PDF</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">5,1 MB</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">10/02/2026</td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeCopy }}" aria-label="Copiar enlace" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="copy" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ==================== MENSAJES ==================== -->
+      <sc-if value="{{ viewMessages }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin mensajes" style="display:flex;flex-direction:column;gap:24px">
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:24px;display:flex;align-items:baseline;justify-content:space-between">
+            <h3 style="margin:0;font-size:16px;font-weight:600;color:var(--gray-900)">Mensajes de contacto (4)</h3>
+            <p style="margin:0;font-size:12px;color:var(--gray-400)">Los mensajes del formulario llegan también a iuce@usal.es vía Resend</p>
+          </div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500)">De</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Asunto</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Fecha</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:13px;font-weight:500;color:var(--gray-500)">Estado</th>
+                <th scope="col" style="text-align:left;padding:12px 24px;font-size:13px;font-weight:500;color:var(--gray-500);width:110px">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-top:1px solid var(--gray-100);background:#F8FAFD">
+                <td style="padding:12px 24px"><p style="margin:0;font-size:14px;font-weight:600;color:var(--gray-900)">María López</p><p style="margin:0;font-size:12px;color:var(--gray-500)">mlopez@educa.jcyl.es</p></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-700)">Información sobre el Plan de Formación Docente</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">hace 2 h</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DBEAFE;color:#1D4ED8">Nuevo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Leer mensaje" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="eye" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeSave }}" aria-label="Responder" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="reply" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100);background:#F8FAFD">
+                <td style="padding:12px 24px"><p style="margin:0;font-size:14px;font-weight:600;color:var(--gray-900)">Javier Torres</p><p style="margin:0;font-size:12px;color:var(--gray-500)">jtorres.edu@gmail.com</p></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-700)">Consulta sobre el programa de doctorado</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">30 jun</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DBEAFE;color:#1D4ED8">Nuevo</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Leer mensaje" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="eye" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeSave }}" aria-label="Responder" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="reply" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><p style="margin:0;font-size:14px;font-weight:500;color:var(--gray-700)">Carlos Peña</p><p style="margin:0;font-size:12px;color:var(--gray-500)">cpena@usal.es</p></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Reserva de sala para seminario</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">ayer</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Respondido</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Leer mensaje" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="eye" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+              <tr style="border-top:1px solid var(--gray-100)">
+                <td style="padding:12px 24px"><p style="margin:0;font-size:14px;font-weight:500;color:var(--gray-700)">Ana Ruiz</p><p style="margin:0;font-size:12px;color:var(--gray-500)">ana.ruiz@uva.es</p></td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-600)">Colaboración en la Formación Docente Inicial</td>
+                <td style="padding:12px 16px;font-size:13px;color:var(--gray-500)">2 jul</td>
+                <td style="padding:12px 16px"><span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#DCFCE7;color:#15803D">Respondido</span></td>
+                <td style="padding:12px 24px"><div style="display:flex;gap:4px">
+                  <button onClick="{{ fakeSave }}" aria-label="Leer mensaje" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:var(--gray-500);cursor:pointer" style-hover="background:var(--gray-100);color:var(--gray-700)"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="eye" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                  <button onClick="{{ fakeDelete }}" aria-label="Eliminar" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:6px;color:#DC2626;cursor:pointer" style-hover="background:#FEF2F2"><x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ==================== CONFIGURACIÓN ==================== -->
+      <sc-if value="{{ viewSettings }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin configuración" style="display:flex;flex-direction:column;gap:24px;max-width:760px">
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm)">
+          <div style="padding:24px 24px 0"><h3 style="margin:0;font-size:16px;font-weight:600;color:var(--gray-900)">Datos del sitio</h3></div>
+          <div style="padding:20px 24px 24px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label for="s-name" style="font-size:13px;font-weight:500;color:var(--gray-700)">Nombre del sitio</label>
+                <input id="s-name" type="text" defaultValue="IUCE — Universidad de Salamanca" style="height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label for="s-mail" style="font-size:13px;font-weight:500;color:var(--gray-700)">Correo de contacto</label>
+                <input id="s-mail" type="email" defaultValue="iuce@usal.es" style="height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label for="s-phone" style="font-size:13px;font-weight:500;color:var(--gray-700)">Teléfono</label>
+                <input id="s-phone" type="text" defaultValue="+34 923 294 634" style="height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label for="s-res" style="font-size:13px;font-weight:500;color:var(--gray-700)">URL de reservas</label>
+                <input id="s-res" type="text" defaultValue="https://reservas.iuce.usal.es" style="height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--gray-600);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label for="s-desc" style="font-size:13px;font-weight:500;color:var(--gray-700)">Descripción (SEO)</label>
+              <textarea id="s-desc" rows="2" style="border:1px solid var(--border-input);border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;outline:none;resize:vertical" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">Instituto Universitario de Ciencias de la Educación de la Universidad de Salamanca: investigación, formación del profesorado y doctorado en Educación.</textarea>
+            </div>
+            <div style="display:flex;padding-top:16px;border-top:1px solid var(--gray-100)">
+              <span onClick="{{ fakeSave }}" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="primary" hint-size="180px,40px">Guardar cambios</x-import></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow-sm)">
+          <div style="padding:24px 24px 0">
+            <h3 style="margin:0 0 4px;font-size:16px;font-weight:600;color:var(--gray-900)">Cuentas autorizadas</h3>
+            <p style="margin:0;font-size:13px;color:var(--gray-500)">Solo estas cuentas pueden iniciar sesión en el panel, con su usuario y contraseña. Las altas las gestiona la persona con rol Super Administradora.</p>
+          </div>
+          <div style="padding:20px 24px 24px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-200);border-radius:8px;padding:12px 16px">
+              <div><p style="margin:0;font-size:14px;font-weight:500;color:var(--gray-900)">solmos@usal.es</p><p style="margin:0;font-size:12px;color:var(--gray-500)">Susana Olmos Migueláñez</p></div>
+              <span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:#FEF2F2;color:var(--usal-red)">Super Administradora</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-200);border-radius:8px;padding:12px 16px">
+              <div><p style="margin:0;font-size:14px;font-weight:500;color:var(--gray-900)">fgarcia@usal.es</p><p style="margin:0;font-size:12px;color:var(--gray-500)">Francisco José García Peñalvo</p></div>
+              <span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:var(--gray-100);color:var(--gray-700)">Administrador</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-200);border-radius:8px;padding:12px 16px">
+              <div><p style="margin:0;font-size:14px;font-weight:500;color:var(--gray-900)">begosan@usal.es</p><p style="margin:0;font-size:12px;color:var(--gray-500)">Begoña Sánchez Martín — Secretaría</p></div>
+              <span style="display:inline-flex;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;background:var(--gray-100);color:var(--gray-700)">Administradora</span>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:8px">
+              <input type="email" placeholder="nueva-cuenta@usal.es" style="flex:1;height:40px;border:1px solid var(--border-input);border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--gray-900);background:#FFFFFF;outline:none" style-focus="border-color:var(--iuce-blue);box-shadow:0 0 0 2px rgba(59,125,216,.25)">
+              <span onClick="{{ fakeSave }}" style="cursor:pointer"><x-import component-from-global-scope="IUCEReservasDesignSystem_58b4a1.Button" variant="outline" hint-size="170px,40px">Crear cuenta</x-import></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position:fixed;top:76px;right:24px;z-index:60;display:flex;align-items:center;gap:10px;background:#FFFFFF;border:1px solid var(--gray-200);border-radius:8px;box-shadow:var(--shadow-md);padding:12px 16px">
+      <x-import component-from-global-scope="LucideIcon" from="./lucide-icon.js" name="check-circle-2" size="{{ 18 }}" style="{{ greenIcon }}" hint-size="18px,18px"></x-import>
+      <span style="font-size:13px;font-weight:500;color:var(--gray-700)">{{ toastMsg }}</span>
+    </div>
+  </sc-if>
+
+</div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { view: 'login', toast: '' };
+
+  goView = (e) => {
+    const v = e.currentTarget.getAttribute('data-view');
+    if (v) {
+      this.setState({ view: v });
+      window.scrollTo(0, 0);
+    }
+  };
+
+  showToast(msg) {
+    clearTimeout(this._toastTimer);
+    this.setState({ toast: msg });
+    this._toastTimer = setTimeout(() => this.setState({ toast: '' }), 2600);
+  }
+
+  renderVals() {
+    const view = this.state.view;
+    const titles = {
+      dashboard: 'Dashboard', news: 'Noticias', newsEditor: 'Editar noticia',
+      pages: 'Contenido de páginas', members: 'Equipo y miembros',
+      groups: 'Grupos de investigación', events: 'Eventos',
+      files: 'Archivos', messages: 'Mensajes de contacto', settings: 'Configuración'
+    };
+
+    const baseItem = {
+      display: 'flex', alignItems: 'center', gap: '12px', width: '100%',
+      border: 'none', background: 'transparent', borderRadius: '6px',
+      padding: '9px 12px', fontSize: '14px', fontWeight: 500,
+      color: 'var(--gray-600)', cursor: 'pointer', fontFamily: 'inherit',
+      textAlign: 'left', transition: 'background 150ms ease, color 150ms ease'
+    };
+    const activeItem = Object.assign({}, baseItem, {
+      background: 'rgba(200,16,46,0.08)', color: 'var(--usal-red)'
+    });
+    const mk = (label, icon, v) => ({
+      label, icon, view: v, style: view === v ? activeItem : baseItem
+    });
+
+    const navGroups = [
+      { title: '', hasTitle: false, items: [
+        mk('Dashboard', 'layout-dashboard', 'dashboard'),
+        mk('Noticias', 'newspaper', 'news')
+      ]},
+      { title: 'Contenido', hasTitle: true, items: [
+        mk('Páginas', 'file-text', 'pages'),
+        mk('Archivos', 'folder-open', 'files')
+      ]},
+      { title: 'Instituto', hasTitle: true, items: [
+        mk('Equipo y miembros', 'users', 'members'),
+        mk('Grupos de investigación', 'microscope', 'groups')
+      ]},
+      { title: 'Actividad', hasTitle: true, items: [
+        mk('Eventos', 'calendar', 'events'),
+        mk('Mensajes de contacto', 'inbox', 'messages')
+      ]},
+      { title: 'Sistema', hasTitle: true, items: [
+        mk('Configuración', 'settings', 'settings')
+      ]}
+    ];
+
+    return {
+      isLogin: view === 'login',
+      isShell: view !== 'login',
+      viewDashboard: view === 'dashboard',
+      viewNews: view === 'news',
+      viewNewsEditor: view === 'newsEditor',
+      viewPages: view === 'pages',
+      viewMembers: view === 'members',
+      viewGroups: view === 'groups',
+      viewEvents: view === 'events',
+      viewFiles: view === 'files',
+      viewMessages: view === 'messages',
+      viewSettings: view === 'settings',
+      pageTitle: titles[view] || 'Admin',
+      navGroups,
+      hasToast: !!this.state.toast,
+      toastMsg: this.state.toast,
+      greenIcon: { color: '#16A34A' },
+      redIcon: { color: 'var(--usal-red)', marginTop: '1px' },
+      grayIcon: { color: 'var(--gray-400)' },
+      goView: this.goView,
+      logout: () => this.setState({ view: 'login' }),
+      fakeSave: () => this.showToast('Guardado y traducido automáticamente (EN)'),
+      fakeDelete: () => this.showToast('Elemento eliminado'),
+      fakeCopy: () => this.showToast('Enlace copiado al portapapeles')
+    };
+  }
+}
+</script>
+</body>
+</html>

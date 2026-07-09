@@ -1,0 +1,41 @@
+/* ==========================================================================
+   IUCE Reservas — Spacing, radii, shadows, layout tokens
+   Values lifted from component source (card.tsx, button.tsx, navbar.tsx…).
+   ========================================================================== */
+:root {
+  /* Spacing scale (Tailwind 4px base) */
+  --space-1: 0.25rem;   /* 4px */
+  --space-1-5: 0.375rem;/* 6px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px — card content gap default */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px — card padding (p-6) */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-16: 4rem;     /* 64px — footer top margin */
+
+  /* Radii (from component classes) */
+  --radius-sm: 0.375rem;  /* rounded-md — inputs, sm buttons */
+  --radius-md: 0.5rem;    /* rounded-lg — buttons, alert boxes */
+  --radius-lg: 0.75rem;   /* rounded-xl — cards */
+  --radius-full: 9999px;  /* badges, pills, avatars */
+
+  /* Shadows (Tailwind shadow-sm / shadow-md) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -2px rgba(0, 0, 0, 0.04);
+
+  /* Focus ring */
+  --ring-width: 2px;
+  --ring-offset: 2px;
+
+  /* Layout */
+  --container-max: 72rem;  /* max-w-6xl = 1152px */
+  --navbar-height: 4rem;   /* h-16 */
+
+  /* Motion */
+  --transition-fast: 150ms; /* @kind other */
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --press-scale: 0.98; /* @kind other */
+}
