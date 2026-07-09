@@ -3,6 +3,7 @@ import { ArrowUpRight, ExternalLink, User, Users } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SectionSubnav } from "@/components/layout/section-subnav";
 import { buttonClassName } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/reveal";
 import { prisma } from "@/lib/prisma";
 import { groups as groupsFallback } from "@/lib/content/groups";
 
@@ -148,16 +149,14 @@ export default async function InvestigacionPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {grupos.map((g) => {
+            {grupos.map((g, i) => {
               const LeadIcon = g.lead ? User : Users;
               const urlLabel = g.url
                 ? g.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")
                 : null;
               return (
-                <article
-                  key={g.acronym}
-                  className="flex flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[22px] shadow-sm"
-                >
+                <Reveal key={g.acronym} delay={(i % 3) * 80} className="h-full">
+                <article className="flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[22px] shadow-sm">
                   {g.logo ? (
                     // Placa blanca fija: los logos (algunos en negro) deben
                     // verse igual en tema claro y oscuro.
@@ -202,6 +201,7 @@ export default async function InvestigacionPage() {
                     ) : null}
                   </p>
                 </article>
+                </Reveal>
               );
             })}
           </div>

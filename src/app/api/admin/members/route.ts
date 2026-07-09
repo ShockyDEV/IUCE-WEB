@@ -35,6 +35,7 @@ export async function POST(request: Request) {
       role: d.role || null,
       photo: d.photo || null,
       portalUrl: d.portalUrl || null,
+      orcid: d.orcid || null,
       active: d.active ?? true,
       order: d.order ?? 0,
       groupId: d.groupId || null,

@@ -19,6 +19,7 @@ import { SectionSubnav } from "@/components/layout/section-subnav";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import Image from "next/image";
 import { MapEmbed } from "@/components/ui/map-embed";
+import { Reveal } from "@/components/ui/reveal";
 import { InitialsAvatar } from "@/components/ui/initials-avatar";
 import {
   MembersGrid,
@@ -171,12 +172,18 @@ async function getMiembros(): Promise<PublicMember[]> {
         area: [m.role, m.area].filter(Boolean).join(" · "),
         photo: m.photo,
         portalUrl: m.portalUrl,
+        orcid: m.orcid,
       }));
     }
   } catch {
     // BD no disponible
   }
-  return miembrosFallback.map((m) => ({ ...m, photo: null, portalUrl: null }));
+  return miembrosFallback.map((m) => ({
+    ...m,
+    photo: null,
+    portalUrl: null,
+    orcid: null,
+  }));
 }
 
 const contacto = [
@@ -370,11 +377,9 @@ export default async function InstitutoPage() {
             294 500 (centralita de la USAL) seguido de la extensión.
           </p>
           <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {equipo.map((p) => (
-              <div
-                key={p.name}
-                className="flex flex-col items-start gap-4 rounded-xl border border-gray-200 bg-surface-page p-6 shadow-sm"
-              >
+            {equipo.map((p, i) => (
+              <Reveal key={p.name} delay={i * 90} className="h-full">
+              <div className="flex h-full flex-col items-start gap-4 rounded-xl border border-gray-200 bg-surface-page p-6 shadow-sm">
                 {p.photo ? (
                   <Image
                     src={p.photo}
@@ -408,6 +413,7 @@ export default async function InstitutoPage() {
                   </a>
                 ) : null}
               </div>
+              </Reveal>
             ))}
           </div>
           <div className="flex flex-col items-start gap-4 rounded-xl border border-gray-200 bg-surface-tinted px-6 py-[18px] sm:flex-row sm:items-center">
@@ -604,10 +610,15 @@ export default async function InstitutoPage() {
               dangerouslySetInnerHTML={{ __html: edificioTexto }}
             />
           </div>
-          <ImagePlaceholder
-            label="Foto histórica del Edificio Solís"
-            className="h-[340px] w-full"
-          />
+          <div className="relative h-[340px] w-full overflow-hidden rounded-xl">
+            <Image
+              src="/images/edificio-solis.jpg"
+              alt="Fachada del Edificio Solís, sede del IUCE"
+              fill
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-cover"
+            />
+          </div>
         </div>
       </section>
     </>

@@ -126,6 +126,31 @@ body {
   }
 }
 
+/* --------------------------------------------------------------------------
+   Aparición al hacer scroll (componente Reveal). Sutil a propósito: solo
+   secciones y rejillas señaladas, nunca todos los elementos.
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 body {
   background: var(--surface-page);
   -webkit-font-smoothing: antialiased;

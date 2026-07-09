@@ -20,6 +20,7 @@ export interface MemberRow {
   role: string | null;
   photo: string | null;
   portalUrl: string | null;
+  orcid: string | null;
   active: boolean;
   order: number;
   groupId: string | null;
@@ -44,6 +45,7 @@ interface FormState {
   role: string;
   photo: string;
   portalUrl: string;
+  orcid: string;
   order: number;
   groupId: string;
   active: boolean;
@@ -56,6 +58,7 @@ const EMPTY: FormState = {
   role: "",
   photo: "",
   portalUrl: "",
+  orcid: "",
   order: 0,
   groupId: "",
   active: true,
@@ -95,6 +98,7 @@ export function MembersSection({
         role: form.role || null,
         photo: form.photo || null,
         portalUrl: form.portalUrl || "",
+        orcid: form.orcid || "",
         order: form.order,
         groupId: form.groupId || null,
         active: form.active,
@@ -233,6 +237,7 @@ export function MembersSection({
                           role: row.role ?? "",
                           photo: row.photo ?? "",
                           portalUrl: row.portalUrl ?? "",
+                          orcid: row.orcid ?? "",
                           order: row.order,
                           groupId: row.groupId ?? "",
                           active: row.active,
@@ -347,6 +352,19 @@ export function MembersSection({
                 onChange={(e) =>
                   setForm({ ...form, portalUrl: e.target.value })
                 }
+                className={inputClass}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="m-orcid" className={labelClass}>
+                ORCID (URL)
+              </label>
+              <input
+                id="m-orcid"
+                type="url"
+                value={form.orcid}
+                placeholder="https://orcid.org/0000-0000-0000-0000"
+                onChange={(e) => setForm({ ...form, orcid: e.target.value })}
                 className={inputClass}
               />
             </div>

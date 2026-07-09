@@ -17,6 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { buttonClassName } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/reveal";
 import { getBlock } from "@/lib/content-blocks-service";
 import { prisma } from "@/lib/prisma";
 import { groups as groupsFallback } from "@/lib/content/groups";
@@ -226,11 +227,9 @@ export default async function DoctoradoPage() {
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {grupos.map((g) => (
-              <div
-                key={g.acronym}
-                className="rounded-xl border border-gray-200 bg-surface-page p-5 shadow-sm"
-              >
+            {grupos.map((g, i) => (
+              <Reveal key={g.acronym} delay={(i % 3) * 80} className="h-full">
+              <div className="h-full rounded-xl border border-gray-200 bg-surface-page p-5 shadow-sm">
                 {g.logo ? (
                   // Placa blanca fija: logos oscuros visibles también en
                   // modo oscuro.
@@ -253,6 +252,7 @@ export default async function DoctoradoPage() {
                 </div>
                 <p className="text-xs leading-snug text-gray-500">{g.desc}</p>
               </div>
+              </Reveal>
             ))}
           </div>
         </div>

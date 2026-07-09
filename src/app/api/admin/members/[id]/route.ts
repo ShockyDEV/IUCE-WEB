@@ -33,6 +33,7 @@ export async function PUT(request: Request, { params }: Params) {
       role: d.role || null,
       photo: d.photo || null,
       portalUrl: d.portalUrl || null,
+      orcid: d.orcid || null,
       active: d.active ?? existing.active,
       order: d.order ?? existing.order,
       groupId: d.groupId || null,

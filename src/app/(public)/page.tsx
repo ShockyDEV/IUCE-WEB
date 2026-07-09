@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -12,6 +13,7 @@ import {
 import { buttonClassName } from "@/components/ui/button";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { CoverImage } from "@/components/news/cover-image";
+import { Reveal } from "@/components/ui/reveal";
 import { getPublishedNews } from "@/lib/news-service";
 import { getBlock, getBlockText } from "@/lib/content-blocks-service";
 import { cn } from "@/lib/cn";
@@ -117,10 +119,16 @@ export default async function HomePage() {
           </div>
 
           <div className="relative">
-            <ImagePlaceholder
-              label="Foto del Edificio Solís"
-              className="h-[380px] w-full"
-            />
+            <div className="relative h-[380px] w-full overflow-hidden rounded-xl">
+              <Image
+                src="/images/edificio-solis.jpg"
+                alt="Fachada del Edificio Solís, sede del IUCE"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="object-cover"
+              />
+            </div>
             <div className="pointer-events-none absolute bottom-[22px] left-0 rounded-r-md bg-iuce-blue-dark px-3.5 py-2 text-xs text-white">
               Paseo de Canalejas 169 · Edificio Solís, 1.ª planta
             </div>
@@ -131,33 +139,34 @@ export default async function HomePage() {
       {/* Accesos rápidos */}
       <section className="border-y border-gray-200 bg-surface-page">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-6 py-9 sm:grid-cols-2 lg:grid-cols-4">
-          {quickAccess.map((item) => {
+          {quickAccess.map((item, i) => {
             const Icon = item.icon;
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                {...(item.external
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-                className="flex flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm transition-all hover:border-brand-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
-              >
-                <span className="flex h-[38px] w-[38px] items-center justify-center rounded-md bg-iuce-blue-pale">
-                  <Icon
-                    className={cn(
-                      "h-5 w-5",
-                      item.accent ? "text-usal-red" : "text-ink",
-                    )}
-                    aria-hidden="true"
-                  />
-                </span>
-                <span className="text-base font-semibold text-gray-900">
-                  {item.title}
-                </span>
-                <span className="text-xs leading-snug text-gray-500">
-                  {item.description}
-                </span>
-              </Link>
+              <Reveal key={item.href} delay={i * 80} className="h-full">
+                <Link
+                  href={item.href}
+                  {...(item.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm transition-all hover:border-brand-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
+                >
+                  <span className="flex h-[38px] w-[38px] items-center justify-center rounded-md bg-iuce-blue-pale">
+                    <Icon
+                      className={cn(
+                        "h-5 w-5",
+                        item.accent ? "text-usal-red" : "text-ink",
+                      )}
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span className="text-base font-semibold text-gray-900">
+                    {item.title}
+                  </span>
+                  <span className="text-xs leading-snug text-gray-500">
+                    {item.description}
+                  </span>
+                </Link>
+              </Reveal>
             );
           })}
         </div>
@@ -178,8 +187,9 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {latestNews.map((item) => (
-              <Link key={item.slug} href={`/noticias/${item.slug}`}>
+            {latestNews.map((item, i) => (
+              <Reveal key={item.slug} delay={i * 90} className="h-full">
+              <Link href={`/noticias/${item.slug}`} className="block h-full">
                 <article className="flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm transition-all hover:border-brand-400 hover:shadow-md">
                   <CoverImage
                     src={item.coverImage}
@@ -202,6 +212,7 @@ export default async function HomePage() {
                   </div>
                 </article>
               </Link>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -209,7 +220,7 @@ export default async function HomePage() {
 
       {/* Banda EKS */}
       <section className="border-t border-gray-200 bg-surface-tinted">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-8 md:flex-row md:items-center md:justify-between">
+        <Reveal className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-8 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-[18px]">
             <span className="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-md bg-iuce-blue-dark text-sm font-bold text-white">
               EKS
@@ -237,7 +248,7 @@ export default async function HomePage() {
             Visitar la revista
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           </a>
-        </div>
+        </Reveal>
       </section>
     </>
   );

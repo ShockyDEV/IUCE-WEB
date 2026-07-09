@@ -70,6 +70,7 @@ model Member {
   email     String?
   photo     String?
   portalUrl String? // perfil en produccioncientifica.usal.es
+  orcid     String? // p. ej. https://orcid.org/0000-0001-9987-5584
   role      String? // Directora, Subdirector, Secretario, null = miembro
   active    Boolean        @default(true)
   order     Int            @default(0)

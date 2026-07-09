@@ -3,6 +3,7 @@ import { Calendar, ChevronRight, MapPin } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { buttonClassName } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/reveal";
 import { prisma } from "@/lib/prisma";
 import { getBlock } from "@/lib/content-blocks-service";
 import {
@@ -211,6 +212,7 @@ export default async function EventosPage() {
             <h2 className="mb-[18px] text-xl font-bold text-gray-900">
               Destacado
             </h2>
+            <Reveal>
             <article className="grid overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm lg:grid-cols-[1.2fr_1fr]">
               <div className="flex flex-col gap-3.5 p-8">
                 <div className="flex items-center gap-2.5">
@@ -263,6 +265,7 @@ export default async function EventosPage() {
                 className="min-h-[280px] w-full border-0"
               />
             </article>
+            </Reveal>
           </div>
         </section>
       ) : null}
@@ -275,11 +278,9 @@ export default async function EventosPage() {
               Próximos
             </h2>
             <div className="flex flex-col gap-3">
-              {upcomingRest.map((e) => (
-                <article
-                  key={e.key}
-                  className="flex items-center gap-[18px] rounded-xl border border-gray-200 bg-surface-card px-[22px] py-[18px] shadow-sm"
-                >
+              {upcomingRest.map((e, i) => (
+                <Reveal key={e.key} delay={i * 90}>
+                <article className="flex items-center gap-[18px] rounded-xl border border-gray-200 bg-surface-card px-[22px] py-[18px] shadow-sm">
                   <span className="flex h-14 w-14 flex-none flex-col items-center justify-center rounded-md bg-iuce-blue-dark text-white">
                     <span className="text-base font-bold leading-none">
                       {e.top}
@@ -299,6 +300,7 @@ export default async function EventosPage() {
                     aria-hidden="true"
                   />
                 </article>
+                </Reveal>
               ))}
             </div>
           </div>

@@ -11,6 +11,8 @@ export interface PublicMember {
   photo: string | null;
   /** Perfil en el Portal de Investigación de la USAL (si consta). */
   portalUrl: string | null;
+  /** URL del ORCID (si consta; se edita desde el panel). */
+  orcid: string | null;
 }
 
 function initialsOf(name: string) {
@@ -61,7 +63,7 @@ export function MembersGrid({
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((m) => {
-          const inner = (
+          const persona = (
             <>
               {m.photo ? (
                 <Image
@@ -92,23 +94,40 @@ export function MembersGrid({
               </div>
             </>
           );
-          const cardClass =
-            "flex items-center gap-4 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm";
-          // Como en la web original: la ficha enlaza a su perfil en el
-          // Portal de Investigación de la USAL.
-          return m.portalUrl ? (
-            <a
+          return (
+            <div
               key={m.name}
-              href={m.portalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${cardClass} transition-all hover:border-brand-400 hover:shadow-md`}
+              className="flex items-center gap-3 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm transition-all hover:border-brand-400 hover:shadow-md"
             >
-              {inner}
-            </a>
-          ) : (
-            <div key={m.name} className={cardClass}>
-              {inner}
+              {/* Foto + nombre enlazan al perfil del Portal de Investigación
+                  (como en la web original) */}
+              {m.portalUrl ? (
+                <a
+                  href={m.portalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`Producción científica de ${m.name}`}
+                  className="flex min-w-0 flex-1 items-center gap-4"
+                >
+                  {persona}
+                </a>
+              ) : (
+                <div className="flex min-w-0 flex-1 items-center gap-4">
+                  {persona}
+                </div>
+              )}
+              {m.orcid ? (
+                <a
+                  href={m.orcid}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`ORCID de ${m.name}`}
+                  title="ORCID"
+                  className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-gray-200 text-[10px] font-bold text-[#A6CE39] transition-colors hover:border-[#A6CE39] hover:bg-[#A6CE39]/10"
+                >
+                  iD
+                </a>
+              ) : null}
             </div>
           );
         })}
