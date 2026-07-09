@@ -22,10 +22,16 @@ de administración replica el patrón de [`mupes`](https://github.com/ShockyDEV/
 ```bash
 npm install                 # instala dependencias y genera el cliente Prisma
 cp .env.example .env        # rellena DATABASE_URL, NEXTAUTH_SECRET, RESEND_API_KEY…
-docker compose up -d        # PostgreSQL local en el puerto 5432
+docker compose up -d        # PostgreSQL local en el puerto 5433
 npm run db:push             # crea el esquema en la base de datos
+npm run db:seed             # contenido real + cuenta SUPER_ADMIN
 npm run dev                 # http://localhost:3000
 ```
+
+**Panel de administración**: `http://localhost:3000/admin`. La cuenta inicial
+la crea el seed (variables `ADMIN_EMAIL` / `ADMIN_PASSWORD`; por defecto
+`iuce@usal.es` / `iuce-admin-2026` — cámbiala en producción). Desde
+Configuración, la cuenta SUPER_ADMIN da de alta al resto.
 
 Otros comandos: `npm run build`, `npm run start`, `npm run lint`,
 `npm run test`, `npm run db:seed`.
@@ -72,10 +78,24 @@ página por página. Para verlos, servir esa carpeta con un estático
 ## Estado
 
 - [x] Bootstrap del repo: stack, tokens, layout base, modo claro/oscuro
-- [x] **Inicio** (`/`) recreada desde el prototipo
-- [x] **Instituto** (`/instituto`) y **Formación** (`/formacion`) recreadas
-- [ ] Páginas públicas restantes: Investigación, Doctorado, Eventos,
-      Noticias (+ detalle), Contacto — actualmente marcadores «en construcción»
-- [ ] Panel de administración (`/admin`) — patrón `mupes`
-- [ ] Autenticación (NextAuth v5 Credentials) y modelo de datos sembrado
-- [ ] i18n ES/EN, SEO (sitemap, OG), accesibilidad WCAG 2.1 AA, tests
+- [x] **Todas las páginas públicas** recreadas de los prototipos: Inicio,
+      Instituto, Investigación, Formación, Eventos, Doctorado, Noticias
+      (+ detalle por slug), Contacto — con menú móvil accesible
+- [x] **Base de datos** sembrada con el contenido real (noticias, miembros,
+      grupos, eventos) y **formulario de contacto** end-to-end
+      (validación zod → ContactMessage → email Resend)
+- [x] **Autenticación** NextAuth v5 Credentials (bcrypt, roles
+      ADMIN/SUPER_ADMIN, middleware sobre `/admin/**` y `/api/admin/**`)
+- [x] **Panel de administración completo** (patrón mupes): dashboard con
+      recuentos reales, CRUD de noticias con editor TipTap y slug
+      automático, Páginas por bloques (ContentEditor), Equipo y miembros,
+      Grupos, Eventos, Archivos (dropzone → `/uploads`), Mensajes y
+      Configuración (datos del sitio + cuentas)
+- [x] **Web pública conectada al gestor**: noticias, bloques de página y
+      miembros salen de la BD (con fallback al contenido semilla)
+- [x] SEO (`sitemap.xml`, `robots.txt`, metadata OG), tests Vitest (22) y
+      build de producción verificado
+- [ ] i18n EN (campos `*En` previstos en el esquema; auto-traducción al
+      guardar, patrón mupes) — pendiente
+- [ ] Fotografía real (los huecos `ImagePlaceholder` esperan las fotos que
+      aporte el IUCE) y despliegue (Docker app + Apache + SSL)
