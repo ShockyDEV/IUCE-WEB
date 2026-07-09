@@ -80,6 +80,39 @@ html.dark {
   --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
+/* --------------------------------------------------------------------------
+   Zona solo-claro (login y panel de administración, como en mupes).
+   Redeclara los tokens con sus valores de tema claro para que el subárbol
+   ignore la clase .dark del <html>.
+   -------------------------------------------------------------------------- */
+.theme-light {
+  color-scheme: light;
+
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  --surface-page: var(--gray-50);
+  --surface-card: #ffffff;
+  --iuce-blue-pale: #eff4fb;
+  --surface-tinted: var(--iuce-blue-pale);
+
+  --iuce-blue: #3b7dd8;
+  --usal-red: #c8102e;
+  --usal-red-dark: #a00d24;
+  --brand-ink: #1b3a5c;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+}
+
 html,
 body {
   font-family: var(--font-sans);
