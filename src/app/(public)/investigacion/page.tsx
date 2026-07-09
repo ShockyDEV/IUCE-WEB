@@ -26,6 +26,7 @@ interface GroupCard {
   chip: string | null;
   lead: string | null;
   url: string | null;
+  logo: string | null;
 }
 
 /**
@@ -44,6 +45,7 @@ async function getGrupos(): Promise<GroupCard[]> {
         chip: g.chip,
         lead: g.lead,
         url: g.url,
+        logo: g.logo,
       }));
     }
   } catch {
@@ -55,6 +57,7 @@ async function getGrupos(): Promise<GroupCard[]> {
     chip: g.chip ?? null,
     lead: g.lead ?? null,
     url: g.url ?? null,
+    logo: g.logo ?? null,
   }));
 }
 
@@ -155,6 +158,18 @@ export default async function InvestigacionPage() {
                   key={g.acronym}
                   className="flex flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[22px] shadow-sm"
                 >
+                  {g.logo ? (
+                    // Placa blanca fija: los logos (algunos en negro) deben
+                    // verse igual en tema claro y oscuro.
+                    <div className="mb-1 flex h-16 items-center rounded-md bg-white px-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={g.logo}
+                        alt={`Logotipo de ${g.acronym}`}
+                        className="max-h-12 max-w-[160px] object-contain"
+                      />
+                    </div>
+                  ) : null}
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="text-lg font-bold text-ink">{g.acronym}</h3>
                     {g.chip ? (

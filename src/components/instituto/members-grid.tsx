@@ -57,28 +57,33 @@ export function MembersGrid({
           : `${filtered.length} de ${members.length} miembros`}
       </p>
 
-      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((m) => (
           <div
             key={m.name}
-            className="flex items-center gap-3.5 rounded-xl border border-gray-200 bg-surface-card px-[18px] py-4 shadow-sm"
+            className="flex items-center gap-4 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm"
           >
             {m.photo ? (
               <Image
                 src={m.photo}
                 alt=""
-                width={40}
-                height={40}
-                className="h-10 w-10 flex-none rounded-full object-cover"
+                width={64}
+                height={64}
+                className="h-16 w-16 flex-none rounded-full object-cover"
               />
             ) : (
-              <InitialsAvatar initials={initialsOf(m.name)} />
+              <InitialsAvatar
+                initials={initialsOf(m.name)}
+                className="h-16 w-16 text-lg"
+              />
             )}
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-gray-900">
+              <p className="text-[15px] font-semibold leading-snug text-gray-900">
                 {m.name}
               </p>
-              <p className="mt-px truncate text-xs text-gray-500">{m.area}</p>
+              <p className="mt-0.5 truncate text-[13px] text-gray-500">
+                {m.area}
+              </p>
             </div>
           </div>
         ))}
