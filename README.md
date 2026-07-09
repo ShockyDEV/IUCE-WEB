@@ -73,7 +73,8 @@ página por página. Para verlos, servir esa carpeta con un estático
 
 - [x] Bootstrap del repo: stack, tokens, layout base, modo claro/oscuro
 - [x] **Inicio** (`/`) recreada desde el prototipo
-- [ ] Páginas públicas: Instituto, Investigación, Formación, Doctorado, Eventos,
+- [x] **Instituto** (`/instituto`) y **Formación** (`/formacion`) recreadas
+- [ ] Páginas públicas restantes: Investigación, Doctorado, Eventos,
       Noticias (+ detalle), Contacto — actualmente marcadores «en construcción»
 - [ ] Panel de administración (`/admin`) — patrón `mupes`
 - [ ] Autenticación (NextAuth v5 Credentials) y modelo de datos sembrado
