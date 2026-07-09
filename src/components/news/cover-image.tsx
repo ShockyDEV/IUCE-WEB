@@ -10,6 +10,8 @@ interface CoverImageProps {
   rounded?: "none" | "xl";
   /** Atributo sizes de next/image para el responsive. */
   sizes?: string;
+  /** Zoom suave al pasar el ratón (requiere `group` en la tarjeta padre). */
+  zoom?: boolean;
 }
 
 /**
@@ -22,6 +24,7 @@ export function CoverImage({
   className,
   rounded = "none",
   sizes = "(max-width: 1024px) 100vw, 33vw",
+  zoom = false,
 }: Readonly<CoverImageProps>) {
   if (!src) {
     return (
@@ -45,7 +48,11 @@ export function CoverImage({
         alt={alt}
         fill
         sizes={sizes}
-        className="object-cover"
+        className={cn(
+          "object-cover",
+          zoom &&
+            "transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.05]",
+        )}
       />
     </div>
   );

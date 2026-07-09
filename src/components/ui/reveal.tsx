@@ -7,8 +7,17 @@ interface RevealProps {
   children: React.ReactNode;
   /** Retardo en ms (para escalonar tarjetas de una rejilla). */
   delay?: number;
+  /** Dirección de entrada: desde abajo (por defecto), lados o zoom suave. */
+  from?: "bottom" | "left" | "right" | "scale";
   className?: string;
 }
+
+const FROM_CLASS: Record<NonNullable<RevealProps["from"]>, string> = {
+  bottom: "reveal",
+  left: "reveal reveal-left",
+  right: "reveal reveal-right",
+  scale: "reveal reveal-scale",
+};
 
 /**
  * Aparición suave al entrar en el viewport (fade + leve desplazamiento),
@@ -19,6 +28,7 @@ interface RevealProps {
 export function Reveal({
   children,
   delay = 0,
+  from = "bottom",
   className,
 }: Readonly<RevealProps>) {
   const ref = useRef<HTMLDivElement>(null);
@@ -56,7 +66,7 @@ export function Reveal({
     <div
       ref={ref}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
-      className={cn("reveal", visible && "reveal-visible", className)}
+      className={cn(FROM_CLASS[from], visible && "reveal-visible", className)}
     >
       {children}
     </div>

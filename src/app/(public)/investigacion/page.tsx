@@ -122,7 +122,7 @@ export default async function InvestigacionPage() {
                 : null;
               return (
                 <Reveal key={g.acronym} delay={(i % 3) * 80} className="h-full">
-                <article className="flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[22px] shadow-sm">
+                <article className="card-lift flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[22px] shadow-sm hover:border-brand-400 hover:shadow-md">
                   {g.logo ? (
                     // Placa blanca fija: los logos (algunos en negro) deben
                     // verse igual en tema claro y oscuro.
@@ -190,8 +190,8 @@ export default async function InvestigacionPage() {
           </p>
           <div className="flex flex-col">
             {proyectos.map((p, i) => (
+              <Reveal key={i} delay={i * 80}>
               <article
-                key={i}
                 className={
                   "grid grid-cols-1 items-center gap-3 border-t border-gray-100 py-[18px] sm:grid-cols-[1fr_auto] sm:gap-6" +
                   (i === proyectos.length - 1 ? " border-b" : "")
@@ -207,6 +207,7 @@ export default async function InvestigacionPage() {
                   {String(p.anos)}
                 </span>
               </article>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -223,7 +224,7 @@ export default async function InvestigacionPage() {
             través de la revista EKS y del Portal de Investigación de la USAL.
           </p>
 
-          <div className="mb-6 flex flex-col items-start gap-6 rounded-xl border border-gray-200 bg-surface-tinted p-7 md:flex-row md:items-center md:justify-between">
+          <Reveal from="scale" className="mb-6 flex flex-col items-start gap-6 rounded-xl border border-gray-200 bg-surface-tinted p-7 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-[18px]">
               <span className="flex h-[52px] w-[52px] flex-none items-center justify-center rounded-md bg-iuce-blue-dark text-base font-bold text-white">
                 EKS
@@ -247,14 +248,12 @@ export default async function InvestigacionPage() {
               Visitar la revista
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
-          </div>
+          </Reveal>
 
           <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {articulos.map((a, i) => (
-              <article
-                key={i}
-                className="rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm"
-              >
+              <Reveal key={i} delay={i * 90} className="h-full">
+              <article className="card-lift h-full rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:shadow-md">
                 <p className="mb-2 text-xs font-bold uppercase tracking-wider text-usal-red">
                   {String(a.eyebrow)}
                 </p>
@@ -265,6 +264,7 @@ export default async function InvestigacionPage() {
                   {String(a.autores)} — <em>{String(a.revista)}</em>
                 </p>
               </article>
+              </Reveal>
             ))}
           </div>
           <a

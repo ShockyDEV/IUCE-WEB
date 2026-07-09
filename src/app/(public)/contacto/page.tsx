@@ -3,6 +3,7 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { MapEmbed } from "@/components/ui/map-embed";
 import { ContactForm } from "@/components/contact/contact-form";
+import { Reveal } from "@/components/ui/reveal";
 import { getBlock } from "@/lib/content-blocks-service";
 
 export const metadata: Metadata = {
@@ -59,7 +60,7 @@ export default async function ContactoPage() {
       {/* Datos y formulario */}
       <section>
         <div className="mx-auto grid max-w-6xl items-start gap-12 px-6 pb-16 pt-14 lg:grid-cols-[1fr_1.2fr]">
-          <div className="flex flex-col gap-6">
+          <Reveal from="left" className="flex flex-col gap-6">
             {datos.map((d) => {
               const Icon = d.icon;
               return (
@@ -95,9 +96,11 @@ export default async function ContactoPage() {
                 </a>
               </p>
             </div>
-          </div>
+          </Reveal>
 
-          <ContactForm />
+          <Reveal from="right" delay={120}>
+            <ContactForm />
+          </Reveal>
         </div>
       </section>
     </>

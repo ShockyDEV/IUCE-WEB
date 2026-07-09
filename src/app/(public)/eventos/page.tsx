@@ -212,7 +212,7 @@ export default async function EventosPage() {
             <h2 className="mb-[18px] text-xl font-bold text-gray-900">
               Destacado
             </h2>
-            <Reveal>
+            <Reveal from="scale">
             <article className="grid overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm lg:grid-cols-[1.2fr_1fr]">
               <div className="flex flex-col gap-3.5 p-8">
                 <div className="flex items-center gap-2.5">
@@ -280,7 +280,7 @@ export default async function EventosPage() {
             <div className="flex flex-col gap-3">
               {upcomingRest.map((e, i) => (
                 <Reveal key={e.key} delay={i * 90}>
-                <article className="flex items-center gap-[18px] rounded-xl border border-gray-200 bg-surface-card px-[22px] py-[18px] shadow-sm">
+                <article className="card-lift flex items-center gap-[18px] rounded-xl border border-gray-200 bg-surface-card px-[22px] py-[18px] shadow-sm hover:shadow-md">
                   <span className="flex h-14 w-14 flex-none flex-col items-center justify-center rounded-md bg-iuce-blue-dark text-white">
                     <span className="text-base font-bold leading-none">
                       {e.top}
@@ -315,8 +315,8 @@ export default async function EventosPage() {
           </h2>
           <div className="flex flex-col">
             {past.map((e, i) => (
+              <Reveal key={e.key} delay={Math.min(i, 5) * 60}>
               <article
-                key={e.key}
                 className={cn(
                   "grid grid-cols-1 items-center gap-2 border-t border-gray-100 py-4 sm:grid-cols-[120px_1fr_auto] sm:gap-5",
                   i === past.length - 1 && "border-b",
@@ -335,6 +335,7 @@ export default async function EventosPage() {
                   Celebrado
                 </span>
               </article>
+              </Reveal>
             ))}
             {past.length === 0 ? (
               <p className="py-6 text-sm text-gray-400">

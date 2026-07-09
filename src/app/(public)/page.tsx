@@ -42,18 +42,24 @@ export default async function HomePage() {
       <section className="bg-surface-card">
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-6 pb-[68px] pt-16 lg:grid-cols-[1.05fr_1fr]">
           <div>
-            <p className="mb-3.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-              {heroEyebrow}
-            </p>
-            <h1 className="mb-[18px] text-balance text-4xl font-bold leading-tight tracking-tight text-ink sm:text-[44px]">
-              {heroTitulo}
-            </h1>
-            <div
-              className="page-block mb-7 max-w-[52ch] text-base leading-relaxed text-gray-600"
-              // Bloque editable desde el gestor (inicio:hero-parrafo)
-              dangerouslySetInnerHTML={{ __html: heroParrafo }}
-            />
-            <div className="flex flex-wrap items-center gap-3">
+            <Reveal>
+              <p className="mb-3.5 text-xs font-bold uppercase tracking-wider text-usal-red">
+                {heroEyebrow}
+              </p>
+            </Reveal>
+            <Reveal delay={100}>
+              <h1 className="mb-[18px] text-balance text-4xl font-bold leading-tight tracking-tight text-ink sm:text-[44px]">
+                {heroTitulo}
+              </h1>
+            </Reveal>
+            <Reveal delay={200}>
+              <div
+                className="page-block mb-7 max-w-[52ch] text-base leading-relaxed text-gray-600"
+                // Bloque editable desde el gestor (inicio:hero-parrafo)
+                dangerouslySetInnerHTML={{ __html: heroParrafo }}
+              />
+            </Reveal>
+            <Reveal delay={300} className="flex flex-wrap items-center gap-3">
               <Link
                 href="/instituto"
                 className={buttonClassName({ size: "lg" })}
@@ -66,8 +72,11 @@ export default async function HomePage() {
               >
                 Plan de Formación Docente
               </Link>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-6 border-t border-gray-100 pt-5 text-xs text-gray-500">
+            </Reveal>
+            <Reveal
+              delay={420}
+              className="mt-8 flex flex-wrap gap-6 border-t border-gray-100 pt-5 text-xs text-gray-500"
+            >
               {hitosHero.map((h) => {
                 const Icon = iconFor(h.icon);
                 return (
@@ -83,10 +92,10 @@ export default async function HomePage() {
                   </span>
                 );
               })}
-            </div>
+            </Reveal>
           </div>
 
-          <div className="relative">
+          <Reveal from="right" delay={250} className="relative">
             <div className="relative h-[380px] w-full overflow-hidden rounded-xl">
               <Image
                 src="/images/edificio-solis.jpg"
@@ -100,7 +109,7 @@ export default async function HomePage() {
             <div className="pointer-events-none absolute bottom-[22px] left-0 rounded-r-md bg-iuce-blue-dark px-3.5 py-2 text-xs text-white">
               Paseo de Canalejas 169 · Edificio Solís, 1.ª planta
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -118,7 +127,7 @@ export default async function HomePage() {
                   {...(external
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
-                  className="flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm transition-all hover:border-brand-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
+                  className="card-lift flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:border-brand-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
                 >
                   <span className="flex h-[38px] w-[38px] items-center justify-center rounded-md bg-iuce-blue-pale">
                     <Icon
@@ -159,11 +168,12 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {latestNews.map((item, i) => (
               <Reveal key={item.slug} delay={i * 90} className="h-full">
-              <Link href={`/noticias/${item.slug}`} className="block h-full">
-                <article className="flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm transition-all hover:border-brand-400 hover:shadow-md">
+              <Link href={`/noticias/${item.slug}`} className="group block h-full">
+                <article className="card-lift flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm hover:border-brand-400 hover:shadow-md">
                   <CoverImage
                     src={item.coverImage}
                     alt={item.photoLabel}
+                    zoom
                     className="h-[150px] w-full"
                   />
                   <div className="flex flex-col gap-2 px-5 pb-5 pt-[18px]">
@@ -190,7 +200,7 @@ export default async function HomePage() {
 
       {/* Banda EKS */}
       <section className="border-t border-gray-200 bg-surface-tinted">
-        <Reveal className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-8 md:flex-row md:items-center md:justify-between">
+        <Reveal from="scale" className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-8 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-[18px]">
             <span className="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-md bg-iuce-blue-dark text-sm font-bold text-white">
               EKS

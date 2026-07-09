@@ -97,7 +97,7 @@ export function MembersGrid({
           return (
             <div
               key={m.name}
-              className="flex items-center gap-3 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm transition-all hover:border-brand-400 hover:shadow-md"
+              className="card-lift flex items-center gap-3 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:border-brand-400 hover:shadow-md"
             >
               {/* Foto + nombre enlazan al perfil del Portal de Investigación
                   (como en la web original) */}

@@ -234,6 +234,7 @@ export default async function InstitutoPage() {
       {/* Perfil */}
       <section id="perfil" className="scroll-mt-20">
         <div className="mx-auto grid max-w-6xl items-start gap-12 px-6 py-14 lg:grid-cols-[1.4fr_1fr]">
+          <Reveal from="left">
           <div>
             <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
               Perfil
@@ -269,7 +270,8 @@ export default async function InstitutoPage() {
             </p>
           </div>
 
-          <aside className="flex flex-col gap-4">
+          </Reveal>
+          <Reveal from="right" delay={120} className="flex flex-col gap-4">
             <div className="rounded-xl border border-gray-200 border-t-[3px] border-t-usal-red bg-surface-card p-6 shadow-sm">
               <Quote className="h-[22px] w-[22px] text-usal-red" aria-hidden="true" />
               {/* Cita editable desde el gestor (instituto:cita-directora) */}
@@ -321,7 +323,7 @@ export default async function InstitutoPage() {
                 );
               })}
             </div>
-          </aside>
+          </Reveal>
         </div>
       </section>
 
@@ -341,7 +343,7 @@ export default async function InstitutoPage() {
           <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {equipo.map((p, i) => (
               <Reveal key={p.name} delay={i * 90} className="h-full">
-              <div className="flex h-full flex-col items-start gap-4 rounded-xl border border-gray-200 bg-surface-page p-6 shadow-sm">
+              <div className="card-lift flex h-full flex-col items-start gap-4 rounded-xl border border-gray-200 bg-surface-page p-6 shadow-sm hover:shadow-md">
                 {p.photo ? (
                   <Image
                     src={p.photo}
@@ -533,10 +535,8 @@ export default async function InstitutoPage() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {instalaciones.map((f, i) => (
-              <figure
-                key={i}
-                className="m-0 overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm"
-              >
+              <Reveal key={i} delay={(i % 4) * 90} className="h-full">
+              <figure className="card-lift m-0 h-full overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm hover:shadow-md">
                 {f.foto ? (
                   <div className="relative h-[140px] w-full">
                     <Image
@@ -563,6 +563,7 @@ export default async function InstitutoPage() {
                   </p>
                 </figcaption>
               </figure>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -584,7 +585,7 @@ export default async function InstitutoPage() {
               dangerouslySetInnerHTML={{ __html: edificioTexto }}
             />
           </div>
-          <div className="relative h-[340px] w-full overflow-hidden rounded-xl">
+          <Reveal from="right" className="relative h-[340px] w-full overflow-hidden rounded-xl">
             <Image
               src="/images/edificio-solis.jpg"
               alt="Fachada del Edificio Solís, sede del IUCE"
@@ -592,7 +593,7 @@ export default async function InstitutoPage() {
               sizes="(max-width: 1024px) 100vw, 55vw"
               className="object-cover"
             />
-          </div>
+          </Reveal>
         </div>
       </section>
     </>

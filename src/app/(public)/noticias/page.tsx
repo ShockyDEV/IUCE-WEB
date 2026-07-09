@@ -6,6 +6,7 @@ import { CoverImage } from "@/components/news/cover-image";
 import { NEWS_CATEGORIES } from "@/lib/content/news";
 import { getPublishedNews } from "@/lib/news-service";
 import { getBlock } from "@/lib/content-blocks-service";
+import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = {
@@ -128,12 +129,14 @@ export default async function NoticiasPage({
       {featured && currentPage === 1 ? (
         <section>
           <div className="mx-auto max-w-6xl px-6 pb-3 pt-12">
-            <Link href={`/noticias/${featured.slug}`} className="block">
-              <article className="grid overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm transition-all hover:border-brand-400 hover:shadow-md lg:grid-cols-[1.2fr_1fr]">
+            <Reveal from="scale">
+            <Link href={`/noticias/${featured.slug}`} className="group block">
+              <article className="card-lift grid overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm hover:border-brand-400 hover:shadow-md lg:grid-cols-[1.2fr_1fr]">
                 <CoverImage
                   src={featured.coverImage}
                   alt={featured.photoLabel}
                   sizes="(max-width: 1024px) 100vw, 55vw"
+                  zoom
                   className="min-h-[300px] w-full"
                 />
                 <div className="flex flex-col gap-3 p-8">
@@ -161,6 +164,7 @@ export default async function NoticiasPage({
                 </div>
               </article>
             </Link>
+            </Reveal>
           </div>
         </section>
       ) : null}
@@ -174,12 +178,14 @@ export default async function NoticiasPage({
             </p>
           ) : (
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {feed.map((n) => (
-                <Link key={n.slug} href={`/noticias/${n.slug}`}>
-                  <article className="flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm transition-all hover:border-brand-400 hover:shadow-md">
+              {feed.map((n, i) => (
+                <Reveal key={n.slug} delay={(i % 3) * 80} className="h-full">
+                <Link href={`/noticias/${n.slug}`} className="group block h-full">
+                  <article className="card-lift flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm hover:border-brand-400 hover:shadow-md">
                     <CoverImage
                       src={n.coverImage}
                       alt={n.photoLabel}
+                      zoom
                       className="h-[150px] w-full"
                     />
                     <div className="flex flex-col gap-2 px-5 pb-5 pt-[18px]">
@@ -200,6 +206,7 @@ export default async function NoticiasPage({
                     </div>
                   </article>
                 </Link>
+                </Reveal>
               ))}
             </div>
           )}

@@ -18,6 +18,8 @@ import {
   getListBlock,
 } from "@/lib/content-blocks-service";
 import { iconFor } from "@/lib/icon-map";
+import { Reveal } from "@/components/ui/reveal";
+import { CountUp } from "@/components/ui/count-up";
 import { cn } from "@/lib/cn";
 
 export const dynamic = "force-dynamic";
@@ -93,20 +95,25 @@ export default async function FormacionPage() {
 
           <div className="grid grid-cols-2 gap-3.5">
             {datos.map((d, i) => (
-              <div
+              <Reveal
                 key={i}
+                from="right"
+                delay={i * 110}
                 className={cn(
-                  "rounded-xl border border-gray-200 bg-surface-page p-5",
                   i === datos.length - 1 &&
                     datos.length % 2 === 1 &&
                     "col-span-2",
                 )}
               >
-                <p className="text-3xl font-bold text-ink">{String(d.cifra)}</p>
+              <div className="h-full rounded-xl border border-gray-200 bg-surface-page p-5">
+                <p className="text-3xl font-bold text-ink">
+                  <CountUp value={String(d.cifra)} />
+                </p>
                 <p className="mt-1 text-xs leading-snug text-gray-500">
                   {String(d.texto)}
                 </p>
               </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -122,10 +129,8 @@ export default async function FormacionPage() {
             {destinatarios.map((d, i) => {
               const Icon = iconFor(d.icon);
               return (
-                <div
-                  key={i}
-                  className="flex items-start gap-3.5 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm"
-                >
+                <Reveal key={i} delay={i * 90} className="h-full">
+                <div className="flex h-full items-start gap-3.5 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm">
                   <span className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-md bg-iuce-blue-pale text-ink">
                     <Icon className="h-[19px] w-[19px]" aria-hidden="true" />
                   </span>
@@ -138,6 +143,7 @@ export default async function FormacionPage() {
                     </p>
                   </div>
                 </div>
+                </Reveal>
               );
             })}
           </div>
@@ -157,10 +163,10 @@ export default async function FormacionPage() {
             {actividades.map((a, i) => {
               const Icon = iconFor(a.icon);
               return (
+                <Reveal key={i} delay={i * 90} className="h-full">
                 <article
-                  key={i}
                   className={cn(
-                    "flex flex-col gap-3 rounded-xl border border-gray-200 border-t-[3px] bg-surface-page p-6 shadow-sm",
+                    "card-lift flex h-full flex-col gap-3 rounded-xl border border-gray-200 border-t-[3px] bg-surface-page p-6 shadow-sm hover:shadow-md",
                     a.acentoRojo ? "border-t-usal-red" : "border-t-iuce-blue",
                   )}
                 >
@@ -187,6 +193,7 @@ export default async function FormacionPage() {
                     </a>
                   ) : null}
                 </article>
+                </Reveal>
               );
             })}
           </div>

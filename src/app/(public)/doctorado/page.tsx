@@ -169,15 +169,14 @@ export default async function DoctoradoPage() {
             {lineas.map((l, i) => {
               const Icon = iconFor(l.icon);
               return (
-                <div
-                  key={i}
-                  className="flex flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[18px] shadow-sm"
-                >
+                <Reveal key={i} delay={(i % 4) * 80} className="h-full">
+                <div className="card-lift flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[18px] shadow-sm hover:shadow-md">
                   <Icon className="h-5 w-5 text-ink" aria-hidden="true" />
                   <p className="text-sm font-semibold leading-snug text-gray-900">
                     {String(l.texto)}
                   </p>
                 </div>
+                </Reveal>
               );
             })}
           </div>
@@ -207,7 +206,7 @@ export default async function DoctoradoPage() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {grupos.map((g, i) => (
               <Reveal key={g.acronym} delay={(i % 3) * 80} className="h-full">
-              <div className="h-full rounded-xl border border-gray-200 bg-surface-page p-5 shadow-sm">
+              <div className="card-lift h-full rounded-xl border border-gray-200 bg-surface-page p-5 shadow-sm hover:shadow-md">
                 {g.logo ? (
                   // Placa blanca fija: logos oscuros visibles también en
                   // modo oscuro.
@@ -245,10 +244,8 @@ export default async function DoctoradoPage() {
             </h2>
             <div className="flex flex-col gap-3.5">
               {pasos.map((p, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3.5 rounded-xl border border-gray-200 bg-surface-card px-5 py-[18px] shadow-sm"
-                >
+                <Reveal key={i} from="left" delay={i * 100}>
+                <div className="flex items-start gap-3.5 rounded-xl border border-gray-200 bg-surface-card px-5 py-[18px] shadow-sm">
                   <span className="flex h-[34px] w-[34px] flex-none items-center justify-center rounded-full bg-iuce-blue-pale text-sm font-bold text-ink">
                     {i + 1}
                   </span>
@@ -261,11 +258,12 @@ export default async function DoctoradoPage() {
                     </p>
                   </div>
                 </div>
+                </Reveal>
               ))}
             </div>
           </div>
 
-          <aside className="flex flex-col gap-4">
+          <Reveal from="right" delay={150} className="flex flex-col gap-4">
             <div className="rounded-xl border border-gray-200 border-t-[3px] border-t-usal-red bg-surface-card p-6 shadow-sm">
               <p className="mb-3 text-xs font-bold uppercase tracking-wider text-usal-red">
                 Coordinación
@@ -336,7 +334,7 @@ export default async function DoctoradoPage() {
                 dangerouslySetInnerHTML={{ __html: semanaDoctoral }}
               />
             </div>
-          </aside>
+          </Reveal>
         </div>
       </section>
     </>
