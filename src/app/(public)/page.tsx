@@ -11,8 +11,10 @@ import {
 } from "lucide-react";
 import { buttonClassName } from "@/components/ui/button";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
-import { news as newsContent } from "@/lib/content/news";
+import { getPublishedNews } from "@/lib/news-service";
 import { cn } from "@/lib/cn";
+
+export const dynamic = "force-dynamic";
 
 const quickAccess = [
   {
@@ -46,13 +48,9 @@ const quickAccess = [
   },
 ];
 
-// Últimas 3 noticias del módulo de contenido compartido (misma fuente que
-// /noticias; cuando el gestor esté activo, saldrán de la base de datos).
-const latestNews = [...newsContent]
-  .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-  .slice(0, 3);
-
-export default function HomePage() {
+export default async function HomePage() {
+  // Últimas 3 noticias publicadas (gestionadas desde el panel).
+  const latestNews = (await getPublishedNews()).slice(0, 3);
   return (
     <>
       {/* Hero */}

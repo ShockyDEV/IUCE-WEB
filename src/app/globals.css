@@ -159,3 +159,71 @@ body {
 .news-body ol {
   padding-left: 1.5rem;
 }
+
+/* --------------------------------------------------------------------------
+   Contenido editable del editor TipTap (panel de administración).
+   -------------------------------------------------------------------------- */
+.rte-content p {
+  margin: 0 0 12px;
+}
+
+.rte-content p:last-child {
+  margin-bottom: 0;
+}
+
+.rte-content h2,
+.rte-content h3 {
+  margin: 16px 0 8px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.rte-content h2 {
+  font-size: 1.25rem;
+}
+
+.rte-content h3 {
+  font-size: 1.05rem;
+}
+
+.rte-content ul,
+.rte-content ol {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.rte-content blockquote {
+  margin: 8px 0 12px;
+  padding: 10px 16px;
+  border-left: 3px solid var(--usal-red);
+  background: var(--surface-tinted);
+  border-radius: 0 6px 6px 0;
+}
+
+.rte-content a {
+  color: var(--iuce-blue);
+  text-decoration: underline;
+}
+
+.rte-content img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.rte-content table {
+  border-collapse: collapse;
+  margin: 0 0 12px;
+  width: 100%;
+}
+
+.rte-content th,
+.rte-content td {
+  border: 1px solid var(--gray-300);
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.rte-content th {
+  background: var(--gray-50);
+  font-weight: 600;
+}

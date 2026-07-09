@@ -3,11 +3,8 @@ import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
-import {
-  getFeaturedNews,
-  getFeedNews,
-  NEWS_CATEGORIES,
-} from "@/lib/content/news";
+import { NEWS_CATEGORIES } from "@/lib/content/news";
+import { getPublishedNews } from "@/lib/news-service";
 import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = {
@@ -16,9 +13,13 @@ export const metadata: Metadata = {
     "La actualidad del IUCE: congresos, formación, premios y vida académica.",
 };
 
-export default function NoticiasPage() {
-  const featured = getFeaturedNews();
-  const feed = getFeedNews();
+export const dynamic = "force-dynamic";
+
+export default async function NoticiasPage() {
+  // Contenido gestionado desde el panel de administración.
+  const all = await getPublishedNews();
+  const featured = all[0];
+  const feed = all.slice(1);
   const chips = ["Todas", ...NEWS_CATEGORIES.filter((c) => c !== "Institucional")];
 
   return (
@@ -66,6 +67,7 @@ export default function NoticiasPage() {
       </section>
 
       {/* Destacada */}
+      {featured ? (
       <section>
         <div className="mx-auto max-w-6xl px-6 pb-3 pt-12">
           <Link href={`/noticias/${featured.slug}`} className="block">
@@ -97,6 +99,7 @@ export default function NoticiasPage() {
           </Link>
         </div>
       </section>
+      ) : null}
 
       {/* Feed */}
       <section>

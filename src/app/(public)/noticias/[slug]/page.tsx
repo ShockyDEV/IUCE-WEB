@@ -4,18 +4,21 @@ import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { ShareRow } from "@/components/news/share-row";
-import { getNews, getRelatedNews, news } from "@/lib/content/news";
+import {
+  getPublishedNews,
+  getPublishedNewsBySlug,
+} from "@/lib/news-service";
 
 interface PageProps {
   params: { slug: string };
 }
 
-export function generateStaticParams() {
-  return news.map((n) => ({ slug: n.slug }));
-}
+export const dynamic = "force-dynamic";
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const item = getNews(params.slug);
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const item = await getPublishedNewsBySlug(params.slug);
   if (!item) return { title: "Noticia no encontrada" };
   return {
     title: item.title,
@@ -29,11 +32,13 @@ export function generateMetadata({ params }: PageProps): Metadata {
   };
 }
 
-export default function NoticiaPage({ params }: Readonly<PageProps>) {
-  const item = getNews(params.slug);
+export default async function NoticiaPage({ params }: Readonly<PageProps>) {
+  const item = await getPublishedNewsBySlug(params.slug);
   if (!item) notFound();
 
-  const related = getRelatedNews(item.slug);
+  const related = (await getPublishedNews())
+    .filter((n) => n.slug !== item.slug)
+    .slice(0, 3);
   const shortTitle =
     item.title.length > 30 ? `${item.title.slice(0, 28)}…` : item.title;
 
@@ -61,9 +66,11 @@ export default function NoticiaPage({ params }: Readonly<PageProps>) {
         <h1 className="mb-4 text-balance text-4xl font-bold leading-tight tracking-tight text-ink">
           {item.title}
         </h1>
-        <p className="mb-7 text-lg leading-relaxed text-gray-500">
-          {item.excerpt}
-        </p>
+        {item.excerpt ? (
+          <p className="mb-7 text-lg leading-relaxed text-gray-500">
+            {item.excerpt}
+          </p>
+        ) : null}
       </div>
 
       {/* Imagen principal (960px) */}
@@ -85,7 +92,7 @@ export default function NoticiaPage({ params }: Readonly<PageProps>) {
       <div className="mx-auto max-w-[800px] px-6 pt-7">
         <div
           className="news-body flex flex-col gap-[18px] text-[17px] leading-[1.75] text-gray-600"
-          // Contenido del gestor (HTML del editor); en producción vendrá de la BD
+          // Contenido del gestor (HTML del editor del panel de administración)
           dangerouslySetInnerHTML={{ __html: item.content }}
         />
 

@@ -1,20 +1,8 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-guard";
 import { slugify } from "@/lib/slugify";
-import { NEWS_CATEGORIES } from "@/lib/content/news";
-
-export const newsInputSchema = z.object({
-  title: z.string().trim().min(3).max(300),
-  slug: z.string().trim().max(300).optional(),
-  excerpt: z.string().trim().max(1000).optional().nullable(),
-  content: z.string().min(1),
-  coverImage: z.string().trim().max(500).optional().nullable(),
-  category: z.enum(NEWS_CATEGORIES),
-  status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]),
-  publishedAt: z.string().datetime().optional().nullable(),
-});
+import { newsInputSchema } from "@/lib/admin-schemas";
 
 /** Garantiza un slug único añadiendo -2, -3… si ya existe. */
 async function uniqueSlug(base: string, excludeId?: string): Promise<string> {
