@@ -19,6 +19,7 @@ export interface MemberRow {
   email: string | null;
   role: string | null;
   photo: string | null;
+  portalUrl: string | null;
   active: boolean;
   order: number;
   groupId: string | null;
@@ -41,6 +42,8 @@ interface FormState {
   area: string;
   email: string;
   role: string;
+  photo: string;
+  portalUrl: string;
   order: number;
   groupId: string;
   active: boolean;
@@ -51,6 +54,8 @@ const EMPTY: FormState = {
   area: "",
   email: "",
   role: "",
+  photo: "",
+  portalUrl: "",
   order: 0,
   groupId: "",
   active: true,
@@ -88,6 +93,8 @@ export function MembersSection({
         area: form.area || null,
         email: form.email || null,
         role: form.role || null,
+        photo: form.photo || null,
+        portalUrl: form.portalUrl || "",
         order: form.order,
         groupId: form.groupId || null,
         active: form.active,
@@ -224,6 +231,8 @@ export function MembersSection({
                           area: row.area ?? "",
                           email: row.email ?? "",
                           role: row.role ?? "",
+                          photo: row.photo ?? "",
+                          portalUrl: row.portalUrl ?? "",
                           order: row.order,
                           groupId: row.groupId ?? "",
                           active: row.active,
@@ -310,6 +319,34 @@ export function MembersSection({
                 type="text"
                 value={form.area}
                 onChange={(e) => setForm({ ...form, area: e.target.value })}
+                className={inputClass}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="m-photo" className={labelClass}>
+                Foto (URL — súbela antes en Archivos)
+              </label>
+              <input
+                id="m-photo"
+                type="text"
+                value={form.photo}
+                placeholder="/uploads/…"
+                onChange={(e) => setForm({ ...form, photo: e.target.value })}
+                className={inputClass}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="m-portal" className={labelClass}>
+                Perfil en el Portal de Investigación (URL)
+              </label>
+              <input
+                id="m-portal"
+                type="url"
+                value={form.portalUrl}
+                placeholder="https://produccioncientifica.usal.es/investigadores/…"
+                onChange={(e) =>
+                  setForm({ ...form, portalUrl: e.target.value })
+                }
                 className={inputClass}
               />
             </div>

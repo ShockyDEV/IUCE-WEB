@@ -33,6 +33,8 @@ export async function PUT(request: Request, { params }: Params) {
       name: d.name,
       lead: d.lead || null,
       url: d.url || null,
+      logo: d.logo || null,
+      chip: d.chip || null,
     },
   });
   return NextResponse.json({ item: updated });

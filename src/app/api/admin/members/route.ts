@@ -33,6 +33,8 @@ export async function POST(request: Request) {
       area: d.area || null,
       email: d.email || null,
       role: d.role || null,
+      photo: d.photo || null,
+      portalUrl: d.portalUrl || null,
       active: d.active ?? true,
       order: d.order ?? 0,
       groupId: d.groupId || null,

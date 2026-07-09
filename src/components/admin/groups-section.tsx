@@ -17,6 +17,8 @@ export interface GroupRow {
   name: string;
   lead: string | null;
   url: string | null;
+  logo: string | null;
+  chip: string | null;
   memberCount: number;
 }
 
@@ -26,9 +28,18 @@ interface FormState {
   name: string;
   lead: string;
   url: string;
+  logo: string;
+  chip: string;
 }
 
-const EMPTY: FormState = { acronym: "", name: "", lead: "", url: "" };
+const EMPTY: FormState = {
+  acronym: "",
+  name: "",
+  lead: "",
+  url: "",
+  logo: "",
+  chip: "",
+};
 
 export function GroupsSection({ rows }: Readonly<{ rows: GroupRow[] }>) {
   const router = useRouter();
@@ -48,6 +59,8 @@ export function GroupsSection({ rows }: Readonly<{ rows: GroupRow[] }>) {
         name: form.name,
         lead: form.lead || null,
         url: form.url || "",
+        logo: form.logo || null,
+        chip: form.chip || null,
       };
       const res = await fetch(
         form.id ? `/api/admin/groups/${form.id}` : "/api/admin/groups",
@@ -148,6 +161,8 @@ export function GroupsSection({ rows }: Readonly<{ rows: GroupRow[] }>) {
                           name: row.name,
                           lead: row.lead ?? "",
                           url: row.url ?? "",
+                          logo: row.logo ?? "",
+                          chip: row.chip ?? "",
                         })
                       }
                       className="flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
@@ -233,6 +248,33 @@ export function GroupsSection({ rows }: Readonly<{ rows: GroupRow[] }>) {
                 onChange={(e) => setForm({ ...form, url: e.target.value })}
                 className={inputClass}
               />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="g-logo" className={labelClass}>
+                  Logo (URL — súbelo antes en Archivos)
+                </label>
+                <input
+                  id="g-logo"
+                  type="text"
+                  placeholder="/uploads/… o /images/groups/…"
+                  value={form.logo}
+                  onChange={(e) => setForm({ ...form, logo: e.target.value })}
+                  className={inputClass}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="g-chip" className={labelClass}>
+                  Distintivo (p. ej. UIC 081)
+                </label>
+                <input
+                  id="g-chip"
+                  type="text"
+                  value={form.chip}
+                  onChange={(e) => setForm({ ...form, chip: e.target.value })}
+                  className={inputClass}
+                />
+              </div>
             </div>
             <div className="flex items-center gap-3 border-t border-gray-100 pt-4">
               <Button variant="primary" onClick={handleSave} disabled={saving}>

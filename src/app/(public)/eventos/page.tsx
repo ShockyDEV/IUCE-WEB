@@ -3,10 +3,12 @@ import { Calendar, ChevronRight, MapPin } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { buttonClassName } from "@/components/ui/button";
+import { prisma } from "@/lib/prisma";
+import { getBlock } from "@/lib/content-blocks-service";
 import {
-  featuredEvent,
-  pastEvents,
-  upcomingEvents,
+  featuredEvent as featuredFallback,
+  pastEvents as pastFallback,
+  upcomingEvents as upcomingFallback,
 } from "@/lib/content/events";
 import { cn } from "@/lib/cn";
 
@@ -16,9 +18,148 @@ export const metadata: Metadata = {
     "Congresos, seminarios y jornadas organizados por el IUCE o con participación del Instituto.",
 };
 
+export const dynamic = "force-dynamic";
+
 const filtros = ["Todos", "Congresos", "Seminarios", "Jornadas"];
 
-export default function EventosPage() {
+interface EventVM {
+  id: string;
+  title: string;
+  type: string;
+  startsAt: Date;
+  location: string | null;
+  url: string | null;
+}
+
+function monthShort(d: Date): string {
+  return new Intl.DateTimeFormat("es-ES", { month: "short" })
+    .format(d)
+    .replace(".", "")
+    .toUpperCase();
+}
+
+function monthYear(d: Date): string {
+  const s = new Intl.DateTimeFormat("es-ES", {
+    month: "long",
+    year: "numeric",
+  }).format(d);
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function dayMonth(d: Date): string {
+  return new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short" })
+    .format(d)
+    .replace(".", "");
+}
+
+/** Eventos del gestor; contenido semilla como fallback sin BD. */
+async function getEventos(): Promise<{
+  upcoming: EventVM[];
+  past: EventVM[];
+} | null> {
+  try {
+    const rows = await prisma.event.findMany({
+      where: { status: { not: "CANCELLED" } },
+    });
+    if (rows.length === 0) return null;
+    const upcoming = rows
+      .filter((e) => e.status === "UPCOMING")
+      .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
+    const past = rows
+      .filter((e) => e.status === "PAST")
+      .sort((a, b) => b.startsAt.getTime() - a.startsAt.getTime());
+    return { upcoming, past };
+  } catch {
+    return null;
+  }
+}
+
+export default async function EventosPage() {
+  const [intro, destacadoDesc, eventos] = await Promise.all([
+    getBlock("eventos", "intro"),
+    getBlock("eventos", "destacado-descripcion"),
+    getEventos(),
+  ]);
+
+  // Destacado: el primer congreso próximo (o el primer próximo si no hay
+  // congresos). Su descripción se edita en Contenido → Páginas → Eventos.
+  let featured: {
+    title: string;
+    type: string;
+    dateDisplay: string;
+    location: string;
+    url: string | null;
+    photoLabel: string;
+  } | null = null;
+  let upcomingRest: Array<{
+    key: string;
+    title: string;
+    meta: string;
+    top: string;
+    bottom: string;
+  }> = [];
+  let past: Array<{
+    key: string;
+    title: string;
+    meta: string;
+    dateRange: string;
+  }> = [];
+
+  if (eventos) {
+    const destacado =
+      eventos.upcoming.find((e) => e.type === "Congreso") ??
+      eventos.upcoming[0] ??
+      null;
+    if (destacado) {
+      featured = {
+        title: destacado.title,
+        type: destacado.type,
+        dateDisplay: monthYear(destacado.startsAt),
+        location: destacado.location ?? "Salamanca",
+        url: destacado.url,
+        photoLabel: `Imagen — ${destacado.title}`,
+      };
+    }
+    upcomingRest = eventos.upcoming
+      .filter((e) => e.id !== (destacado?.id ?? ""))
+      .map((e) => ({
+        key: e.id,
+        title: e.title,
+        meta: [e.type, e.location].filter(Boolean).join(" · "),
+        top: String(e.startsAt.getDate()),
+        bottom: monthShort(e.startsAt),
+      }));
+    past = eventos.past.map((e) => ({
+      key: e.id,
+      title: e.title,
+      meta: [e.type, e.location].filter(Boolean).join(" · "),
+      dateRange: dayMonth(e.startsAt),
+    }));
+  } else {
+    // Fallback estático (BD no disponible)
+    featured = {
+      title: featuredFallback.title,
+      type: featuredFallback.type,
+      dateDisplay: featuredFallback.dateDisplay,
+      location: featuredFallback.location,
+      url: featuredFallback.url,
+      photoLabel: featuredFallback.photoLabel,
+    };
+    upcomingRest = upcomingFallback.map((e) => ({
+      key: e.title,
+      title: e.title,
+      meta: e.meta,
+      top: e.dateBlock?.top ?? "",
+      bottom: e.dateBlock?.bottom ?? "",
+    }));
+    past = pastFallback.map((e) => ({
+      key: e.title,
+      title: e.title,
+      meta: e.meta,
+      dateRange: e.dateRange ?? "",
+    }));
+  }
+
   return (
     <>
       {/* Cabecera */}
@@ -35,10 +176,10 @@ export default function EventosPage() {
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
             Eventos
           </h1>
-          <p className="mb-6 max-w-[70ch] text-base leading-relaxed text-gray-600">
-            Congresos, seminarios y jornadas organizados por el IUCE o con
-            participación del Instituto.
-          </p>
+          <div
+            className="page-block mb-6 max-w-[70ch] text-base leading-relaxed text-gray-600"
+            dangerouslySetInnerHTML={{ __html: intro }}
+          />
           <div
             className="flex flex-wrap gap-2"
             role="group"
@@ -64,112 +205,119 @@ export default function EventosPage() {
       </section>
 
       {/* Destacado */}
-      <section>
-        <div className="mx-auto max-w-6xl px-6 pb-2 pt-12">
-          <h2 className="mb-[18px] text-xl font-bold text-gray-900">
-            Destacado
-          </h2>
-          <article className="grid overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm lg:grid-cols-[1.2fr_1fr]">
-            <div className="flex flex-col gap-3.5 p-8">
-              <div className="flex items-center gap-2.5">
-                <span className="rounded-full bg-iuce-blue-pale px-3 py-[3px] text-xs font-medium text-ink">
-                  {featuredEvent.type}
-                </span>
-                <span className="rounded-full bg-[#DBEAFE] px-3 py-[3px] text-xs font-medium text-[#1D4ED8]">
-                  Próximo
-                </span>
+      {featured ? (
+        <section>
+          <div className="mx-auto max-w-6xl px-6 pb-2 pt-12">
+            <h2 className="mb-[18px] text-xl font-bold text-gray-900">
+              Destacado
+            </h2>
+            <article className="grid overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm lg:grid-cols-[1.2fr_1fr]">
+              <div className="flex flex-col gap-3.5 p-8">
+                <div className="flex items-center gap-2.5">
+                  <span className="rounded-full bg-iuce-blue-pale px-3 py-[3px] text-xs font-medium text-ink">
+                    {featured.type}
+                  </span>
+                  <span className="rounded-full bg-[#DBEAFE] px-3 py-[3px] text-xs font-medium text-[#1D4ED8]">
+                    Próximo
+                  </span>
+                </div>
+                <h3 className="text-balance text-2xl font-bold leading-snug text-ink">
+                  {featured.title}
+                </h3>
+                <div
+                  className="page-block text-base leading-relaxed text-gray-600"
+                  dangerouslySetInnerHTML={{ __html: destacadoDesc }}
+                />
+                <div className="flex flex-wrap gap-5 text-sm text-gray-500">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Calendar
+                      className="h-[15px] w-[15px] text-usal-red"
+                      aria-hidden="true"
+                    />
+                    {featured.dateDisplay}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <MapPin
+                      className="h-[15px] w-[15px] text-usal-red"
+                      aria-hidden="true"
+                    />
+                    {featured.location}
+                  </span>
+                </div>
+                {featured.url ? (
+                  <div className="mt-auto pt-2">
+                    <a
+                      href={featured.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={buttonClassName({ variant: "outline" })}
+                    >
+                      Web del evento ↗
+                    </a>
+                  </div>
+                ) : null}
               </div>
-              <h3 className="text-balance text-2xl font-bold leading-snug text-ink">
-                {featuredEvent.title}
-              </h3>
-              <p className="text-base leading-relaxed text-gray-600">
-                {featuredEvent.description}
-              </p>
-              <div className="flex flex-wrap gap-5 text-sm text-gray-500">
-                <span className="inline-flex items-center gap-1.5">
-                  <Calendar
-                    className="h-[15px] w-[15px] text-usal-red"
-                    aria-hidden="true"
-                  />
-                  {featuredEvent.dateDisplay}
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <MapPin
-                    className="h-[15px] w-[15px] text-usal-red"
-                    aria-hidden="true"
-                  />
-                  {featuredEvent.location}
-                </span>
-              </div>
-              <div className="mt-auto pt-2">
-                <a
-                  href={featuredEvent.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={buttonClassName({ variant: "outline" })}
-                >
-                  Web del congreso ↗
-                </a>
-              </div>
-            </div>
-            <ImagePlaceholder
-              label={featuredEvent.photoLabel}
-              rounded="none"
-              className="min-h-[280px] w-full border-0"
-            />
-          </article>
-        </div>
-      </section>
+              <ImagePlaceholder
+                label={featured.photoLabel}
+                rounded="none"
+                className="min-h-[280px] w-full border-0"
+              />
+            </article>
+          </div>
+        </section>
+      ) : null}
 
       {/* Próximos */}
-      <section>
-        <div className="mx-auto max-w-6xl px-6 pb-2 pt-10">
-          <h2 className="mb-[18px] text-xl font-bold text-gray-900">
-            Próximos
-          </h2>
-          <div className="flex flex-col gap-3">
-            {upcomingEvents.map((e) => (
-              <article
-                key={e.title}
-                className="flex items-center gap-[18px] rounded-xl border border-gray-200 bg-surface-card px-[22px] py-[18px] shadow-sm"
-              >
-                <span className="flex h-14 w-14 flex-none flex-col items-center justify-center rounded-md bg-iuce-blue-dark text-white">
-                  <span className="text-base font-bold leading-none">
-                    {e.dateBlock?.top}
+      {upcomingRest.length > 0 ? (
+        <section>
+          <div className="mx-auto max-w-6xl px-6 pb-2 pt-10">
+            <h2 className="mb-[18px] text-xl font-bold text-gray-900">
+              Próximos
+            </h2>
+            <div className="flex flex-col gap-3">
+              {upcomingRest.map((e) => (
+                <article
+                  key={e.key}
+                  className="flex items-center gap-[18px] rounded-xl border border-gray-200 bg-surface-card px-[22px] py-[18px] shadow-sm"
+                >
+                  <span className="flex h-14 w-14 flex-none flex-col items-center justify-center rounded-md bg-iuce-blue-dark text-white">
+                    <span className="text-base font-bold leading-none">
+                      {e.top}
+                    </span>
+                    <span className="mt-0.5 text-[10px] tracking-[.06em] opacity-85">
+                      {e.bottom}
+                    </span>
                   </span>
-                  <span className="mt-0.5 text-[10px] tracking-[.06em] opacity-85">
-                    {e.dateBlock?.bottom}
-                  </span>
-                </span>
-                <div className="flex-1">
-                  <h3 className="mb-[3px] text-base font-semibold text-gray-900">
-                    {e.title}
-                  </h3>
-                  <p className="text-xs text-gray-500">{e.meta}</p>
-                </div>
-                <ChevronRight
-                  className="h-[18px] w-[18px] flex-none text-gray-400"
-                  aria-hidden="true"
-                />
-              </article>
-            ))}
+                  <div className="flex-1">
+                    <h3 className="mb-[3px] text-base font-semibold text-gray-900">
+                      {e.title}
+                    </h3>
+                    <p className="text-xs text-gray-500">{e.meta}</p>
+                  </div>
+                  <ChevronRight
+                    className="h-[18px] w-[18px] flex-none text-gray-400"
+                    aria-hidden="true"
+                  />
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* Celebrados */}
       <section>
         <div className="mx-auto max-w-6xl px-6 pb-16 pt-10">
           <h2 className="mb-[18px] text-xl font-bold text-gray-900">
-            Celebrados en 2026
+            Celebrados
           </h2>
           <div className="flex flex-col">
-            {pastEvents.map((e, i) => (
+            {past.map((e, i) => (
               <article
-                key={e.title}
+                key={e.key}
                 className={cn(
                   "grid grid-cols-1 items-center gap-2 border-t border-gray-100 py-4 sm:grid-cols-[120px_1fr_auto] sm:gap-5",
-                  i === pastEvents.length - 1 && "border-b",
+                  i === past.length - 1 && "border-b",
                 )}
               >
                 <span className="text-xs uppercase tracking-wider text-gray-400">
@@ -186,6 +334,11 @@ export default function EventosPage() {
                 </span>
               </article>
             ))}
+            {past.length === 0 ? (
+              <p className="py-6 text-sm text-gray-400">
+                No hay eventos celebrados registrados.
+              </p>
+            ) : null}
           </div>
         </div>
       </section>

@@ -21,6 +21,15 @@ export const memberInputSchema = z.object({
   area: z.string().trim().max(300).optional().nullable(),
   email: z.string().trim().email().max(200).optional().nullable().or(z.literal("")),
   role: z.string().trim().max(100).optional().nullable(),
+  photo: z.string().trim().max(500).optional().nullable(),
+  portalUrl: z
+    .string()
+    .trim()
+    .url()
+    .max(300)
+    .optional()
+    .nullable()
+    .or(z.literal("")),
   active: z.boolean().optional(),
   order: z.number().int().min(0).optional(),
   groupId: z.string().optional().nullable(),
@@ -31,6 +40,8 @@ export const groupInputSchema = z.object({
   name: z.string().trim().min(2).max(500),
   lead: z.string().trim().max(200).optional().nullable(),
   url: z.string().trim().url().max(300).optional().nullable().or(z.literal("")),
+  logo: z.string().trim().max(500).optional().nullable(),
+  chip: z.string().trim().max(50).optional().nullable(),
 });
 
 export const eventInputSchema = z.object({

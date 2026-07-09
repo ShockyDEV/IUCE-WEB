@@ -59,6 +59,22 @@ export const PAGE_BLOCKS: PageDef[] = [
     ],
   },
   {
+    pageSlug: "eventos",
+    label: "Eventos",
+    blocks: [
+      {
+        blockKey: "intro",
+        title: "Eventos — párrafo de cabecera",
+        defaultContent: `<p>Congresos, seminarios y jornadas organizados por el IUCE o con participación del Instituto.</p>`,
+      },
+      {
+        blockKey: "destacado-descripcion",
+        title: "Eventos — descripción del evento destacado",
+        defaultContent: `<p>Salamanca acoge el congreso internacional de referencia en desarrollo educativo universitario, organizado con la participación del IUCE. Tres días de conferencias, talleres y comunicaciones en torno a la formación docente en Educación Superior.</p>`,
+      },
+    ],
+  },
+  {
     pageSlug: "contacto",
     label: "Contacto",
     blocks: [

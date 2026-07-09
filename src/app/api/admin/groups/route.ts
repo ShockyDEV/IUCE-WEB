@@ -33,6 +33,8 @@ export async function POST(request: Request) {
       name: d.name,
       lead: d.lead || null,
       url: d.url || null,
+      logo: d.logo || null,
+      chip: d.chip || null,
     },
   });
   return NextResponse.json({ item: created }, { status: 201 });

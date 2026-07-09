@@ -18,6 +18,8 @@ export default async function AdminGroupsPage() {
     name: g.name,
     lead: g.lead,
     url: g.url,
+    logo: g.logo,
+    chip: g.chip,
     memberCount: g._count.members,
   }));
 
