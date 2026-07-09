@@ -18,7 +18,8 @@ import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { buttonClassName } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
-import { getBlock } from "@/lib/content-blocks-service";
+import { getBlock, getListBlock } from "@/lib/content-blocks-service";
+import { iconFor } from "@/lib/icon-map";
 import { prisma } from "@/lib/prisma";
 import { groups as groupsFallback } from "@/lib/content/groups";
 
@@ -30,16 +31,6 @@ export const metadata: Metadata = {
     "Programa de Doctorado «Formación en la Sociedad del Conocimiento» del IUCE: líneas de investigación, grupos y perfil de ingreso.",
 };
 
-const lineas = [
-  { icon: ClipboardCheck, label: "Evaluación educativa y orientación" },
-  { icon: MousePointerClick, label: "Interacción y eLearning" },
-  { icon: Lightbulb, label: "Investigación-innovación en tecnología educativa" },
-  { icon: Megaphone, label: "Comunicación y Educación" },
-  { icon: Stethoscope, label: "Medicina y Educación" },
-  { icon: Bot, label: "Inteligencia artificial y robótica en la educación" },
-  { icon: Cog, label: "Ingeniería y Educación" },
-  { icon: Library, label: "Educación, bibliotecas y cultura científica" },
-];
 
 interface GroupMini {
   acronym: string;
@@ -110,31 +101,18 @@ async function getCoordinador(): Promise<Coordinator> {
 /** ORCID del coordinador (no consta en el export; verificar con el IUCE). */
 const COORDINATOR_ORCID = "https://orcid.org/0000-0001-9987-5584";
 
-const pasos = [
-  {
-    n: "1",
-    title: "Grado universitario en áreas afines",
-    desc: "Educación, Psicología, Ciencias de la Salud, Ingeniería, Información y Documentación, Comunicación, Sociología y Ciencias Sociales afines.",
-  },
-  {
-    n: "2",
-    title: "Máster universitario",
-    desc: "Título de Máster Universitario o equivalente que acredite para cursar un programa de doctorado.",
-  },
-  {
-    n: "3",
-    title: "Vocación investigadora",
-    desc: "Interés por la producción científica: cada doctorando se integra en un grupo de investigación del programa.",
-  },
-];
 
 export default async function DoctoradoPage() {
   // Bloque editable (doctorado:programa) + grupos y coordinador del gestor
-  const [programa, grupos, coordinador] = await Promise.all([
-    getBlock("doctorado", "programa"),
-    getGrupos(),
-    getCoordinador(),
-  ]);
+  const [programa, semanaDoctoral, grupos, coordinador, lineas, pasos] =
+    await Promise.all([
+      getBlock("doctorado", "programa"),
+      getBlock("doctorado", "semana-doctoral"),
+      getGrupos(),
+      getCoordinador(),
+      getListBlock("doctorado", "list:lineas"),
+      getListBlock("doctorado", "list:pasos"),
+    ]);
 
   return (
     <>
@@ -188,16 +166,16 @@ export default async function DoctoradoPage() {
             la USAL y un amplio plantel nacional e internacional.
           </p>
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-            {lineas.map((l) => {
-              const Icon = l.icon;
+            {lineas.map((l, i) => {
+              const Icon = iconFor(l.icon);
               return (
                 <div
-                  key={l.label}
+                  key={i}
                   className="flex flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[18px] shadow-sm"
                 >
                   <Icon className="h-5 w-5 text-ink" aria-hidden="true" />
                   <p className="text-sm font-semibold leading-snug text-gray-900">
-                    {l.label}
+                    {String(l.texto)}
                   </p>
                 </div>
               );
@@ -266,20 +244,20 @@ export default async function DoctoradoPage() {
               Perfil de ingreso
             </h2>
             <div className="flex flex-col gap-3.5">
-              {pasos.map((p) => (
+              {pasos.map((p, i) => (
                 <div
-                  key={p.n}
+                  key={i}
                   className="flex items-start gap-3.5 rounded-xl border border-gray-200 bg-surface-card px-5 py-[18px] shadow-sm"
                 >
                   <span className="flex h-[34px] w-[34px] flex-none items-center justify-center rounded-full bg-iuce-blue-pale text-sm font-bold text-ink">
-                    {p.n}
+                    {i + 1}
                   </span>
                   <div>
                     <p className="mb-[3px] text-sm font-semibold text-gray-900">
-                      {p.title}
+                      {String(p.titulo)}
                     </p>
                     <p className="text-sm leading-normal text-gray-600">
-                      {p.desc}
+                      {String(p.texto)}
                     </p>
                   </div>
                 </div>
@@ -353,10 +331,10 @@ export default async function DoctoradoPage() {
                   Semana Doctoral
                 </p>
               </div>
-              <p className="text-xs leading-relaxed text-gray-600">
-                Cada otoño, el programa celebra su Semana Doctoral: seminarios,
-                defensa de avances y encuentro entre doctorandos y grupos.
-              </p>
+              <div
+                className="page-block text-xs leading-relaxed text-gray-600"
+                dangerouslySetInnerHTML={{ __html: semanaDoctoral }}
+              />
             </div>
           </aside>
         </div>

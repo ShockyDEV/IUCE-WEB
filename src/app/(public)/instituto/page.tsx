@@ -26,7 +26,8 @@ import {
   type PublicMember,
 } from "@/components/instituto/members-grid";
 import { buttonClassName } from "@/components/ui/button";
-import { getBlock } from "@/lib/content-blocks-service";
+import { getBlock, getListBlock } from "@/lib/content-blocks-service";
+import { iconFor } from "@/lib/icon-map";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -46,25 +47,7 @@ const subnav = [
   { id: "edificio", label: "Edificio histórico" },
 ];
 
-const funciones = [
-  "Investigación interdisciplinar, básica y aplicada, en el ámbito de la formación y de la educación",
-  "Cursos especializados de postgrado y doctorado, y formación del personal investigador",
-  "Programas de investigación educativa en colaboración con otras universidades e institutos",
-  "Contratos y convenios con entidades públicas o privadas, nacionales o extranjeras",
-  "Participación en los procesos de evaluación de la calidad institucional",
-  "Colaboración con los niveles no universitarios para la mejora del sistema educativo",
-];
 
-const hitos = [
-  { icon: Landmark, year: "1969", text: "creación de los ICE en España" },
-  { icon: School, year: "Años 80", text: "especialización en educación universitaria" },
-  {
-    icon: ShieldCheck,
-    year: "2008",
-    text: "verificación como Instituto de Investigación (ACSUCYL)",
-  },
-  { icon: FileCheck, year: "2023", text: "nuevo Reglamento del IUCE" },
-];
 
 interface DirectionMember {
   name: string;
@@ -199,38 +182,28 @@ const contacto = [
   },
 ];
 
-const instalaciones = [
-  {
-    photo: "Foto — aulas",
-    title: "Aulas de formación",
-    desc: "Docencia, cursos del Plan de Formación y seminarios",
-  },
-  {
-    photo: "Foto — laboratorios",
-    title: "Laboratorios",
-    desc: "Equipamiento especializado para experimentación e investigación",
-  },
-  {
-    photo: "Foto — salas de trabajo",
-    title: "Salas de trabajo",
-    desc: "Análisis de datos, redacción y preparación de proyectos",
-  },
-  {
-    photo: "Foto — dirección",
-    title: "Dirección y secretaría",
-    desc: "Coordinación de proyectos y atención a la comunidad",
-  },
-];
 
 export default async function InstitutoPage() {
   // Bloques editables desde el panel (Contenido → Páginas) + datos del gestor
-  const [perfilIntro, edificioTexto, miembros, { equipo, secretaria }] =
-    await Promise.all([
-      getBlock("instituto", "perfil-intro"),
-      getBlock("instituto", "edificio"),
-      getMiembros(),
-      getDireccion(),
-    ]);
+  const [
+    perfilIntro,
+    edificioTexto,
+    citaDirectora,
+    miembros,
+    { equipo, secretaria },
+    funciones,
+    hitos,
+    instalaciones,
+  ] = await Promise.all([
+    getBlock("instituto", "perfil-intro"),
+    getBlock("instituto", "edificio"),
+    getBlock("instituto", "cita-directora"),
+    getMiembros(),
+    getDireccion(),
+    getListBlock("instituto", "list:funciones"),
+    getListBlock("instituto", "list:hitos"),
+    getListBlock("instituto", "list:instalaciones"),
+  ]);
   const directora = equipo.find((m) => m.role === "Directora") ?? null;
 
   return (
@@ -274,16 +247,16 @@ export default async function InstitutoPage() {
               Funciones del Instituto
             </h3>
             <ul className="mb-2.5 grid list-none grid-cols-1 gap-2.5 p-0 sm:grid-cols-2">
-              {funciones.map((f) => (
+              {funciones.map((f, i) => (
                 <li
-                  key={f}
+                  key={i}
                   className="flex items-start gap-2.5 text-sm leading-normal text-gray-600"
                 >
                   <Check
                     className="mt-[3px] h-[15px] w-[15px] flex-none text-usal-red"
                     aria-hidden="true"
                   />
-                  {f}
+                  {String(f.texto)}
                 </li>
               ))}
             </ul>
@@ -299,24 +272,11 @@ export default async function InstitutoPage() {
           <aside className="flex flex-col gap-4">
             <div className="rounded-xl border border-gray-200 border-t-[3px] border-t-usal-red bg-surface-card p-6 shadow-sm">
               <Quote className="h-[22px] w-[22px] text-usal-red" aria-hidden="true" />
-              {/* Texto íntegro de la web original del IUCE (página «Perfil») */}
-              <p className="my-3 text-sm leading-relaxed text-gray-600">
-                «En la actual coyuntura de cambio y transformación de la
-                Universidad hacia el espacio europeo de educación superior, las
-                tareas y actividades docentes se replantean desde nuevas
-                perspectivas a las que los profesores universitarios tienen que
-                acomodar sus esquemas docentes. Se precisan reformulaciones que
-                adecuen la docencia a las características actuales de la
-                sociedad de la información y a los modos de ser y aprender,
-                centradas en el estudiante.
-              </p>
-              <p className="mb-4 text-sm leading-relaxed text-gray-600">
-                Aunque, como en otros muchos problemas, las medidas
-                fundamentales sean estructurales, el IUCE debe investigar,
-                formar e informar para que, en la medida de sus posibilidades,
-                se avance en el conocimiento de estos problemas y en su
-                mejoramiento.»
-              </p>
+              {/* Cita editable desde el gestor (instituto:cita-directora) */}
+              <div
+                className="page-block my-3 mb-4 text-sm leading-relaxed text-gray-600"
+                dangerouslySetInnerHTML={{ __html: citaDirectora }}
+              />
               <div className="flex items-center gap-3">
                 {directora?.photo ? (
                   <Image
@@ -343,17 +303,19 @@ export default async function InstitutoPage() {
             </div>
 
             <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-surface-tinted px-6 py-5">
-              {hitos.map((h) => {
-                const Icon = h.icon;
+              {hitos.map((h, i) => {
+                const Icon = iconFor(h.icon);
                 return (
-                  <div key={h.year} className="flex items-center gap-3">
+                  <div key={i} className="flex items-center gap-3">
                     <Icon
                       className="h-[18px] w-[18px] flex-none text-ink"
                       aria-hidden="true"
                     />
                     <p className="text-sm text-gray-600">
-                      <strong className="text-gray-900">{h.year}</strong> —{" "}
-                      {h.text}
+                      <strong className="text-gray-900">
+                        {String(h.etiqueta)}
+                      </strong>{" "}
+                      — {String(h.texto)}
                     </p>
                   </div>
                 );
@@ -570,22 +532,34 @@ export default async function InstitutoPage() {
             </a>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {instalaciones.map((f) => (
+            {instalaciones.map((f, i) => (
               <figure
-                key={f.title}
+                key={i}
                 className="m-0 overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm"
               >
-                <ImagePlaceholder
-                  label={f.photo}
-                  rounded="none"
-                  className="h-[140px] w-full border-x-0 border-t-0"
-                />
+                {f.foto ? (
+                  <div className="relative h-[140px] w-full">
+                    <Image
+                      src={String(f.foto)}
+                      alt={String(f.titulo)}
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <ImagePlaceholder
+                    label={`Foto — ${String(f.titulo)}`}
+                    rounded="none"
+                    className="h-[140px] w-full border-x-0 border-t-0"
+                  />
+                )}
                 <figcaption className="px-4 py-3.5">
                   <p className="text-sm font-semibold text-gray-900">
-                    {f.title}
+                    {String(f.titulo)}
                   </p>
                   <p className="mt-[3px] text-xs leading-snug text-gray-500">
-                    {f.desc}
+                    {String(f.texto)}
                   </p>
                 </figcaption>
               </figure>

@@ -1,67 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  BookOpen,
-  CalendarCheck,
-  GraduationCap,
-  Landmark,
-  MapPin,
-  Microscope,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { buttonClassName } from "@/components/ui/button";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { CoverImage } from "@/components/news/cover-image";
 import { Reveal } from "@/components/ui/reveal";
 import { getPublishedNews } from "@/lib/news-service";
-import { getBlock, getBlockText } from "@/lib/content-blocks-service";
+import {
+  getBlock,
+  getBlockText,
+  getListBlock,
+} from "@/lib/content-blocks-service";
+import { iconFor } from "@/lib/icon-map";
 import { cn } from "@/lib/cn";
 
 export const dynamic = "force-dynamic";
 
-const quickAccess = [
-  {
-    href: "/investigacion",
-    icon: Microscope,
-    title: "Investigación",
-    description: "Grupos, proyectos y publicaciones en Educación Superior",
-    accent: false as const,
-  },
-  {
-    href: "/formacion",
-    icon: GraduationCap,
-    title: "Formación",
-    description: "Plan de Formación Docente del PDI y actividades formativas",
-    accent: false as const,
-  },
-  {
-    href: "/doctorado",
-    icon: BookOpen,
-    title: "Doctorado",
-    description: "Programa «Formación en la Sociedad del Conocimiento»",
-    accent: false as const,
-  },
-  {
-    href: "https://reservas.iuce.usal.es",
-    icon: CalendarCheck,
-    title: "Reserva de espacios",
-    description: "Aulas y salas del IUCE — reservas.iuce.usal.es",
-    accent: true as const,
-    external: true,
-  },
-];
 
 export default async function HomePage() {
   // Últimas 3 noticias + hero editable desde el panel (Contenido → Páginas).
-  const [latestNews, heroEyebrow, heroTitulo, heroParrafo] = await Promise.all(
-    [
-      getPublishedNews().then((n) => n.slice(0, 3)),
-      getBlockText("inicio", "hero-eyebrow"),
-      getBlockText("inicio", "hero-titulo"),
-      getBlock("inicio", "hero-parrafo"),
-    ],
-  );
+  const [
+    latestNews,
+    heroEyebrow,
+    heroTitulo,
+    heroParrafo,
+    hitosHero,
+    quickAccess,
+    eksDescripcion,
+  ] = await Promise.all([
+    getPublishedNews().then((n) => n.slice(0, 3)),
+    getBlockText("inicio", "hero-eyebrow"),
+    getBlockText("inicio", "hero-titulo"),
+    getBlock("inicio", "hero-parrafo"),
+    getListBlock("inicio", "list:hitos-hero"),
+    getListBlock("inicio", "list:accesos-rapidos"),
+    getBlock("inicio", "eks-descripcion"),
+  ]);
   return (
     <>
       {/* Hero */}
@@ -94,27 +68,21 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="mt-8 flex flex-wrap gap-6 border-t border-gray-100 pt-5 text-xs text-gray-500">
-              <span className="inline-flex items-center gap-1.5">
-                <Landmark
-                  className="h-3.5 w-3.5 text-usal-red"
-                  aria-hidden="true"
-                />
-                Origen ICE, 1969
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck
-                  className="h-3.5 w-3.5 text-usal-red"
-                  aria-hidden="true"
-                />
-                Verificado ACSUCYL, 2008
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <MapPin
-                  className="h-3.5 w-3.5 text-usal-red"
-                  aria-hidden="true"
-                />
-                Edificio Solís, Salamanca
-              </span>
+              {hitosHero.map((h) => {
+                const Icon = iconFor(h.icon);
+                return (
+                  <span
+                    key={String(h.texto)}
+                    className="inline-flex items-center gap-1.5"
+                  >
+                    <Icon
+                      className="h-3.5 w-3.5 text-usal-red"
+                      aria-hidden="true"
+                    />
+                    {String(h.texto)}
+                  </span>
+                );
+              })}
             </div>
           </div>
 
@@ -140,12 +108,14 @@ export default async function HomePage() {
       <section className="border-y border-gray-200 bg-surface-page">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-6 py-9 sm:grid-cols-2 lg:grid-cols-4">
           {quickAccess.map((item, i) => {
-            const Icon = item.icon;
+            const Icon = iconFor(item.icon);
+            const enlace = String(item.enlace ?? "#");
+            const external = enlace.startsWith("http");
             return (
-              <Reveal key={item.href} delay={i * 80} className="h-full">
+              <Reveal key={enlace + i} delay={i * 80} className="h-full">
                 <Link
-                  href={item.href}
-                  {...(item.external
+                  href={enlace}
+                  {...(external
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
                   className="flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm transition-all hover:border-brand-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
@@ -154,16 +124,16 @@ export default async function HomePage() {
                     <Icon
                       className={cn(
                         "h-5 w-5",
-                        item.accent ? "text-usal-red" : "text-ink",
+                        item.destacado ? "text-usal-red" : "text-ink",
                       )}
                       aria-hidden="true"
                     />
                   </span>
                   <span className="text-base font-semibold text-gray-900">
-                    {item.title}
+                    {String(item.titulo)}
                   </span>
                   <span className="text-xs leading-snug text-gray-500">
-                    {item.description}
+                    {String(item.descripcion)}
                   </span>
                 </Link>
               </Reveal>
@@ -229,11 +199,10 @@ export default async function HomePage() {
               <p className="text-base font-semibold text-gray-900">
                 Education in the Knowledge Society
               </p>
-              <p className="mt-0.5 text-sm text-gray-600">
-                La revista científica del IUCE: investigación interdisciplinar
-                sobre la Sociedad del Conocimiento, con énfasis en los procesos
-                educativos mediados por tecnologías.
-              </p>
+              <div
+                className="page-block mt-0.5 text-sm text-gray-600"
+                dangerouslySetInnerHTML={{ __html: eksDescripcion }}
+              />
             </div>
           </div>
           <a

@@ -4,6 +4,7 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SectionSubnav } from "@/components/layout/section-subnav";
 import { buttonClassName } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
+import { getBlock, getListBlock } from "@/lib/content-blocks-service";
 import { prisma } from "@/lib/prisma";
 import { groups as groupsFallback } from "@/lib/content/groups";
 
@@ -62,52 +63,18 @@ async function getGrupos(): Promise<GroupCard[]> {
   }));
 }
 
-// Nota: DIDEROT figuraba aquí por error como proyecto; es un grupo de
-// investigación del IUCE (ver lib/content/groups.ts) y sale en la sección
-// de grupos desde el gestor.
-const proyectos = [
-  {
-    title: "Competencia digital docente y evaluación auténtica en la universidad",
-    meta: "Plan Estatal de Investigación · IP: Susana Olmos Migueláñez",
-    years: "2024–2027",
-  },
-  {
-    title: "Analítica del aprendizaje para la mejora de la retención universitaria",
-    meta: "Junta de Castilla y León · IP: Fernando Martínez Abad",
-    years: "2025–2028",
-  },
-  {
-    title: "Alfabetización mediática y contenidos audiovisuales en la adolescencia",
-    meta: "Observatorio de los Contenidos Audiovisuales · IP: Juan José Igartua",
-    years: "2024–2026",
-  },
-];
-
-const articulos = [
-  {
-    eyebrow: "Artículo · 2026",
-    title:
-      "Inteligencia artificial generativa en la evaluación universitaria: usos y límites",
-    authors: "García-Peñalvo, F. J. et al.",
-    journal: "Education in the Knowledge Society",
-  },
-  {
-    eyebrow: "Artículo · 2025",
-    title:
-      "Evaluación diagnóstica de competencias informacionales en el acceso a la universidad",
-    authors: "Martínez-Abad, F.; Olmos-Migueláñez, S.",
-    journal: "RELIEVE",
-  },
-  {
-    eyebrow: "Artículo · 2025",
-    title: "Objetos de aprendizaje reutilizables para la formación del profesorado",
-    authors: "Morales Morgado, E. M. et al.",
-    journal: "Comunicar",
-  },
-];
 
 export default async function InvestigacionPage() {
-  const grupos = await getGrupos();
+  // Contenido editable desde el gestor (Contenido → Páginas → Investigación).
+  // Nota: DIDEROT figuraba por error entre los proyectos; es un grupo.
+  const [grupos, intro, eksDescripcion, proyectos, articulos] =
+    await Promise.all([
+      getGrupos(),
+      getBlock("investigacion", "intro"),
+      getBlock("investigacion", "eks-descripcion"),
+      getListBlock("investigacion", "list:proyectos"),
+      getListBlock("investigacion", "list:publicaciones"),
+    ]);
 
   return (
     <>
@@ -125,11 +92,10 @@ export default async function InvestigacionPage() {
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
             La investigación del IUCE
           </h1>
-          <p className="max-w-[75ch] text-base leading-relaxed text-gray-600">
-            Investigación interdisciplinar, básica y aplicada, sobre los
-            procesos de formación en Educación Superior: evaluación educativa,
-            tecnología, comunicación y transferencia al sistema educativo.
-          </p>
+          <div
+            className="page-block max-w-[75ch] text-base leading-relaxed text-gray-600"
+            dangerouslySetInnerHTML={{ __html: intro }}
+          />
           <div className="mt-7">
             <SectionSubnav items={subnav} />
           </div>
@@ -225,7 +191,7 @@ export default async function InvestigacionPage() {
           <div className="flex flex-col">
             {proyectos.map((p, i) => (
               <article
-                key={p.title}
+                key={i}
                 className={
                   "grid grid-cols-1 items-center gap-3 border-t border-gray-100 py-[18px] sm:grid-cols-[1fr_auto] sm:gap-6" +
                   (i === proyectos.length - 1 ? " border-b" : "")
@@ -233,12 +199,12 @@ export default async function InvestigacionPage() {
               >
                 <div>
                   <h3 className="mb-1 text-base font-semibold text-gray-900">
-                    {p.title}
+                    {String(p.titulo)}
                   </h3>
-                  <p className="text-xs text-gray-500">{p.meta}</p>
+                  <p className="text-xs text-gray-500">{String(p.meta)}</p>
                 </div>
                 <span className="justify-self-start whitespace-nowrap rounded-full bg-iuce-blue-pale px-3 py-1 text-xs font-medium text-ink sm:justify-self-auto">
-                  {p.years}
+                  {String(p.anos)}
                 </span>
               </article>
             ))}
@@ -266,11 +232,10 @@ export default async function InvestigacionPage() {
                 <p className="text-lg font-semibold text-gray-900">
                   Education in the Knowledge Society
                 </p>
-                <p className="mt-0.5 max-w-[60ch] text-sm text-gray-600">
-                  Revista científica del IUCE en acceso abierto: investigación
-                  interdisciplinar sobre la Sociedad del Conocimiento y los
-                  procesos educativos mediados por tecnología.
-                </p>
+                <div
+                  className="page-block mt-0.5 max-w-[60ch] text-sm text-gray-600"
+                  dangerouslySetInnerHTML={{ __html: eksDescripcion }}
+                />
               </div>
             </div>
             <a
@@ -285,19 +250,19 @@ export default async function InvestigacionPage() {
           </div>
 
           <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {articulos.map((a) => (
+            {articulos.map((a, i) => (
               <article
-                key={a.title}
+                key={i}
                 className="rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm"
               >
                 <p className="mb-2 text-xs font-bold uppercase tracking-wider text-usal-red">
-                  {a.eyebrow}
+                  {String(a.eyebrow)}
                 </p>
                 <p className="mb-2 text-sm font-semibold leading-normal text-gray-900">
-                  {a.title}
+                  {String(a.titulo)}
                 </p>
                 <p className="text-xs text-gray-500">
-                  {a.authors} — <em>{a.journal}</em>
+                  {String(a.autores)} — <em>{String(a.revista)}</em>
                 </p>
               </article>
             ))}

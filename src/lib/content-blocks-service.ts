@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { PAGE_BLOCKS } from "@/lib/content/page-blocks";
+import { LIST_BLOCKS, type ListItem } from "@/lib/content/list-blocks";
 
 /**
  * Contenido de bloques de páginas estáticas (patrón mupes): devuelve el HTML
@@ -40,4 +41,31 @@ export async function getBlockText(
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
     .trim();
+}
+
+/**
+ * Lista editable (JSON en ContentBlock, blockKey con prefijo "list:").
+ * Devuelve los elementos guardados desde el gestor o, si no existen o no son
+ * un JSON válido, los defaultItems del registro.
+ */
+export async function getListBlock(
+  pageSlug: string,
+  blockKey: string,
+): Promise<ListItem[]> {
+  const def = LIST_BLOCKS.find(
+    (l) => l.pageSlug === pageSlug && l.blockKey === blockKey,
+  );
+  const fallback = def?.defaultItems ?? [];
+
+  try {
+    const row = await prisma.contentBlock.findUnique({
+      where: { pageSlug_blockKey: { pageSlug, blockKey } },
+    });
+    if (!row) return fallback;
+    const parsed: unknown = JSON.parse(row.content);
+    if (Array.isArray(parsed)) return parsed as ListItem[];
+  } catch {
+    // BD no disponible o JSON corrupto: usamos el contenido por defecto.
+  }
+  return fallback;
 }

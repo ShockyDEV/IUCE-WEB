@@ -30,6 +30,12 @@ export const PAGE_BLOCKS: PageDef[] = [
 <p>Ante la transformación de la Universidad hacia el Espacio Europeo de Educación Superior, el IUCE investiga, forma e informa para avanzar en el conocimiento de los procesos de enseñanza-aprendizaje, centrados en el estudiante.</p>`,
       },
       {
+        blockKey: "cita-directora",
+        title: "Perfil — cita de la directora",
+        defaultContent: `<p>«En la actual coyuntura de cambio y transformación de la Universidad hacia el espacio europeo de educación superior, las tareas y actividades docentes se replantean desde nuevas perspectivas a las que los profesores universitarios tienen que acomodar sus esquemas docentes. Se precisan reformulaciones que adecuen la docencia a las características actuales de la sociedad de la información y a los modos de ser y aprender, centradas en el estudiante.</p>
+<p>Aunque, como en otros muchos problemas, las medidas fundamentales sean estructurales, el IUCE debe investigar, formar e informar para que, en la medida de sus posibilidades, se avance en el conocimiento de estos problemas y en su mejoramiento.»</p>`,
+      },
+      {
         blockKey: "edificio",
         title: "Edificio histórico",
         defaultContent: `<p>La sede del IUCE se encuentra en el Edificio Solís, en el Paseo de Canalejas. El Instituto ocupa la primera planta, donde conviven los espacios de dirección, investigación y formación.</p>
@@ -55,6 +61,38 @@ export const PAGE_BLOCKS: PageDef[] = [
         blockKey: "hero-parrafo",
         title: "Portada — párrafo de presentación",
         defaultContent: `<p>El IUCE es el instituto interdisciplinar de la Universidad de Salamanca dedicado a la investigación científica en Educación, el desarrollo tecnológico y la transferencia al ámbito educativo.</p>`,
+      },
+      {
+        blockKey: "eks-descripcion",
+        title: "Portada — banda de la revista EKS",
+        defaultContent: `<p>La revista científica del IUCE: investigación interdisciplinar sobre la Sociedad del Conocimiento, con énfasis en los procesos educativos mediados por tecnologías.</p>`,
+      },
+    ],
+  },
+  {
+    pageSlug: "investigacion",
+    label: "Investigación",
+    blocks: [
+      {
+        blockKey: "intro",
+        title: "Investigación — párrafo de cabecera",
+        defaultContent: `<p>Investigación interdisciplinar, básica y aplicada, sobre los procesos de formación en Educación Superior: evaluación educativa, tecnología, comunicación y transferencia al sistema educativo.</p>`,
+      },
+      {
+        blockKey: "eks-descripcion",
+        title: "Publicaciones — banda de la revista EKS",
+        defaultContent: `<p>Revista científica del IUCE en acceso abierto: investigación interdisciplinar sobre la Sociedad del Conocimiento y los procesos educativos mediados por tecnología.</p>`,
+      },
+    ],
+  },
+  {
+    pageSlug: "noticias",
+    label: "Noticias",
+    blocks: [
+      {
+        blockKey: "intro",
+        title: "Noticias — párrafo de cabecera",
+        defaultContent: `<p>La actividad del Instituto desde 2010: congresos, investigación, formación, premios y vida académica.</p>`,
       },
     ],
   },
@@ -105,9 +143,31 @@ export const PAGE_BLOCKS: PageDef[] = [
     label: "Formación — Plan de Formación Docente",
     blocks: [
       {
+        blockKey: "hero-eyebrow",
+        title: "Cabecera — antetítulo",
+        defaultContent: `<p>Formación del profesorado</p>`,
+      },
+      {
+        blockKey: "hero-titulo",
+        title: "Cabecera — título (incluye el año)",
+        defaultContent: `<p>Plan de Formación Docente 2026</p>`,
+      },
+      {
         blockKey: "intro",
         title: "Plan de Formación — introducción",
         defaultContent: `<p>A iniciativa del Vicerrectorado de Estudios de Grado y Calidad, el Plan recoge la propuesta institucional de formación inicial y permanente para todo el personal docente e investigador de la Universidad de Salamanca.</p>`,
+      },
+      {
+        blockKey: "fdi-intro",
+        title: "Formación Docente Inicial — texto",
+        defaultContent: `<p>La LOSU establece que las profesoras y profesores ayudantes doctores deberán realizar, en el primer año de contrato, un curso de formación docente inicial definido por las universidades a través de sus unidades de formación e innovación docente (art. 78.b).</p>
+<p>Para dar respuesta a este contexto, las cuatro unidades de formación de las universidades públicas de Castilla y León —unidas por un convenio de colaboración desde 2012— ejecutan conjuntamente el programa, con ediciones periódicas de cada módulo a lo largo del año.</p>`,
+      },
+      {
+        blockKey: "cta",
+        title: "Formación — llamada final de contacto",
+        defaultContent: `<p><strong>¿Dudas sobre inscripciones o certificados?</strong></p>
+<p>La Secretaría del IUCE atiende en el 923 294 634 y en iuce@usal.es.</p>`,
       },
     ],
   },
@@ -119,6 +179,11 @@ export const PAGE_BLOCKS: PageDef[] = [
         blockKey: "programa",
         title: "Programa — descripción",
         defaultContent: `<p>Configurado en el seno del IUCE, el programa nace con la vocación de presentar los procesos de enseñanza-aprendizaje como auténticos motores de la Sociedad del Conocimiento, en simbiosis con los avances tecnológicos más punteros. Un enfoque totalmente interdisciplinar que reúne a investigadores de la práctica totalidad de las ramas de conocimiento.</p>`,
+      },
+      {
+        blockKey: "semana-doctoral",
+        title: "Semana Doctoral — texto de la tarjeta",
+        defaultContent: `<p>Cada otoño, el programa celebra su Semana Doctoral: seminarios, defensa de avances y encuentro entre doctorandos y grupos.</p>`,
       },
     ],
   },

@@ -40,10 +40,12 @@ export async function PUT(request: Request) {
   });
 
   // Auto-traducción EN → fila paralela "blockKey:en" (patrón del handoff).
-  // Los ajustes del sitio (_site) no se traducen. Fallo no fatal.
+  // No se traducen ni los ajustes del sitio (_site) ni las listas JSON
+  // ("list:…" — traducirlas corrompería el JSON). Fallo no fatal.
   if (
     pageSlug !== "_site" &&
     !blockKey.endsWith(":en") &&
+    !blockKey.startsWith("list:") &&
     translationEnabled()
   ) {
     const contentEn = await translateHtml(content);

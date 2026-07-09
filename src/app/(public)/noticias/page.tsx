@@ -5,6 +5,7 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { CoverImage } from "@/components/news/cover-image";
 import { NEWS_CATEGORIES } from "@/lib/content/news";
 import { getPublishedNews } from "@/lib/news-service";
+import { getBlock } from "@/lib/content-blocks-service";
 import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = {
@@ -48,7 +49,10 @@ export default async function NoticiasPage({
 }: Readonly<PageProps>) {
   const categoria =
     NEWS_CATEGORIES.find((c) => c === searchParams.categoria) ?? null;
-  const all = await getPublishedNews({ category: categoria ?? undefined });
+  const [all, intro] = await Promise.all([
+    getPublishedNews({ category: categoria ?? undefined }),
+    getBlock("noticias", "intro"),
+  ]);
 
   // La destacada solo abre la primera página del listado sin filtrar.
   const showFeatured = !categoria;
@@ -81,10 +85,10 @@ export default async function NoticiasPage({
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
             Noticias
           </h1>
-          <p className="mb-6 max-w-[70ch] text-base leading-relaxed text-gray-600">
-            La actividad del Instituto desde 2010: congresos, investigación,
-            formación, premios y vida académica.
-          </p>
+          <div
+            className="page-block mb-6 max-w-[70ch] text-base leading-relaxed text-gray-600"
+            dangerouslySetInnerHTML={{ __html: intro }}
+          />
           <nav
             className="flex flex-wrap gap-2"
             aria-label="Filtrar por categoría"

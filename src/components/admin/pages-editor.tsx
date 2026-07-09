@@ -5,7 +5,9 @@ import { Languages } from "lucide-react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { RichTextEditor } from "@/components/admin/rich-text-editor";
+import { ListBlockEditor } from "@/components/admin/list-block-editor";
 import { PAGE_BLOCKS } from "@/lib/content/page-blocks";
+import { LIST_BLOCKS, type ListItem } from "@/lib/content/list-blocks";
 
 const inputClass =
   "h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 outline-none transition-colors focus:border-iuce-blue focus:ring-2 focus:ring-iuce-blue/25";
@@ -132,6 +134,27 @@ export function PagesEditor({ saved }: Readonly<PagesEditorProps>) {
           }
         />
       ))}
+
+      {/* Listas estructuradas de la página (iconos, tarjetas, filas…) */}
+      {LIST_BLOCKS.filter((l) => l.pageSlug === pageSlug).map((def) => {
+        const raw = saved[`${def.pageSlug}:${def.blockKey}`];
+        let initial = def.defaultItems;
+        if (raw) {
+          try {
+            const parsed: unknown = JSON.parse(raw);
+            if (Array.isArray(parsed)) initial = parsed as ListItem[];
+          } catch {
+            // JSON corrupto: se parte de los valores por defecto
+          }
+        }
+        return (
+          <ListBlockEditor
+            key={`${def.pageSlug}:${def.blockKey}`}
+            def={def}
+            initialItems={initial}
+          />
+        );
+      })}
     </div>
   );
 }
