@@ -17,6 +17,7 @@ import {
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SectionSubnav } from "@/components/layout/section-subnav";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
+import Image from "next/image";
 import { InitialsAvatar } from "@/components/ui/initials-avatar";
 import {
   MembersGrid,
@@ -63,23 +64,75 @@ const hitos = [
   { icon: FileCheck, year: "2023", text: "nuevo Reglamento del IUCE" },
 ];
 
-const direccion = [
+interface DirectionMember {
+  name: string;
+  role: string;
+  email: string | null;
+  photo: string | null;
+}
+
+// Fallback si la BD no está disponible; en producción salen del gestor.
+const direccionFallback: DirectionMember[] = [
   {
     name: "Susana Olmos Migueláñez",
     role: "Directora",
     email: "solmos@usal.es",
+    photo: null,
   },
   {
     name: "Francisco José García Peñalvo",
     role: "Subdirector",
     email: "fgarcia@usal.es",
+    photo: null,
   },
   {
     name: "Javier Félix Merchán Sánchez-Jara",
     role: "Secretario",
     email: "javiermerchan@usal.es",
+    photo: null,
   },
 ];
+
+const CARGOS_DIRECCION = ["Directora", "Subdirector", "Secretario"];
+
+/** Equipo directivo y Secretaría administrativa, con sus fotos del gestor. */
+async function getDireccion(): Promise<{
+  equipo: DirectionMember[];
+  secretaria: DirectionMember | null;
+}> {
+  try {
+    const rows = await prisma.member.findMany({
+      where: { role: { not: null }, active: true },
+    });
+    const equipo = CARGOS_DIRECCION.map((cargo) =>
+      rows.find((m) => m.role === cargo),
+    )
+      .filter((m): m is NonNullable<typeof m> => Boolean(m))
+      .map((m) => ({
+        name: m.name,
+        role: m.role!,
+        email: m.email,
+        photo: m.photo,
+      }));
+    const sec = rows.find((m) => m.role?.startsWith("Secretaría"));
+    if (equipo.length > 0) {
+      return {
+        equipo,
+        secretaria: sec
+          ? {
+              name: sec.name,
+              role: sec.role!,
+              email: sec.email,
+              photo: sec.photo,
+            }
+          : null,
+      };
+    }
+  } catch {
+    // BD no disponible
+  }
+  return { equipo: direccionFallback, secretaria: null };
+}
 
 // Miembros por defecto (si la BD no está disponible); en producción salen
 // del gestor (Equipo y miembros).
@@ -161,12 +214,15 @@ const instalaciones = [
 ];
 
 export default async function InstitutoPage() {
-  // Bloques editables desde el panel (Contenido → Páginas) + miembros del gestor
-  const [perfilIntro, edificioTexto, miembros] = await Promise.all([
-    getBlock("instituto", "perfil-intro"),
-    getBlock("instituto", "edificio"),
-    getMiembros(),
-  ]);
+  // Bloques editables desde el panel (Contenido → Páginas) + datos del gestor
+  const [perfilIntro, edificioTexto, miembros, { equipo, secretaria }] =
+    await Promise.all([
+      getBlock("instituto", "perfil-intro"),
+      getBlock("instituto", "edificio"),
+      getMiembros(),
+      getDireccion(),
+    ]);
+  const directora = equipo.find((m) => m.role === "Directora") ?? null;
 
   return (
     <>
@@ -234,22 +290,43 @@ export default async function InstitutoPage() {
           <aside className="flex flex-col gap-4">
             <div className="rounded-xl border border-gray-200 border-t-[3px] border-t-usal-red bg-surface-card p-6 shadow-sm">
               <Quote className="h-[22px] w-[22px] text-usal-red" aria-hidden="true" />
-              <p className="my-3 mb-4 text-sm leading-relaxed text-gray-600">
-                «En esta casa que es la vuestra, os invitamos a profesores,
-                alumnos, investigadores, empresas e instituciones a vincularos y
-                desarrollar proyectos en nuestra querida Universidad. Aprovecho
-                para daros la bienvenida al IUCE de la Universidad de
-                Salamanca.»
+              {/* Texto íntegro de la web original del IUCE (página «Perfil») */}
+              <p className="my-3 text-sm leading-relaxed text-gray-600">
+                «En la actual coyuntura de cambio y transformación de la
+                Universidad hacia el espacio europeo de educación superior, las
+                tareas y actividades docentes se replantean desde nuevas
+                perspectivas a las que los profesores universitarios tienen que
+                acomodar sus esquemas docentes. Se precisan reformulaciones que
+                adecuen la docencia a las características actuales de la
+                sociedad de la información y a los modos de ser y aprender,
+                centradas en el estudiante.
+              </p>
+              <p className="mb-4 text-sm leading-relaxed text-gray-600">
+                Aunque, como en otros muchos problemas, las medidas
+                fundamentales sean estructurales, el IUCE debe investigar,
+                formar e informar para que, en la medida de sus posibilidades,
+                se avance en el conocimiento de estos problemas y en su
+                mejoramiento.»
               </p>
               <div className="flex items-center gap-3">
-                <ImagePlaceholder
-                  icon={User}
-                  rounded="full"
-                  className="h-11 w-11 flex-none"
-                />
+                {directora?.photo ? (
+                  <Image
+                    src={directora.photo}
+                    alt=""
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 flex-none rounded-full object-cover"
+                  />
+                ) : (
+                  <ImagePlaceholder
+                    icon={User}
+                    rounded="full"
+                    className="h-12 w-12 flex-none"
+                  />
+                )}
                 <div>
                   <p className="text-sm font-semibold text-gray-900">
-                    Dra. Susana Olmos Migueláñez
+                    Dra. {directora?.name ?? "Susana Olmos Migueláñez"}
                   </p>
                   <p className="text-xs text-gray-500">Directora del IUCE</p>
                 </div>
@@ -291,16 +368,26 @@ export default async function InstitutoPage() {
             294 500 (centralita de la USAL) seguido de la extensión.
           </p>
           <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {direccion.map((p) => (
+            {equipo.map((p) => (
               <div
-                key={p.email}
-                className="flex flex-col items-start gap-3.5 rounded-xl border border-gray-200 bg-surface-page p-6 shadow-sm"
+                key={p.name}
+                className="flex flex-col items-start gap-4 rounded-xl border border-gray-200 bg-surface-page p-6 shadow-sm"
               >
-                <ImagePlaceholder
-                  icon={User}
-                  rounded="full"
-                  className="h-[72px] w-[72px] flex-none"
-                />
+                {p.photo ? (
+                  <Image
+                    src={p.photo}
+                    alt={`Fotografía de ${p.name}`}
+                    width={96}
+                    height={96}
+                    className="h-24 w-24 flex-none rounded-full object-cover"
+                  />
+                ) : (
+                  <ImagePlaceholder
+                    icon={User}
+                    rounded="full"
+                    className="h-24 w-24 flex-none"
+                  />
+                )}
                 <div>
                   <p className="text-base font-semibold text-gray-900">
                     {p.name}
@@ -309,30 +396,43 @@ export default async function InstitutoPage() {
                     {p.role}
                   </p>
                 </div>
-                <a
-                  href={`mailto:${p.email}`}
-                  className="inline-flex items-center gap-1.5 text-sm text-iuce-blue hover:underline"
-                >
-                  <Mail className="h-3.5 w-3.5" aria-hidden="true" />
-                  {p.email}
-                </a>
+                {p.email ? (
+                  <a
+                    href={`mailto:${p.email}`}
+                    className="inline-flex items-center gap-1.5 text-sm text-iuce-blue hover:underline"
+                  >
+                    <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+                    {p.email}
+                  </a>
+                ) : null}
               </div>
             ))}
           </div>
           <div className="flex flex-col items-start gap-4 rounded-xl border border-gray-200 bg-surface-tinted px-6 py-[18px] sm:flex-row sm:items-center">
-            <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-gray-200 bg-surface-card text-ink">
-              <Phone className="h-[18px] w-[18px]" aria-hidden="true" />
-            </span>
+            {secretaria?.photo ? (
+              <Image
+                src={secretaria.photo}
+                alt={`Fotografía de ${secretaria.name}`}
+                width={56}
+                height={56}
+                className="h-14 w-14 flex-none rounded-full object-cover"
+              />
+            ) : (
+              <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-gray-200 bg-surface-card text-ink">
+                <Phone className="h-[18px] w-[18px]" aria-hidden="true" />
+              </span>
+            )}
             <div className="flex-1">
               <p className="text-sm font-semibold text-gray-900">
-                Secretaría administrativa — Begoña Sánchez Martín
+                Secretaría administrativa —{" "}
+                {secretaria?.name ?? "Begoña Sánchez Martín"}
               </p>
               <p className="mt-0.5 text-xs text-gray-500">
-                begosan@usal.es · Ext. 4634
+                {secretaria?.email ?? "begosan@usal.es"} · Ext. 4634
               </p>
             </div>
             <a
-              href="mailto:begosan@usal.es"
+              href={`mailto:${secretaria?.email ?? "begosan@usal.es"}`}
               className={buttonClassName({ variant: "outline", size: "sm" })}
             >
               Escribir

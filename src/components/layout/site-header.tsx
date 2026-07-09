@@ -60,8 +60,8 @@ export function SiteHeader() {
             <Image
               src="/images/iuce-logo.png"
               alt="IUCE — Universidad de Salamanca"
-              width={329}
-              height={153}
+              width={800}
+              height={362}
               priority
               className="h-[38px] w-auto dark:hidden"
             />

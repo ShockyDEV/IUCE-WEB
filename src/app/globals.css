@@ -118,6 +118,14 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Las anclas de las subnavegaciones (Instituto, Investigación) se desplazan
+   con animación en vez de saltar, salvo que el usuario pida menos movimiento. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   background: var(--surface-page);
   -webkit-font-smoothing: antialiased;

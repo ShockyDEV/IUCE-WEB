@@ -73,8 +73,8 @@ export function AdminSidebar() {
           <Image
             src="/images/iuce-logo.png"
             alt="IUCE"
-            width={329}
-            height={153}
+            width={800}
+            height={362}
             className="h-[30px] w-auto self-start"
           />
           <span className="text-[11px] text-gray-500">

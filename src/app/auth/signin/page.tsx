@@ -19,8 +19,8 @@ export default function SignInPage() {
             <Image
               src="/images/iuce-logo.png"
               alt="IUCE — Universidad de Salamanca"
-              width={329}
-              height={153}
+              width={800}
+              height={362}
               priority
               className="mb-3.5 h-11 w-auto"
             />
