@@ -89,3 +89,40 @@ body {
   background: var(--surface-page);
   -webkit-font-smoothing: antialiased;
 }
+
+/* --------------------------------------------------------------------------
+   Cuerpo de noticia (HTML del editor del gestor).
+   Coincide con el prototipo: negritas en tinta de titular, blockquote con
+   borde izquierdo rojo sobre fondo tinted.
+   -------------------------------------------------------------------------- */
+.news-body p {
+  margin: 0;
+}
+
+.news-body strong {
+  color: var(--gray-900);
+}
+
+.news-body a {
+  color: var(--iuce-blue);
+}
+
+.news-body blockquote {
+  margin: 8px 0;
+  padding: 18px 24px;
+  border-left: 3px solid var(--usal-red);
+  background: var(--surface-tinted);
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.news-body blockquote p {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--gray-900);
+  font-style: italic;
+}
+
+.news-body ul,
+.news-body ol {
+  padding-left: 1.5rem;
+}

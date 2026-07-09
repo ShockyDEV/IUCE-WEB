@@ -1,9 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ExternalLink, Search } from "lucide-react";
+import { ExternalLink, Menu, Search, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -36,6 +37,12 @@ function isActive(pathname: string, href: string) {
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Cierra el menú móvil al navegar a otra página.
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
 
   return (
     <>
@@ -68,7 +75,7 @@ export function SiteHeader() {
             />
           </Link>
 
-          {/* Navegación */}
+          {/* Navegación de escritorio */}
           <nav
             aria-label="Navegación principal"
             className="hidden items-center gap-5 text-sm font-medium text-gray-600 lg:flex"
@@ -129,8 +136,67 @@ export function SiteHeader() {
                 EN
               </a>
             </span>
+            {/* Hamburguesa (móvil y tablet) */}
+            <button
+              type="button"
+              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={menuOpen}
+              aria-controls="menu-movil"
+              onClick={() => setMenuOpen((v) => !v)}
+              className="flex h-9 w-9 items-center justify-center rounded-md text-gray-600 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page lg:hidden"
+            >
+              {menuOpen ? (
+                <X className="h-5 w-5" aria-hidden="true" />
+              ) : (
+                <Menu className="h-5 w-5" aria-hidden="true" />
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Panel de navegación móvil */}
+        {menuOpen ? (
+          <nav
+            id="menu-movil"
+            aria-label="Navegación principal (móvil)"
+            className="border-t border-gray-200 bg-surface-card lg:hidden"
+          >
+            <div className="mx-auto flex max-w-6xl flex-col px-6 py-2">
+              {NAV.map((item) => {
+                if (item.external) {
+                  return (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 border-l-2 border-transparent py-3 pl-3 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900"
+                    >
+                      {item.label}
+                      <ExternalLink className="h-3 w-3" aria-hidden="true" />
+                    </a>
+                  );
+                }
+                const active = isActive(pathname, item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "border-l-2 py-3 pl-3 text-sm font-medium transition-colors",
+                      active
+                        ? "border-usal-red text-ink"
+                        : "border-transparent text-gray-600 hover:text-gray-900",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </nav>
+        ) : null}
       </header>
     </>
   );

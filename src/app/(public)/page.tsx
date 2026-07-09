@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { buttonClassName } from "@/components/ui/button";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
+import { news as newsContent } from "@/lib/content/news";
 import { cn } from "@/lib/cn";
 
 const quickAccess = [
@@ -45,33 +46,11 @@ const quickAccess = [
   },
 ];
 
-const news = [
-  {
-    category: "Congresos",
-    date: "16–17 abr 2026",
-    title:
-      "XXII Congreso Internacional de Tecnología, Conocimiento y Sociedad",
-    excerpt:
-      "La Universidad del Egeo celebró en Rodas la edición 2026, bilingüe y en modalidad híbrida, con participación del IUCE.",
-    photo: "Foto — Congreso de Rodas",
-  },
-  {
-    category: "Formación",
-    date: "Curso 2026",
-    title: "En marcha el Plan de Formación del Profesorado 2026",
-    excerpt:
-      "Con más de 100 actividades planificadas, es el plan de mayor magnitud de los últimos años.",
-    photo: "Foto — Plan de Formación 2026",
-  },
-  {
-    category: "Innovación docente",
-    date: "13 mar 2026",
-    title: "La USAL, en la III Jornada de Innovación Docente JIDUCYL26",
-    excerpt:
-      "Bajo el lema «De la experiencia a la evidencia», Burgos reunió a más de 300 docentes de las universidades públicas de Castilla y León.",
-    photo: "Foto — JIDUCYL26",
-  },
-];
+// Últimas 3 noticias del módulo de contenido compartido (misma fuente que
+// /noticias; cuando el gestor esté activo, saldrán de la base de datos).
+const latestNews = [...newsContent]
+  .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+  .slice(0, 3);
 
 export default function HomePage() {
   return (
@@ -192,31 +171,30 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {news.map((item) => (
-              <article
-                key={item.title}
-                className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm"
-              >
-                <ImagePlaceholder
-                  label={item.photo}
-                  rounded="none"
-                  className="h-[150px] w-full border-x-0 border-t-0"
-                />
-                <div className="flex flex-col gap-2 px-5 pb-5 pt-[18px]">
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="rounded-full bg-iuce-blue-pale px-2.5 py-0.5 font-medium text-ink">
-                      {item.category}
-                    </span>
-                    <span className="text-gray-400">{item.date}</span>
+            {latestNews.map((item) => (
+              <Link key={item.slug} href={`/noticias/${item.slug}`}>
+                <article className="flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm transition-all hover:border-brand-400 hover:shadow-md">
+                  <ImagePlaceholder
+                    label={item.photoLabel}
+                    rounded="none"
+                    className="h-[150px] w-full border-x-0 border-t-0"
+                  />
+                  <div className="flex flex-col gap-2 px-5 pb-5 pt-[18px]">
+                    <div className="flex items-center gap-2 text-xs">
+                      <span className="rounded-full bg-iuce-blue-pale px-2.5 py-0.5 font-medium text-ink">
+                        {item.category}
+                      </span>
+                      <span className="text-gray-400">{item.dateDisplay}</span>
+                    </div>
+                    <h3 className="text-base font-semibold leading-snug text-gray-900">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm leading-normal text-gray-600">
+                      {item.excerpt}
+                    </p>
                   </div>
-                  <h3 className="text-base font-semibold leading-snug text-gray-900">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm leading-normal text-gray-600">
-                    {item.excerpt}
-                  </p>
-                </div>
-              </article>
+                </article>
+              </Link>
             ))}
           </div>
         </div>

@@ -1,0 +1,75 @@
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
+import { prisma } from "@/lib/prisma";
+import { contactSchema } from "@/lib/validations";
+
+/**
+ * Formulario de contacto: valida, registra el mensaje en la BD (bandeja del
+ * admin) y lo envía por email a la Secretaría vía Resend, con autorespuesta
+ * al remitente. El envío de email es tolerante a fallos: si Resend no está
+ * configurado (desarrollo), el mensaje queda registrado igualmente.
+ */
+export async function POST(request: Request) {
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Cuerpo de la petición no válido" },
+      { status: 400 },
+    );
+  }
+
+  const parsed = contactSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: parsed.error.errors[0]?.message ?? "Datos no válidos" },
+      { status: 400 },
+    );
+  }
+
+  const { name, email, subject, message } = parsed.data;
+
+  // 1) Registro en la bandeja del panel de administración
+  try {
+    await prisma.contactMessage.create({
+      data: { name, email, subject, body: message },
+    });
+  } catch (e) {
+    console.error("[contact] Error al guardar el mensaje:", e);
+    return NextResponse.json(
+      { error: "No se pudo registrar el mensaje. Inténtalo de nuevo." },
+      { status: 500 },
+    );
+  }
+
+  // 2) Email a Secretaría + autorespuesta (si Resend está configurado)
+  const apiKey = process.env.RESEND_API_KEY;
+  if (apiKey && !apiKey.includes("placeholder")) {
+    try {
+      const resend = new Resend(apiKey);
+      const from = process.env.EMAIL_FROM ?? "IUCE <onboarding@resend.dev>";
+      const to = process.env.CONTACT_TO ?? "iuce@usal.es";
+
+      await resend.emails.send({
+        from,
+        to,
+        replyTo: email,
+        subject: `[Web IUCE] ${subject} — ${name}`,
+        text: `Nombre: ${name}\nCorreo: ${email}\nAsunto: ${subject}\n\n${message}`,
+      });
+
+      await resend.emails.send({
+        from,
+        to: email,
+        subject: "Hemos recibido tu mensaje — IUCE",
+        text: `Hola ${name}:\n\nHemos recibido tu consulta («${subject}») y te responderemos en un plazo de 2–3 días hábiles.\n\nCopia de tu mensaje:\n${message}\n\nIUCE — Instituto Universitario de Ciencias de la Educación\nUniversidad de Salamanca · +34 923 294 634 · iuce@usal.es`,
+      });
+    } catch (e) {
+      // El mensaje ya está registrado: no hacemos fallar la petición.
+      console.error("[contact] Error al enviar email:", e);
+    }
+  }
+
+  return NextResponse.json({ ok: true });
+}
