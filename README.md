@@ -105,5 +105,12 @@ página por página. Para verlos, servir esa carpeta con un estático
 - [x] **Auto-traducción ES→EN al guardar** (patrón mupes): DeepL vía
       `DEEPL_API_KEY` (sin clave se omite); rellena `*En` en noticias y
       bloques `:en`; `/api/admin/translate` bajo demanda
+- [x] **Todo el contenido editable desde el panel** sin programar:
+      noticias/miembros/grupos/eventos por CRUD (miembros con foto,
+      portal de investigación y ORCID; grupos con logo y distintivo) y
+      el resto de las 8 páginas por bloques de texto y **listas
+      estructuradas** (Contenido → Páginas): 24 bloques + 14 listas con
+      añadir/eliminar/reordenar e iconos seleccionables. El editor
+      TipTap sube imágenes a Archivos directamente.
 - [ ] Rutas públicas `/en/...` que sirvan los campos `*En` — pendiente
 - [ ] Despliegue (Docker app + Apache + SSL) y repo en GitHub
