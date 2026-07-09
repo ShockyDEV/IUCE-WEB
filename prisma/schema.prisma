@@ -83,6 +83,8 @@ model ResearchGroup {
   nameEn  String?
   lead    String?
   url     String?
+  logo    String?
+  chip    String? // distintivo, p. ej. "UIC 081"
   members Member[]
 }
 

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { buttonClassName } from "@/components/ui/button";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
+import { CoverImage } from "@/components/news/cover-image";
 import { getPublishedNews } from "@/lib/news-service";
 import { getBlock } from "@/lib/content-blocks-service";
 import { cn } from "@/lib/cn";
@@ -176,10 +177,10 @@ export default async function HomePage() {
             {latestNews.map((item) => (
               <Link key={item.slug} href={`/noticias/${item.slug}`}>
                 <article className="flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm transition-all hover:border-brand-400 hover:shadow-md">
-                  <ImagePlaceholder
-                    label={item.photoLabel}
-                    rounded="none"
-                    className="h-[150px] w-full border-x-0 border-t-0"
+                  <CoverImage
+                    src={item.coverImage}
+                    alt={item.photoLabel}
+                    className="h-[150px] w-full"
                   />
                   <div className="flex flex-col gap-2 px-5 pb-5 pt-[18px]">
                     <div className="flex items-center gap-2 text-xs">

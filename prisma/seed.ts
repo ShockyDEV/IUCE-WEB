@@ -62,7 +62,14 @@ async function main() {
     const row =
       existing ??
       (await prisma.researchGroup.create({
-        data: { acronym: g.acronym, name: g.name, lead: g.lead, url: g.url },
+        data: {
+          acronym: g.acronym,
+          name: g.name,
+          lead: g.lead,
+          url: g.url,
+          logo: g.logo,
+          chip: g.chip,
+        },
       }));
     groupIds.set(g.acronym, row.id);
   }

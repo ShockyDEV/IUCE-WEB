@@ -24,6 +24,7 @@ export default async function AdminMembersPage() {
     area: m.area,
     email: m.email,
     role: m.role,
+    photo: m.photo,
     active: m.active,
     order: m.order,
     groupId: m.groupId,

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-guard";
 import { contentBlockInputSchema } from "@/lib/admin-schemas";
+import { translateHtml, translationEnabled } from "@/lib/translate";
 
 /** GET /api/admin/content-blocks?page=instituto → bloques de esa página. */
 export async function GET(request: Request) {
@@ -37,5 +38,25 @@ export async function PUT(request: Request) {
     update: { content },
     create: { pageSlug, blockKey, content },
   });
+
+  // Auto-traducción EN → fila paralela "blockKey:en" (patrón del handoff).
+  // Los ajustes del sitio (_site) no se traducen. Fallo no fatal.
+  if (
+    pageSlug !== "_site" &&
+    !blockKey.endsWith(":en") &&
+    translationEnabled()
+  ) {
+    const contentEn = await translateHtml(content);
+    if (contentEn) {
+      await prisma.contentBlock.upsert({
+        where: {
+          pageSlug_blockKey: { pageSlug, blockKey: `${blockKey}:en` },
+        },
+        update: { content: contentEn },
+        create: { pageSlug, blockKey: `${blockKey}:en`, content: contentEn },
+      });
+    }
+  }
+
   return NextResponse.json({ item });
 }

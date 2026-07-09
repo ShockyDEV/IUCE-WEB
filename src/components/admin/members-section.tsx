@@ -18,6 +18,7 @@ export interface MemberRow {
   area: string | null;
   email: string | null;
   role: string | null;
+  photo: string | null;
   active: boolean;
   order: number;
   groupId: string | null;
@@ -173,12 +174,21 @@ export function MembersSection({
               <tr key={row.id} className="border-t border-gray-100">
                 <td className="px-6 py-3">
                   <div className="flex items-center gap-3">
-                    <span
-                      aria-hidden="true"
-                      className="flex h-[34px] w-[34px] flex-none items-center justify-center rounded-full bg-iuce-blue-pale text-xs font-bold text-iuce-blue-dark"
-                    >
-                      {initialsOf(row.name)}
-                    </span>
+                    {row.photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={row.photo}
+                        alt=""
+                        className="h-[34px] w-[34px] flex-none rounded-full object-cover"
+                      />
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className="flex h-[34px] w-[34px] flex-none items-center justify-center rounded-full bg-iuce-blue-pale text-xs font-bold text-iuce-blue-dark"
+                      >
+                        {initialsOf(row.name)}
+                      </span>
+                    )}
                     <span className="text-sm font-medium text-gray-900">
                       {row.name}
                     </span>

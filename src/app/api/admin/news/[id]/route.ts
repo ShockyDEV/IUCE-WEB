@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-guard";
 import { slugify } from "@/lib/slugify";
 import { newsInputSchema } from "@/lib/admin-schemas";
+import { translateNewsFields } from "@/lib/translate";
 
 interface Params {
   params: { id: string };
@@ -49,6 +50,20 @@ export async function PUT(request: Request, { params }: Params) {
     }
   }
 
+  // Retraduce solo si cambió el contenido en español (ahorra cuota DeepL).
+  const needsTranslation =
+    data.title !== existing.title ||
+    (data.excerpt ?? null) !== existing.excerpt ||
+    data.content !== existing.content ||
+    !existing.contentEn;
+  const translated = needsTranslation
+    ? await translateNewsFields({
+        title: data.title,
+        excerpt: data.excerpt,
+        content: data.content,
+      })
+    : {};
+
   const updated = await prisma.news.update({
     where: { id: params.id },
     data: {
@@ -60,6 +75,7 @@ export async function PUT(request: Request, { params }: Params) {
       category: data.category,
       status: data.status,
       publishedAt: data.publishedAt ? new Date(data.publishedAt) : null,
+      ...translated,
     },
   });
   return NextResponse.json({ item: updated });

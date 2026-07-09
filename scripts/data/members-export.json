@@ -1,0 +1,586 @@
+{
+ "members": [
+  {
+   "name": "Susana Olmos Migueláñez",
+   "role": "Directora",
+   "area": "Investigadores",
+   "email": "solmos@usal.es",
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-66.png"
+  },
+  {
+   "name": "Francisco José García Peñalvo",
+   "role": "Subdirector",
+   "area": "Investigadores",
+   "email": "fgarcia@usal.es",
+   "group": null,
+   "photoPath": "media/MG_0508_Fran.jpg"
+  },
+  {
+   "name": "Javier Félix Merchán Sánchez-Jara",
+   "role": "Secretario",
+   "area": "Investigadores",
+   "email": "javiermerchan@usal.es",
+   "group": null,
+   "photoPath": "media/SEC.jpg"
+  },
+  {
+   "name": "Sonia Casillas Martín",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-62.png"
+  },
+  {
+   "name": "Marta Cerezo Prieto",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-55.png"
+  },
+  {
+   "name": "María Collado Sánchez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-49.png"
+  },
+  {
+   "name": "Patricia Torrijos Fincias",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-57.png"
+  },
+  {
+   "name": "Belén Curto Diego",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-17.png"
+  },
+  {
+   "name": "María José Daniel Huerta",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-50.png"
+  },
+  {
+   "name": "María Teresa del Moral Marcos",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-71.png"
+  },
+  {
+   "name": "Ramiro Durán Martínez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-58.png"
+  },
+  {
+   "name": "María Tránsito Ferreras Fernández",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-54.png"
+  },
+  {
+   "name": "Cristina Frade Martínez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-22.png"
+  },
+  {
+   "name": "Francisco Javier Frutos Esteban",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-30.png"
+  },
+  {
+   "name": "Adriana Gamazo García",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-2.png"
+  },
+  {
+   "name": "Carlos Arcila Calderón",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-18.png"
+  },
+  {
+   "name": "Juan Antonio García Herrero",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-36.png"
+  },
+  {
+   "name": "Alicia García Holgado",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/IUCE_Foto_A.001.png"
+  },
+  {
+   "name": "Lucía García Holgado",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-40.png"
+  },
+  {
+   "name": "Alfredo García Pérez Omaña",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-6.png"
+  },
+  {
+   "name": "Erika García Silva",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-23.png"
+  },
+  {
+   "name": "Ana García Valcárcel",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-8.png"
+  },
+  {
+   "name": "Beatriz González de Garay Domínguez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-16.png"
+  },
+  {
+   "name": "Sara González Gutiérrez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-60.png"
+  },
+  {
+   "name": "Alba González Palomares",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-3.png"
+  },
+  {
+   "name": "Luis María González Rodero",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-41.png"
+  },
+  {
+   "name": "Ana Belén González Rogado",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-10.png"
+  },
+  {
+   "name": "Margarita González Sánchez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-79.png"
+  },
+  {
+   "name": "Juan Pablo Hernández Ramos",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-46.png"
+  },
+  {
+   "name": "Juan José Igartua Perosanz",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-38.png"
+  },
+  {
+   "name": "Ana Iglesias Rodríguez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-9.png"
+  },
+  {
+   "name": "Carmen López Esteban",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-19.png"
+  },
+  {
+   "name": "Vanessa Izquierdo Álvarez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-68.png"
+  },
+  {
+   "name": "Juan Antonio Juanes Méndez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-37.png"
+  },
+  {
+   "name": "Marta Martín del Pozo",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-56.png"
+  },
+  {
+   "name": "Carmen López San Segundo",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-20.png"
+  },
+  {
+   "name": "María Marcos Ramos",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-52.png"
+  },
+  {
+   "name": "Carolina Alexandra Martins",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-21.png"
+  },
+  {
+   "name": "Elena Martín Rodero",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-28.png"
+  },
+  {
+   "name": "Fernando Martínez Abad",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-26.png"
+  },
+  {
+   "name": "José Antonio Merlo Vega",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-33.png"
+  },
+  {
+   "name": "Juan José Mena Marcos",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-44.png"
+  },
+  {
+   "name": "Vidal Moreno Rodilla",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-70.png"
+  },
+  {
+   "name": "Susana Nieto Isidro",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-65.png"
+  },
+  {
+   "name": "Ana Pinto Llorente",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-11.png"
+  },
+  {
+   "name": "Félix Ortega Mohedano",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-25.png"
+  },
+  {
+   "name": "Alberto Ortiz López",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-4.png"
+  },
+  {
+   "name": "Sonsoles Ramos Ahijado",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-64.png"
+  },
+  {
+   "name": "Valeriano Piñeiro Naval",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-67.png"
+  },
+  {
+   "name": "Josué Prieto Prieto",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/pruebafix.png"
+  },
+  {
+   "name": "María José Rodríguez Conde",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-51.png"
+  },
+  {
+   "name": "Miguel Ángel Conde González",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/IUCE_Foto_MARC.001.png"
+  },
+  {
+   "name": "María Serena Rivetta",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-53.png"
+  },
+  {
+   "name": "José Ángel Santos Sánchez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-32.png"
+  },
+  {
+   "name": "José Carlos Sánchez Prieto",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-34.png"
+  },
+  {
+   "name": "Sara Sandonís Camarero",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-61.png"
+  },
+  {
+   "name": "Nastaran Shoeibi",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-73.png"
+  },
+  {
+   "name": "Antonio Sánchez Martín",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-14.png"
+  },
+  {
+   "name": "Antonio Miguel Seoane Pardo",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-13.png"
+  },
+  {
+   "name": "Roberto Therón Sánchez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-59.png"
+  },
+  {
+   "name": "Sonia Verdugo Castro",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-63.png"
+  },
+  {
+   "name": "Andrea Vázquez Ingelmo",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-12.png"
+  },
+  {
+   "name": "María Belén Tabernero Sánchez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-48.png"
+  },
+  {
+   "name": "Eva María Torrecilla Sánchez",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-24.png"
+  },
+  {
+   "name": "Marcos Cabezas González",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-43.png"
+  },
+  {
+   "name": "Juan Manuel Cantos Ruiz",
+   "role": null,
+   "area": "Investigadores",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-45.png"
+  },
+  {
+   "name": "María Soledad Ramírez Montoya",
+   "role": null,
+   "area": "Consejo asesor",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-80.png"
+  },
+  {
+   "name": "Faraón Llorens Largo",
+   "role": null,
+   "area": "Consejo asesor",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-81.png"
+  },
+  {
+   "name": "José Antonio Caride Gómez",
+   "role": null,
+   "area": "Consejo asesor",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-82.png"
+  },
+  {
+   "name": "Irene González Martín",
+   "role": null,
+   "area": "Gestora Proyectos Investigación",
+   "email": null,
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-29.png"
+  },
+  {
+   "name": "María Begoña Sánchez Martín",
+   "role": "Secretaría Administrativa",
+   "area": "Personal de Administración y Servicios",
+   "email": "begosan@usal.es",
+   "group": null,
+   "photoPath": "media/Sin-titulo-6.001-47.png"
+  },
+  {
+   "name": "Enrique González Gutiérrez",
+   "role": "Técnico Informático",
+   "area": "Personal de Administración y Servicios",
+   "email": null,
+   "group": null,
+   "photoPath": "media/enriqueglez.jpg"
+  }
+ ],
+ "directionTeam": [
+  "Susana Olmos Migueláñez",
+  "Francisco José García Peñalvo",
+  "Javier Félix Merchán Sánchez-Jara"
+ ],
+ "notes": "FUENTES: pages.json ids 81 (slug \"miembros\", \"Miembros del IUCE\") y 223 (slug \"equipo\", \"Equipo Directivo\"). La pág. 81 es Gutenberg (wp-block-columns) con 4 secciones (h5): Investigadores (66 fichas), Consejo asesor (3), Gestora Proyectos Investigación (1), Personal de Administración y Servicios (2) = 72 fichas. La pág. 223 tiene 4 fichas (Subdirector, Directora, Secretario + apartado \"Administración\" con Begoña). DUPLICADOS FUSIONADOS (4 personas en ambas páginas): Susana Olmos (\"Directora\"), Francisco José García Peñalvo (figura como \"Fran García Peñalvo\" en miembros; \"Subdirector\"), Javier Félix Merchán (\"Secretario\") y Begoña Sánchez Martín (\"María Begoña Sánchez Martín\" en miembros; Administración, Ext. 4634). Total únicos: 72. FOTOS: TODAS las imágenes referenciadas existen bajo export/media/ y TODAS son retratos reales (verificado visualmente con hojas de contacto); NO hay avatares genéricos/placeholder, por eso ningún photoPath es null. Las fotos de investigadores son PNG 350x350 recortadas en círculo con fondo gris (serie \"Sin-titulo-6.001-NN.png\", ya en tamaño original; solo existen variantes -300x300/-150x150 menores). Para Fran se dio el original grande media/MG_0508_Fran.jpg (2048px; la pág. referencia la variante -300x300); para Merchán media/SEC.jpg (512px); para Susana Olmos y Begoña se eligió la variante de miembros (350px) por ser mayor; existen alternativas media/Susana.jpg (220px) y media/Begoña.png (256px). \"pruebafix.png\" (Josué Prieto) es nombre provisional pero contiene su retrato real. ROLES de PAS (\"Secretaría Administrativa\", \"Técnico Informático\") no son cargos directivos, se incluyen en role por ser su puesto. EMAILS: solo constan en la pág. equipo (4 personas). No consta grupo de investigación ni departamento en ninguna de las dos páginas (group=null); la mayoría de investigadores enlaza a su perfil en produccioncientifica.usal.es. directionTeam en orden jerárquico (Directora, Subdirector, Secretario); en el HTML el Subdirector aparece primero. Teléfonos: 923 294634 (Secretaría IUCE) y centralita 923 294500; Begoña ext. 4634. Curiosidad: media/Sin-titulo-6.001-42.png es byte-idéntico a -41.png (no referenciado)."
+}

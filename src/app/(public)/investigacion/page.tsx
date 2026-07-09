@@ -3,6 +3,10 @@ import { ArrowUpRight, ExternalLink, User, Users } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SectionSubnav } from "@/components/layout/section-subnav";
 import { buttonClassName } from "@/components/ui/button";
+import { prisma } from "@/lib/prisma";
+import { groups as groupsFallback } from "@/lib/content/groups";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Investigación",
@@ -16,59 +20,52 @@ const subnav = [
   { id: "publicaciones", label: "Publicaciones" },
 ];
 
-const grupos = [
-  {
-    acronym: "GRIAL",
-    chip: "UIC 081",
-    desc: "Interacción y eLearning. Unidad de Investigación Consolidada de Castilla y León.",
-    lead: "F. J. García Peñalvo",
-    url: "https://grial.usal.es",
-    urlLabel: "grial.usal.es",
-    team: false,
-  },
-  {
-    acronym: "GITE",
-    desc: "Grupo de Investigación en Tecnología Educativa: integración de las TIC en los procesos de enseñanza.",
-    lead: "A. García-Valcárcel",
-    team: false,
-  },
-  {
-    acronym: "OCA",
-    desc: "Observatorio de Contenidos Audiovisuales: comunicación, educación mediática y opinión pública.",
-    lead: "J. J. Igartua",
-    team: false,
-  },
-  {
-    acronym: "VisualMed System",
-    desc: "Visualización médica y tecnologías aplicadas a la formación en Ciencias de la Salud. Premio Ennova Health 2025.",
-    lead: "J. A. Juanes",
-    team: false,
-  },
-  {
-    acronym: "Robótica y Sociedad",
-    desc: "Robótica educativa, pensamiento computacional e impacto social de la automatización.",
-    lead: "Equipo interdisciplinar",
-    team: true,
-  },
-  {
-    acronym: "E-LECTRA",
-    desc: "Lectura, edición digital y sociedad de la información: libro electrónico y humanidades digitales.",
-    lead: "J. A. Cordón",
-    team: false,
-  },
-];
+interface GroupCard {
+  acronym: string;
+  name: string;
+  chip: string | null;
+  lead: string | null;
+  url: string | null;
+}
 
+/**
+ * Grupos de investigación desde el gestor. La lista oficial (9 grupos,
+ * verificada contra la web original) actúa de fallback sin BD.
+ */
+async function getGrupos(): Promise<GroupCard[]> {
+  try {
+    const rows = await prisma.researchGroup.findMany({
+      orderBy: { acronym: "asc" },
+    });
+    if (rows.length > 0) {
+      return rows.map((g) => ({
+        acronym: g.acronym,
+        name: g.name,
+        chip: g.chip,
+        lead: g.lead,
+        url: g.url,
+      }));
+    }
+  } catch {
+    // BD no disponible
+  }
+  return groupsFallback.map((g) => ({
+    acronym: g.acronym,
+    name: g.name,
+    chip: g.chip ?? null,
+    lead: g.lead ?? null,
+    url: g.url ?? null,
+  }));
+}
+
+// Nota: DIDEROT figuraba aquí por error como proyecto; es un grupo de
+// investigación del IUCE (ver lib/content/groups.ts) y sale en la sección
+// de grupos desde el gestor.
 const proyectos = [
   {
     title: "Competencia digital docente y evaluación auténtica en la universidad",
     meta: "Plan Estatal de Investigación · IP: Susana Olmos Migueláñez",
     years: "2024–2027",
-  },
-  {
-    title:
-      "DIDEROT — Didácticas digitales de la expresión musical y las artes performativas",
-    meta: "Universidad de Salamanca · IP: Javier Merchán Sánchez-Jara",
-    years: "2023–2026",
   },
   {
     title: "Analítica del aprendizaje para la mejora de la retención universitaria",
@@ -77,7 +74,7 @@ const proyectos = [
   },
   {
     title: "Alfabetización mediática y contenidos audiovisuales en la adolescencia",
-    meta: "Observatorio de Contenidos Audiovisuales · IP: Juan José Igartua",
+    meta: "Observatorio de los Contenidos Audiovisuales · IP: Juan José Igartua",
     years: "2024–2026",
   },
 ];
@@ -105,7 +102,9 @@ const articulos = [
   },
 ];
 
-export default function InvestigacionPage() {
+export default async function InvestigacionPage() {
+  const grupos = await getGrupos();
+
   return (
     <>
       {/* Cabecera */}
@@ -147,29 +146,32 @@ export default function InvestigacionPage() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {grupos.map((g) => {
-              const LeadIcon = g.team ? Users : User;
+              const LeadIcon = g.lead ? User : Users;
+              const urlLabel = g.url
+                ? g.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")
+                : null;
               return (
                 <article
                   key={g.acronym}
                   className="flex flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[22px] shadow-sm"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <h3 className="text-lg font-bold text-ink">{g.acronym}</h3>
                     {g.chip ? (
-                      <span className="rounded-full bg-iuce-blue-pale px-2.5 py-[3px] text-[10px] font-bold tracking-[.04em] text-ink">
+                      <span className="flex-none rounded-full bg-iuce-blue-pale px-2.5 py-[3px] text-[10px] font-bold tracking-[.04em] text-ink">
                         {g.chip}
                       </span>
                     ) : null}
                   </div>
                   <p className="text-sm leading-normal text-gray-600">
-                    {g.desc}
+                    {g.name}
                   </p>
                   <p className="mt-auto flex items-center gap-1.5 text-xs text-gray-500">
                     <LeadIcon
                       className="h-[13px] w-[13px] flex-none"
                       aria-hidden="true"
                     />
-                    {g.lead}
+                    {g.lead ?? "Equipo interdisciplinar"}
                     {g.url ? (
                       <>
                         {" · "}
@@ -179,7 +181,7 @@ export default function InvestigacionPage() {
                           rel="noopener noreferrer"
                           className="text-iuce-blue hover:underline"
                         >
-                          {g.urlLabel} ↗
+                          {urlLabel} ↗
                         </a>
                       </>
                     ) : null}

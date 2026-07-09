@@ -15,6 +15,8 @@ import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { buttonClassName } from "@/components/ui/button";
 import { getBlock } from "@/lib/content-blocks-service";
+import { prisma } from "@/lib/prisma";
+import { groups as groupsFallback } from "@/lib/content/groups";
 
 export const dynamic = "force-dynamic";
 
@@ -35,27 +37,34 @@ const lineas = [
   { icon: Library, label: "Educación, bibliotecas y cultura científica" },
 ];
 
-const grupos = [
-  {
-    acronym: "GRIAL",
-    chip: "UIC 081",
-    desc: "Interacción y eLearning · Unidad de Investigación Consolidada",
-  },
-  { acronym: "GITE", desc: "Grupo de Investigación en Tecnología Educativa" },
-  { acronym: "OCA", desc: "Observatorio de Contenidos Audiovisuales" },
-  {
-    acronym: "VisualMed System",
-    desc: "Medicina, visualización y tecnología — Premio Ennova Health 2025",
-  },
-  {
-    acronym: "Robótica y Sociedad",
-    desc: "Robótica educativa e impacto social de la automatización",
-  },
-  {
-    acronym: "E-LECTRA",
-    desc: "Lectura, edición digital y sociedad de la información",
-  },
-];
+interface GroupMini {
+  acronym: string;
+  desc: string;
+  chip: string | null;
+}
+
+/** Grupos del gestor (lista oficial de 9 como fallback sin BD). */
+async function getGrupos(): Promise<GroupMini[]> {
+  try {
+    const rows = await prisma.researchGroup.findMany({
+      orderBy: { acronym: "asc" },
+    });
+    if (rows.length > 0) {
+      return rows.map((g) => ({
+        acronym: g.acronym,
+        desc: g.name,
+        chip: g.chip,
+      }));
+    }
+  } catch {
+    // BD no disponible
+  }
+  return groupsFallback.map((g) => ({
+    acronym: g.acronym,
+    desc: g.name,
+    chip: g.chip ?? null,
+  }));
+}
 
 const pasos = [
   {
@@ -76,8 +85,11 @@ const pasos = [
 ];
 
 export default async function DoctoradoPage() {
-  // Bloque editable desde el gestor (doctorado:programa)
-  const programa = await getBlock("doctorado", "programa");
+  // Bloque editable desde el gestor (doctorado:programa) + grupos del gestor
+  const [programa, grupos] = await Promise.all([
+    getBlock("doctorado", "programa"),
+    getGrupos(),
+  ]);
 
   return (
     <>

@@ -37,28 +37,65 @@ function toItem(row: News): NewsItem {
     dateLong: formatLong(published),
     author: "Redacción IUCE",
     excerpt: row.excerpt ?? "",
-    photoLabel: row.coverImage ? row.coverImage : "Imagen de la noticia",
+    photoLabel: "Imagen de la noticia",
+    coverImage: row.coverImage,
     content: row.content,
   };
 }
 
-/** Noticias publicadas, más recientes primero. */
-export async function getPublishedNews(): Promise<NewsItem[]> {
+/**
+ * Noticias publicadas, más recientes primero. Para listados (tarjetas) el
+ * cuerpo no se necesita: `withContent: false` (por defecto) lo omite de la
+ * consulta — con 212 noticias históricas la diferencia importa.
+ */
+export async function getPublishedNews(
+  options: { withContent?: boolean; category?: string } = {},
+): Promise<NewsItem[]> {
   try {
     const rows = await prisma.news.findMany({
-      where: { status: "PUBLISHED" },
+      where: {
+        status: "PUBLISHED",
+        ...(options.category ? { category: options.category } : {}),
+      },
       orderBy: [
         { publishedAt: { sort: "desc", nulls: "last" } },
         { createdAt: "desc" },
       ],
+      ...(options.withContent
+        ? {}
+        : {
+            select: {
+              id: true,
+              title: true,
+              slug: true,
+              excerpt: true,
+              coverImage: true,
+              category: true,
+              status: true,
+              publishedAt: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+          }),
     });
-    if (rows.length > 0) return rows.map(toItem);
+    if (rows.length > 0) {
+      // Sin withContent la consulta no trae `content`: se rellena con "".
+      return rows.map((r) =>
+        toItem({
+          ...r,
+          content: (r as { content?: string }).content ?? "",
+        } as News),
+      );
+    }
   } catch {
     // BD no disponible: seguimos con el contenido semilla.
   }
-  return [...staticNews].sort((a, b) =>
+  const fallback = [...staticNews].sort((a, b) =>
     b.publishedAt.localeCompare(a.publishedAt),
   );
+  return options.category
+    ? fallback.filter((n) => n.category === options.category)
+    : fallback;
 }
 
 export async function getPublishedNewsBySlug(

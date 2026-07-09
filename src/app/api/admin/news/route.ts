@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-guard";
 import { slugify } from "@/lib/slugify";
 import { newsInputSchema } from "@/lib/admin-schemas";
+import { translateNewsFields } from "@/lib/translate";
 
 /** Garantiza un slug único añadiendo -2, -3… si ya existe. */
 async function uniqueSlug(base: string, excludeId?: string): Promise<string> {
@@ -51,6 +52,13 @@ export async function POST(request: Request) {
   const data = parsed.data;
   const slug = await uniqueSlug(data.slug || data.title);
 
+  // Auto-traducción EN (patrón mupes); vacío si no hay DEEPL_API_KEY.
+  const translated = await translateNewsFields({
+    title: data.title,
+    excerpt: data.excerpt,
+    content: data.content,
+  });
+
   const created = await prisma.news.create({
     data: {
       title: data.title,
@@ -61,6 +69,7 @@ export async function POST(request: Request) {
       category: data.category,
       status: data.status,
       publishedAt: data.publishedAt ? new Date(data.publishedAt) : null,
+      ...translated,
     },
   });
   return NextResponse.json({ item: created }, { status: 201 });

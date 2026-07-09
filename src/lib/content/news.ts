@@ -20,6 +20,8 @@ export interface NewsItem {
   excerpt: string;
   photoLabel: string;
   photoCaption?: string;
+  /** Ruta de la imagen de portada real (p. ej. /uploads/legacy/x.jpg). */
+  coverImage?: string | null;
   content: string;
   featured?: boolean;
 }
@@ -28,6 +30,7 @@ export const NEWS_CATEGORIES = [
   "Congresos",
   "Formación",
   "Innovación docente",
+  "Investigación",
   "Premios",
   "Doctorado",
   "Institucional",

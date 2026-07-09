@@ -18,6 +18,10 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SectionSubnav } from "@/components/layout/section-subnav";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { InitialsAvatar } from "@/components/ui/initials-avatar";
+import {
+  MembersGrid,
+  type PublicMember,
+} from "@/components/instituto/members-grid";
 import { buttonClassName } from "@/components/ui/button";
 import { getBlock } from "@/lib/content-blocks-service";
 import { prisma } from "@/lib/prisma";
@@ -101,7 +105,7 @@ function initialsOf(name: string) {
   return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
 }
 
-async function getMiembros(): Promise<Array<{ name: string; area: string }>> {
+async function getMiembros(): Promise<PublicMember[]> {
   try {
     const rows = await prisma.member.findMany({
       where: { active: true },
@@ -111,12 +115,13 @@ async function getMiembros(): Promise<Array<{ name: string; area: string }>> {
       return rows.map((m) => ({
         name: m.name,
         area: [m.role, m.area].filter(Boolean).join(" · "),
+        photo: m.photo,
       }));
     }
   } catch {
     // BD no disponible
   }
-  return miembrosFallback;
+  return miembrosFallback.map((m) => ({ ...m, photo: null }));
 }
 
 const contacto = [
@@ -339,44 +344,17 @@ export default async function InstitutoPage() {
       {/* Miembros */}
       <section id="miembros" className="scroll-mt-20">
         <div className="mx-auto max-w-6xl px-6 py-14">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-                Miembros
-              </h2>
-              <p className="max-w-[70ch] text-sm text-gray-500">
-                Investigadoras e investigadores de todas las ramas de
-                conocimiento vinculados al Instituto. El listado se gestiona
-                desde el panel de administración.
-              </p>
-            </div>
-            <div className="flex w-[280px] items-center gap-2 rounded-md border border-gray-300 bg-surface-card px-3.5 py-2.5 text-gray-400">
-              <Search className="h-[15px] w-[15px]" aria-hidden="true" />
-              <span className="text-sm">Buscar por nombre o área…</span>
-            </div>
+          <div className="mb-6">
+            <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
+              Miembros
+            </h2>
+            <p className="max-w-[70ch] text-sm text-gray-500">
+              Investigadoras e investigadores de todas las ramas de
+              conocimiento vinculados al Instituto. El listado se gestiona
+              desde el panel de administración.
+            </p>
           </div>
-          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
-            {miembros.map((m) => (
-              <div
-                key={m.name}
-                className="flex items-center gap-3.5 rounded-xl border border-gray-200 bg-surface-card px-[18px] py-4 shadow-sm"
-              >
-                <InitialsAvatar initials={initialsOf(m.name)} />
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">
-                    {m.name}
-                  </p>
-                  <p className="mt-px text-xs text-gray-500">{m.area}</p>
-                </div>
-              </div>
-            ))}
-            <div className="flex items-center justify-center gap-2.5 rounded-xl border border-dashed border-gray-300 px-[18px] py-4 text-gray-500">
-              <Users className="h-[17px] w-[17px]" aria-hidden="true" />
-              <span className="text-sm">
-                Listado completo — se cargará desde el gestor
-              </span>
-            </div>
-          </div>
+          <MembersGrid members={miembros} />
         </div>
       </section>
 

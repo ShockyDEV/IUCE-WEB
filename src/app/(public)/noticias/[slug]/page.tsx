@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
-import { ImagePlaceholder } from "@/components/ui/image-placeholder";
+import { CoverImage } from "@/components/news/cover-image";
 import { ShareRow } from "@/components/news/share-row";
 import {
   getPublishedNews,
@@ -73,20 +73,25 @@ export default async function NoticiaPage({ params }: Readonly<PageProps>) {
         ) : null}
       </div>
 
-      {/* Imagen principal (960px) */}
-      <div className="mx-auto max-w-[960px] px-6">
-        <figure className="mb-3">
-          <ImagePlaceholder
-            label={item.photoLabel}
-            className="h-[420px] w-full"
-          />
-          {item.photoCaption ? (
-            <figcaption className="mt-2.5 text-xs text-gray-400">
-              {item.photoCaption}
-            </figcaption>
-          ) : null}
-        </figure>
-      </div>
+      {/* Imagen principal (960px) — solo si la noticia trae portada */}
+      {item.coverImage ? (
+        <div className="mx-auto max-w-[960px] px-6">
+          <figure className="mb-3">
+            <CoverImage
+              src={item.coverImage}
+              alt={item.photoLabel}
+              rounded="xl"
+              sizes="(max-width: 1024px) 100vw, 960px"
+              className="h-[420px] w-full"
+            />
+            {item.photoCaption ? (
+              <figcaption className="mt-2.5 text-xs text-gray-400">
+                {item.photoCaption}
+              </figcaption>
+            ) : null}
+          </figure>
+        </div>
+      ) : null}
 
       {/* Cuerpo (800px) */}
       <div className="mx-auto max-w-[800px] px-6 pt-7">
