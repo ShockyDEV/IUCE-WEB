@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Clock, Compass, Mail, MapPin, Phone } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { MapEmbed } from "@/components/ui/map-embed";
 import { ContactForm } from "@/components/contact/contact-form";
@@ -16,13 +16,14 @@ export const dynamic = "force-dynamic";
 
 export default async function ContactoPage() {
   // Todos los textos de datos salen del gestor (Contenido → Páginas → Contacto).
-  const [intro, direccion, telefonos, horario, urlPrivacidad] =
+  const [intro, direccion, telefonos, horario, urlPrivacidad, comoLlegar] =
     await Promise.all([
       getBlock("contacto", "intro"),
       getBlock("contacto", "direccion"),
       getBlock("contacto", "telefonos"),
       getBlock("contacto", "horario"),
       getBlockText("contacto", "url-privacidad"),
+      getBlock("contacto", "como-llegar"),
     ]);
 
   const datos = [
@@ -105,6 +106,26 @@ export default async function ContactoPage() {
           </Reveal>
         </div>
       </section>
+
+      {/* Cómo llegar (transporte y plano de las instalaciones) */}
+      {comoLlegar ? (
+        <section className="border-t border-gray-200 bg-surface-card">
+          <div className="mx-auto max-w-6xl px-6 py-14">
+            <div className="mb-5 flex items-center gap-3">
+              <span className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-md bg-iuce-blue-pale text-ink">
+                <Compass className="h-[18px] w-[18px]" aria-hidden="true" />
+              </span>
+              <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+                Cómo llegar
+              </h2>
+            </div>
+            <div
+              className="page-block max-w-[85ch] text-base leading-relaxed text-gray-600 [&_img]:mt-2 [&_img]:w-full [&_img]:max-w-[860px] [&_img]:rounded-xl [&_img]:border [&_img]:border-gray-200 [&_img]:bg-white [&_li]:mb-2 [&_ul]:list-disc [&_ul]:pl-5"
+              dangerouslySetInnerHTML={{ __html: comoLlegar }}
+            />
+          </div>
+        </section>
+      ) : null}
     </>
   );
 }

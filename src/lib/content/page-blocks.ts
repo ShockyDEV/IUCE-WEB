@@ -42,9 +42,21 @@ export const PAGE_BLOCKS: PageDef[] = [
       },
       {
         blockKey: "edificio",
-        title: "Edificio histórico",
-        defaultContent: `<p>La sede del IUCE se encuentra en el Edificio Solís, en el Paseo de Canalejas. El Instituto ocupa la primera planta, donde conviven los espacios de dirección, investigación y formación.</p>
-<p>El edificio forma parte del patrimonio de la Universidad de Salamanca, cuya historia se extiende a lo largo de más de ocho siglos al servicio del conocimiento.</p>`,
+        title: "Edificio histórico — texto",
+        defaultContent: `<p>El colegio, fundado en 1542, recibe su nombre del de su patrona, la Inmaculada Concepción. Su nombre completo era «Colegio de la Purísima Concepción de los niños huérfanos», aunque también se conoce como «Colegio de Huérfanos», y con el tiempo pasaría a albergar el Instituto Universitario de Ciencias de la Educación (IUCE).</p>
+<p>El Edificio Solís esconde, entre sus piedras y vítores, grandes dosis de conocimiento, juventud, creatividad, investigación, educación y vida, cumpliendo así los deseos originales de su fundador, Francisco de Solís.</p>`,
+      },
+      {
+        blockKey: "url-video-historia",
+        title: "Edificio histórico — URL del vídeo de YouTube (vacío = ocultar)",
+        defaultContent: `<p>https://www.youtube-nocookie.com/embed/SQnP-IOOO5g</p>`,
+      },
+      {
+        blockKey: "edificio-biblio",
+        title: "Edificio histórico — bibliografía",
+        defaultContent: `<ul><li>MARTÍN SÁNCHEZ, M.: <em>Historia y pedagogía del Colegio Menor de la Concepción de Huérfanos de Salamanca</em>. Salamanca: Universidad de Salamanca, 2007.</li>
+<li>MARTÍN SÁNCHEZ, M.: Un mecenas de la educación: Francisco de Solís, fundador del Colegio Menor de Huérfanos. En <em>Aula. Revista de Enseñanza e Investigación Educativa</em>, 13, 2001, pp. 113-126.</li>
+<li>MARTÍN SÁNCHEZ, M.: Los orígenes del Colegio Menor de la Concepción de Huérfanos de Salamanca. En <em>Studia Historica. Historia Moderna</em>, 25, 2003, pp. 217-240.</li></ul>`,
       },
     ],
   },
@@ -101,7 +113,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "eks-descripcion",
         title: "Publicaciones — tarjeta de la revista EKS",
-        defaultContent: `<p>Revista científica del IUCE en acceso abierto: investigación interdisciplinar sobre la Sociedad del Conocimiento y los procesos educativos mediados por tecnología.</p>`,
+        defaultContent: `<p>Revista científica del IUCE en acceso abierto: investigación interdisciplinar sobre la Sociedad del Conocimiento y los procesos educativos mediados por tecnología. Indexada en Scopus y en el Emerging Sources Citation Index (ESCI) de Web of Science. ISSN 2444-8729 (hasta 2014 se publicó como <em>Teoría de la Educación: Educación y Cultura en la Sociedad de la Información</em>, TESI).</p>`,
       },
       {
         blockKey: "url-eks",
@@ -177,6 +189,17 @@ export const PAGE_BLOCKS: PageDef[] = [
         title: "Contacto — horario de Secretaría",
         defaultContent: `<p>Lunes a viernes, 9:00–14:00</p>`,
       },
+      {
+        blockKey: "como-llegar",
+        title: "Contacto — Cómo llegar (transporte y plano)",
+        defaultContent: `<p>El IUCE está en la primera planta del Edificio Solís, dentro del Campus de Educación (Paseo de Canalejas, 169). El aula 2A se encuentra en la planta baja.</p>
+<ul><li><strong>En tren:</strong> la estación Vialia (Paseo de la Estación, s/n) ofrece conexiones directas con Madrid, Ávila y Valladolid. Horarios y billetes en renfe.com.</li>
+<li><strong>En autobús:</strong> la Estación de Autobuses (Avda. Filiberto Villalobos, 71-85) conecta Salamanca con las principales ciudades a través de ALSA y Avanza; Avanza ofrece servicio directo con el aeropuerto de Madrid-Barajas.</li>
+<li><strong>En coche:</strong> por la A-62 (Valladolid–Portugal) o la A-50 (Ávila–Madrid); el campus está junto al Paseo de Canalejas, con aparcamiento público en la zona.</li>
+<li><strong>Bus urbano:</strong> varias líneas paran junto al Campus de Educación; consulta el plano de líneas en la web de transportes de Salamanca.</li></ul>
+<p>Plano de las instalaciones del IUCE (aulas, secretaría y dirección):</p>
+<p><img src="/images/plano-iuce.png" alt="Plano de la primera planta del IUCE en el Edificio Solís, con la ubicación de aulas, secretaría y dirección" /></p>`,
+      },
     ],
   },
   {
@@ -196,11 +219,31 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "intro",
         title: "Plan de Formación — introducción",
-        defaultContent: `<p>A iniciativa del Vicerrectorado de Estudios de Grado y Calidad, el Plan recoge la propuesta institucional de formación inicial y permanente para todo el personal docente e investigador de la Universidad de Salamanca.</p>`,
+        defaultContent: `<p>A iniciativa del Vicerrectorado de Estudios de Grado y Calidad, el Plan recoge la propuesta institucional de formación inicial y permanente para todo el personal docente e investigador de la Universidad de Salamanca. Su objetivo es contribuir a la mejora de la actividad docente en las titulaciones oficiales, apoyando la adquisición de competencias, la evaluación y la innovación docente.</p>`,
       },
       {
-        blockKey: "url-programa",
-        title: "Formación — URL del botón «Programa e inscripciones» (vacío = ocultar)",
+        blockKey: "aviso-preinscripcion",
+        title: "Formación — aviso destacado de preinscripción (vacío = ocultar)",
+        defaultContent: `<p><strong>Preinscripción:</strong> del 27 de enero al 4 de febrero de 2026.</p>`,
+      },
+      {
+        blockKey: "url-portal",
+        title: "Formación — URL del botón «Acceso al Portal de Formación» (vacío = ocultar)",
+        defaultContent: `<p>https://portalservicios.usal.es/formacion</p>`,
+      },
+      {
+        blockKey: "url-manual",
+        title: "Formación — URL del manual de usuario del Portal (vacío = ocultar)",
+        defaultContent: `<p>https://sicpd.usal.es/go/formacion</p>`,
+      },
+      {
+        blockKey: "inscripcion-nota",
+        title: "Formación — nota sobre la inscripción",
+        defaultContent: `<p>Aunque la plataforma lo pueda solicitar, <strong>no es necesario</strong> indicar motivo de inscripción ni preferencia, ni adjuntar ningún documento.</p>`,
+      },
+      {
+        blockKey: "url-plan",
+        title: "Formación — URL del PDF del Plan (visor embebido y descarga; vacío = ocultar)",
         defaultContent: `<p>/uploads/legacy/plan-de-formacion-2026.pdf</p>`,
       },
       {
@@ -211,8 +254,9 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "fdi-intro",
         title: "Formación Docente Inicial — texto",
-        defaultContent: `<p>La LOSU establece que las profesoras y profesores ayudantes doctores deberán realizar, en el primer año de contrato, un curso de formación docente inicial definido por las universidades a través de sus unidades de formación e innovación docente (art. 78.b).</p>
-<p>Para dar respuesta a este contexto, las cuatro unidades de formación de las universidades públicas de Castilla y León —unidas por un convenio de colaboración desde 2012— ejecutan conjuntamente el programa, con ediciones periódicas de cada módulo a lo largo del año.</p>`,
+        defaultContent: `<p>La LOSU encarga a las universidades garantizar la formación docente inicial y continuada de su profesorado (art. 67) y establece que las profesoras y profesores ayudantes doctores deberán realizar, en el primer año de contrato, un curso de formación docente inicial definido por las universidades a través de sus unidades de formación e innovación docente (art. 78.b).</p>
+<p>Para dar respuesta a este contexto, las cuatro unidades de formación de las universidades públicas de Castilla y León —unidas por un convenio de colaboración desde 2012— ejecutan conjuntamente el programa. La formación consta de cinco módulos independientes pero relacionados, con ediciones periódicas para poder cursarlos durante los años de contrato como ayudante doctor/a.</p>
+<p>Cada módulo tiene certificado propio y, al completar los cinco, se obtiene un certificado conjunto que acredita la superación total del programa.</p>`,
       },
       {
         blockKey: "cta",
@@ -235,6 +279,25 @@ export const PAGE_BLOCKS: PageDef[] = [
         blockKey: "semana-doctoral",
         title: "Semana Doctoral — texto de la tarjeta",
         defaultContent: `<p>Cada otoño, el programa celebra su Semana Doctoral: seminarios, defensa de avances y encuentro entre doctorandos y grupos.</p>`,
+      },
+    ],
+  },
+  {
+    pageSlug: "legal",
+    label: "Legal — Política de cookies",
+    blocks: [
+      {
+        blockKey: "cookies",
+        title: "Política de cookies — texto completo",
+        defaultContent: `<p>Una cookie es una pequeña información enviada por un sitio web y almacenada en el navegador, de manera que el sitio puede recordar la actividad previa de la persona usuaria.</p>
+<p>Este sitio web utiliza únicamente <strong>cookies estrictamente necesarias</strong>: las imprescindibles para prestar servicios solicitados expresamente (por ejemplo, mantener la sesión iniciada en la intranet o en el panel de administración). No se utilizan cookies analíticas ni publicitarias, ni se ceden datos a terceros.</p>
+<h2>Desactivación de cookies</h2>
+<p>Puedes elegir en cualquier momento qué cookies funcionan en este sitio configurando tu navegador. Ten en cuenta que, si desactivas las cookies necesarias, la intranet y el panel dejarán de funcionar:</p>
+<ul><li><strong>Chrome:</strong> Configuración → Privacidad y seguridad → Cookies.</li>
+<li><strong>Firefox:</strong> Ajustes → Privacidad y seguridad → Cookies y datos del sitio.</li>
+<li><strong>Safari:</strong> Preferencias → Privacidad.</li>
+<li><strong>Edge:</strong> Configuración → Cookies y permisos del sitio.</li></ul>
+<p>Para más información sobre el tratamiento de datos personales, consulta la <a href="https://www.usal.es/proteccion-de-datos">política de protección de datos de la Universidad de Salamanca</a>.</p>`,
       },
     ],
   },

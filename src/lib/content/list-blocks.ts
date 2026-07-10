@@ -155,6 +155,10 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { titulo: "Aula 17", texto: "Seminarios, talleres y actividades formativas", foto: "/images/instalaciones/aula-17.jpg" },
       { titulo: "Laboratorio", texto: "Equipamiento especializado para experimentación e investigación", foto: "/images/instalaciones/laboratorio.webp" },
       { titulo: "Sala de usos múltiples", texto: "Reuniones, defensa de trabajos y actividades del Instituto", foto: "/images/instalaciones/sala-usos-multiples.webp" },
+      { titulo: "Laboratorio GRIAL", texto: "Espacio de trabajo del grupo GRIAL: análisis de datos, informes y preparación de publicaciones", foto: "/images/instalaciones/laboratorio-grial.jpg" },
+      { titulo: "Laboratorio CEDETEL", texto: "Laboratorio de investigación con equipamiento técnico especializado", foto: "/images/instalaciones/laboratorio-cedetel.jpg" },
+      { titulo: "Dirección", texto: "Oficinas de la dirección del Instituto: coordinación de proyectos y decisiones estratégicas", foto: "/images/instalaciones/direccion.jpg" },
+      { titulo: "Edificio Solís", texto: "El Instituto ocupa la primera planta del Edificio Solís, en el Campus de Educación", foto: "/images/instalaciones/edificio-solis-exterior.jpg" },
     ],
   },
 
@@ -232,6 +236,38 @@ export const LIST_BLOCKS: ListBlockDef[] = [
   },
   {
     pageSlug: "formacion",
+    blockKey: "list:subplanes",
+    title: "Cómo inscribirse — subplanes del Portal de Formación",
+    itemLabel: "subplan",
+    fields: [
+      { key: "titulo", label: "Título", type: "text" },
+      { key: "texto", label: "Texto", type: "textarea" },
+    ],
+    defaultItems: [
+      { titulo: "Programa General", texto: "Formación permanente abierta a todo el personal docente e investigador de la USAL: se pueden solicitar hasta 6 cursos." },
+      { titulo: "Programa de Formación en centros", texto: "Formación organizada en los propios centros: se pueden solicitar todos los cursos que se consideren." },
+    ],
+  },
+  {
+    pageSlug: "formacion",
+    blockKey: "list:fdi-modulos",
+    title: "Formación Docente Inicial — los 5 módulos",
+    itemLabel: "módulo",
+    fields: [
+      { key: "codigo", label: "Código", type: "text" },
+      { key: "titulo", label: "Título", type: "textarea" },
+      { key: "coordina", label: "Quién lo coordina", type: "text" },
+    ],
+    defaultItems: [
+      { codigo: "M1", titulo: "Gestión de la docencia en la Universidad de Salamanca: bases normativas y responsabilidad docente", coordina: "Independiente en cada universidad" },
+      { codigo: "M2", titulo: "Herramientas para la digitalización de la docencia universitaria", coordina: "Independiente en cada universidad" },
+      { codigo: "M3", titulo: "Planificación docente: metodologías docentes y evaluación", coordina: "Coordina la UVA" },
+      { codigo: "M4", titulo: "Innovación docente", coordina: "Coordina la ULE" },
+      { codigo: "M5", titulo: "Competencias relacionales y responsabilidad social: diseño universal para el aprendizaje, perspectiva de género e inclusión social", coordina: "Coordinan UBU y USAL" },
+    ],
+  },
+  {
+    pageSlug: "formacion",
     blockKey: "list:fdi-unidades",
     title: "Formación Docente Inicial — unidades",
     itemLabel: "unidad",
@@ -258,7 +294,9 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "cuando", label: "Cuándo", type: "text" },
     ],
     defaultItems: [
-      { codigo: "M4", titulo: "Módulos 4 y 5", cuando: "Ediciones en marzo y mayo" },
+      { codigo: "M3", titulo: "Módulo 3", cuando: "13 ene – 9 feb (preinscripción 1–11 dic) y abril–mayo" },
+      { codigo: "M4", titulo: "Módulo 4", cuando: "Ediciones en marzo y en mayo" },
+      { codigo: "M5", titulo: "Módulo 5", cuando: "Ediciones en marzo y en mayo" },
       { codigo: "M1", titulo: "Módulo 1", cuando: "Junio (Plan General) y septiembre" },
       { codigo: "M2", titulo: "Módulo 2", cuando: "Julio (dentro del Plan General)" },
     ],

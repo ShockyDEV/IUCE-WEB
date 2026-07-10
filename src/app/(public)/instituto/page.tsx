@@ -20,6 +20,7 @@ import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import Image from "next/image";
 import { MapEmbed } from "@/components/ui/map-embed";
 import { Reveal } from "@/components/ui/reveal";
+import { VideoEmbed } from "@/components/ui/video-embed";
 import { InitialsAvatar } from "@/components/ui/initials-avatar";
 import {
   MembersGrid,
@@ -192,6 +193,8 @@ export default async function InstitutoPage() {
   const [
     perfilIntro,
     edificioTexto,
+    edificioBiblio,
+    urlVideoHistoria,
     urlReglamento,
     citaDirectora,
     miembros,
@@ -202,6 +205,8 @@ export default async function InstitutoPage() {
   ] = await Promise.all([
     getBlock("instituto", "perfil-intro"),
     getBlock("instituto", "edificio"),
+    getBlock("instituto", "edificio-biblio"),
+    getBlockText("instituto", "url-video-historia"),
     getBlockText("instituto", "url-reglamento"),
     getBlock("instituto", "cita-directora"),
     getMiembros(),
@@ -611,6 +616,33 @@ export default async function InstitutoPage() {
             />
           </Reveal>
         </div>
+
+        {/* Vídeo del edificio + bibliografía */}
+        {urlVideoHistoria || edificioBiblio ? (
+          <div className="mx-auto grid max-w-6xl items-start gap-12 px-6 pb-16 lg:grid-cols-[1.2fr_1fr]">
+            {urlVideoHistoria ? (
+              <Reveal>
+                <VideoEmbed
+                  src={urlVideoHistoria}
+                  title="El Colegio de Huérfanos, sede histórica del IUCE"
+                />
+              </Reveal>
+            ) : null}
+            {edificioBiblio ? (
+              <Reveal from="right">
+                <div className="rounded-xl border border-gray-200 bg-surface-page p-6">
+                  <h3 className="mb-3 text-base font-semibold text-gray-900">
+                    Para saber más
+                  </h3>
+                  <div
+                    className="page-block text-sm leading-relaxed text-gray-600 [&_li]:mb-2.5 [&_ul]:list-disc [&_ul]:pl-5"
+                    dangerouslySetInnerHTML={{ __html: edificioBiblio }}
+                  />
+                </div>
+              </Reveal>
+            ) : null}
+          </div>
+        ) : null}
       </section>
     </>
   );

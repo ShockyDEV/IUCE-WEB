@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
 import {
   ArrowDown,
-  BadgeCheck,
+  ArrowUpRight,
+  BookOpen,
   CalendarDays,
-  History,
-  Map,
   MailQuestion,
-  MonitorPlay,
-  Sprout,
-  Users,
 } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { buttonClassName } from "@/components/ui/button";
@@ -20,6 +16,7 @@ import {
 import { iconFor } from "@/lib/icon-map";
 import { Reveal } from "@/components/ui/reveal";
 import { CountUp } from "@/components/ui/count-up";
+import { PdfEmbed } from "@/components/ui/pdf-embed";
 import { cn } from "@/lib/cn";
 
 export const dynamic = "force-dynamic";
@@ -39,27 +36,39 @@ export default async function FormacionPage() {
   const [
     heroEyebrow,
     heroTitulo,
-    urlPrograma,
+    urlPortal,
+    urlManual,
+    urlPlan,
     urlCalendario,
     intro,
+    aviso,
+    inscripcionNota,
     fdiIntro,
     cta,
     datos,
     destinatarios,
+    subplanes,
     actividades,
+    modulos,
     unidades,
     ediciones,
   ] = await Promise.all([
     getBlockText("formacion", "hero-eyebrow"),
     getBlockText("formacion", "hero-titulo"),
-    getBlockText("formacion", "url-programa"),
+    getBlockText("formacion", "url-portal"),
+    getBlockText("formacion", "url-manual"),
+    getBlockText("formacion", "url-plan"),
     getBlockText("formacion", "url-calendario"),
     getBlock("formacion", "intro"),
+    getBlockText("formacion", "aviso-preinscripcion"),
+    getBlock("formacion", "inscripcion-nota"),
     getBlock("formacion", "fdi-intro"),
     getBlock("formacion", "cta"),
     getListBlock("formacion", "list:datos"),
     getListBlock("formacion", "list:destinatarios"),
+    getListBlock("formacion", "list:subplanes"),
     getListBlock("formacion", "list:actividades"),
+    getListBlock("formacion", "list:fdi-modulos"),
     getListBlock("formacion", "list:fdi-unidades"),
     getListBlock("formacion", "list:fdi-ediciones"),
   ]);
@@ -80,27 +89,36 @@ export default async function FormacionPage() {
               {heroTitulo}
             </h1>
             <div
-              className="page-block mb-6 max-w-[60ch] text-base leading-relaxed text-gray-600"
+              className="page-block mb-5 max-w-[60ch] text-base leading-relaxed text-gray-600"
               dangerouslySetInnerHTML={{ __html: intro }}
             />
+            {aviso ? (
+              <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-usal-red/25 bg-usal-red/[.06] px-4 py-2 text-sm font-medium text-usal-red">
+                <CalendarDays className="h-4 w-4 flex-none" aria-hidden="true" />
+                {aviso}
+              </p>
+            ) : null}
             <div className="flex flex-wrap items-center gap-3">
-              {urlPrograma ? (
+              {urlPortal ? (
                 <a
-                  href={urlPrograma}
+                  href={urlPortal}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={buttonClassName({ size: "lg" })}
+                  className={buttonClassName({ size: "lg" }) + " gap-1.5"}
                 >
-                  Programa e inscripciones
+                  Acceso al Portal de Formación
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </a>
               ) : null}
-              <a
-                href="#inicial"
-                className="inline-flex items-center gap-2 px-2 py-3 text-base font-medium text-iuce-blue hover:underline"
-              >
-                Formación Docente Inicial
-                <ArrowDown className="h-4 w-4" aria-hidden="true" />
-              </a>
+              {urlPlan ? (
+                <a
+                  href="#plan"
+                  className="inline-flex items-center gap-2 px-2 py-3 text-base font-medium text-iuce-blue hover:underline"
+                >
+                  Ver el Plan completo (PDF)
+                  <ArrowDown className="h-4 w-4" aria-hidden="true" />
+                </a>
+              ) : null}
             </div>
           </div>
 
@@ -161,8 +179,65 @@ export default async function FormacionPage() {
         </div>
       </section>
 
-      {/* Actividades formativas */}
+      {/* Cómo inscribirse (Portal de Formación, subplanes y manual) */}
       <section className="border-b border-gray-200 bg-surface-card">
+        <div className="mx-auto max-w-6xl px-6 py-10">
+          <h2 className="mb-1.5 text-xl font-bold text-gray-900">
+            Cómo inscribirse
+          </h2>
+          <p className="mb-5 max-w-[80ch] text-sm text-gray-500">
+            Las inscripciones se realizan en el Portal de Formación de la USAL,
+            eligiendo el subplan que corresponda.
+          </p>
+          <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {subplanes.map((s, i) => (
+              <Reveal key={i} delay={i * 90} className="h-full">
+                <article className="h-full rounded-xl border border-gray-200 bg-surface-page p-5 shadow-sm">
+                  <h3 className="mb-1.5 text-base font-semibold text-gray-900">
+                    {String(s.titulo)}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-gray-600">
+                    {String(s.texto)}
+                  </p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div
+              className="page-block max-w-[70ch] text-sm leading-relaxed text-gray-500"
+              dangerouslySetInnerHTML={{ __html: inscripcionNota }}
+            />
+            <div className="flex flex-none flex-wrap items-center gap-3">
+              {urlManual ? (
+                <a
+                  href={urlManual}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
+                >
+                  <BookOpen className="h-4 w-4" aria-hidden="true" />
+                  Manual del Portal de Formación
+                </a>
+              ) : null}
+              {urlPortal ? (
+                <a
+                  href={urlPortal}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonClassName() + " gap-1.5"}
+                >
+                  Ir al Portal
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Actividades formativas */}
+      <section className="border-b border-gray-200">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
             Actividades formativas
@@ -211,6 +286,26 @@ export default async function FormacionPage() {
         </div>
       </section>
 
+      {/* El Plan completo (PDF embebido) */}
+      {urlPlan ? (
+        <section id="plan" className="scroll-mt-20 border-b border-gray-200 bg-surface-card">
+          <div className="mx-auto max-w-6xl px-6 py-14">
+            <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
+              El Plan, al completo
+            </h2>
+            <p className="mb-6 max-w-[80ch] text-sm text-gray-500">
+              Consulta aquí el documento íntegro del Plan de Formación Docente
+              del Profesorado, con todos los cursos, fechas y condiciones.
+            </p>
+            <PdfEmbed
+              src={urlPlan}
+              title="Plan de Formación Docente del Profesorado — documento completo"
+              downloadLabel="Descargar el Plan (PDF)"
+            />
+          </div>
+        </section>
+      ) : null}
+
       {/* Formación Docente Inicial */}
       <section id="inicial" className="scroll-mt-20">
         <div className="mx-auto grid max-w-6xl items-start gap-12 px-6 py-14 lg:grid-cols-[1.4fr_1fr]">
@@ -225,6 +320,33 @@ export default async function FormacionPage() {
               className="page-block mb-6 text-base leading-relaxed text-gray-600"
               dangerouslySetInnerHTML={{ __html: fdiIntro }}
             />
+
+            {/* Los 5 módulos del programa */}
+            <div className="mb-7 flex flex-col">
+              {modulos.map((m, i) => (
+                <Reveal key={i} delay={i * 60}>
+                  <div
+                    className={
+                      "grid grid-cols-[44px_1fr] items-start gap-3 border-t border-gray-100 py-3" +
+                      (i === modulos.length - 1 ? " border-b" : "")
+                    }
+                  >
+                    <span className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-iuce-blue-pale text-xs font-bold text-ink">
+                      {String(m.codigo)}
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium leading-snug text-gray-900">
+                        {String(m.titulo)}
+                      </p>
+                      <p className="mt-0.5 text-xs text-gray-500">
+                        {String(m.coordina)}
+                      </p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
             <div className="mb-6 flex flex-col gap-2.5">
               {unidades.map((u, i) => (
                 <div
@@ -257,6 +379,16 @@ export default async function FormacionPage() {
           </div>
 
           <aside className="rounded-xl border border-gray-200 bg-surface-card p-6 shadow-sm">
+            {/* Logo del programa conjunto (FIUNI) sobre placa blanca fija,
+                como los logos de grupos: debe verse igual en tema oscuro. */}
+            <div className="mb-5 flex items-center justify-center rounded-md bg-white px-4 py-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/fiuni.png"
+                alt="Formación Inicial Universitaria — programa conjunto de las universidades públicas de Castilla y León"
+                className="max-h-16 w-auto"
+              />
+            </div>
             <h3 className="mb-1 text-base font-semibold text-gray-900">
               Ediciones 2026
             </h3>

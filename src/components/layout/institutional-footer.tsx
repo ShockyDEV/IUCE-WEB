@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Phone, Mail, Globe } from "lucide-react";
 
 export function InstitutionalFooter() {
@@ -57,6 +58,13 @@ export function InstitutionalFooter() {
           <p>
             © {year} IUCE – Universidad de Salamanca – Todos los derechos
             reservados
+            {" · "}
+            <Link
+              href="/politica-de-cookies"
+              className="transition-colors hover:text-white"
+            >
+              Política de cookies
+            </Link>
           </p>
           <div className="flex items-center gap-3">
             <a
