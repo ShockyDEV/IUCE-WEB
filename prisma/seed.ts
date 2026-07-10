@@ -35,6 +35,20 @@ async function main() {
   });
   console.log(`✓ Usuario SUPER_ADMIN: ${adminEmail}`);
 
+  // --- Lista blanca inicial de la intranet ----------------------------------
+  const intranetEmails = [
+    { email: "iuce@usal.es", name: "Administración IUCE" },
+    { email: "enriquemico8@gmail.com", name: "Enrique (técnico)" },
+  ];
+  for (const u of intranetEmails) {
+    await prisma.intranetUser.upsert({
+      where: { email: u.email },
+      update: { active: true },
+      create: { email: u.email, name: u.name, active: true },
+    });
+  }
+  console.log(`✓ ${intranetEmails.length} usuarios autorizados de intranet`);
+
   // --- Noticias -------------------------------------------------------------
   for (const n of news) {
     await prisma.news.upsert({

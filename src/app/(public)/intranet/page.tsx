@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Download, FileText, Lock } from "lucide-react";
+import { Download, FileText, Lock, Wrench } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { Reveal } from "@/components/ui/reveal";
 import { RequestAccessForm } from "@/components/intranet/request-access-form";
@@ -48,6 +48,15 @@ export default async function IntranetPage() {
                 </p>
               </div>
               <RequestAccessForm />
+              {process.env.NODE_ENV !== "production" ? (
+                <a
+                  href="/api/intranet/dev-access"
+                  className="mt-4 flex h-10 w-full items-center justify-center gap-2 rounded-md border border-dashed border-warning-500/60 bg-warning-50 text-sm font-semibold text-warning-700 transition-colors hover:border-warning-500"
+                >
+                  <Wrench className="h-4 w-4" aria-hidden="true" />
+                  Entrar directamente (modo DEV)
+                </a>
+              ) : null}
             </div>
           </Reveal>
         </div>
