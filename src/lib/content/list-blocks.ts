@@ -209,7 +209,7 @@ export const LIST_BLOCKS: ListBlockDef[] = [
         titulo: "Plan General 2026",
         texto: "Cursos, talleres y seminarios presenciales y en línea a lo largo de todo el año: metodologías docentes, evaluación, tecnología educativa, idiomas o gestión de datos de investigación.",
         cta: "Consultar convocatoria →",
-        enlace: "",
+        enlace: "/uploads/legacy/plan-de-formacion-2026.pdf",
         acentoRojo: false,
       },
       {

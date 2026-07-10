@@ -36,6 +36,11 @@ export const PAGE_BLOCKS: PageDef[] = [
 <p>Aunque, como en otros muchos problemas, las medidas fundamentales sean estructurales, el IUCE debe investigar, formar e informar para que, en la medida de sus posibilidades, se avance en el conocimiento de estos problemas y en su mejoramiento.»</p>`,
       },
       {
+        blockKey: "url-reglamento",
+        title: "Instituto — URL de «Descargar reglamento» (vacío = ocultar el enlace)",
+        defaultContent: `<p></p>`,
+      },
+      {
         blockKey: "edificio",
         title: "Edificio histórico",
         defaultContent: `<p>La sede del IUCE se encuentra en el Edificio Solís, en el Paseo de Canalejas. El Instituto ocupa la primera planta, donde conviven los espacios de dirección, investigación y formación.</p>
@@ -133,6 +138,11 @@ export const PAGE_BLOCKS: PageDef[] = [
         defaultContent: `<p>La Secretaría del Instituto atiende consultas sobre formación, investigación, doctorado y uso de espacios.</p>`,
       },
       {
+        blockKey: "url-privacidad",
+        title: "Contacto — URL de la política de privacidad (RGPD)",
+        defaultContent: `<p>https://www.usal.es/proteccion-de-datos</p>`,
+      },
+      {
         blockKey: "direccion",
         title: "Contacto — dirección postal",
         defaultContent: `<p>Paseo de Canalejas, 169 · Edificio Solís, 1.ª planta<br>37008 Salamanca</p>`,
@@ -167,6 +177,16 @@ export const PAGE_BLOCKS: PageDef[] = [
         blockKey: "intro",
         title: "Plan de Formación — introducción",
         defaultContent: `<p>A iniciativa del Vicerrectorado de Estudios de Grado y Calidad, el Plan recoge la propuesta institucional de formación inicial y permanente para todo el personal docente e investigador de la Universidad de Salamanca.</p>`,
+      },
+      {
+        blockKey: "url-programa",
+        title: "Formación — URL del botón «Programa e inscripciones» (vacío = ocultar)",
+        defaultContent: `<p>/uploads/legacy/plan-de-formacion-2026.pdf</p>`,
+      },
+      {
+        blockKey: "url-calendario",
+        title: "Formación — URL del botón «Ver calendario completo» (vacío = ocultar)",
+        defaultContent: `<p></p>`,
       },
       {
         blockKey: "fdi-intro",

@@ -76,7 +76,11 @@ export function SignInForm() {
           >
             Contraseña
           </label>
-          <a href="#" className="text-xs text-iuce-blue hover:underline">
+          <a
+            href="mailto:iuce.tecnico@usal.es?subject=Restablecer%20contrase%C3%B1a%20del%20panel"
+            title="Escribe al soporte técnico para restablecerla"
+            className="text-xs text-iuce-blue hover:underline"
+          >
             ¿Has olvidado tu contraseña?
           </a>
         </div>

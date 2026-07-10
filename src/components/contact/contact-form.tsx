@@ -24,7 +24,9 @@ function Required() {
  * Formulario «Escríbenos» de la página de contacto. Envía a /api/contact,
  * que registra el mensaje y lo remite a la Secretaría por email.
  */
-export function ContactForm() {
+export function ContactForm({
+  privacyUrl = "https://www.usal.es/proteccion-de-datos",
+}: Readonly<{ privacyUrl?: string }>) {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -169,7 +171,12 @@ export function ContactForm() {
           className="text-xs leading-relaxed text-gray-500"
         >
           He leído y acepto la{" "}
-          <a href="#" className="text-iuce-blue hover:underline">
+          <a
+            href={privacyUrl || "https://www.usal.es/proteccion-de-datos"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-iuce-blue hover:underline"
+          >
             política de privacidad
           </a>
           . Los datos se tratarán únicamente para responder a esta consulta,

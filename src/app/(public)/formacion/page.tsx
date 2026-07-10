@@ -39,6 +39,8 @@ export default async function FormacionPage() {
   const [
     heroEyebrow,
     heroTitulo,
+    urlPrograma,
+    urlCalendario,
     intro,
     fdiIntro,
     cta,
@@ -50,6 +52,8 @@ export default async function FormacionPage() {
   ] = await Promise.all([
     getBlockText("formacion", "hero-eyebrow"),
     getBlockText("formacion", "hero-titulo"),
+    getBlockText("formacion", "url-programa"),
+    getBlockText("formacion", "url-calendario"),
     getBlock("formacion", "intro"),
     getBlock("formacion", "fdi-intro"),
     getBlock("formacion", "cta"),
@@ -80,9 +84,16 @@ export default async function FormacionPage() {
               dangerouslySetInnerHTML={{ __html: intro }}
             />
             <div className="flex flex-wrap items-center gap-3">
-              <a href="#" className={buttonClassName({ size: "lg" })}>
-                Programa e inscripciones
-              </a>
+              {urlPrograma ? (
+                <a
+                  href={urlPrograma}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonClassName({ size: "lg" })}
+                >
+                  Programa e inscripciones
+                </a>
+              ) : null}
               <a
                 href="#inicial"
                 className="inline-flex items-center gap-2 px-2 py-3 text-base font-medium text-iuce-blue hover:underline"
@@ -184,9 +195,9 @@ export default async function FormacionPage() {
                   <p className="text-sm leading-relaxed text-gray-600">
                     {String(a.texto)}
                   </p>
-                  {a.cta ? (
+                  {a.cta && a.enlace ? (
                     <a
-                      href={String(a.enlace || "#")}
+                      href={String(a.enlace)}
                       className="mt-auto text-sm font-medium text-iuce-blue hover:underline"
                     >
                       {String(a.cta)}
@@ -271,17 +282,21 @@ export default async function FormacionPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-[18px] border-t border-gray-100 pt-4">
-              <a
-                href="#"
-                className={cn(
-                  buttonClassName({ variant: "outline", size: "sm" }),
-                  "w-full",
-                )}
-              >
-                Ver calendario completo
-              </a>
-            </div>
+            {urlCalendario ? (
+              <div className="mt-[18px] border-t border-gray-100 pt-4">
+                <a
+                  href={urlCalendario}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonClassName({ variant: "outline", size: "sm" }),
+                    "w-full",
+                  )}
+                >
+                  Ver calendario completo
+                </a>
+              </div>
+            ) : null}
           </aside>
         </div>
       </section>

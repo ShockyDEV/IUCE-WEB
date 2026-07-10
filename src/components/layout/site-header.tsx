@@ -130,12 +130,12 @@ export function SiteHeader() {
               aria-label="Selector de idioma"
             >
               ES <span className="font-normal text-gray-300">·</span>{" "}
-              <a
-                href="#"
-                className="font-normal text-gray-400 no-underline hover:text-gray-600"
+              <span
+                title="Versión en inglés próximamente"
+                className="cursor-default font-normal text-gray-300"
               >
                 EN
-              </a>
+              </span>
             </span>
             {/* Hamburguesa (móvil y tablet) */}
             <button

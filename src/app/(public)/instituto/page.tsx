@@ -26,7 +26,11 @@ import {
   type PublicMember,
 } from "@/components/instituto/members-grid";
 import { buttonClassName } from "@/components/ui/button";
-import { getBlock, getListBlock } from "@/lib/content-blocks-service";
+import {
+  getBlock,
+  getBlockText,
+  getListBlock,
+} from "@/lib/content-blocks-service";
 import { iconFor } from "@/lib/icon-map";
 import { prisma } from "@/lib/prisma";
 
@@ -188,6 +192,7 @@ export default async function InstitutoPage() {
   const [
     perfilIntro,
     edificioTexto,
+    urlReglamento,
     citaDirectora,
     miembros,
     { equipo, secretaria },
@@ -197,6 +202,7 @@ export default async function InstitutoPage() {
   ] = await Promise.all([
     getBlock("instituto", "perfil-intro"),
     getBlock("instituto", "edificio"),
+    getBlockText("instituto", "url-reglamento"),
     getBlock("instituto", "cita-directora"),
     getMiembros(),
     getDireccion(),
@@ -263,10 +269,20 @@ export default async function InstitutoPage() {
             </ul>
             <p className="text-xs text-gray-400">
               Art. 3 del Reglamento del IUCE, aprobado por Consejo de Gobierno
-              de 28 de junio de 2023.{" "}
-              <a href="#" className="text-iuce-blue hover:underline">
-                Descargar reglamento
-              </a>
+              de 28 de junio de 2023.
+              {urlReglamento ? (
+                <>
+                  {" "}
+                  <a
+                    href={urlReglamento}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-iuce-blue hover:underline"
+                  >
+                    Descargar reglamento
+                  </a>
+                </>
+              ) : null}
             </p>
           </div>
 

@@ -4,7 +4,7 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { MapEmbed } from "@/components/ui/map-embed";
 import { ContactForm } from "@/components/contact/contact-form";
 import { Reveal } from "@/components/ui/reveal";
-import { getBlock } from "@/lib/content-blocks-service";
+import { getBlock, getBlockText } from "@/lib/content-blocks-service";
 
 export const metadata: Metadata = {
   title: "Contacto",
@@ -16,12 +16,14 @@ export const dynamic = "force-dynamic";
 
 export default async function ContactoPage() {
   // Todos los textos de datos salen del gestor (Contenido → Páginas → Contacto).
-  const [intro, direccion, telefonos, horario] = await Promise.all([
-    getBlock("contacto", "intro"),
-    getBlock("contacto", "direccion"),
-    getBlock("contacto", "telefonos"),
-    getBlock("contacto", "horario"),
-  ]);
+  const [intro, direccion, telefonos, horario, urlPrivacidad] =
+    await Promise.all([
+      getBlock("contacto", "intro"),
+      getBlock("contacto", "direccion"),
+      getBlock("contacto", "telefonos"),
+      getBlock("contacto", "horario"),
+      getBlockText("contacto", "url-privacidad"),
+    ]);
 
   const datos = [
     { icon: MapPin, title: "Dirección", html: direccion },
@@ -99,7 +101,7 @@ export default async function ContactoPage() {
           </Reveal>
 
           <Reveal from="right" delay={120}>
-            <ContactForm />
+            <ContactForm privacyUrl={urlPrivacidad} />
           </Reveal>
         </div>
       </section>
