@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { UserRound } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { IntranetSignOut } from "@/components/intranet/intranet-signout";
 import { cn } from "@/lib/cn";
@@ -19,11 +21,14 @@ export type IntranetTab = (typeof TABS)[number]["href"];
 export function IntranetShell({
   active,
   email,
+  member,
   breadcrumbLabel,
   children,
 }: Readonly<{
   active: IntranetTab;
   email: string;
+  /** Ficha de miembro asociada al correo (foto y nombre), si existe. */
+  member?: { photo: string | null; name: string } | null;
   breadcrumbLabel?: string;
   children: React.ReactNode;
 }>) {
@@ -53,9 +58,33 @@ export function IntranetShell({
                 Área de miembros
               </h1>
             </div>
-            <div className="flex flex-col items-end gap-2 pt-1">
-              <p className="text-xs text-gray-400">{email}</p>
-              <IntranetSignOut />
+            <div className="flex items-center gap-3.5 pt-1">
+              <div className="flex flex-col items-end gap-2">
+                <div className="text-right">
+                  {member ? (
+                    <p className="text-sm font-semibold leading-tight text-gray-900">
+                      {member.name}
+                    </p>
+                  ) : null}
+                  <p className="text-xs text-gray-400">{email}</p>
+                </div>
+                <IntranetSignOut />
+              </div>
+              <span className="relative h-14 w-14 flex-none overflow-hidden rounded-full border-2 border-gray-200 bg-iuce-blue-pale">
+                {member?.photo ? (
+                  <Image
+                    src={member.photo}
+                    alt={`Foto de ${member.name}`}
+                    fill
+                    sizes="56px"
+                    className="object-cover"
+                  />
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center text-ink">
+                    <UserRound className="h-6 w-6" aria-hidden="true" />
+                  </span>
+                )}
+              </span>
             </div>
           </div>
           <nav

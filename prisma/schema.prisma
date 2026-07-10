@@ -80,6 +80,24 @@ model Member {
   group     ResearchGroup? @relation(fields: [groupId], references: [id])
 }
 
+// Proyectos de investigación competitivos (importados de la memoria de
+// acreditación, Tabla 4; gestionables después desde el panel).
+model Project {
+  id        String   @id @default(cuid())
+  title     String
+  funder    String? // entidad financiadora y código
+  ip        String? // investigador(es) principal(es)
+  line      String? // línea de investigación / grupo(s), p. ej. "GRIAL / MOVERE"
+  scope     String? // ámbito: Europeo, Internacional, Nacional, Autonómico, Institucional, Local
+  amount    String? // importe, texto original ("60.500,00 €")
+  period    String? // periodo original legible
+  startYear Int?
+  endYear   Int?
+  active    Boolean  @default(true) // visible en la web
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model ResearchGroup {
   id      String   @id @default(cuid())
   acronym String

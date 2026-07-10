@@ -3,7 +3,7 @@ import { Download, FileText, Lock, Wrench } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { RequestAccessForm } from "@/components/intranet/request-access-form";
 import { IntranetShell } from "@/components/intranet/intranet-shell";
-import { getIntranetSession } from "@/lib/intranet-session";
+import { getIntranetSession, getMemberBadge } from "@/lib/intranet-session";
 import { prisma } from "@/lib/prisma";
 import { getBlock } from "@/lib/content-blocks-service";
 
@@ -23,6 +23,7 @@ function formatSize(bytes: number) {
 
 export default async function IntranetPage() {
   const session = await getIntranetSession();
+  const badge = await getMemberBadge(session?.user?.email);
 
   // ── Sin sesión: formulario de acceso por magic link ────────────────────
   if (!session) {
@@ -66,7 +67,8 @@ export default async function IntranetPage() {
   ]);
 
   return (
-    <IntranetShell active="/miembros" email={session.user?.email ?? ""}>
+    <IntranetShell active="/miembros" email={session.user?.email ?? ""}
+      member={badge}>
       <div
         className="page-block mb-8 max-w-[70ch] text-base leading-relaxed text-gray-600"
         dangerouslySetInnerHTML={{ __html: intro }}

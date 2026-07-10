@@ -116,9 +116,14 @@ export const PAGE_BLOCKS: PageDef[] = [
         defaultContent: `<p>Investigación interdisciplinar, básica y aplicada, sobre los procesos de formación en Educación Superior: evaluación educativa, tecnología, comunicación y transferencia al sistema educativo.</p>`,
       },
       {
+        blockKey: "proyectos-descripcion",
+        title: "Proyectos — subtítulo del explorador",
+        defaultContent: `<p>Proyectos de investigación competitivos con participación de investigadores del Instituto. Busca por título, investigador principal, entidad financiadora o grupo.</p>`,
+      },
+      {
         blockKey: "publicaciones-descripcion",
         title: "Publicaciones — párrafo introductorio de la sección",
-        defaultContent: `<p>La producción científica de los miembros del Instituto se recoge en el Portal de Investigación de la Universidad de Salamanca. El IUCE edita además la revista Education in the Knowledge Society (EKS).</p>`,
+        defaultContent: `<p>La producción científica de los miembros del Instituto se recoge en el Portal de Investigación de la Universidad de Salamanca. Abajo, una pequeña muestra de artículos recientes; el IUCE edita además la revista Education in the Knowledge Society (EKS).</p>`,
       },
       {
         blockKey: "portal-descripcion",

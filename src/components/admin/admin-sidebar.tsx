@@ -8,6 +8,7 @@ import {
   Calendar,
   ExternalLink,
   FileText,
+  FlaskConical,
   FolderLock,
   FolderOpen,
   Inbox,
@@ -45,6 +46,7 @@ const NAV_GROUPS = [
         icon: Microscope,
         href: "/admin/groups",
       },
+      { label: "Proyectos", icon: FlaskConical, href: "/admin/projects" },
     ],
   },
   {

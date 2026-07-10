@@ -11,6 +11,8 @@ import {
 } from "@/lib/content-blocks-service";
 import { prisma } from "@/lib/prisma";
 import { groups as groupsFallback } from "@/lib/content/groups";
+import { getPublicProjects } from "@/lib/projects-service";
+import { ProjectsExplorer } from "@/components/investigacion/projects-explorer";
 
 export const dynamic = "force-dynamic";
 
@@ -79,6 +81,7 @@ export default async function InvestigacionPage() {
     urlPortal,
     eksDescripcion,
     urlEks,
+    proyectosDescripcion,
     proyectos,
     articulos,
   ] = await Promise.all([
@@ -89,7 +92,8 @@ export default async function InvestigacionPage() {
     getBlockText("investigacion", "url-portal"),
     getBlock("investigacion", "eks-descripcion"),
     getBlockText("investigacion", "url-eks"),
-    getListBlock("investigacion", "list:proyectos"),
+    getBlock("investigacion", "proyectos-descripcion"),
+    getPublicProjects(),
     getListBlock("investigacion", "list:publicaciones"),
   ]);
 
@@ -212,33 +216,14 @@ export default async function InvestigacionPage() {
           <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
             Proyectos
           </h2>
-          <p className="mb-6 max-w-[80ch] text-sm text-gray-500">
-            Selección de proyectos activos con participación de investigadores
-            del Instituto. El listado completo se gestiona desde el panel de
-            administración.
-          </p>
-          <div className="flex flex-col">
-            {proyectos.map((p, i) => (
-              <Reveal key={i} delay={i * 80}>
-              <article
-                className={
-                  "grid grid-cols-1 items-center gap-3 border-t border-gray-100 py-[18px] sm:grid-cols-[1fr_auto] sm:gap-6" +
-                  (i === proyectos.length - 1 ? " border-b" : "")
-                }
-              >
-                <div>
-                  <h3 className="mb-1 text-base font-semibold text-gray-900">
-                    {String(p.titulo)}
-                  </h3>
-                  <p className="text-xs text-gray-500">{String(p.meta)}</p>
-                </div>
-                <span className="justify-self-start whitespace-nowrap rounded-full bg-iuce-blue-pale px-3 py-1 text-xs font-medium text-ink sm:justify-self-auto">
-                  {String(p.anos)}
-                </span>
-              </article>
-              </Reveal>
-            ))}
-          </div>
+          <div
+            className="page-block mb-6 max-w-[80ch] text-sm text-gray-500"
+            dangerouslySetInnerHTML={{ __html: proyectosDescripcion }}
+          />
+          <ProjectsExplorer
+            projects={proyectos}
+            currentYear={new Date().getFullYear()}
+          />
         </div>
       </section>
 
@@ -289,21 +274,43 @@ export default async function InvestigacionPage() {
           </Reveal>
 
           <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {articulos.map((a, i) => (
-              <Reveal key={i} delay={i * 90} className="h-full">
-              <article className="card-lift h-full rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:shadow-md">
-                <p className="mb-2 text-xs font-bold uppercase tracking-wider text-usal-red">
-                  {String(a.eyebrow)}
-                </p>
-                <p className="mb-2 text-sm font-semibold leading-normal text-gray-900">
-                  {String(a.titulo)}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {String(a.autores)} — <em>{String(a.revista)}</em>
-                </p>
-              </article>
-              </Reveal>
-            ))}
+            {articulos.map((a, i) => {
+              const enlace = String(a.enlace ?? "");
+              const tarjeta = (
+                <article className="card-lift h-full rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:shadow-md">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-wider text-usal-red">
+                    {String(a.eyebrow)}
+                  </p>
+                  <p className="mb-2 text-sm font-semibold leading-normal text-gray-900">
+                    {String(a.titulo)}
+                    {enlace ? (
+                      <span className="ml-1 text-gray-300" aria-hidden="true">
+                        ↗
+                      </span>
+                    ) : null}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {String(a.autores)} — <em>{String(a.revista)}</em>
+                  </p>
+                </article>
+              );
+              return (
+                <Reveal key={i} delay={i * 90} className="h-full">
+                  {enlace ? (
+                    <a
+                      href={enlace}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
+                    >
+                      {tarjeta}
+                    </a>
+                  ) : (
+                    tarjeta
+                  )}
+                </Reveal>
+              );
+            })}
           </div>
 
           {/* Secundaria: revista EKS, editada en el IUCE */}

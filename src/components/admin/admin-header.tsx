@@ -11,6 +11,7 @@ const TITLES: Array<[prefix: string, title: string]> = [
   ["/admin/pages", "Contenido de páginas"],
   ["/admin/members", "Equipo y miembros"],
   ["/admin/groups", "Grupos de investigación"],
+  ["/admin/projects", "Proyectos de investigación"],
   ["/admin/events", "Eventos"],
   ["/admin/files", "Archivos"],
   ["/admin/messages", "Mensajes de contacto"],

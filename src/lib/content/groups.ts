@@ -29,7 +29,6 @@ export const groups: GroupSeed[] = [
     lead: "F. J. García Peñalvo",
     url: "https://grial.usal.es",
     logo: "/images/groups/grial.png",
-    chip: "UIC 081",
   },
   {
     acronym: "OCA",
@@ -38,7 +37,6 @@ export const groups: GroupSeed[] = [
     url: "https://www.ocausal.es/",
     logo: "/images/groups/oca.png",
     // Reconocido UIC nº 313 de Castilla y León el 1-jun-2021 (noticia del 2021-06-10).
-    chip: "UIC 313",
   },
   {
     acronym: "VisualMed",

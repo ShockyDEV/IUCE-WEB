@@ -64,6 +64,19 @@ export const eventInputSchema = z.object({
   status: z.enum(["UPCOMING", "PAST", "CANCELLED"]),
 });
 
+export const projectInputSchema = z.object({
+  title: z.string().trim().min(3).max(600),
+  funder: z.string().trim().max(400).optional().nullable(),
+  ip: z.string().trim().max(400).optional().nullable(),
+  line: z.string().trim().max(300).optional().nullable(),
+  scope: z.string().trim().max(60).optional().nullable(),
+  amount: z.string().trim().max(60).optional().nullable(),
+  period: z.string().trim().max(120).optional().nullable(),
+  startYear: z.number().int().min(1990).max(2100).optional().nullable(),
+  endYear: z.number().int().min(1990).max(2100).optional().nullable(),
+  active: z.boolean().optional(),
+});
+
 export const contentBlockInputSchema = z.object({
   pageSlug: z.string().trim().min(1).max(100),
   blockKey: z.string().trim().min(1).max(100),

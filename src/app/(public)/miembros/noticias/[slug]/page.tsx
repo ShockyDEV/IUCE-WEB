@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { CoverImage } from "@/components/news/cover-image";
 import { IntranetShell } from "@/components/intranet/intranet-shell";
-import { getIntranetSession } from "@/lib/intranet-session";
+import { getIntranetSession, getMemberBadge } from "@/lib/intranet-session";
 import { getInternalNewsBySlug } from "@/lib/news-service";
 
 export const metadata: Metadata = {
@@ -19,6 +19,7 @@ export default async function IntranetNoticiaPage({
 }: Readonly<{ params: { slug: string } }>) {
   const session = await getIntranetSession();
   if (!session) redirect("/miembros");
+  const badge = await getMemberBadge(session?.user?.email);
 
   const item = await getInternalNewsBySlug(params.slug);
   if (!item) notFound();
@@ -27,6 +28,7 @@ export default async function IntranetNoticiaPage({
     <IntranetShell
       active="/miembros/noticias"
       email={session.user?.email ?? ""}
+      member={badge}
       breadcrumbLabel="Noticias internas"
     >
       <article className="mx-auto max-w-[800px]">

@@ -337,37 +337,31 @@ export const LIST_BLOCKS: ListBlockDef[] = [
   },
 
   // ── Investigación ─────────────────────────────────────────────────────────
-  {
-    pageSlug: "investigacion",
-    blockKey: "list:proyectos",
-    title: "Proyectos — filas",
-    itemLabel: "proyecto",
-    fields: [
-      { key: "titulo", label: "Título", type: "textarea" },
-      { key: "meta", label: "Financiador · IP", type: "text" },
-      { key: "anos", label: "Años", type: "text", hint: "p. ej. 2024–2027" },
-    ],
-    defaultItems: [
-      { titulo: "Competencia digital docente y evaluación auténtica en la universidad", meta: "Plan Estatal de Investigación · IP: Susana Olmos Migueláñez", anos: "2024–2027" },
-      { titulo: "Analítica del aprendizaje para la mejora de la retención universitaria", meta: "Junta de Castilla y León · IP: Fernando Martínez Abad", anos: "2025–2028" },
-      { titulo: "Alfabetización mediática y contenidos audiovisuales en la adolescencia", meta: "Observatorio de los Contenidos Audiovisuales · IP: Juan José Igartua", anos: "2024–2026" },
-    ],
-  },
+  // (Los proyectos ya no son una lista: viven en la tabla Project y se
+  // gestionan en el panel → Instituto → Proyectos.)
   {
     pageSlug: "investigacion",
     blockKey: "list:publicaciones",
-    title: "Publicaciones — artículos destacados",
+    title: "Publicaciones — muestra de artículos recientes",
     itemLabel: "artículo",
     fields: [
       { key: "eyebrow", label: "Antetítulo", type: "text", hint: "p. ej. Artículo · 2026" },
       { key: "titulo", label: "Título", type: "textarea" },
       { key: "autores", label: "Autores", type: "text" },
       { key: "revista", label: "Revista", type: "text" },
+      {
+        key: "enlace",
+        label: "Enlace (DOI o perfil del portal)",
+        type: "url",
+        hint: "vacío = tarjeta sin enlace",
+      },
     ],
+    // Artículos REALES tomados del Portal de Investigación (jul 2026); se
+    // renuevan desde el panel cuando se quiera refrescar la muestra.
     defaultItems: [
-      { eyebrow: "Artículo · 2026", titulo: "Inteligencia artificial generativa en la evaluación universitaria: usos y límites", autores: "García-Peñalvo, F. J. et al.", revista: "Education in the Knowledge Society" },
-      { eyebrow: "Artículo · 2025", titulo: "Evaluación diagnóstica de competencias informacionales en el acceso a la universidad", autores: "Martínez-Abad, F.; Olmos-Migueláñez, S.", revista: "RELIEVE" },
-      { eyebrow: "Artículo · 2025", titulo: "Objetos de aprendizaje reutilizables para la formación del profesorado", autores: "Morales Morgado, E. M. et al.", revista: "Comunicar" },
+      { eyebrow: "Artículo · 2026", titulo: "Evaluación asistida por inteligencia artificial generativa en prácticas de Ingeniería de Software: una prueba de concepto", autores: "García-Peñalvo, F. J. et al.", revista: "RIED. Revista Iberoamericana de Educación a Distancia", enlace: "https://produccioncientifica.usal.es/investigadores/56361/publicaciones" },
+      { eyebrow: "Artículo · 2026", titulo: "Inequidad educativa en Portugal: análisis del impacto del ESCS en PISA 2022", autores: "Olmos-Migueláñez, S. et al.", revista: "REICE. Revista Iberoamericana sobre Calidad, Eficacia y Cambio en Educación", enlace: "https://produccioncientifica.usal.es/investigadores/57518/publicaciones" },
+      { eyebrow: "Artículo · 2026", titulo: "Hate Speech on Social Media: Unpacking How Toxic Language Fuels Anti-Immigrant Hostility", autores: "Igartua, J. J. et al.", revista: "Social Sciences", enlace: "https://produccioncientifica.usal.es/investigadores/56579/publicaciones" },
     ],
   },
 

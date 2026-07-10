@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { Reveal } from "@/components/ui/reveal";
 import { CoverImage } from "@/components/news/cover-image";
 import { IntranetShell } from "@/components/intranet/intranet-shell";
-import { getIntranetSession } from "@/lib/intranet-session";
+import { getIntranetSession, getMemberBadge } from "@/lib/intranet-session";
 import { getInternalNews } from "@/lib/news-service";
 
 export const metadata: Metadata = {
@@ -21,6 +21,7 @@ export const dynamic = "force-dynamic";
 export default async function IntranetNoticiasPage() {
   const session = await getIntranetSession();
   if (!session) redirect("/miembros");
+  const badge = await getMemberBadge(session?.user?.email);
 
   const noticias = await getInternalNews();
 
@@ -28,6 +29,7 @@ export default async function IntranetNoticiasPage() {
     <IntranetShell
       active="/miembros/noticias"
       email={session.user?.email ?? ""}
+      member={badge}
       breadcrumbLabel="Noticias internas"
     >
       <h2 className="mb-1.5 text-xl font-bold text-gray-900">

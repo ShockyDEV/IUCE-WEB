@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { IntranetShell } from "@/components/intranet/intranet-shell";
 import { ProfileForm } from "@/components/intranet/profile-form";
-import { getIntranetSession } from "@/lib/intranet-session";
+import { getIntranetSession, getMemberBadge } from "@/lib/intranet-session";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
@@ -20,6 +20,7 @@ export const dynamic = "force-dynamic";
 export default async function IntranetPerfilPage() {
   const session = await getIntranetSession();
   if (!session) redirect("/miembros");
+  const badge = await getMemberBadge(session?.user?.email);
   const email = (session.user?.email ?? "").toLowerCase();
 
   const [account, member] = await Promise.all([
@@ -34,6 +35,7 @@ export default async function IntranetPerfilPage() {
     <IntranetShell
       active="/miembros/perfil"
       email={session.user?.email ?? ""}
+      member={badge}
       breadcrumbLabel="Mi perfil"
     >
       <ProfileForm
