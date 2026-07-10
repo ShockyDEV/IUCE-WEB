@@ -4,6 +4,7 @@ import { Resend } from "resend";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { resolveIntranetAccess } from "@/lib/intranet-access";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
 
 const requestSchema = z.object({
   email: z.string().trim().toLowerCase().email("Correo no válido"),
@@ -34,6 +35,18 @@ export async function POST(request: Request) {
     );
   }
   const { email } = parsed.data;
+
+  // Anti-abuso: 5 solicitudes por IP y 3 por correo cada 10 minutos.
+  const ip = clientIp(request);
+  if (
+    !rateLimit(`link:ip:${ip}`, 5, 10 * 60_000) ||
+    !rateLimit(`link:mail:${email}`, 3, 10 * 60_000)
+  ) {
+    return NextResponse.json(
+      { error: "Demasiadas solicitudes. Espera unos minutos e inténtalo de nuevo." },
+      { status: 429 },
+    );
+  }
 
   // Autorizados: lista blanca del panel + todos los miembros del IUCE
   // (tabla Member con correo). Una fila desactivada bloquea siempre.

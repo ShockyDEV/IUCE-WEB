@@ -7,6 +7,7 @@ import {
   ensureIntranetUser,
   resolveIntranetAccess,
 } from "@/lib/intranet-access";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { authConfig } from "@/auth.config";
 
 const credentialsSchema = z.object({
@@ -35,11 +36,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         email: { label: "Correo electrónico", type: "email" },
         password: { label: "Contraseña", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, request) {
         const parsed = credentialsSchema.safeParse(credentials);
         if (!parsed.success) return null;
 
         const { email, password } = parsed.data;
+
+        // Anti fuerza bruta: 5 intentos por correo y 15 por IP cada 5 min.
+        const ip = clientIp(request);
+        if (
+          !rateLimit(`login:mail:${email}`, 5, 5 * 60_000) ||
+          !rateLimit(`login:ip:${ip}`, 15, 5 * 60_000)
+        ) {
+          return null;
+        }
+
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user) return null;
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ExternalLink, KeyRound, Menu, Search, X } from "lucide-react";
+import { ExternalLink, KeyRound, Menu, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -131,13 +131,6 @@ export function SiteHeader() {
               <KeyRound className="h-4 w-4" aria-hidden="true" />
               <span className="hidden xl:inline">Miembros</span>
             </Link>
-            <button
-              type="button"
-              aria-label="Buscar"
-              className="hidden h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page xl:flex"
-            >
-              <Search className="h-[18px] w-[18px]" aria-hidden="true" />
-            </button>
             <ThemeToggle />
             <span
               className="text-xs font-semibold text-gray-700"

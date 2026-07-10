@@ -29,6 +29,8 @@ export default async function HomePage() {
     quickAccess,
     eksDescripcion,
     cifras,
+    memoriaEyebrow,
+    estadisticasTeaser,
   ] = await Promise.all([
     getPublishedNews().then((n) => n.slice(0, 3)),
     getBlockText("inicio", "hero-eyebrow"),
@@ -37,8 +39,10 @@ export default async function HomePage() {
     getListBlock("inicio", "list:hitos-hero"),
     getListBlock("inicio", "list:accesos-rapidos"),
     getBlock("inicio", "eks-descripcion"),
-    // Mismos contadores que la página de estadísticas (una sola fuente)
+    // Mismos contadores y periodo que la página de estadísticas (una fuente)
     getListBlock("estadisticas", "list:kpis"),
+    getBlockText("estadisticas", "hero-eyebrow"),
+    getBlock("inicio", "estadisticas-teaser"),
   ]);
   return (
     <>
@@ -160,15 +164,15 @@ export default async function HomePage() {
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-7 px-6 py-10 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-[38ch]">
             <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-              Memoria 2020–2025
+              {memoriaEyebrow}
             </p>
             <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
               Estadísticas del IUCE
             </h2>
-            <p className="mb-4 text-sm leading-relaxed text-gray-600">
-              La actividad del Instituto, contada con datos interactivos:
-              proyectos, tesis, formación y transferencia.
-            </p>
+            <div
+              className="page-block mb-4 text-sm leading-relaxed text-gray-600"
+              dangerouslySetInnerHTML={{ __html: estadisticasTeaser }}
+            />
             <Link
               href="/estadisticas"
               className={buttonClassName() + " gap-1.5"}

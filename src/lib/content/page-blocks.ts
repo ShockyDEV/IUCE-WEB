@@ -23,6 +23,11 @@ export const PAGE_BLOCKS: PageDef[] = [
     label: "Instituto — Perfil",
     blocks: [
       {
+        blockKey: "hero-parrafo",
+        title: "Cabecera — párrafo de presentación del Instituto",
+        defaultContent: `<p>Un instituto interdisciplinar que congrega a profesorado e investigadores de todas las ramas de conocimiento de la Universidad de Salamanca en torno a la investigación en Educación Superior.</p>`,
+      },
+      {
         blockKey: "perfil-intro",
         title: "Perfil — introducción",
         defaultContent: `<p>En su origen, el Instituto se crea como centro de referencia nacional de investigación y apoyo a la formación inicial y permanente del profesorado no universitario (antiguo ICE, 1969). Desde la década de los años 80 se perfila como un centro especializado exclusivamente en educación universitaria.</p>
@@ -88,6 +93,11 @@ export const PAGE_BLOCKS: PageDef[] = [
         blockKey: "hero-parrafo",
         title: "Portada — párrafo de presentación",
         defaultContent: `<p>El IUCE es el instituto interdisciplinar de la Universidad de Salamanca dedicado a la investigación científica en Educación, el desarrollo tecnológico y la transferencia al ámbito educativo.</p>`,
+      },
+      {
+        blockKey: "estadisticas-teaser",
+        title: "Portada — párrafo de la banda de estadísticas",
+        defaultContent: `<p>La actividad del Instituto, contada con datos interactivos: proyectos, tesis, formación y transferencia.</p>`,
       },
       {
         blockKey: "eks-descripcion",
@@ -317,6 +327,11 @@ export const PAGE_BLOCKS: PageDef[] = [
         defaultContent: `<p>La Oficina de Transferencia de Conocimiento de la Universidad de Salamanca canaliza los contratos del artículo 60, las patentes y la colaboración con empresas e instituciones.</p>`,
       },
       {
+        blockKey: "datos-descripcion",
+        title: "Transferencia — subtítulo de «La transferencia, en datos»",
+        defaultContent: `<p>64 contratos y convenios con 36 entidades durante 2020–2025.</p>`,
+      },
+      {
         blockKey: "cta",
         title: "Transferencia — llamada final (trabaja con el IUCE)",
         defaultContent: `<p><strong>¿Tu entidad tiene un reto educativo?</strong></p>
@@ -329,9 +344,19 @@ export const PAGE_BLOCKS: PageDef[] = [
     label: "Estadísticas — El IUCE en cifras",
     blocks: [
       {
+        blockKey: "hero-eyebrow",
+        title: "Cabecera — antetítulo (periodo de la memoria)",
+        defaultContent: `<p>Memoria 2020–2025</p>`,
+      },
+      {
         blockKey: "intro",
         title: "Cabecera — párrafo introductorio",
         defaultContent: `<p>La actividad del Instituto durante el periodo 2020–2025, en datos: proyectos, transferencia, tesis, formación, redes y gestión. Las cifras proceden de la memoria de acreditación del IUCE.</p>`,
+      },
+      {
+        blockKey: "url-gredos-tfm",
+        title: "Doctorado — URL del repositorio Gredos con los TFM (vacío = ocultar)",
+        defaultContent: `<p>https://gredos.usal.es/handle/10366/4827</p>`,
       },
       {
         blockKey: "proyectos-descripcion",

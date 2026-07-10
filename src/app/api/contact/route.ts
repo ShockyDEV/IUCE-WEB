@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { contactSchema } from "@/lib/validations";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
 
 /**
  * Formulario de contacto: valida, registra el mensaje en la BD (bandeja del
@@ -10,6 +11,14 @@ import { contactSchema } from "@/lib/validations";
  * configurado (desarrollo), el mensaje queda registrado igualmente.
  */
 export async function POST(request: Request) {
+  // Anti-spam: 5 mensajes por IP cada 15 minutos.
+  if (!rateLimit(`contact:${clientIp(request)}`, 5, 15 * 60_000)) {
+    return NextResponse.json(
+      { error: "Demasiados mensajes seguidos. Espera unos minutos." },
+      { status: 429 },
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();

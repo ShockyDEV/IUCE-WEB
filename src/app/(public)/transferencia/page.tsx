@@ -31,17 +31,27 @@ function toData(rows: Array<Record<string, unknown>>): Datum[] {
 export default async function TransferenciaPage() {
   // Textos editables (Contenido → Páginas → Transferencia). Las gráficas
   // leen las MISMAS listas que /estadisticas: un solo lugar que actualizar.
-  const [intro, mision, urlOtc, otcDescripcion, cta, vias, importe, implicacion] =
-    await Promise.all([
-      getBlock("transferencia", "intro"),
-      getBlock("transferencia", "mision"),
-      getBlockText("transferencia", "url-otc"),
-      getBlock("transferencia", "otc-descripcion"),
-      getBlock("transferencia", "cta"),
-      getListBlock("transferencia", "list:vias"),
-      getListBlock("estadisticas", "list:contratos-importe"),
-      getListBlock("estadisticas", "list:contratos-implicacion"),
-    ]);
+  const [
+    intro,
+    mision,
+    urlOtc,
+    otcDescripcion,
+    datosDescripcion,
+    cta,
+    vias,
+    importe,
+    implicacion,
+  ] = await Promise.all([
+    getBlock("transferencia", "intro"),
+    getBlock("transferencia", "mision"),
+    getBlockText("transferencia", "url-otc"),
+    getBlock("transferencia", "otc-descripcion"),
+    getBlock("transferencia", "datos-descripcion"),
+    getBlock("transferencia", "cta"),
+    getListBlock("transferencia", "list:vias"),
+    getListBlock("estadisticas", "list:contratos-importe"),
+    getListBlock("estadisticas", "list:contratos-implicacion"),
+  ]);
 
   return (
     <>
@@ -115,9 +125,10 @@ export default async function TransferenciaPage() {
               <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
                 La transferencia, en datos
               </h2>
-              <p className="max-w-[75ch] text-sm text-gray-500">
-                64 contratos y convenios con 36 entidades durante 2020–2025.
-              </p>
+              <div
+                className="page-block max-w-[75ch] text-sm text-gray-500"
+                dangerouslySetInnerHTML={{ __html: datosDescripcion }}
+              />
             </div>
             <Link
               href="/estadisticas#transferencia"

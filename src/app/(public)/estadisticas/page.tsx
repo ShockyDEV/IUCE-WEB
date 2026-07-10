@@ -11,7 +11,11 @@ import {
   HBarsChart,
   type Datum,
 } from "@/components/stats/stat-charts";
-import { getBlock, getListBlock } from "@/lib/content-blocks-service";
+import {
+  getBlock,
+  getBlockText,
+  getListBlock,
+} from "@/lib/content-blocks-service";
 
 export const dynamic = "force-dynamic";
 
@@ -73,7 +77,9 @@ function SectionHeader({
 export default async function EstadisticasPage() {
   // Textos y datos editables desde el panel (Contenido → Páginas → Estadísticas)
   const [
+    heroEyebrow,
     intro,
+    urlGredosTfm,
     proyectosDesc,
     transferenciaDesc,
     doctoradoDesc,
@@ -98,7 +104,9 @@ export default async function EstadisticasPage() {
     posgradosCurso,
     gestionCategorias,
   ] = await Promise.all([
+    getBlockText("estadisticas", "hero-eyebrow"),
     getBlock("estadisticas", "intro"),
+    getBlockText("estadisticas", "url-gredos-tfm"),
     getBlock("estadisticas", "proyectos-descripcion"),
     getBlock("estadisticas", "transferencia-descripcion"),
     getBlock("estadisticas", "doctorado-descripcion"),
@@ -135,7 +143,7 @@ export default async function EstadisticasPage() {
             />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-            Memoria 2020–2025
+            {heroEyebrow}
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
             Estadísticas del IUCE
@@ -280,6 +288,19 @@ export default async function EstadisticasPage() {
               delay={90}
             >
               <BarsChart data={toData(tfm)} name="TFM" />
+              {urlGredosTfm ? (
+                <p className="mt-3 border-t border-gray-100 pt-3 text-[13px]">
+                  <a
+                    href={urlGredosTfm}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-iuce-blue hover:underline"
+                  >
+                    Consulta los TFM en Gredos, el repositorio institucional de
+                    la USAL ↗
+                  </a>
+                </p>
+              ) : null}
             </ChartCard>
           </div>
         </div>

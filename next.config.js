@@ -8,6 +8,27 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1600],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          // El navegador no debe adivinar tipos MIME (previene sniffing).
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          // La web no se puede embeber en iframes de otros sitios
+          // (clickjacking); los embeds PROPIOS (PDF) son same-origin.
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // No filtrar la URL completa a sitios externos.
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          // La web no usa cámara, micrófono ni geolocalización.
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       // La «intranet» pasó a llamarse área de miembros (/miembros). La

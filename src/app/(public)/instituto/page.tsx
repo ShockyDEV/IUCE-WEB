@@ -192,6 +192,7 @@ const contacto = [
 export default async function InstitutoPage() {
   // Bloques editables desde el panel (Contenido → Páginas) + datos del gestor
   const [
+    heroParrafo,
     perfilIntro,
     edificioTexto,
     edificioBiblio,
@@ -206,6 +207,7 @@ export default async function InstitutoPage() {
     hitos,
     instalaciones,
   ] = await Promise.all([
+    getBlock("instituto", "hero-parrafo"),
     getBlock("instituto", "perfil-intro"),
     getBlock("instituto", "edificio"),
     getBlock("instituto", "edificio-biblio"),
@@ -236,11 +238,10 @@ export default async function InstitutoPage() {
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
             El Instituto
           </h1>
-          <p className="max-w-[70ch] text-base leading-relaxed text-gray-600">
-            Un instituto interdisciplinar que congrega a profesorado e
-            investigadores de todas las ramas de conocimiento de la Universidad
-            de Salamanca en torno a la investigación en Educación Superior.
-          </p>
+          <div
+            className="page-block max-w-[70ch] text-base leading-relaxed text-gray-600"
+            dangerouslySetInnerHTML={{ __html: heroParrafo }}
+          />
           <div className="mt-7">
             <SectionSubnav items={subnav} />
           </div>
