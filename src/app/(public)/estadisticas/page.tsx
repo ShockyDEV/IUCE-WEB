@@ -5,9 +5,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { CountUp } from "@/components/ui/count-up";
 import { ChartCard } from "@/components/stats/chart-card";
 import {
-  AreaTrend,
   BarsChart,
-  BarsWithLine,
   DonutChart,
   DuoBarsChart,
   HBarsChart,
@@ -18,7 +16,7 @@ import { getBlock, getListBlock } from "@/lib/content-blocks-service";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "El IUCE en cifras",
+  title: "Estadísticas del IUCE",
   description:
     "Estadísticas del IUCE 2020–2025: proyectos de investigación, transferencia, tesis doctorales, formación del profesorado, redes y movilidad.",
 };
@@ -98,7 +96,7 @@ export default async function EstadisticasPage() {
     estanciasPais,
     redesAmbito,
     posgradosCurso,
-    gestionCargos,
+    gestionCategorias,
   ] = await Promise.all([
     getBlock("estadisticas", "intro"),
     getBlock("estadisticas", "proyectos-descripcion"),
@@ -123,7 +121,7 @@ export default async function EstadisticasPage() {
     getListBlock("estadisticas", "list:estancias-pais"),
     getListBlock("estadisticas", "list:redes-ambito"),
     getListBlock("estadisticas", "list:posgrados-curso"),
-    getListBlock("estadisticas", "list:gestion-cargos"),
+    getListBlock("estadisticas", "list:gestion-categorias"),
   ]);
 
   return (
@@ -133,14 +131,14 @@ export default async function EstadisticasPage() {
         <div className="mx-auto max-w-6xl px-6 pt-12">
           <div className="mb-3.5">
             <Breadcrumb
-              items={[{ label: "Inicio", href: "/" }, { label: "El IUCE en cifras" }]}
+              items={[{ label: "Inicio", href: "/" }, { label: "Estadísticas" }]}
             />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
             Memoria 2020–2025
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
-            El IUCE en cifras
+            Estadísticas del IUCE
           </h1>
           <div
             className="page-block max-w-[80ch] text-base leading-relaxed text-gray-600"
@@ -185,13 +183,13 @@ export default async function EstadisticasPage() {
               <BarsChart data={toData(proyectosAno)} name="Proyectos" />
             </ChartCard>
             <ChartCard
-              title="Importe acumulado captado"
-              insight="En miles de euros — el salto de 2023 casi triplica el total"
+              title="Importe concedido por año"
+              insight="En miles de euros — 2023 concentra la mayor financiación"
               delay={90}
             >
-              <AreaTrend
+              <BarsChart
                 data={toData(proyectosImporte)}
-                name="Acumulado"
+                name="Importe"
                 format="milesEuro"
               />
             </ChartCard>
@@ -260,15 +258,11 @@ export default async function EstadisticasPage() {
           />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
             <ChartCard
-              title="Tesis doctorales defendidas"
-              insight="Por año y acumulado del periodo"
+              title="Tesis doctorales defendidas por año"
+              insight="101 tesis en el conjunto del periodo"
               wide
             >
-              <BarsWithLine
-                data={toData(tesis)}
-                name="Tesis del año"
-                name2="Acumulado"
-              />
+              <BarsChart data={toData(tesis)} name="Tesis" />
             </ChartCard>
             <ChartCard
               title="Calidad de las tesis"
@@ -370,11 +364,11 @@ export default async function EstadisticasPage() {
               <BarsChart data={toData(posgradosCurso)} name="Posgrados" accent />
             </ChartCard>
             <ChartCard
-              title="Cargos de gestión activos"
-              insight="Acumulado: comisiones, direcciones, comités y evaluación"
+              title="Cargos de gestión por categoría"
+              insight="Comisiones, comités editoriales, dirección de grupos y evaluación"
               delay={90}
             >
-              <AreaTrend data={toData(gestionCargos)} name="Cargos" />
+              <HBarsChart data={toData(gestionCategorias)} name="Cargos" />
             </ChartCard>
           </div>
 

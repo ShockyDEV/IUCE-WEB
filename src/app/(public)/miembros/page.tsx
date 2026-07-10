@@ -8,8 +8,8 @@ import { prisma } from "@/lib/prisma";
 import { getBlock } from "@/lib/content-blocks-service";
 
 export const metadata: Metadata = {
-  title: "Intranet",
-  description: "Intranet del IUCE: documentación interna para el personal autorizado.",
+  title: "Área de miembros",
+  description: "Área de miembros del IUCE: documentación interna, noticias y perfil para el personal del Instituto.",
   robots: { index: false },
 };
 
@@ -36,7 +36,7 @@ export default async function IntranetPage() {
                   <Lock className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <h1 className="mb-1 text-2xl font-bold tracking-tight text-ink">
-                  Intranet del IUCE
+                  Área de miembros
                 </h1>
                 <p className="text-sm text-gray-500">
                   Documentación interna para el personal autorizado
@@ -66,7 +66,7 @@ export default async function IntranetPage() {
   ]);
 
   return (
-    <IntranetShell active="/intranet" email={session.user?.email ?? ""}>
+    <IntranetShell active="/miembros" email={session.user?.email ?? ""}>
       <div
         className="page-block mb-8 max-w-[70ch] text-base leading-relaxed text-gray-600"
         dangerouslySetInnerHTML={{ __html: intro }}

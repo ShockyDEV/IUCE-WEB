@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
  */
 export default async function IntranetPerfilPage() {
   const session = await getIntranetSession();
-  if (!session) redirect("/intranet");
+  if (!session) redirect("/miembros");
   const email = (session.user?.email ?? "").toLowerCase();
 
   const [account, member] = await Promise.all([
@@ -32,7 +32,7 @@ export default async function IntranetPerfilPage() {
 
   return (
     <IntranetShell
-      active="/intranet/perfil"
+      active="/miembros/perfil"
       email={session.user?.email ?? ""}
       breadcrumbLabel="Mi perfil"
     >

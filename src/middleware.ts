@@ -9,8 +9,8 @@ import { authConfig } from "@/auth.config";
  * - /admin/** y /api/admin/**: solo ADMIN o SUPER_ADMIN. Una sesión de
  *   intranet NO da acceso al panel.
  * - /api/intranet/files/**: cualquier sesión (INTRANET o administración).
- *   La página /intranet hace su propia comprobación para poder mostrar el
- *   formulario de acceso a quien no tiene sesión.
+ *   La página /miembros (área de miembros) hace su propia comprobación para
+ *   poder mostrar el formulario de acceso a quien no tiene sesión.
  */
 const { auth } = NextAuth(authConfig);
 
@@ -39,7 +39,7 @@ export default auth((req) => {
           { status: 403 },
         );
       }
-      return NextResponse.redirect(new URL("/intranet", req.url));
+      return NextResponse.redirect(new URL("/miembros", req.url));
     }
     return NextResponse.next();
   }

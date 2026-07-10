@@ -55,7 +55,7 @@ const NAV_GROUPS = [
     ],
   },
   {
-    title: "Intranet",
+    title: "Área de miembros",
     items: [
       {
         label: "Usuarios autorizados",

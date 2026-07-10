@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ExternalLink, Menu, Search, X } from "lucide-react";
+import { ExternalLink, KeyRound, Menu, Search, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -18,7 +18,8 @@ const NAV: NavItem[] = [
   { label: "Inicio", href: "/" },
   { label: "Instituto", href: "/instituto" },
   { label: "Investigación", href: "/investigacion" },
-  { label: "En cifras", href: "/estadisticas" },
+  { label: "Transferencia", href: "/transferencia" },
+  { label: "Estadísticas", href: "/estadisticas" },
   { label: "Formación", href: "/formacion" },
   { label: "Eventos", href: "/eventos" },
   { label: "Doctorado", href: "/doctorado" },
@@ -29,8 +30,12 @@ const NAV: NavItem[] = [
   },
   { label: "Noticias", href: "/noticias" },
   { label: "Contacto", href: "/contacto" },
-  { label: "Intranet", href: "/intranet" },
+  { label: "Área de miembros", href: "/miembros" },
 ];
+
+// En escritorio, Inicio vive en el logo y el área de miembros en el botón
+// de la llave (zona de acciones); el menú móvil sí muestra ambos.
+const DESKTOP_HIDDEN = new Set(["/", "/miembros"]);
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -80,11 +85,9 @@ export function SiteHeader() {
           {/* Navegación de escritorio */}
           <nav
             aria-label="Navegación principal"
-            className="hidden items-center gap-4 text-sm font-medium text-gray-600 lg:flex xl:gap-5"
+            className="hidden items-center gap-2.5 text-sm font-medium text-gray-600 lg:flex xl:gap-3.5 2xl:gap-5"
           >
-            {/* En escritorio el logo ya lleva a Inicio: se omite del menú
-                para que quepan todas las secciones (móvil sí lo muestra). */}
-            {NAV.filter((item) => item.href !== "/").map((item) => {
+            {NAV.filter((item) => !DESKTOP_HIDDEN.has(item.href)).map((item) => {
               if (item.external) {
                 return (
                   <a
@@ -120,10 +123,18 @@ export function SiteHeader() {
 
           {/* Acciones */}
           <div className="flex flex-none items-center gap-2.5">
+            <Link
+              href="/miembros"
+              title="Área de miembros — solo personal del IUCE"
+              className="hidden h-9 items-center gap-1.5 rounded-md px-2.5 text-xs font-semibold text-gray-500 transition-colors hover:text-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page lg:flex"
+            >
+              <KeyRound className="h-4 w-4" aria-hidden="true" />
+              <span className="hidden xl:inline">Miembros</span>
+            </Link>
             <button
               type="button"
               aria-label="Buscar"
-              className="flex h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
+              className="hidden h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page xl:flex"
             >
               <Search className="h-[18px] w-[18px]" aria-hidden="true" />
             </button>

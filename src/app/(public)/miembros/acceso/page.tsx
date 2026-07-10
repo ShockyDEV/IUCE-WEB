@@ -32,7 +32,7 @@ function AccesoInner() {
         setError(true);
         return;
       }
-      router.replace("/intranet");
+      router.replace("/miembros");
       router.refresh();
     });
   }, [params, router]);
@@ -55,7 +55,7 @@ function AccesoInner() {
                 uno nuevo con tu correo autorizado.
               </p>
               <Link
-                href="/intranet"
+                href="/miembros"
                 className={buttonClassName({ size: "lg" }) + " gap-2"}
               >
                 <KeyRound className="h-4 w-4" aria-hidden="true" />

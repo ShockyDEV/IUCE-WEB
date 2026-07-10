@@ -155,7 +155,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* El IUCE en cifras (teaser hacia /estadisticas) */}
+      {/* Estadísticas del IUCE (teaser hacia /estadisticas) */}
       <section className="border-b border-gray-200 bg-surface-tinted">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-7 px-6 py-10 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-[38ch]">
@@ -163,7 +163,7 @@ export default async function HomePage() {
               Memoria 2020–2025
             </p>
             <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-              El IUCE en cifras
+              Estadísticas del IUCE
             </h2>
             <p className="mb-4 text-sm leading-relaxed text-gray-600">
               La actividad del Instituto, contada con datos interactivos:

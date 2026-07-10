@@ -371,6 +371,25 @@ export const LIST_BLOCKS: ListBlockDef[] = [
     ],
   },
 
+  // ── Transferencia ─────────────────────────────────────────────────────────
+  {
+    pageSlug: "transferencia",
+    blockKey: "list:vias",
+    title: "Vías de transferencia — tarjetas",
+    itemLabel: "vía",
+    fields: [
+      ICON_FIELD,
+      { key: "titulo", label: "Título", type: "text" },
+      { key: "texto", label: "Texto", type: "textarea" },
+    ],
+    defaultItems: [
+      { icon: "handshake", titulo: "Contratos y convenios (art. 60)", texto: "Investigación aplicada, evaluación de programas y desarrollos a medida para administraciones, empresas y entidades sociales." },
+      { icon: "lightbulb", titulo: "Propiedad industrial e intelectual", texto: "Registros de patentes y software nacidos de la investigación de los grupos del Instituto." },
+      { icon: "graduation-cap", titulo: "Formación a demanda", texto: "Cursos y programas de formación especializada diseñados para las necesidades de cada organización." },
+      { icon: "megaphone", titulo: "Divulgación y cultura científica", texto: "Jornadas, publicaciones y actividades que acercan la investigación educativa a la sociedad." },
+    ],
+  },
+
   // ── Estadísticas («El IUCE en cifras», datos de la memoria 2020-2025) ────
   // Cada gráfica de /estadisticas lee su lista. Campos «valor»/«valor2» son
   // numéricos (se admite coma decimal). Fuente: DEFINITIVA_GRAFICAS (memoria
@@ -386,7 +405,7 @@ export const LIST_BLOCKS: ListBlockDef[] = [
     ],
     defaultItems: [
       { cifra: "108", texto: "proyectos competitivos de investigación" },
-      { cifra: "11,5M€", texto: "captados en convocatorias competitivas" },
+      { cifra: "11,5M€", texto: "de financiación en convocatorias competitivas" },
       { cifra: "101", texto: "tesis doctorales defendidas" },
       { cifra: "213", texto: "trabajos fin de máster dirigidos" },
       { cifra: "420", texto: "actividades de formación continua" },
@@ -414,19 +433,19 @@ export const LIST_BLOCKS: ListBlockDef[] = [
   {
     pageSlug: "estadisticas",
     blockKey: "list:proyectos-importe",
-    title: "Proyectos — importe acumulado (miles de €)",
+    title: "Proyectos — importe concedido por año (miles de €)",
     itemLabel: "año",
     fields: [
       { key: "etiqueta", label: "Año", type: "text" },
-      { key: "valor", label: "Acumulado (miles €)", type: "text" },
+      { key: "valor", label: "Importe (miles €)", type: "text" },
     ],
     defaultItems: [
       { etiqueta: "2020", valor: "2288" },
-      { etiqueta: "2021", valor: "2574" },
-      { etiqueta: "2022", valor: "3745" },
-      { etiqueta: "2023", valor: "10512" },
-      { etiqueta: "2024", valor: "10862" },
-      { etiqueta: "2025", valor: "11527" },
+      { etiqueta: "2021", valor: "286" },
+      { etiqueta: "2022", valor: "1171" },
+      { etiqueta: "2023", valor: "6767" },
+      { etiqueta: "2024", valor: "350" },
+      { etiqueta: "2025", valor: "665" },
     ],
   },
   {
@@ -503,20 +522,19 @@ export const LIST_BLOCKS: ListBlockDef[] = [
   {
     pageSlug: "estadisticas",
     blockKey: "list:tesis-por-ano",
-    title: "Doctorado — tesis por año y acumulado",
+    title: "Doctorado — tesis defendidas por año",
     itemLabel: "año",
     fields: [
       { key: "etiqueta", label: "Año", type: "text" },
       { key: "valor", label: "Tesis del año", type: "text" },
-      { key: "valor2", label: "Acumulado", type: "text" },
     ],
     defaultItems: [
-      { etiqueta: "2020", valor: "15", valor2: "15" },
-      { etiqueta: "2021", valor: "21", valor2: "36" },
-      { etiqueta: "2022", valor: "12", valor2: "48" },
-      { etiqueta: "2023", valor: "15", valor2: "63" },
-      { etiqueta: "2024", valor: "19", valor2: "82" },
-      { etiqueta: "2025", valor: "19", valor2: "101" },
+      { etiqueta: "2020", valor: "15" },
+      { etiqueta: "2021", valor: "21" },
+      { etiqueta: "2022", valor: "12" },
+      { etiqueta: "2023", valor: "15" },
+      { etiqueta: "2024", valor: "19" },
+      { etiqueta: "2025", valor: "19" },
     ],
   },
   {
@@ -640,20 +658,22 @@ export const LIST_BLOCKS: ListBlockDef[] = [
   },
   {
     pageSlug: "estadisticas",
-    blockKey: "list:gestion-cargos",
-    title: "Gestión — cargos de gestión activos acumulados",
-    itemLabel: "año",
+    blockKey: "list:gestion-categorias",
+    title: "Gestión — cargos de gestión por categoría",
+    itemLabel: "categoría",
     fields: [
-      { key: "etiqueta", label: "Año", type: "text" },
-      { key: "valor", label: "Cargos acumulados", type: "text" },
+      { key: "etiqueta", label: "Categoría", type: "text" },
+      { key: "valor", label: "Cargos", type: "text" },
     ],
     defaultItems: [
-      { etiqueta: "2020", valor: "169" },
-      { etiqueta: "2021", valor: "206" },
-      { etiqueta: "2022", valor: "228" },
-      { etiqueta: "2023", valor: "251" },
-      { etiqueta: "2024", valor: "266" },
-      { etiqueta: "2025", valor: "292" },
+      { etiqueta: "Comisiones estatutarias (USAL)", valor: "53" },
+      { etiqueta: "Comités y consejos editoriales", valor: "51" },
+      { etiqueta: "IP de proyectos", valor: "48" },
+      { etiqueta: "Dirección de grupos y unidades", valor: "40" },
+      { etiqueta: "Evaluación (agencias de calidad)", valor: "32" },
+      { etiqueta: "Otras direcciones y coordinaciones", valor: "26" },
+      { etiqueta: "Sociedades científicas y juntas", valor: "15" },
+      { etiqueta: "Comisiones y comités científicos", valor: "14" },
     ],
   },
 ];

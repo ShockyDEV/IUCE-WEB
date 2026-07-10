@@ -41,6 +41,16 @@ export const PAGE_BLOCKS: PageDef[] = [
         defaultContent: `<p></p>`,
       },
       {
+        blockKey: "riie",
+        title: "Instituto — banda de la red RIIE",
+        defaultContent: `<p>El IUCE forma parte de la <strong>Red de Institutos de Investigación en Educación (RIIE)</strong>, que agrupa a los institutos universitarios de investigación educativa de España —más de 85 grupos de investigación— para compartir procedimientos, formar investigadores y difundir la ciencia de la educación de manera conjunta.</p>`,
+      },
+      {
+        blockKey: "url-riie",
+        title: "Instituto — URL de la RIIE (vacío = ocultar la banda)",
+        defaultContent: `<p>https://riie.org/</p>`,
+      },
+      {
         blockKey: "edificio",
         title: "Edificio histórico — texto",
         defaultContent: `<p>El colegio, fundado en 1542, recibe su nombre del de su patrona, la Inmaculada Concepción. Su nombre completo era «Colegio de la Purísima Concepción de los niños huérfanos», aunque también se conoce como «Colegio de Huérfanos», y con el tiempo pasaría a albergar el Instituto Universitario de Ciencias de la Educación (IUCE).</p>
@@ -151,11 +161,11 @@ export const PAGE_BLOCKS: PageDef[] = [
   },
   {
     pageSlug: "intranet",
-    label: "Intranet",
+    label: "Área de miembros (intranet)",
     blocks: [
       {
         blockKey: "intro",
-        title: "Intranet — texto de bienvenida (solo lo ven los autorizados)",
+        title: "Área de miembros — texto de bienvenida (solo lo ven los autorizados)",
         defaultContent: `<p>Espacio reservado al personal del IUCE: actas, convocatorias, normativa interna y otra documentación de uso interno. Los documentos se gestionan desde el panel de administración.</p>`,
       },
     ],
@@ -283,6 +293,38 @@ export const PAGE_BLOCKS: PageDef[] = [
     ],
   },
   {
+    pageSlug: "transferencia",
+    label: "Transferencia de conocimiento",
+    blocks: [
+      {
+        blockKey: "intro",
+        title: "Transferencia — párrafo de cabecera",
+        defaultContent: `<p>Transferir el conocimiento a la sociedad es uno de los objetivos principales del IUCE: que la investigación educativa no se quede en las revistas científicas, sino que mejore la práctica de administraciones, centros educativos, empresas y entidades sociales.</p>`,
+      },
+      {
+        blockKey: "mision",
+        title: "Transferencia — texto de misión (banda destacada)",
+        defaultContent: `<p>El artículo 60 de la LOSU reconoce la transferencia como una función esencial de la universidad. El IUCE la ejerce poniendo su investigación —evaluación educativa, tecnología, formación, comunicación— al servicio de quien la necesita: mediante contratos y convenios, desarrollos a medida, formación especializada y asesoramiento experto.</p>`,
+      },
+      {
+        blockKey: "url-otc",
+        title: "Transferencia — URL de la Oficina de Transferencia de la USAL",
+        defaultContent: `<p>https://transferencia.usal.es</p>`,
+      },
+      {
+        blockKey: "otc-descripcion",
+        title: "Transferencia — texto de la tarjeta de la OTC USAL",
+        defaultContent: `<p>La Oficina de Transferencia de Conocimiento de la Universidad de Salamanca canaliza los contratos del artículo 60, las patentes y la colaboración con empresas e instituciones.</p>`,
+      },
+      {
+        blockKey: "cta",
+        title: "Transferencia — llamada final (trabaja con el IUCE)",
+        defaultContent: `<p><strong>¿Tu entidad tiene un reto educativo?</strong></p>
+<p>Escríbenos y estudiamos cómo puede ayudarte la investigación del IUCE: evaluación, formación, tecnología educativa o comunicación.</p>`,
+      },
+    ],
+  },
+  {
     pageSlug: "estadisticas",
     label: "Estadísticas — El IUCE en cifras",
     blocks: [
@@ -294,7 +336,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "proyectos-descripcion",
         title: "Sección Proyectos — lectura rápida",
-        defaultContent: `<p>108 proyectos competitivos con 11,5 millones de euros captados. La Comisión Europea es la principal financiadora, seguida del Gobierno de España.</p>`,
+        defaultContent: `<p>108 proyectos competitivos con 11,5 millones de euros de financiación. La Comisión Europea es la principal financiadora, seguida del Gobierno de España.</p>`,
       },
       {
         blockKey: "transferencia-descripcion",

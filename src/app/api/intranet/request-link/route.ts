@@ -12,7 +12,7 @@ const requestSchema = z.object({
 const TOKEN_TTL_MS = 30 * 60 * 1000; // 30 minutos
 
 /**
- * Solicitud de acceso a la intranet por magic link.
+ * Solicitud de acceso al área de miembros (intranet) por magic link.
  *
  * - Autorizados: los miembros del IUCE (ficha con correo) automáticamente
  *   y la lista blanca del panel (IntranetUser activo); una fila desactivada
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "No estás autorizado aún. Para solicitar acceso a la intranet, escribe a iuce.tecnico@usal.es.",
+          "No estás autorizado aún. Para solicitar acceso al área de miembros, escribe a iuce.tecnico@usal.es.",
         code: "NOT_AUTHORIZED",
       },
       { status: 403 },
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 
   const base =
     process.env.NEXTAUTH_URL?.replace(/\/$/, "") ?? "http://localhost:3000";
-  const link = `${base}/intranet/acceso?token=${token}&email=${encodeURIComponent(email)}`;
+  const link = `${base}/miembros/acceso?token=${token}&email=${encodeURIComponent(email)}`;
 
   const apiKey = process.env.RESEND_API_KEY;
   const canSend = Boolean(apiKey && !apiKey.includes("placeholder"));
@@ -73,10 +73,10 @@ export async function POST(request: Request) {
       await resend.emails.send({
         from: process.env.EMAIL_FROM ?? "IUCE <onboarding@resend.dev>",
         to: email,
-        subject: "Tu acceso a la intranet del IUCE",
+        subject: "Tu acceso al área de miembros del IUCE",
         text: `Hola${access.name ? ` ${access.name}` : ""}:
 
-Usa este enlace para entrar en la intranet del IUCE (caduca en 30 minutos y solo funciona una vez):
+Usa este enlace para entrar en el área de miembros del IUCE (caduca en 30 minutos y solo funciona una vez):
 
 ${link}
 

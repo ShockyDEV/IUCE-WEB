@@ -20,13 +20,13 @@ export const dynamic = "force-dynamic";
  */
 export default async function IntranetNoticiasPage() {
   const session = await getIntranetSession();
-  if (!session) redirect("/intranet");
+  if (!session) redirect("/miembros");
 
   const noticias = await getInternalNews();
 
   return (
     <IntranetShell
-      active="/intranet/noticias"
+      active="/miembros/noticias"
       email={session.user?.email ?? ""}
       breadcrumbLabel="Noticias internas"
     >
@@ -47,7 +47,7 @@ export default async function IntranetNoticiasPage() {
           {noticias.map((n, i) => (
             <Reveal key={n.slug} delay={(i % 3) * 80} className="h-full">
               <Link
-                href={`/intranet/noticias/${n.slug}`}
+                href={`/miembros/noticias/${n.slug}`}
                 className="group block h-full"
               >
                 <article className="card-lift flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm hover:border-brand-400 hover:shadow-md">

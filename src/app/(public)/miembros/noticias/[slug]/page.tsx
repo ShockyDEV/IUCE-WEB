@@ -18,14 +18,14 @@ export default async function IntranetNoticiaPage({
   params,
 }: Readonly<{ params: { slug: string } }>) {
   const session = await getIntranetSession();
-  if (!session) redirect("/intranet");
+  if (!session) redirect("/miembros");
 
   const item = await getInternalNewsBySlug(params.slug);
   if (!item) notFound();
 
   return (
     <IntranetShell
-      active="/intranet/noticias"
+      active="/miembros/noticias"
       email={session.user?.email ?? ""}
       breadcrumbLabel="Noticias internas"
     >
@@ -65,7 +65,7 @@ export default async function IntranetNoticiaPage({
 
         <div className="mt-10 border-t border-gray-100 pt-6">
           <Link
-            href="/intranet/noticias"
+            href="/miembros/noticias"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />

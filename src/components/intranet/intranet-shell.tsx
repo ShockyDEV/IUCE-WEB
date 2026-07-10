@@ -4,15 +4,15 @@ import { IntranetSignOut } from "@/components/intranet/intranet-signout";
 import { cn } from "@/lib/cn";
 
 const TABS = [
-  { href: "/intranet", label: "Documentos" },
-  { href: "/intranet/noticias", label: "Noticias internas" },
-  { href: "/intranet/perfil", label: "Mi perfil" },
+  { href: "/miembros", label: "Documentos" },
+  { href: "/miembros/noticias", label: "Noticias internas" },
+  { href: "/miembros/perfil", label: "Mi perfil" },
 ] as const;
 
 export type IntranetTab = (typeof TABS)[number]["href"];
 
 /**
- * Marco común de las páginas de la intranet (usuario ya autenticado):
+ * Marco común de las páginas del área de miembros (usuario autenticado):
  * cabecera con título, correo de la sesión y cierre de sesión, más la
  * navegación por pestañas Documentos / Noticias internas / Mi perfil.
  */
@@ -37,20 +37,20 @@ export function IntranetShell({
                 { label: "Inicio", href: "/" },
                 ...(breadcrumbLabel
                   ? [
-                      { label: "Intranet", href: "/intranet" },
+                      { label: "Área de miembros", href: "/miembros" },
                       { label: breadcrumbLabel },
                     ]
-                  : [{ label: "Intranet" }]),
+                  : [{ label: "Área de miembros" }]),
               ]}
             />
           </div>
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-                Intranet
+                Solo personal del IUCE
               </p>
               <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
-                Intranet del IUCE
+                Área de miembros
               </h1>
             </div>
             <div className="flex flex-col items-end gap-2 pt-1">
@@ -59,7 +59,7 @@ export function IntranetShell({
             </div>
           </div>
           <nav
-            aria-label="Secciones de la intranet"
+            aria-label="Secciones del área de miembros"
             className="flex gap-5 text-sm font-medium text-gray-600"
           >
             {TABS.map((tab) => (

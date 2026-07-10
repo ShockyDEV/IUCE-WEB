@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import {
   Check,
+  ExternalLink,
   FileCheck,
   Fingerprint,
   Landmark,
@@ -196,6 +197,8 @@ export default async function InstitutoPage() {
     edificioBiblio,
     urlVideoHistoria,
     urlReglamento,
+    riie,
+    urlRiie,
     citaDirectora,
     miembros,
     { equipo, secretaria },
@@ -208,6 +211,8 @@ export default async function InstitutoPage() {
     getBlock("instituto", "edificio-biblio"),
     getBlockText("instituto", "url-video-historia"),
     getBlockText("instituto", "url-reglamento"),
+    getBlock("instituto", "riie"),
+    getBlockText("instituto", "url-riie"),
     getBlock("instituto", "cita-directora"),
     getMiembros(),
     getDireccion(),
@@ -346,6 +351,34 @@ export default async function InstitutoPage() {
             </div>
           </Reveal>
         </div>
+
+        {/* Red de Institutos de Investigación en Educación (RIIE) */}
+        {urlRiie ? (
+          <div className="mx-auto max-w-6xl px-6 pb-14">
+            <Reveal>
+              <div className="flex flex-col items-start gap-5 rounded-xl border border-gray-200 border-l-[3px] border-l-usal-red bg-surface-tinted p-6 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-start gap-4 sm:items-center">
+                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-md bg-iuce-blue-dark text-xs font-bold tracking-wide text-white">
+                    RIIE
+                  </span>
+                  <div
+                    className="page-block max-w-[85ch] text-sm leading-relaxed text-gray-600"
+                    dangerouslySetInnerHTML={{ __html: riie }}
+                  />
+                </div>
+                <a
+                  href={urlRiie}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex flex-none items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
+                >
+                  Conocer la RIIE
+                  <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                </a>
+              </div>
+            </Reveal>
+          </div>
+        ) : null}
       </section>
 
       {/* Equipo de dirección */}

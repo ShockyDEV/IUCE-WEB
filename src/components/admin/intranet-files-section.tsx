@@ -27,7 +27,7 @@ function formatSize(bytes: number) {
 }
 
 /**
- * Documentos de la intranet: se guardan fuera de public/ y solo se
+ * Documentos del área de miembros (intranet): se guardan fuera de public/ y solo se
  * descargan con sesión. Subida por arrastre + título/descripción editables.
  */
 export function IntranetFilesSection({
@@ -118,7 +118,7 @@ export function IntranetFilesSection({
         <p className="text-sm leading-relaxed text-gray-600">
           Estos documentos <strong>no son públicos</strong>: se almacenan
           fuera de la web y solo pueden descargarlos las personas autorizadas
-          en la intranet (o administradores).
+          en el área de miembros (o administradores).
         </p>
       </div>
 

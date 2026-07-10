@@ -16,7 +16,7 @@ type Status =
   | { kind: "error"; message: string };
 
 /**
- * Formulario de acceso a la intranet: pide el correo y solicita el magic
+ * Formulario de acceso al área de miembros: pide el correo y solicita el magic
  * link. Si el correo no está en la lista blanca, muestra el aviso con el
  * contacto de iuce.tecnico@usal.es.
  */
@@ -121,7 +121,7 @@ export function RequestAccessForm() {
           <p className="text-sm leading-relaxed text-warning-700">
             {status.message.includes("iuce.tecnico") ? (
               <>
-                No estás autorizado aún. Para solicitar acceso a la intranet,
+                No estás autorizado aún. Para solicitar acceso al área de miembros,
                 escribe a{" "}
                 <a
                   href="mailto:iuce.tecnico@usal.es"

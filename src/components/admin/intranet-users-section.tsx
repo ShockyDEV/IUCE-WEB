@@ -31,7 +31,7 @@ function formatDate(iso: string | null) {
 }
 
 /**
- * Gestión de acceso a la intranet. Los miembros del IUCE (ficha con correo
+ * Gestión de acceso al área de miembros. Los miembros del IUCE (ficha con correo
  * en Miembros) entran automáticamente y aparecen aquí tras su primer
  * acceso; esta lista sirve para autorizar correos adicionales o para
  * bloquear a alguien (desactivar invalida sus enlaces pendientes).

@@ -10,7 +10,7 @@ const TOKEN_TTL_MS = 30 * 60 * 1000; // 30 minutos
 /**
  * Acceso directo a la intranet SOLO en desarrollo: crea (o reactiva) el
  * usuario dev@iuce.local, emite un token de un solo uso y redirige al
- * canjeo (/intranet/acceso), de modo que se ejercita el flujo real de
+ * canjeo (/miembros/acceso), de modo que se ejercita el flujo real de
  * autenticación sin pasar por el correo.
  *
  * En producción (build de `next build`/`next start`) responde 404 y no
@@ -38,7 +38,7 @@ export async function GET(request: Request) {
   });
 
   const target = new URL(
-    `/intranet/acceso?token=${token}&email=${encodeURIComponent(DEV_EMAIL)}`,
+    `/miembros/acceso?token=${token}&email=${encodeURIComponent(DEV_EMAIL)}`,
     request.url,
   );
   return NextResponse.redirect(target);
