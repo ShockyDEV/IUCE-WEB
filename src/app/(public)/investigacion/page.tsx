@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, ExternalLink, User, Users } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Library, User, Users } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SectionSubnav } from "@/components/layout/section-subnav";
 import { buttonClassName } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
-import { getBlock, getListBlock } from "@/lib/content-blocks-service";
+import {
+  getBlock,
+  getBlockText,
+  getListBlock,
+} from "@/lib/content-blocks-service";
 import { prisma } from "@/lib/prisma";
 import { groups as groupsFallback } from "@/lib/content/groups";
 
@@ -67,14 +71,27 @@ async function getGrupos(): Promise<GroupCard[]> {
 export default async function InvestigacionPage() {
   // Contenido editable desde el gestor (Contenido → Páginas → Investigación).
   // Nota: DIDEROT figuraba por error entre los proyectos; es un grupo.
-  const [grupos, intro, eksDescripcion, proyectos, articulos] =
-    await Promise.all([
-      getGrupos(),
-      getBlock("investigacion", "intro"),
-      getBlock("investigacion", "eks-descripcion"),
-      getListBlock("investigacion", "list:proyectos"),
-      getListBlock("investigacion", "list:publicaciones"),
-    ]);
+  const [
+    grupos,
+    intro,
+    publicacionesDescripcion,
+    portalDescripcion,
+    urlPortal,
+    eksDescripcion,
+    urlEks,
+    proyectos,
+    articulos,
+  ] = await Promise.all([
+    getGrupos(),
+    getBlock("investigacion", "intro"),
+    getBlock("investigacion", "publicaciones-descripcion"),
+    getBlock("investigacion", "portal-descripcion"),
+    getBlockText("investigacion", "url-portal"),
+    getBlock("investigacion", "eks-descripcion"),
+    getBlockText("investigacion", "url-eks"),
+    getListBlock("investigacion", "list:proyectos"),
+    getListBlock("investigacion", "list:publicaciones"),
+  ]);
 
   return (
     <>
@@ -231,38 +248,47 @@ export default async function InvestigacionPage() {
           <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
             Publicaciones
           </h2>
-          <p className="mb-6 max-w-[80ch] text-sm text-gray-500">
-            La producción científica del Instituto se difunde principalmente a
-            través de la revista EKS y del Portal de Investigación de la USAL.
-          </p>
+          <div
+            className="page-block mb-6 max-w-[80ch] text-sm text-gray-500"
+            dangerouslySetInnerHTML={{ __html: publicacionesDescripcion }}
+          />
 
-          <Reveal from="scale" className="mb-6 flex flex-col items-start gap-6 rounded-xl border border-gray-200 bg-surface-tinted p-7 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-[18px]">
-              <span className="flex h-[52px] w-[52px] flex-none items-center justify-center rounded-md bg-iuce-blue-dark text-base font-bold text-white">
-                EKS
-              </span>
-              <div>
-                <p className="text-lg font-semibold text-gray-900">
-                  Education in the Knowledge Society
-                </p>
-                <div
-                  className="page-block mt-0.5 max-w-[60ch] text-sm text-gray-600"
-                  dangerouslySetInnerHTML={{ __html: eksDescripcion }}
-                />
+          {/* Elemento principal: la producción científica en el Portal de
+              Investigación de la USAL (la revista EKS queda como secundaria). */}
+          <Reveal from="scale" className="mb-6 rounded-xl border border-gray-200 border-t-[3px] border-t-usal-red bg-surface-tinted p-8 shadow-sm">
+            <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-start gap-5 sm:items-center">
+                <span className="flex h-16 w-16 flex-none items-center justify-center rounded-lg bg-iuce-blue-dark text-white">
+                  <Library className="h-8 w-8" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="mb-1 text-xs font-bold uppercase tracking-wider text-usal-red">
+                    Portal de Investigación de la USAL
+                  </p>
+                  <p className="text-xl font-bold text-gray-900">
+                    Producción científica del IUCE
+                  </p>
+                  <div
+                    className="page-block mt-1 max-w-[62ch] text-sm leading-relaxed text-gray-600"
+                    dangerouslySetInnerHTML={{ __html: portalDescripcion }}
+                  />
+                </div>
               </div>
+              {urlPortal ? (
+                <a
+                  href={urlPortal}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonClassName({ size: "lg" }) + " flex-none gap-1.5"}
+                >
+                  Ver la producción científica
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+              ) : null}
             </div>
-            <a
-              href="https://revistas.usal.es/index.php/eks"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonClassName() + " flex-none gap-1.5"}
-            >
-              Visitar la revista
-              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </a>
           </Reveal>
 
-          <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {articulos.map((a, i) => (
               <Reveal key={i} delay={i * 90} className="h-full">
               <article className="card-lift h-full rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:shadow-md">
@@ -279,15 +305,35 @@ export default async function InvestigacionPage() {
               </Reveal>
             ))}
           </div>
-          <a
-            href="https://produccioncientifica.usal.es"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
-          >
-            Perfil del IUCE en el Portal de Investigación de la USAL
-            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-          </a>
+
+          {/* Secundaria: revista EKS, editada en el IUCE */}
+          <Reveal className="flex flex-col items-start gap-4 rounded-xl border border-gray-200 bg-surface-card px-6 py-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+              <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md bg-iuce-blue-dark text-xs font-bold text-white">
+                EKS
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-gray-900">
+                  Education in the Knowledge Society
+                </p>
+                <div
+                  className="page-block mt-0.5 max-w-[70ch] text-xs leading-relaxed text-gray-500"
+                  dangerouslySetInnerHTML={{ __html: eksDescripcion }}
+                />
+              </div>
+            </div>
+            {urlEks ? (
+              <a
+                href={urlEks}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex flex-none items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
+              >
+                Visitar la revista
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            ) : null}
+          </Reveal>
         </div>
       </section>
     </>

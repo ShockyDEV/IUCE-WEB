@@ -333,6 +333,14 @@ async function migrateMembers(groupIds: Map<string, string>) {
     ).found;
   }
 
+  // Correos USAL obtenidos de directorio.usal.es: dan acceso automático a
+  // la intranet a los miembros del IUCE.
+  let usalEmails: Record<string, string> = {};
+  const emailsFile = path.join(__dirname, "data", "usal-emails.json");
+  if (fs.existsSync(emailsFile)) {
+    usalEmails = JSON.parse(fs.readFileSync(emailsFile, "utf-8"));
+  }
+
   // Orden: equipo directivo primero, luego el orden de la página original.
   const roleOrder = (m: ExportMember) =>
     m.role === "Directora" ? 1 : m.role === "Subdirector" ? 2 : m.role === "Secretario" ? 3 : 10;
@@ -370,7 +378,7 @@ async function migrateMembers(groupIds: Map<string, string>) {
       name: m.name,
       role: m.role,
       area: m.area,
-      email: m.email || null,
+      email: m.email || usalEmails[m.name] || null,
       photo: photoUrl,
       portalUrl: m.portalUrl || null,
       orcid: orcids[m.name] ?? null,

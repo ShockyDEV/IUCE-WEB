@@ -22,6 +22,7 @@ export default async function AdminNewsEditPage({
     coverImage: item.coverImage ?? "",
     category: item.category,
     status: item.status,
+    internal: item.internal,
     publishedAt: item.publishedAt
       ? item.publishedAt.toISOString().slice(0, 10)
       : "",

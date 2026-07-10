@@ -48,6 +48,8 @@ model News {
   coverImage  String?
   category    String
   status      NewsStatus @default(DRAFT)
+  // Noticia interna: solo visible en la intranet, nunca en la web pública.
+  internal    Boolean    @default(false)
   publishedAt DateTime?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt

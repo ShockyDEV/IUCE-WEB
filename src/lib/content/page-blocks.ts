@@ -84,9 +84,29 @@ export const PAGE_BLOCKS: PageDef[] = [
         defaultContent: `<p>Investigación interdisciplinar, básica y aplicada, sobre los procesos de formación en Educación Superior: evaluación educativa, tecnología, comunicación y transferencia al sistema educativo.</p>`,
       },
       {
+        blockKey: "publicaciones-descripcion",
+        title: "Publicaciones — párrafo introductorio de la sección",
+        defaultContent: `<p>La producción científica de los miembros del Instituto se recoge en el Portal de Investigación de la Universidad de Salamanca. El IUCE edita además la revista Education in the Knowledge Society (EKS).</p>`,
+      },
+      {
+        blockKey: "portal-descripcion",
+        title: "Publicaciones — banda principal del Portal de Investigación",
+        defaultContent: `<p>Artículos, libros, capítulos, proyectos y tesis dirigidas de los investigadores del IUCE, siempre actualizados en el Portal de Investigación de la USAL.</p>`,
+      },
+      {
+        blockKey: "url-portal",
+        title: "Publicaciones — URL del botón «Ver la producción científica»",
+        defaultContent: `<p>https://produccioncientifica.usal.es</p>`,
+      },
+      {
         blockKey: "eks-descripcion",
-        title: "Publicaciones — banda de la revista EKS",
+        title: "Publicaciones — tarjeta de la revista EKS",
         defaultContent: `<p>Revista científica del IUCE en acceso abierto: investigación interdisciplinar sobre la Sociedad del Conocimiento y los procesos educativos mediados por tecnología.</p>`,
+      },
+      {
+        blockKey: "url-eks",
+        title: "Publicaciones — URL de la revista EKS",
+        defaultContent: `<p>https://revistas.usal.es/index.php/eks</p>`,
       },
     ],
   },

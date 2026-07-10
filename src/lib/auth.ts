@@ -3,6 +3,10 @@ import Credentials from "next-auth/providers/credentials";
 import * as bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import {
+  ensureIntranetUser,
+  resolveIntranetAccess,
+} from "@/lib/intranet-access";
 import { authConfig } from "@/auth.config";
 
 const credentialsSchema = z.object({
@@ -80,15 +84,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // Un solo uso: se elimina al canjearlo.
         await prisma.intranetToken.delete({ where: { token } });
 
-        const user = await prisma.intranetUser.findUnique({
-          where: { email },
-        });
-        if (!user || !user.active) return null;
-
-        await prisma.intranetUser.update({
-          where: { id: user.id },
-          data: { lastLogin: new Date() },
-        });
+        // Miembros del IUCE: acceso automático (se auto-provisiona su fila
+        // IntranetUser al primer acceso). Una fila desactivada bloquea.
+        const access = await resolveIntranetAccess(email);
+        if (!access.allowed) return null;
+        const user = await ensureIntranetUser(email, access.name);
 
         return {
           id: user.id,

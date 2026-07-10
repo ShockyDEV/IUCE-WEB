@@ -31,8 +31,10 @@ function formatDate(iso: string | null) {
 }
 
 /**
- * Lista blanca de la intranet: solo estos correos pueden pedir el magic
- * link. Desactivar a alguien invalida sus enlaces pendientes al momento.
+ * Gestión de acceso a la intranet. Los miembros del IUCE (ficha con correo
+ * en Miembros) entran automáticamente y aparecen aquí tras su primer
+ * acceso; esta lista sirve para autorizar correos adicionales o para
+ * bloquear a alguien (desactivar invalida sus enlaces pendientes).
  */
 export function IntranetUsersSection({
   rows,
@@ -97,6 +99,14 @@ export function IntranetUsersSection({
 
   return (
     <div className="flex flex-col gap-6">
+      <p className="rounded-md border border-iuce-blue/25 bg-iuce-blue-pale px-4 py-3 text-[13px] leading-relaxed text-ink">
+        <strong>Los miembros del IUCE entran automáticamente</strong> con el
+        correo de su ficha (sección Miembros): no hace falta darlos de alta
+        aquí, y aparecerán en la lista tras su primer acceso. Usa este panel
+        para autorizar correos de personas que no son miembros o para{" "}
+        <strong>bloquear</strong> a alguien (desactivar gana siempre, también
+        para miembros).
+      </p>
       {/* Alta */}
       <form
         onSubmit={handleAdd}
@@ -147,7 +157,7 @@ export function IntranetUsersSection({
             Usuarios autorizados ({rows.length})
           </h3>
           <p className="text-xs text-gray-400">
-            Solo estos correos pueden recibir el enlace de acceso
+            Lista blanca manual + miembros que ya han accedido
           </p>
         </div>
         <table className="w-full border-collapse">

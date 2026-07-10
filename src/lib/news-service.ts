@@ -121,6 +121,7 @@ export async function getPublishedNews(
     const rows = await prisma.news.findMany({
       where: {
         status: "PUBLISHED",
+        internal: false, // las internas solo se ven en la intranet
         ...(options.category ? { category: options.category } : {}),
       },
       orderBy: [
@@ -169,7 +170,7 @@ export async function getPublishedNewsBySlug(
 ): Promise<NewsItem | null> {
   try {
     const row = await prisma.news.findUnique({ where: { slug } });
-    if (row && row.status === "PUBLISHED") {
+    if (row && row.status === "PUBLISHED" && !row.internal) {
       const item = toItem(row);
       // La portada se muestra como cabecera: no repetirla dentro del cuerpo.
       return {
@@ -182,4 +183,32 @@ export async function getPublishedNewsBySlug(
     // BD no disponible
   }
   return staticNews.find((n) => n.slug === slug) ?? null;
+}
+
+/**
+ * Noticias internas de la intranet (publicadas y marcadas como internas).
+ * Solo BD, sin fallback estático: la intranet requiere base de datos.
+ * El acceso lo controla la página que las muestra (sesión INTRANET/ADMIN).
+ */
+export async function getInternalNews(): Promise<NewsItem[]> {
+  const rows = await prisma.news.findMany({
+    where: { status: "PUBLISHED", internal: true },
+    orderBy: [
+      { publishedAt: { sort: "desc", nulls: "last" } },
+      { createdAt: "desc" },
+    ],
+  });
+  return rows.map(toItem);
+}
+
+export async function getInternalNewsBySlug(
+  slug: string,
+): Promise<NewsItem | null> {
+  const row = await prisma.news.findUnique({ where: { slug } });
+  if (!row || row.status !== "PUBLISHED" || !row.internal) return null;
+  const item = toItem(row);
+  return {
+    ...item,
+    content: stripCoverFromContent(item.content, item.coverImage),
+  };
 }

@@ -16,6 +16,7 @@ export default async function AdminNewsPage() {
       title: true,
       category: true,
       status: true,
+      internal: true,
       publishedAt: true,
     },
   });
@@ -25,6 +26,7 @@ export default async function AdminNewsPage() {
     title: n.title,
     category: n.category,
     status: n.status,
+    internal: n.internal,
     publishedAt: n.publishedAt?.toISOString() ?? null,
   }));
 

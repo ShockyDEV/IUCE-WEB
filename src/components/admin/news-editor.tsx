@@ -24,6 +24,8 @@ export interface NewsFormValues {
   coverImage: string;
   category: string;
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
+  /** Noticia interna: solo visible en la intranet, nunca en la web pública. */
+  internal: boolean;
   publishedAt: string; // yyyy-mm-dd o ""
 }
 
@@ -35,6 +37,7 @@ const EMPTY: NewsFormValues = {
   coverImage: "",
   category: NEWS_CATEGORIES[0],
   status: "DRAFT",
+  internal: false,
   publishedAt: "",
 };
 
@@ -104,6 +107,7 @@ export function NewsEditor({
         coverImage: values.coverImage || null,
         category: values.category,
         status: values.status,
+        internal: values.internal,
         publishedAt: values.publishedAt
           ? new Date(`${values.publishedAt}T12:00:00Z`).toISOString()
           : null,
@@ -348,6 +352,27 @@ export function NewsEditor({
               />
             </div>
           </div>
+
+          {/* Noticia interna (solo intranet) */}
+          <label
+            htmlFor="n-internal"
+            className="flex cursor-pointer items-start gap-3 rounded-md border border-gray-200 bg-gray-50 px-4 py-3"
+          >
+            <input
+              id="n-internal"
+              type="checkbox"
+              checked={values.internal}
+              onChange={(e) => update("internal", e.target.checked)}
+              className="mt-[3px] h-4 w-4 accent-iuce-blue-dark"
+            />
+            <span className="text-[13px] leading-relaxed text-gray-700">
+              <span className="font-semibold">
+                Noticia interna (solo intranet).
+              </span>{" "}
+              No aparecerá en la web pública: solo la verán los miembros del
+              IUCE dentro de la intranet.
+            </span>
+          </label>
 
           <div className="flex items-center gap-3 border-t border-gray-100 pt-4">
             <Button variant="primary" onClick={handleSave} disabled={saving}>

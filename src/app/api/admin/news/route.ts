@@ -30,6 +30,7 @@ export async function GET() {
       slug: true,
       category: true,
       status: true,
+      internal: true,
       publishedAt: true,
     },
   });
@@ -68,6 +69,7 @@ export async function POST(request: Request) {
       coverImage: data.coverImage ?? null,
       category: data.category,
       status: data.status,
+      internal: data.internal,
       publishedAt: data.publishedAt ? new Date(data.publishedAt) : null,
       ...translated,
     },

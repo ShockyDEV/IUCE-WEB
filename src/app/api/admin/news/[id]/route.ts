@@ -74,6 +74,7 @@ export async function PUT(request: Request, { params }: Params) {
       coverImage: data.coverImage ?? null,
       category: data.category,
       status: data.status,
+      internal: data.internal,
       publishedAt: data.publishedAt ? new Date(data.publishedAt) : null,
       ...translated,
     },

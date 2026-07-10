@@ -11,6 +11,8 @@ export const newsInputSchema = z.object({
   coverImage: z.string().trim().max(500).optional().nullable(),
   category: z.enum(NEWS_CATEGORIES),
   status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]),
+  // Noticia interna: solo visible en la intranet, nunca en la web pública.
+  internal: z.boolean().optional().default(false),
   publishedAt: z.string().datetime().optional().nullable(),
 });
 

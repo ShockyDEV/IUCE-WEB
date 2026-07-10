@@ -3,6 +3,7 @@ import { randomBytes } from "node:crypto";
 import { Resend } from "resend";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { resolveIntranetAccess } from "@/lib/intranet-access";
 
 const requestSchema = z.object({
   email: z.string().trim().toLowerCase().email("Correo no válido"),
@@ -13,8 +14,10 @@ const TOKEN_TTL_MS = 30 * 60 * 1000; // 30 minutos
 /**
  * Solicitud de acceso a la intranet por magic link.
  *
- * - Si el correo está en la lista blanca (IntranetUser activo): genera un
- *   token de un solo uso (30 min) y envía el enlace por email (Resend).
+ * - Autorizados: los miembros del IUCE (ficha con correo) automáticamente
+ *   y la lista blanca del panel (IntranetUser activo); una fila desactivada
+ *   bloquea siempre. Se genera un token de un solo uso (30 min) y se envía
+ *   el enlace por email (Resend).
  * - Si no está autorizado: 403 con el mensaje de contacto, tal y como pide
  *   el IUCE (la lista la gestiona el panel: Intranet → Usuarios).
  *
@@ -32,8 +35,10 @@ export async function POST(request: Request) {
   }
   const { email } = parsed.data;
 
-  const user = await prisma.intranetUser.findUnique({ where: { email } });
-  if (!user || !user.active) {
+  // Autorizados: lista blanca del panel + todos los miembros del IUCE
+  // (tabla Member con correo). Una fila desactivada bloquea siempre.
+  const access = await resolveIntranetAccess(email);
+  if (!access.allowed) {
     return NextResponse.json(
       {
         error:
@@ -69,7 +74,7 @@ export async function POST(request: Request) {
         from: process.env.EMAIL_FROM ?? "IUCE <onboarding@resend.dev>",
         to: email,
         subject: "Tu acceso a la intranet del IUCE",
-        text: `Hola${user.name ? ` ${user.name}` : ""}:
+        text: `Hola${access.name ? ` ${access.name}` : ""}:
 
 Usa este enlace para entrar en la intranet del IUCE (caduca en 30 minutos y solo funciona una vez):
 

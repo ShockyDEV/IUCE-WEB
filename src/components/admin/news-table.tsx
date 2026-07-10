@@ -11,6 +11,8 @@ export interface NewsRow {
   title: string;
   category: string;
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
+  /** Noticia interna: solo visible en la intranet. */
+  internal: boolean;
   publishedAt: string | null; // ISO
 }
 
@@ -73,6 +75,11 @@ export function NewsTable({ rows }: Readonly<{ rows: NewsRow[] }>) {
             <tr key={row.id} className="border-t border-gray-100">
               <td className="max-w-[380px] px-6 py-3 text-sm font-medium text-gray-900">
                 {row.title}
+                {row.internal ? (
+                  <span className="ml-2 inline-flex rounded-full bg-[#E0E7FF] px-2 py-0.5 text-[11px] font-semibold text-[#3730A3]">
+                    Interna
+                  </span>
+                ) : null}
               </td>
               <td className="px-4 py-3 text-[13px] text-gray-600">
                 {row.category}
