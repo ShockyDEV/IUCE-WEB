@@ -5,6 +5,7 @@ import { buttonClassName } from "@/components/ui/button";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { CoverImage } from "@/components/news/cover-image";
 import { Reveal } from "@/components/ui/reveal";
+import { CountUp } from "@/components/ui/count-up";
 import { getPublishedNews } from "@/lib/news-service";
 import {
   getBlock,
@@ -27,6 +28,7 @@ export default async function HomePage() {
     hitosHero,
     quickAccess,
     eksDescripcion,
+    cifras,
   ] = await Promise.all([
     getPublishedNews().then((n) => n.slice(0, 3)),
     getBlockText("inicio", "hero-eyebrow"),
@@ -35,6 +37,8 @@ export default async function HomePage() {
     getListBlock("inicio", "list:hitos-hero"),
     getListBlock("inicio", "list:accesos-rapidos"),
     getBlock("inicio", "eks-descripcion"),
+    // Mismos contadores que la página de estadísticas (una sola fuente)
+    getListBlock("estadisticas", "list:kpis"),
   ]);
   return (
     <>
@@ -148,6 +152,45 @@ export default async function HomePage() {
               </Reveal>
             );
           })}
+        </div>
+      </section>
+
+      {/* El IUCE en cifras (teaser hacia /estadisticas) */}
+      <section className="border-b border-gray-200 bg-surface-tinted">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-7 px-6 py-10 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-[38ch]">
+            <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-usal-red">
+              Memoria 2020–2025
+            </p>
+            <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+              El IUCE en cifras
+            </h2>
+            <p className="mb-4 text-sm leading-relaxed text-gray-600">
+              La actividad del Instituto, contada con datos interactivos:
+              proyectos, tesis, formación y transferencia.
+            </p>
+            <Link
+              href="/estadisticas"
+              className={buttonClassName() + " gap-1.5"}
+            >
+              Explorar las estadísticas
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="grid w-full grid-cols-3 gap-3.5 lg:w-auto">
+            {cifras.slice(0, 3).map((k, i) => (
+              <Reveal key={i} from="right" delay={i * 110}>
+                <div className="rounded-xl border border-gray-200 bg-surface-card p-5 text-center shadow-sm lg:w-[168px]">
+                  <p className="text-[26px] font-bold leading-tight text-ink">
+                    <CountUp value={String(k.cifra)} />
+                  </p>
+                  <p className="mt-1 text-[11px] leading-snug text-gray-500">
+                    {String(k.texto)}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 

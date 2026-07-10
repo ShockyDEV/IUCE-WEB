@@ -283,6 +283,52 @@ export const PAGE_BLOCKS: PageDef[] = [
     ],
   },
   {
+    pageSlug: "estadisticas",
+    label: "Estadísticas — El IUCE en cifras",
+    blocks: [
+      {
+        blockKey: "intro",
+        title: "Cabecera — párrafo introductorio",
+        defaultContent: `<p>La actividad del Instituto durante el periodo 2020–2025, en datos: proyectos, transferencia, tesis, formación, redes y gestión. Las cifras proceden de la memoria de acreditación del IUCE.</p>`,
+      },
+      {
+        blockKey: "proyectos-descripcion",
+        title: "Sección Proyectos — lectura rápida",
+        defaultContent: `<p>108 proyectos competitivos con 11,5 millones de euros captados. La Comisión Europea es la principal financiadora, seguida del Gobierno de España.</p>`,
+      },
+      {
+        blockKey: "transferencia-descripcion",
+        title: "Sección Transferencia — lectura rápida",
+        defaultContent: `<p>64 contratos y convenios de transferencia (art. 60 LOSU) por más de 770.000 €, con 36 entidades: fundaciones, administraciones públicas y empresas.</p>`,
+      },
+      {
+        blockKey: "doctorado-descripcion",
+        title: "Sección Doctorado — lectura rápida",
+        defaultContent: `<p>101 tesis doctorales defendidas — el 91% con Cum Laude y 4 de cada 10 con Mención Internacional — y 213 trabajos fin de máster dirigidos, con una tendencia claramente creciente.</p>`,
+      },
+      {
+        blockKey: "formacion-descripcion",
+        title: "Sección Formación — lectura rápida",
+        defaultContent: `<p>Más de 2.600 horas de formación continua: el profesorado del IUCE no solo investiga sobre docencia, también la imparte y se forma continuamente en el Plan de Formación del PDI.</p>`,
+      },
+      {
+        blockKey: "redes-descripcion",
+        title: "Sección Redes y movilidad — lectura rápida",
+        defaultContent: `<p>45 redes de investigación (25 internacionales) y 34 estancias de movilidad en 12 países respaldan la proyección exterior del Instituto.</p>`,
+      },
+      {
+        blockKey: "gestion-descripcion",
+        title: "Sección Gestión y posgrado — lectura rápida",
+        defaultContent: `<p>El personal del IUCE sostiene 292 cargos de gestión académica y científica, y participa en 27 títulos de posgrado — con un salto notable en el curso 2024-25.</p>`,
+      },
+      {
+        blockKey: "nota-fuente",
+        title: "Nota final — fuente de los datos",
+        defaultContent: `<p>Fuente: memoria de acreditación del IUCE (periodo 2020–2025). Los datos se actualizan desde el panel de administración; el año 2025 puede recoger cifras parciales.</p>`,
+      },
+    ],
+  },
+  {
     pageSlug: "legal",
     label: "Legal — Política de cookies",
     blocks: [

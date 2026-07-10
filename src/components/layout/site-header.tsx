@@ -18,6 +18,7 @@ const NAV: NavItem[] = [
   { label: "Inicio", href: "/" },
   { label: "Instituto", href: "/instituto" },
   { label: "Investigación", href: "/investigacion" },
+  { label: "En cifras", href: "/estadisticas" },
   { label: "Formación", href: "/formacion" },
   { label: "Eventos", href: "/eventos" },
   { label: "Doctorado", href: "/doctorado" },
@@ -79,9 +80,11 @@ export function SiteHeader() {
           {/* Navegación de escritorio */}
           <nav
             aria-label="Navegación principal"
-            className="hidden items-center gap-5 text-sm font-medium text-gray-600 lg:flex"
+            className="hidden items-center gap-4 text-sm font-medium text-gray-600 lg:flex xl:gap-5"
           >
-            {NAV.map((item) => {
+            {/* En escritorio el logo ya lleva a Inicio: se omite del menú
+                para que quepan todas las secciones (móvil sí lo muestra). */}
+            {NAV.filter((item) => item.href !== "/").map((item) => {
               if (item.external) {
                 return (
                   <a
