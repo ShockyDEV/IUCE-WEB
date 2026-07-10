@@ -15,6 +15,8 @@ const TITLES: Array<[prefix: string, title: string]> = [
   ["/admin/files", "Archivos"],
   ["/admin/messages", "Mensajes de contacto"],
   ["/admin/settings", "Configuración"],
+  ["/admin/intranet/users", "Intranet — Usuarios autorizados"],
+  ["/admin/intranet/files", "Intranet — Documentos internos"],
   ["/admin", "Dashboard"],
 ];
 

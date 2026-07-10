@@ -28,6 +28,7 @@ const NAV: NavItem[] = [
   },
   { label: "Noticias", href: "/noticias" },
   { label: "Contacto", href: "/contacto" },
+  { label: "Intranet", href: "/intranet" },
 ];
 
 function isActive(pathname: string, href: string) {

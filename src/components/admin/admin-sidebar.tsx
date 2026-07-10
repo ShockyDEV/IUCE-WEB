@@ -8,8 +8,10 @@ import {
   Calendar,
   ExternalLink,
   FileText,
+  FolderLock,
   FolderOpen,
   Inbox,
+  KeyRound,
   LayoutDashboard,
   LogOut,
   Microscope,
@@ -50,6 +52,21 @@ const NAV_GROUPS = [
     items: [
       { label: "Eventos", icon: Calendar, href: "/admin/events" },
       { label: "Mensajes de contacto", icon: Inbox, href: "/admin/messages" },
+    ],
+  },
+  {
+    title: "Intranet",
+    items: [
+      {
+        label: "Usuarios autorizados",
+        icon: KeyRound,
+        href: "/admin/intranet/users",
+      },
+      {
+        label: "Documentos internos",
+        icon: FolderLock,
+        href: "/admin/intranet/files",
+      },
     ],
   },
   {

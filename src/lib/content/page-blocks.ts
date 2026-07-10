@@ -113,6 +113,17 @@ export const PAGE_BLOCKS: PageDef[] = [
     ],
   },
   {
+    pageSlug: "intranet",
+    label: "Intranet",
+    blocks: [
+      {
+        blockKey: "intro",
+        title: "Intranet — texto de bienvenida (solo lo ven los autorizados)",
+        defaultContent: `<p>Espacio reservado al personal del IUCE: actas, convocatorias, normativa interna y otra documentación de uso interno. Los documentos se gestionan desde el panel de administración.</p>`,
+      },
+    ],
+  },
+  {
     pageSlug: "contacto",
     label: "Contacto",
     blocks: [

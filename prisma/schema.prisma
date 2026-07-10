@@ -121,6 +121,40 @@ model ContactMessage {
   createdAt DateTime @default(now())
 }
 
+// ── Intranet ────────────────────────────────────────────────────────────────
+// Acceso por magic link con lista blanca gestionada desde el panel.
+
+model IntranetUser {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  active    Boolean   @default(true)
+  lastLogin DateTime?
+  createdAt DateTime  @default(now())
+}
+
+// Token de un solo uso del magic link (caduca a los 30 minutos).
+model IntranetToken {
+  identifier String // email
+  token      String   @unique
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// Documentos de la intranet. Se guardan FUERA de public/ (storage/intranet)
+// y se sirven solo con sesión a través de /api/intranet/files/[id].
+model IntranetDocument {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  filename    String // nombre original, para la descarga
+  storedName  String // nombre en storage/intranet
+  mimeType    String
+  size        Int
+  createdAt   DateTime @default(now())
+}
+
 // Analítica ligera (patrón mupes).
 model PageView {
   id        String   @id @default(cuid())
