@@ -276,11 +276,13 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "nombre", label: "Nombre", type: "text" },
       { key: "propia", label: "Es la de la USAL (resaltada)", type: "check" },
     ],
+    // Cada universidad pública de Castilla y León aporta su unidad de
+    // formación al programa conjunto.
     defaultItems: [
-      { sigla: "USAL", nombre: "IUCE — Instituto Universitario de Ciencias de la Educación", propia: true },
-      { sigla: "UBU", nombre: "Instituto de Formación e Innovación Educativa (IFIE)", propia: false },
-      { sigla: "ULE", nombre: "Escuela de Formación", propia: false },
-      { sigla: "UVA", nombre: "Centro VirtUVa", propia: false },
+      { sigla: "USAL", nombre: "Universidad de Salamanca — IUCE, Instituto Universitario de Ciencias de la Educación", propia: true },
+      { sigla: "UBU", nombre: "Universidad de Burgos — Instituto de Formación e Innovación Educativa (IFIE)", propia: false },
+      { sigla: "ULE", nombre: "Universidad de León — Escuela de Formación", propia: false },
+      { sigla: "UVA", nombre: "Universidad de Valladolid — Centro VirtUVa", propia: false },
     ],
   },
   {
@@ -356,12 +358,13 @@ export const LIST_BLOCKS: ListBlockDef[] = [
         hint: "vacío = tarjeta sin enlace",
       },
     ],
-    // Artículos REALES tomados del Portal de Investigación (jul 2026); se
-    // renuevan desde el panel cuando se quiera refrescar la muestra.
+    // Un artículo REAL por cada miembro de la dirección (directora,
+    // subdirector y secretario), verificados en jul 2026; el enlace lleva al
+    // DOI o a la ficha del artículo. Se renuevan desde el panel.
     defaultItems: [
-      { eyebrow: "Artículo · 2026", titulo: "Evaluación asistida por inteligencia artificial generativa en prácticas de Ingeniería de Software: una prueba de concepto", autores: "García-Peñalvo, F. J. et al.", revista: "RIED. Revista Iberoamericana de Educación a Distancia", enlace: "https://produccioncientifica.usal.es/investigadores/56361/publicaciones" },
-      { eyebrow: "Artículo · 2026", titulo: "Inequidad educativa en Portugal: análisis del impacto del ESCS en PISA 2022", autores: "Olmos-Migueláñez, S. et al.", revista: "REICE. Revista Iberoamericana sobre Calidad, Eficacia y Cambio en Educación", enlace: "https://produccioncientifica.usal.es/investigadores/57518/publicaciones" },
-      { eyebrow: "Artículo · 2026", titulo: "Hate Speech on Social Media: Unpacking How Toxic Language Fuels Anti-Immigrant Hostility", autores: "Igartua, J. J. et al.", revista: "Social Sciences", enlace: "https://produccioncientifica.usal.es/investigadores/56579/publicaciones" },
+      { eyebrow: "Directora · 2026", titulo: "Inequidad educativa en Portugal: análisis del impacto del ESCS en PISA 2022", autores: "Martins Azinheiro, C. A.; Olmos-Migueláñez, S.; Torrecilla Sánchez, E. M.; Martínez Abad, F.", revista: "REICE. Revista Iberoamericana sobre Calidad, Eficacia y Cambio en Educación", enlace: "https://dialnet.unirioja.es/servlet/articulo?codigo=10533146" },
+      { eyebrow: "Subdirector · 2026", titulo: "Evaluación asistida por inteligencia artificial generativa en prácticas de Ingeniería de Software: una prueba de concepto", autores: "García-Peñalvo, F. J.; Alier-Forment, M.; Vázquez-Ingelmo, A.; García-Holgado, A. et al.", revista: "RIED. Revista Iberoamericana de Educación a Distancia", enlace: "https://doi.org/10.5944/ried.47173" },
+      { eyebrow: "Secretario · 2025", titulo: "Hacia una ontología de factores de desapego en procesos de lectura digital en educación superior", autores: "Merchán-Sánchez-Jara, J. F.; Mastrobattista, L.; Muñoz-Rico, M. et al.", revista: "Ocnos. Revista de estudios sobre lectura", enlace: "https://doi.org/10.18239/ocnos_2025.24.1.438" },
     ],
   },
 
@@ -381,6 +384,40 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { icon: "lightbulb", titulo: "Propiedad industrial e intelectual", texto: "Registros de patentes y software nacidos de la investigación de los grupos del Instituto." },
       { icon: "graduation-cap", titulo: "Formación a demanda", texto: "Cursos y programas de formación especializada diseñados para las necesidades de cada organización." },
       { icon: "megaphone", titulo: "Divulgación y cultura científica", texto: "Jornadas, publicaciones y actividades que acercan la investigación educativa a la sociedad." },
+    ],
+  },
+
+  // ── Seminario IUCE ────────────────────────────────────────────────────────
+  {
+    pageSlug: "seminario",
+    blockKey: "list:ediciones",
+    title: "Seminario — ediciones por año",
+    itemLabel: "edición",
+    fields: [
+      { key: "anio", label: "Año", type: "text" },
+      { key: "titulo", label: "Título de la edición", type: "text" },
+      { key: "texto", label: "Descripción", type: "textarea" },
+      {
+        key: "enlaceNoticia",
+        label: "Enlace a la crónica/noticia",
+        type: "url",
+        hint: "vacío = sin enlace",
+      },
+      {
+        key: "enlaceActas",
+        label: "Enlace a las actas (PDF)",
+        type: "url",
+        hint: "vacío = se muestra «Actas en preparación»",
+      },
+    ],
+    defaultItems: [
+      {
+        anio: "2025",
+        titulo: "I Seminario de Investigación Interdisciplinar",
+        texto: "Primera edición del encuentro anual: los grupos del Instituto presentaron sus líneas de trabajo y resultados recientes para tender puentes entre ámbitos y explorar colaboraciones.",
+        enlaceNoticia: "/noticias/i-seminario-de-investigacion-interdisciplinar-del-instituto-universitario-de-ciencias-de-la-educacion",
+        enlaceActas: "",
+      },
     ],
   },
 

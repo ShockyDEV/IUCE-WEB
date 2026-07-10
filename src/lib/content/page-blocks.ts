@@ -29,16 +29,18 @@ export const PAGE_BLOCKS: PageDef[] = [
       },
       {
         blockKey: "perfil-intro",
-        title: "Perfil — introducción",
-        defaultContent: `<p>En su origen, el Instituto se crea como centro de referencia nacional de investigación y apoyo a la formación inicial y permanente del profesorado no universitario (antiguo ICE, 1969). Desde la década de los años 80 se perfila como un centro especializado exclusivamente en educación universitaria.</p>
-<p>A raíz de la aprobación de la LOU (2001, modificada en 2007), los Institutos Universitarios de Investigación se conforman como piezas clave del desarrollo de las Universidades, en paralelo a Escuelas, Facultades y Departamentos. El IUCE es verificado como Instituto de Investigación por la Agencia para la Calidad del Sistema Universitario de Castilla y León (ACSUCYL) en junio de 2008.</p>
-<p>Ante la transformación de la Universidad hacia el Espacio Europeo de Educación Superior, el IUCE investiga, forma e informa para avanzar en el conocimiento de los procesos de enseñanza-aprendizaje, centrados en el estudiante.</p>`,
+        title: "Perfil — introducción (texto institucional completo)",
+        defaultContent: `<p>El Instituto Universitario de Ciencias de la Educación de la Universidad de Salamanca (IUCE) es un Instituto Interdisciplinar de Investigación, especializado en investigación en Educación Superior, creado con el fin de fomentar y llevar a la práctica acciones de investigación científica en Educación, de desarrollo tecnológico y de transferencia al ámbito educativo.</p>
+<p>En su origen, el Instituto se crea como centro de referencia nacional de investigación y apoyo a la formación inicial y permanente del profesorado no universitario (antiguo ICE); sin embargo, desde la década de los años 80, se perfila como un centro especializado exclusivamente en educación universitaria (IUCE).</p>
+<p>A raíz de la aprobación de la LOU (2001, modificada en 2007), los Institutos Universitarios de Investigación se conforman como piezas clave de desarrollo de las Universidades, en paralelo a las Escuelas, Facultades y Departamentos (art. 7, cap. I, Título II). El IUCE es verificado como Instituto de Investigación por la Agencia para la Calidad del Sistema Universitario de Castilla y León (ACSUCYL) y, por tanto, por la Consejería de Educación de la Junta de Castilla y León en junio de 2008.</p>
+<p>Durante este tiempo, el equipo interdisciplinar del IUCE ha logrado congregar a profesores e investigadores universitarios de todas las ramas de conocimiento, en torno a la investigación en procesos de formación en educación superior, centrada en concreto en el diseño, implementación y evaluación de recursos tecnológicos en educación. Se impulsan diversas líneas de investigación interdisciplinar sobre temas fundamentales para el desarrollo óptimo de la tarea universitaria, colaborando con otras universidades españolas, europeas y latinoamericanas, fundaciones, administraciones educativas, centros tecnológicos y de investigación, empresas y entidades relacionadas con la educación universitaria.</p>
+<p>Además, es un centro que ofrece formación, apoyo y asesoramiento al profesorado universitario y promueve la divulgación y empleo de nuevas metodologías, recursos y tecnologías educativas, contribuyendo al proceso de innovación y evaluación de la calidad de la enseñanza universitaria.</p>`,
       },
       {
         blockKey: "cita-directora",
-        title: "Perfil — cita de la directora",
-        defaultContent: `<p>«En la actual coyuntura de cambio y transformación de la Universidad hacia el espacio europeo de educación superior, las tareas y actividades docentes se replantean desde nuevas perspectivas a las que los profesores universitarios tienen que acomodar sus esquemas docentes. Se precisan reformulaciones que adecuen la docencia a las características actuales de la sociedad de la información y a los modos de ser y aprender, centradas en el estudiante.</p>
-<p>Aunque, como en otros muchos problemas, las medidas fundamentales sean estructurales, el IUCE debe investigar, formar e informar para que, en la medida de sus posibilidades, se avance en el conocimiento de estos problemas y en su mejoramiento.»</p>`,
+        title: "Perfil — bienvenida de la directora (la firma la pone la tarjeta)",
+        defaultContent: `<p>«En esta página institucional del IUCE queremos resaltar la información relacionada con tareas de investigación realizadas y en desarrollo, la convocatoria anual del Programa de Formación del PDI y la edición de nuestra revista electrónica "TESI". Os invitamos a participar activamente de las distintas iniciativas y programas que lideramos entre todos. En esta casa que es la vuestra, os invitamos a profesores, alumnos, investigadores, empresas, instituciones… a vincularos y desarrollar proyectos en nuestra querida Universidad.</p>
+<p>Aprovecho para daros la bienvenida al IUCE de la Universidad de Salamanca.»</p>`,
       },
       {
         blockKey: "url-reglamento",
@@ -123,7 +125,12 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "publicaciones-descripcion",
         title: "Publicaciones — párrafo introductorio de la sección",
-        defaultContent: `<p>La producción científica de los miembros del Instituto se recoge en el Portal de Investigación de la Universidad de Salamanca. Abajo, una pequeña muestra de artículos recientes; el IUCE edita además la revista Education in the Knowledge Society (EKS).</p>`,
+        defaultContent: `<p>La producción científica de los miembros del Instituto se recoge en el Portal de Investigación de la Universidad de Salamanca. El IUCE edita además la revista Education in the Knowledge Society (EKS).</p>`,
+      },
+      {
+        blockKey: "muestra-titulo",
+        title: "Publicaciones — encabezado de la muestra de artículos",
+        defaultContent: `<p>Lee los últimos artículos de la dirección del IUCE</p>`,
       },
       {
         blockKey: "portal-descripcion",
@@ -287,7 +294,7 @@ export const PAGE_BLOCKS: PageDef[] = [
         blockKey: "cta",
         title: "Formación — llamada final de contacto",
         defaultContent: `<p><strong>¿Dudas sobre inscripciones o certificados?</strong></p>
-<p>La Secretaría del IUCE atiende en el 923 294 634 y en iuce@usal.es.</p>`,
+<p>La Secretaría del IUCE atiende en el 923 294 634 (ext. 4634 desde la centralita de la USAL) y en iuce@usal.es.</p>`,
       },
     ],
   },
@@ -397,6 +404,28 @@ export const PAGE_BLOCKS: PageDef[] = [
         blockKey: "nota-fuente",
         title: "Nota final — fuente de los datos",
         defaultContent: `<p>Fuente: memoria de acreditación del IUCE (periodo 2020–2025). Los datos se actualizan desde el panel de administración; el año 2025 puede recoger cifras parciales.</p>`,
+      },
+    ],
+  },
+  {
+    pageSlug: "seminario",
+    label: "Seminario IUCE",
+    blocks: [
+      {
+        blockKey: "intro",
+        title: "Seminario — párrafo de cabecera",
+        defaultContent: `<p>Una vez al año, los grupos de investigación del IUCE se sientan en la misma sala para contarse en qué están trabajando. El Seminario IUCE es el encuentro interno que convierte un instituto interdisciplinar en un equipo: se comparten resultados, se descubren intereses comunes y nacen colaboraciones que de otra forma no ocurrirían.</p>`,
+      },
+      {
+        blockKey: "objetivo",
+        title: "Seminario — para qué sirve (banda destacada)",
+        defaultContent: `<p>El objetivo es triple: <strong>cooperación</strong> entre grupos que trabajan problemas complementarios, <strong>transferencia</strong> de métodos y herramientas de un ámbito a otro, y <strong>sinergias</strong> que se traducen en proyectos y publicaciones conjuntas. Cada edición queda recogida en unas actas que documentan el estado de la investigación del Instituto.</p>`,
+      },
+      {
+        blockKey: "cta",
+        title: "Seminario — llamada final",
+        defaultContent: `<p><strong>¿Tu grupo quiere presentar su trabajo en la próxima edición?</strong></p>
+<p>Escribe a la Secretaría del IUCE y te haremos llegar la convocatoria.</p>`,
       },
     ],
   },

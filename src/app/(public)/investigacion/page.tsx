@@ -82,6 +82,7 @@ export default async function InvestigacionPage() {
     eksDescripcion,
     urlEks,
     proyectosDescripcion,
+    muestraTitulo,
     proyectos,
     articulos,
   ] = await Promise.all([
@@ -93,6 +94,7 @@ export default async function InvestigacionPage() {
     getBlock("investigacion", "eks-descripcion"),
     getBlockText("investigacion", "url-eks"),
     getBlock("investigacion", "proyectos-descripcion"),
+    getBlockText("investigacion", "muestra-titulo"),
     getPublicProjects(),
     getListBlock("investigacion", "list:publicaciones"),
   ]);
@@ -273,6 +275,11 @@ export default async function InvestigacionPage() {
             </div>
           </Reveal>
 
+          {muestraTitulo ? (
+            <h3 className="mb-4 text-lg font-bold tracking-tight text-gray-900">
+              {muestraTitulo}
+            </h3>
+          ) : null}
           <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {articulos.map((a, i) => {
               const enlace = String(a.enlace ?? "");
