@@ -25,7 +25,7 @@ export const featuredEvent = {
   dateDisplay: "Junio de 2026",
   startsAt: "2026-06-15",
   location: "Salamanca",
-  url: "https://iced26.usal.es",
+  url: "https://iced26.es/",
   photoLabel: "Imagen ICED26 / Salamanca",
 };
 
