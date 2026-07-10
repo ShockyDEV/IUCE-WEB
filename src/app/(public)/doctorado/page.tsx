@@ -37,6 +37,7 @@ interface GroupMini {
   desc: string;
   chip: string | null;
   logo: string | null;
+  url: string | null;
 }
 
 /** Grupos del gestor (lista oficial de 9 como fallback sin BD). */
@@ -51,6 +52,7 @@ async function getGrupos(): Promise<GroupMini[]> {
         desc: g.name,
         chip: g.chip,
         logo: g.logo,
+        url: g.url,
       }));
     }
   } catch {
@@ -61,6 +63,7 @@ async function getGrupos(): Promise<GroupMini[]> {
     desc: g.name,
     chip: g.chip ?? null,
     logo: g.logo ?? null,
+    url: g.url ?? null,
   }));
 }
 
@@ -204,33 +207,59 @@ export default async function DoctoradoPage() {
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {grupos.map((g, i) => (
+            {grupos.map((g, i) => {
+              const cabecera = (
+                <>
+                  {g.logo ? (
+                    // Placa blanca fija: logos oscuros visibles también en
+                    // modo oscuro.
+                    <div className="mb-3 flex h-12 items-center rounded-md bg-white px-2.5">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={g.logo}
+                        alt={`Logotipo de ${g.acronym}`}
+                        className="max-h-9 max-w-[130px] object-contain"
+                      />
+                    </div>
+                  ) : null}
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="text-base font-bold text-ink transition-colors group-hover/web:text-iuce-blue">
+                      {g.acronym}
+                      {g.url ? (
+                        <span className="ml-1 text-xs font-normal text-gray-300 transition-colors group-hover/web:text-iuce-blue">
+                          ↗
+                        </span>
+                      ) : null}
+                    </p>
+                    {g.chip ? (
+                      <span className="rounded-full bg-iuce-blue-pale px-2.5 py-[3px] text-[10px] font-bold tracking-[.04em] text-ink">
+                        {g.chip}
+                      </span>
+                    ) : null}
+                  </div>
+                </>
+              );
+              return (
               <Reveal key={g.acronym} delay={(i % 3) * 80} className="h-full">
               <div className="card-lift h-full rounded-xl border border-gray-200 bg-surface-page p-5 shadow-sm hover:shadow-md">
-                {g.logo ? (
-                  // Placa blanca fija: logos oscuros visibles también en
-                  // modo oscuro.
-                  <div className="mb-3 flex h-12 items-center rounded-md bg-white px-2.5">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={g.logo}
-                      alt={`Logotipo de ${g.acronym}`}
-                      className="max-h-9 max-w-[130px] object-contain"
-                    />
-                  </div>
-                ) : null}
-                <div className="mb-2 flex items-center justify-between">
-                  <p className="text-base font-bold text-ink">{g.acronym}</p>
-                  {g.chip ? (
-                    <span className="rounded-full bg-iuce-blue-pale px-2.5 py-[3px] text-[10px] font-bold tracking-[.04em] text-ink">
-                      {g.chip}
-                    </span>
-                  ) : null}
-                </div>
+                {g.url ? (
+                  <a
+                    href={g.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`Web de ${g.acronym}`}
+                    className="group/web block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
+                  >
+                    {cabecera}
+                  </a>
+                ) : (
+                  cabecera
+                )}
                 <p className="text-xs leading-snug text-gray-500">{g.desc}</p>
               </div>
               </Reveal>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

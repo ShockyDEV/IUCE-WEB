@@ -120,9 +120,9 @@ export default async function InvestigacionPage() {
               const urlLabel = g.url
                 ? g.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")
                 : null;
-              return (
-                <Reveal key={g.acronym} delay={(i % 3) * 80} className="h-full">
-                <article className="card-lift flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[22px] shadow-sm hover:border-brand-400 hover:shadow-md">
+              // El logo y el nombre del grupo enlazan a su web (si la tiene).
+              const cabecera = (
+                <>
                   {g.logo ? (
                     // Placa blanca fija: los logos (algunos en negro) deben
                     // verse igual en tema claro y oscuro.
@@ -136,13 +136,38 @@ export default async function InvestigacionPage() {
                     </div>
                   ) : null}
                   <div className="flex items-center justify-between gap-2">
-                    <h3 className="text-lg font-bold text-ink">{g.acronym}</h3>
+                    <h3 className="text-lg font-bold text-ink transition-colors group-hover/web:text-iuce-blue">
+                      {g.acronym}
+                      {g.url ? (
+                        <span className="ml-1.5 text-sm font-normal text-gray-300 transition-colors group-hover/web:text-iuce-blue">
+                          ↗
+                        </span>
+                      ) : null}
+                    </h3>
                     {g.chip ? (
                       <span className="flex-none rounded-full bg-iuce-blue-pale px-2.5 py-[3px] text-[10px] font-bold tracking-[.04em] text-ink">
                         {g.chip}
                       </span>
                     ) : null}
                   </div>
+                </>
+              );
+              return (
+                <Reveal key={g.acronym} delay={(i % 3) * 80} className="h-full">
+                <article className="card-lift flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[22px] shadow-sm hover:border-brand-400 hover:shadow-md">
+                  {g.url ? (
+                    <a
+                      href={g.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`Web de ${g.acronym} — ${urlLabel}`}
+                      className="group/web flex flex-col gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
+                    >
+                      {cabecera}
+                    </a>
+                  ) : (
+                    cabecera
+                  )}
                   <p className="text-sm leading-normal text-gray-600">
                     {g.name}
                   </p>
@@ -152,19 +177,6 @@ export default async function InvestigacionPage() {
                       aria-hidden="true"
                     />
                     {g.lead ?? "Equipo interdisciplinar"}
-                    {g.url ? (
-                      <>
-                        {" · "}
-                        <a
-                          href={g.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-iuce-blue hover:underline"
-                        >
-                          {urlLabel} ↗
-                        </a>
-                      </>
-                    ) : null}
                   </p>
                 </article>
                 </Reveal>

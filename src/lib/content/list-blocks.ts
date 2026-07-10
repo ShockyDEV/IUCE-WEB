@@ -151,10 +151,10 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       },
     ],
     defaultItems: [
-      { titulo: "Aulas de formación", texto: "Docencia, cursos del Plan de Formación y seminarios", foto: "" },
-      { titulo: "Laboratorios", texto: "Equipamiento especializado para experimentación e investigación", foto: "" },
-      { titulo: "Salas de trabajo", texto: "Análisis de datos, redacción y preparación de proyectos", foto: "" },
-      { titulo: "Dirección y secretaría", texto: "Coordinación de proyectos y atención a la comunidad", foto: "" },
+      { titulo: "Aula 12", texto: "Docencia y cursos del Plan de Formación del Profesorado", foto: "/images/instalaciones/aula-12.jpg" },
+      { titulo: "Aula 17", texto: "Seminarios, talleres y actividades formativas", foto: "/images/instalaciones/aula-17.jpg" },
+      { titulo: "Laboratorio", texto: "Equipamiento especializado para experimentación e investigación", foto: "/images/instalaciones/laboratorio.webp" },
+      { titulo: "Sala de usos múltiples", texto: "Reuniones, defensa de trabajos y actividades del Instituto", foto: "/images/instalaciones/sala-usos-multiples.webp" },
     ],
   },
 

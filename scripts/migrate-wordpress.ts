@@ -322,6 +322,17 @@ async function migrateMembers(groupIds: Map<string, string>) {
   };
   fs.mkdirSync(MEMBERS_DIR, { recursive: true });
 
+  // ORCIDs extraídos del Portal de Investigación (scripts/fetch-orcids.py).
+  let orcids: Record<string, string> = {};
+  const orcidsFile = path.join(__dirname, "data", "orcids.json");
+  if (fs.existsSync(orcidsFile)) {
+    orcids = (
+      JSON.parse(fs.readFileSync(orcidsFile, "utf-8")) as {
+        found: Record<string, string>;
+      }
+    ).found;
+  }
+
   // Orden: equipo directivo primero, luego el orden de la página original.
   const roleOrder = (m: ExportMember) =>
     m.role === "Directora" ? 1 : m.role === "Subdirector" ? 2 : m.role === "Secretario" ? 3 : 10;
@@ -362,6 +373,7 @@ async function migrateMembers(groupIds: Map<string, string>) {
       email: m.email || null,
       photo: photoUrl,
       portalUrl: m.portalUrl || null,
+      orcid: orcids[m.name] ?? null,
       order,
       active: true,
       groupId: m.group ? (groupIds.get(m.group) ?? null) : null,

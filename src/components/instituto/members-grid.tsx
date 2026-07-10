@@ -80,17 +80,12 @@ export function MembersGrid({
                 />
               )}
               <div className="min-w-0">
-                <p className="text-[15px] font-semibold leading-snug text-gray-900">
+                <p className="text-[15px] font-semibold leading-snug text-gray-900 transition-colors group-hover/persona:text-iuce-blue">
                   {m.name}
                 </p>
                 <p className="mt-0.5 truncate text-[13px] text-gray-500">
                   {m.area}
                 </p>
-                {m.portalUrl ? (
-                  <p className="mt-0.5 text-xs text-iuce-blue">
-                    Producción científica ↗
-                  </p>
-                ) : null}
               </div>
             </>
           );
@@ -106,8 +101,8 @@ export function MembersGrid({
                   href={m.portalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  title={`Producción científica de ${m.name}`}
-                  className="flex min-w-0 flex-1 items-center gap-4"
+                  title={`Producción científica de ${m.name} (Portal de Investigación USAL)`}
+                  className="group/persona flex min-w-0 flex-1 items-center gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
                 >
                   {persona}
                 </a>
