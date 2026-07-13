@@ -66,6 +66,7 @@ const T = {
     descargarReglamento: "Descargar reglamento",
     honorifico: "Dra.",
     directoraIuce: "Directora del IUCE",
+    bienvenidaTitulo: "Bienvenida de la directora",
     conocerRiie: "Conocer la RIIE",
     equipoTitulo: "Equipo de dirección",
     equipoContacto:
@@ -119,6 +120,7 @@ const T = {
     descargarReglamento: "Download the regulations",
     honorifico: "Dr",
     directoraIuce: "Director of the IUCE",
+    bienvenidaTitulo: "A welcome from the Director",
     conocerRiie: "About RIIE",
     equipoTitulo: "Management team",
     equipoContacto:
@@ -396,21 +398,50 @@ export default async function InstitutoPage() {
 
       {/* Perfil */}
       <section id="perfil" className="scroll-mt-20">
-        <div className="mx-auto grid max-w-6xl items-start gap-12 px-6 py-14 lg:grid-cols-[1.4fr_1fr]">
-          <Reveal from="left">
-          <div>
-            <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
-              {t.perfilTitulo}
-            </h2>
-            <div
-              className="page-block mb-7 text-base leading-relaxed text-gray-600"
-              // Bloque editable desde el gestor (instituto:perfil-intro)
-              dangerouslySetInnerHTML={{ __html: perfilIntro }}
-            />
+        <div className="mx-auto max-w-6xl px-6 pt-14">
+          {/* Intro breve y tarjeta de hitos, a alturas parejas */}
+          <div className="grid items-start gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
+            <Reveal from="left">
+              <div>
+                <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
+                  {t.perfilTitulo}
+                </h2>
+                <div
+                  className="page-block text-base leading-relaxed text-gray-600"
+                  // Bloque editable desde el gestor (instituto:perfil-intro)
+                  dangerouslySetInnerHTML={{ __html: perfilIntro }}
+                />
+              </div>
+            </Reveal>
+            <Reveal from="right" delay={120}>
+              <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-surface-tinted px-6 py-5">
+                {hitos.map((h, i) => {
+                  const Icon = iconFor(h.icon);
+                  return (
+                    <div key={i} className="flex items-center gap-3">
+                      <Icon
+                        className="h-[18px] w-[18px] flex-none text-ink"
+                        aria-hidden="true"
+                      />
+                      <p className="text-sm text-gray-600">
+                        <strong className="text-gray-900">
+                          {String(h.etiqueta)}
+                        </strong>{" "}
+                        — {String(h.texto)}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Funciones a todo el ancho (6 items en 3 columnas en escritorio) */}
+          <Reveal className="mt-10">
             <h3 className="mb-3.5 text-lg font-semibold text-gray-900">
               {t.funcionesTitulo}
             </h3>
-            <ul className="mb-2.5 grid list-none grid-cols-1 gap-2.5 p-0 sm:grid-cols-2">
+            <ul className="mb-2.5 grid list-none grid-cols-1 gap-x-8 gap-y-2.5 p-0 sm:grid-cols-2 lg:grid-cols-3">
               {funciones.map((f, i) => (
                 <li
                   key={i}
@@ -440,18 +471,29 @@ export default async function InstitutoPage() {
                 </>
               ) : null}
             </p>
-          </div>
-
           </Reveal>
-          <Reveal from="right" delay={120} className="flex flex-col gap-4">
-            <div className="rounded-xl border border-gray-200 border-t-[3px] border-t-usal-red bg-surface-card p-6 shadow-sm">
-              <Quote className="h-[22px] w-[22px] text-usal-red" aria-hidden="true" />
-              {/* Cita editable desde el gestor (instituto:cita-directora) */}
+        </div>
+
+        {/* Bienvenida de la directora: a todo el ancho, texto en dos columnas
+            de lectura y firma al pie (el texto se edita en el gestor). */}
+        <div className="mx-auto max-w-6xl px-6 pb-14 pt-12">
+          <Reveal>
+            <div className="rounded-xl border border-gray-200 border-t-[3px] border-t-usal-red bg-surface-card p-7 shadow-sm sm:p-9">
+              <div className="mb-5 flex items-center gap-3">
+                <Quote
+                  className="h-[22px] w-[22px] flex-none text-usal-red"
+                  aria-hidden="true"
+                />
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {t.bienvenidaTitulo}
+                </h3>
+              </div>
               <div
-                className="page-block my-3 mb-4 text-sm leading-relaxed text-gray-600"
+                className="page-block text-[15px] leading-relaxed text-gray-600 lg:columns-2 lg:gap-14 [&_p]:break-inside-avoid"
+                // Bloque editable desde el gestor (instituto:cita-directora)
                 dangerouslySetInnerHTML={{ __html: citaDirectora }}
               />
-              <div className="flex items-center gap-3">
+              <div className="mt-6 flex items-center gap-3 border-t border-gray-100 pt-5">
                 {directora?.photo ? (
                   <Image
                     src={directora.photo}
@@ -474,26 +516,6 @@ export default async function InstitutoPage() {
                   <p className="text-xs text-gray-500">{t.directoraIuce}</p>
                 </div>
               </div>
-            </div>
-
-            <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-surface-tinted px-6 py-5">
-              {hitos.map((h, i) => {
-                const Icon = iconFor(h.icon);
-                return (
-                  <div key={i} className="flex items-center gap-3">
-                    <Icon
-                      className="h-[18px] w-[18px] flex-none text-ink"
-                      aria-hidden="true"
-                    />
-                    <p className="text-sm text-gray-600">
-                      <strong className="text-gray-900">
-                        {String(h.etiqueta)}
-                      </strong>{" "}
-                      — {String(h.texto)}
-                    </p>
-                  </div>
-                );
-              })}
             </div>
           </Reveal>
         </div>
