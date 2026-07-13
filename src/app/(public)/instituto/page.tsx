@@ -413,8 +413,8 @@ export default async function InstitutoPage() {
                 />
               </div>
             </Reveal>
-            <Reveal from="right" delay={120}>
-              <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-surface-tinted px-6 py-5">
+            <Reveal from="right" delay={120} className="h-full">
+              <div className="flex h-full flex-col justify-center gap-4 rounded-xl border border-gray-200 bg-surface-tinted px-6 py-5">
                 {hitos.map((h, i) => {
                   const Icon = iconFor(h.icon);
                   return (

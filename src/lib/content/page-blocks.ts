@@ -31,7 +31,8 @@ export const PAGE_BLOCKS: PageDef[] = [
         blockKey: "perfil-intro",
         title: "Perfil — introducción breve (el texto completo va en la cita de la directora)",
         defaultContent: `<p>El IUCE es el Instituto Interdisciplinar de Investigación de la Universidad de Salamanca especializado en investigación en Educación Superior: investigación científica en Educación, desarrollo tecnológico y transferencia al ámbito educativo.</p>
-<p>Heredero del antiguo ICE, fue verificado como Instituto de Investigación por la ACSUCYL en junio de 2008. Congrega a profesorado e investigadores de todas las ramas de conocimiento y ofrece formación, apoyo y asesoramiento al profesorado universitario.</p>`,
+<p>La interdisciplinariedad caracteriza al Instituto desde su misma conformación estructural, tanto en la tarea investigadora como en la docente: los equipos y las temáticas de estudio —de la aplicación de las tecnologías a los procesos de formación a la metodología y la didáctica— reúnen a distintas disciplinas en función de cada contenido.</p>
+<p>Heredero del antiguo ICE y verificado como Instituto de Investigación por la ACSUCYL en junio de 2008, el IUCE investiga, forma e informa para avanzar en el conocimiento de los retos de la educación superior y en su mejora.</p>`,
       },
       {
         blockKey: "cita-directora",

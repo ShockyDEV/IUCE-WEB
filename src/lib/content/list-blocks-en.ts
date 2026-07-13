@@ -48,12 +48,18 @@ export const LIST_BLOCKS_EN: Record<string, ListItem[]> = {
 
   // ── Instituto ─────────────────────────────────────────────────────────────
   "instituto:list:funciones": [
-    { texto: "Interdisciplinary research, both basic and applied, in the field of training and education" },
-    { texto: "Specialised postgraduate and doctoral courses, and training for research staff" },
-    { texto: "Educational research programmes in collaboration with other universities and institutes" },
-    { texto: "Contracts and agreements with public and private bodies in Spain and abroad" },
-    { texto: "Participation in institutional quality assessment processes" },
-    { texto: "Collaboration with non-university education levels to improve the education system" },
+    { texto: "Planning and delivery of interdisciplinary basic or applied research programmes — and, where appropriate, artistic creation — in the field of training and education" },
+    { texto: "Organisation and delivery of specialised postgraduate and doctoral courses, and of training and refresher courses for university teaching staff" },
+    { texto: "Technical advice to the university community on teaching and learning: teaching innovation, ICT applied to teaching, teaching and research methodology, and assessment" },
+    { texto: "Collaboration with the University's other bodies in making proposals, especially those relating to teaching, learning and training" },
+    { texto: "Organisation of courses, lectures, seminars, colloquia and conferences related to education" },
+    { texto: "Production of scientific and outreach publications within its areas of competence" },
+    { texto: "Development of educational research programmes in collaboration with other universities and institutes" },
+    { texto: "Agreements and joint courses with other universities or centres with similar programmes to enable the training of research staff" },
+    { texto: "Promotion and execution of contracts with individuals and with public or private bodies, in Spain and abroad" },
+    { texto: "Participation in institutional quality assessment processes and active improvement of the quality of its own activities" },
+    { texto: "Collaboration with non-university education levels to help improve and develop the education system, especially at pre-university stages" },
+    { texto: "Any other functions assigned to it by law, the Statutes and the Regulations, or advisable in practice" },
   ],
   "instituto:list:hitos": [
     { icon: "landmark", etiqueta: "1969", texto: "creation of the ICEs in Spain" },
