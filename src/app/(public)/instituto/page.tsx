@@ -479,41 +479,45 @@ export default async function InstitutoPage() {
         <div className="mx-auto max-w-6xl px-6 pb-14 pt-12">
           <Reveal>
             <div className="rounded-xl border border-gray-200 border-t-[3px] border-t-usal-red bg-surface-card p-7 shadow-sm sm:p-9">
-              <div className="mb-5 flex items-center gap-3">
-                <Quote
-                  className="h-[22px] w-[22px] flex-none text-usal-red"
-                  aria-hidden="true"
+              {/* Ancho de carta: una sola columna de lectura centrada */}
+              <div className="mx-auto max-w-[75ch]">
+                <div className="mb-5 flex items-center gap-3">
+                  <Quote
+                    className="h-[22px] w-[22px] flex-none text-usal-red"
+                    aria-hidden="true"
+                  />
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {t.bienvenidaTitulo}
+                  </h3>
+                </div>
+                <div
+                  className="page-block text-[15px] leading-relaxed text-gray-600"
+                  // Bloque editable desde el gestor (instituto:cita-directora)
+                  dangerouslySetInnerHTML={{ __html: citaDirectora }}
                 />
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {t.bienvenidaTitulo}
-                </h3>
-              </div>
-              <div
-                className="page-block text-[15px] leading-relaxed text-gray-600 lg:columns-2 lg:gap-14 [&_p]:break-inside-avoid"
-                // Bloque editable desde el gestor (instituto:cita-directora)
-                dangerouslySetInnerHTML={{ __html: citaDirectora }}
-              />
-              <div className="mt-6 flex items-center gap-3 border-t border-gray-100 pt-5">
-                {directora?.photo ? (
-                  <Image
-                    src={directora.photo}
-                    alt=""
-                    width={48}
-                    height={48}
-                    className="h-12 w-12 flex-none rounded-full object-cover"
-                  />
-                ) : (
-                  <ImagePlaceholder
-                    icon={User}
-                    rounded="full"
-                    className="h-12 w-12 flex-none"
-                  />
-                )}
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">
-                    {t.honorifico} {directora?.name ?? "Susana Olmos Migueláñez"}
-                  </p>
-                  <p className="text-xs text-gray-500">{t.directoraIuce}</p>
+                <div className="mt-6 flex items-center gap-3 border-t border-gray-100 pt-5">
+                  {directora?.photo ? (
+                    <Image
+                      src={directora.photo}
+                      alt=""
+                      width={48}
+                      height={48}
+                      className="h-12 w-12 flex-none rounded-full object-cover"
+                    />
+                  ) : (
+                    <ImagePlaceholder
+                      icon={User}
+                      rounded="full"
+                      className="h-12 w-12 flex-none"
+                    />
+                  )}
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">
+                      {t.honorifico}{" "}
+                      {directora?.name ?? "Susana Olmos Migueláñez"}
+                    </p>
+                    <p className="text-xs text-gray-500">{t.directoraIuce}</p>
+                  </div>
                 </div>
               </div>
             </div>
