@@ -23,8 +23,6 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const filtros = ["Todos", "Congresos", "Seminarios", "Jornadas"];
-
 interface EventVM {
   id: string;
   title: string;
@@ -187,30 +185,37 @@ export default async function EventosPage() {
             Eventos
           </h1>
           <div
-            className="page-block mb-6 max-w-[70ch] text-base leading-relaxed text-gray-600"
+            className="page-block max-w-[70ch] text-base leading-relaxed text-gray-600"
             dangerouslySetInnerHTML={{ __html: intro }}
           />
-          <div
-            className="flex flex-wrap gap-2"
-            role="group"
-            aria-label="Filtrar por tipo"
-          >
-            {filtros.map((f, i) => (
-              <button
-                key={f}
-                type="button"
-                aria-pressed={i === 0}
-                className={cn(
-                  "h-[34px] rounded-full border px-4 text-sm font-medium transition-colors",
-                  i === 0
-                    ? "border-iuce-blue-dark bg-iuce-blue-dark text-white"
-                    : "border-gray-300 bg-surface-card text-gray-600 hover:border-brand-400 hover:text-ink",
-                )}
-              >
-                {f}
-              </button>
-            ))}
+        </div>
+      </section>
+
+      {/* Seminario IUCE: el encuentro propio del Instituto, en primer lugar */}
+      <section className="border-b border-gray-200 bg-surface-tinted">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-5 px-6 py-8 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-start gap-4 sm:items-center">
+            <span className="flex h-11 w-11 flex-none items-center justify-center rounded-md bg-iuce-blue-dark text-white">
+              <Users2 className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">
+                Seminario IUCE
+              </h2>
+              <p className="max-w-[70ch] text-sm leading-relaxed text-gray-600">
+                El encuentro anual donde los grupos de investigación del
+                Instituto ponen en común su trabajo: ediciones, crónicas y
+                actas.
+              </p>
+            </div>
           </div>
+          <Link
+            href="/seminario-iuce"
+            className={buttonClassName() + " flex-none gap-1.5"}
+          >
+            Conocer el Seminario
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
         </div>
       </section>
 
@@ -333,34 +338,6 @@ export default async function EventosPage() {
           </div>
         </section>
       ) : null}
-
-      {/* Seminario IUCE (encuentro anual de los grupos) */}
-      <section className="border-y border-gray-200 bg-surface-tinted">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-5 px-6 py-8 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-start gap-4 sm:items-center">
-            <span className="flex h-11 w-11 flex-none items-center justify-center rounded-md bg-iuce-blue-dark text-white">
-              <Users2 className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <div>
-              <h2 className="text-lg font-bold text-gray-900">
-                Seminario IUCE
-              </h2>
-              <p className="max-w-[70ch] text-sm leading-relaxed text-gray-600">
-                El encuentro anual donde los grupos de investigación del
-                Instituto ponen en común su trabajo: ediciones, crónicas y
-                actas.
-              </p>
-            </div>
-          </div>
-          <Link
-            href="/seminario-iuce"
-            className={buttonClassName({ variant: "outline" }) + " flex-none gap-1.5"}
-          >
-            Conocer el Seminario
-            <ChevronRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
-        </div>
-      </section>
 
       {/* Celebrados */}
       <section>
