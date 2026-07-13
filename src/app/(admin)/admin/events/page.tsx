@@ -19,6 +19,7 @@ export default async function AdminEventsPage() {
     endsAt: e.endsAt?.toISOString() ?? null,
     location: e.location,
     url: e.url,
+    image: e.image,
     status: e.status,
   }));
 

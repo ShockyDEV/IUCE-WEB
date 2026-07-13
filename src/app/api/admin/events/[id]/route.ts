@@ -33,6 +33,7 @@ export async function PUT(request: Request, { params }: Params) {
       endsAt: d.endsAt ? new Date(d.endsAt) : null,
       location: d.location || null,
       url: d.url || null,
+      image: d.image || null,
       status: d.status,
     },
   });

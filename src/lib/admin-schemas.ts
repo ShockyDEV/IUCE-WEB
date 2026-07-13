@@ -61,6 +61,7 @@ export const eventInputSchema = z.object({
   endsAt: z.string().datetime().optional().nullable(),
   location: z.string().trim().max(300).optional().nullable(),
   url: z.string().trim().url().max(300).optional().nullable().or(z.literal("")),
+  image: z.string().trim().max(500).optional().nullable(),
   status: z.enum(["UPCOMING", "PAST", "CANCELLED"]),
 });
 

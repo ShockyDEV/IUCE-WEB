@@ -40,6 +40,40 @@ const nextConfig = {
         permanent: true,
       },
       { source: "/intranet", destination: "/miembros", permanent: true },
+
+      // ── Redirecciones de la web antigua (WordPress, 2010-2026) ─────────
+      // Las 212 noticias vivían en /blog/AAAA/MM/DD/slug/ y conservan el
+      // mismo slug en /noticias/slug: una regla las cubre todas.
+      {
+        source: "/blog/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug",
+        destination: "/noticias/:slug",
+        permanent: true,
+      },
+      { source: "/blog", destination: "/noticias", permanent: true },
+      { source: "/category/:cat*", destination: "/noticias", permanent: true },
+      { source: "/tag/:tag*", destination: "/noticias", permanent: true },
+      // El feed RSS de WordPress ahora es /feed.xml
+      { source: "/feed", destination: "/feed.xml", permanent: true },
+      { source: "/feed/:path*", destination: "/feed.xml", permanent: true },
+      // Páginas antiguas → su nueva ubicación
+      { source: "/perfil", destination: "/instituto", permanent: true },
+      { source: "/equipo", destination: "/instituto#equipo", permanent: true },
+      { source: "/como-llegar", destination: "/contacto", permanent: true },
+      { source: "/espacios", destination: "/instituto#instalaciones", permanent: true },
+      { source: "/edificio-historico", destination: "/instituto#edificio", permanent: true },
+      { source: "/revista-eks", destination: "/investigacion#publicaciones", permanent: true },
+      { source: "/publicaciones", destination: "/investigacion#publicaciones", permanent: true },
+      {
+        source: "/formacion-inicial-castilla-y-leon",
+        destination: "/formacion#inicial",
+        permanent: true,
+      },
+      // Microsite del I Encuentro BPD-IA (evento de sept-2025) → su crónica
+      {
+        source: "/:bpd(i-encuentro-bpd-ia|que-es-el-i-encuentro-bpd-ia|programa-del-i-encuentro-bpd-ia|inscripcion-al-encuentro|normas-para-autores)",
+        destination: "/noticias/i-encuentro-de-buenas-practicas-docentes-con-ia",
+        permanent: true,
+      },
     ];
   },
 };

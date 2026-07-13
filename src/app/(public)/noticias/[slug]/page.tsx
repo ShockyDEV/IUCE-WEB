@@ -28,6 +28,9 @@ export async function generateMetadata({
       description: item.excerpt,
       type: "article",
       publishedTime: item.publishedAt,
+      // La portada de la noticia como imagen social (si no hay, Next usa
+      // la opengraph-image genérica del sitio).
+      ...(item.coverImage ? { images: [{ url: item.coverImage }] } : {}),
     },
   };
 }
@@ -42,8 +45,35 @@ export default async function NoticiaPage({ params }: Readonly<PageProps>) {
   const shortTitle =
     item.title.length > 30 ? `${item.title.slice(0, 28)}…` : item.title;
 
+  // Datos estructurados del artículo para buscadores.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: item.title,
+    datePublished: item.publishedAt,
+    inLanguage: "es",
+    ...(item.coverImage
+      ? { image: [`https://iuce.usal.es${item.coverImage}`] }
+      : {}),
+    author: { "@type": "Organization", name: "IUCE — Universidad de Salamanca" },
+    publisher: {
+      "@type": "Organization",
+      name: "Instituto Universitario de Ciencias de la Educación",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://iuce.usal.es/images/iuce-logo.png",
+      },
+    },
+    mainEntityOfPage: `https://iuce.usal.es/noticias/${item.slug}`,
+  };
+
   return (
     <article>
+      <script
+        type="application/ld+json"
+        // Solo campos del propio artículo, serializados con JSON.stringify.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Cabecera de lectura (800px) */}
       <div className="mx-auto max-w-[800px] px-6 pt-12">
         <div className="mb-5">

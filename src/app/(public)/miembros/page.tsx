@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Download, FileText, Lock, Wrench } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { RequestAccessForm } from "@/components/intranet/request-access-form";
@@ -53,6 +54,18 @@ export default async function IntranetPage() {
                   Entrar directamente (modo DEV)
                 </a>
               ) : null}
+              {/* La antigua página pública /miembros era el listado del
+                  Instituto: quien llegue por un enlace viejo encuentra aquí
+                  el camino. */}
+              <p className="mt-5 border-t border-gray-100 pt-4 text-center text-xs text-gray-400">
+                ¿Buscabas el listado de miembros del IUCE?{" "}
+                <Link
+                  href="/instituto#miembros"
+                  className="font-medium text-iuce-blue hover:underline"
+                >
+                  Está en la página del Instituto
+                </Link>
+              </p>
             </div>
           </Reveal>
         </div>

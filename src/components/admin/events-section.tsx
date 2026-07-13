@@ -20,6 +20,7 @@ export interface EventRow {
   endsAt: string | null;
   location: string | null;
   url: string | null;
+  image: string | null;
   status: "UPCOMING" | "PAST" | "CANCELLED";
 }
 
@@ -39,6 +40,7 @@ interface FormState {
   date: string; // yyyy-mm-dd
   location: string;
   url: string;
+  image: string;
   status: EventRow["status"];
 }
 
@@ -48,6 +50,7 @@ const EMPTY: FormState = {
   date: "",
   location: "",
   url: "",
+  image: "",
   status: "UPCOMING",
 };
 
@@ -195,6 +198,7 @@ export function EventsSection({ rows }: Readonly<{ rows: EventRow[] }>) {
                             date: row.startsAt.slice(0, 10),
                             location: row.location ?? "",
                             url: row.url ?? "",
+                            image: row.image ?? "",
                             status: row.status,
                           })
                         }
@@ -319,6 +323,19 @@ export function EventsSection({ rows }: Readonly<{ rows: EventRow[] }>) {
                 placeholder="https://…"
                 value={form.url}
                 onChange={(e) => setForm({ ...form, url: e.target.value })}
+                className={inputClass}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="e-image" className={labelClass}>
+                Imagen (URL)
+              </label>
+              <input
+                id="e-image"
+                type="text"
+                value={form.image}
+                onChange={(e) => setForm({ ...form, image: e.target.value })}
+                placeholder="súbela en Archivos y pega aquí la URL"
                 className={inputClass}
               />
             </div>

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Calendar, ChevronRight, MapPin, Users2 } from "lucide-react";
+import { Calendar, CalendarPlus, ChevronRight, MapPin, Users2 } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
+import { CoverImage } from "@/components/news/cover-image";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { buttonClassName } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
@@ -31,6 +32,7 @@ interface EventVM {
   startsAt: Date;
   location: string | null;
   url: string | null;
+  image: string | null;
 }
 
 function monthShort(d: Date): string {
@@ -86,11 +88,13 @@ export default async function EventosPage() {
   // Destacado: el primer congreso próximo (o el primer próximo si no hay
   // congresos). Su descripción se edita en Contenido → Páginas → Eventos.
   let featured: {
+    id: string | null;
     title: string;
     type: string;
     dateDisplay: string;
     location: string;
     url: string | null;
+    image: string | null;
     photoLabel: string;
   } | null = null;
   let upcomingRest: Array<{
@@ -114,11 +118,13 @@ export default async function EventosPage() {
       null;
     if (destacado) {
       featured = {
+        id: destacado.id,
         title: destacado.title,
         type: destacado.type,
         dateDisplay: monthYear(destacado.startsAt),
         location: destacado.location ?? "Salamanca",
         url: destacado.url,
+        image: destacado.image,
         photoLabel: `Imagen — ${destacado.title}`,
       };
     }
@@ -140,11 +146,13 @@ export default async function EventosPage() {
   } else {
     // Fallback estático (BD no disponible)
     featured = {
+      id: null,
       title: featuredFallback.title,
       type: featuredFallback.type,
       dateDisplay: featuredFallback.dateDisplay,
       location: featuredFallback.location,
       url: featuredFallback.url,
+      image: null,
       photoLabel: featuredFallback.photoLabel,
     };
     upcomingRest = upcomingFallback.map((e) => ({
@@ -247,8 +255,8 @@ export default async function EventosPage() {
                     {featured.location}
                   </span>
                 </div>
-                {featured.url ? (
-                  <div className="mt-auto pt-2">
+                <div className="mt-auto flex flex-wrap items-center gap-3 pt-2">
+                  {featured.url ? (
                     <a
                       href={featured.url}
                       target="_blank"
@@ -257,14 +265,32 @@ export default async function EventosPage() {
                     >
                       Web del evento ↗
                     </a>
-                  </div>
-                ) : null}
+                  ) : null}
+                  {featured.id ? (
+                    <a
+                      href={`/api/events/${featured.id}/ics`}
+                      className="inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
+                    >
+                      <CalendarPlus className="h-4 w-4" aria-hidden="true" />
+                      Añadir a mi calendario
+                    </a>
+                  ) : null}
+                </div>
               </div>
-              <ImagePlaceholder
-                label={featured.photoLabel}
-                rounded="none"
-                className="min-h-[280px] w-full border-0"
-              />
+              {featured.image ? (
+                <CoverImage
+                  src={featured.image}
+                  alt={featured.photoLabel}
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="min-h-[280px] w-full"
+                />
+              ) : (
+                <ImagePlaceholder
+                  label={featured.photoLabel}
+                  rounded="none"
+                  className="min-h-[280px] w-full border-0"
+                />
+              )}
             </article>
             </Reveal>
           </div>

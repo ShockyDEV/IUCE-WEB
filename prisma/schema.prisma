@@ -80,6 +80,9 @@ model Member {
   group     ResearchGroup? @relation(fields: [groupId], references: [id])
 }
 
+// (El campo image de Event permite ilustrar el evento destacado; se sube
+// en Archivos y se pega la URL en el panel de Eventos.)
+
 // Proyectos de investigación competitivos (importados de la memoria de
 // acreditación, Tabla 4; gestionables después desde el panel).
 model Project {
@@ -119,6 +122,7 @@ model Event {
   endsAt   DateTime?
   location String?
   url      String?
+  image    String? // ilustración del evento (URL de Archivos)
   status   EventStatus @default(UPCOMING)
 }
 

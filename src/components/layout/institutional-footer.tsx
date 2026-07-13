@@ -56,14 +56,21 @@ export function InstitutionalFooter() {
       <div className="border-t border-white/10 bg-gray-950">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-3 text-[11px] text-white/55 sm:flex-row">
           <p>
-            © {year} IUCE – Universidad de Salamanca – Todos los derechos
-            reservados
+            © {year} IUCE – Universidad de Salamanca
+            {" · "}
+            <Link href="/aviso-legal" className="transition-colors hover:text-white">
+              Aviso legal
+            </Link>
             {" · "}
             <Link
               href="/politica-de-cookies"
               className="transition-colors hover:text-white"
             >
-              Política de cookies
+              Cookies
+            </Link>
+            {" · "}
+            <Link href="/accesibilidad" className="transition-colors hover:text-white">
+              Accesibilidad
             </Link>
           </p>
           <div className="flex items-center gap-3">

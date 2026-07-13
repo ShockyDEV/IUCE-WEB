@@ -34,6 +34,7 @@ export async function POST(request: Request) {
       endsAt: d.endsAt ? new Date(d.endsAt) : null,
       location: d.location || null,
       url: d.url || null,
+      image: d.image || null,
       status: d.status,
     },
   });

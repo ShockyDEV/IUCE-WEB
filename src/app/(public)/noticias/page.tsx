@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { CoverImage } from "@/components/news/cover-image";
 import { NEWS_CATEGORIES } from "@/lib/content/news";
@@ -20,15 +20,31 @@ export const dynamic = "force-dynamic";
 const PAGE_SIZE = 9;
 
 interface PageProps {
-  searchParams: { categoria?: string; pagina?: string };
+  searchParams: { categoria?: string; pagina?: string; q?: string; anio?: string };
 }
 
-function pageHref(categoria: string | null, pagina: number): string {
+interface Filtros {
+  categoria: string | null;
+  q: string;
+  anio: string | null;
+}
+
+function pageHref(filtros: Filtros, pagina: number): string {
   const params = new URLSearchParams();
-  if (categoria) params.set("categoria", categoria);
+  if (filtros.categoria) params.set("categoria", filtros.categoria);
+  if (filtros.q) params.set("q", filtros.q);
+  if (filtros.anio) params.set("anio", filtros.anio);
   if (pagina > 1) params.set("pagina", String(pagina));
   const qs = params.toString();
   return qs ? `/noticias?${qs}` : "/noticias";
+}
+
+/** Comparación sin tildes ni mayúsculas para la búsqueda. */
+function normalize(s: string): string {
+  return s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase();
 }
 
 /** Números de página a mostrar: 1 … (p-1) p (p+1) … total, sin repetidos. */
@@ -50,13 +66,33 @@ export default async function NoticiasPage({
 }: Readonly<PageProps>) {
   const categoria =
     NEWS_CATEGORIES.find((c) => c === searchParams.categoria) ?? null;
-  const [all, intro] = await Promise.all([
+  const q = (searchParams.q ?? "").trim().slice(0, 100);
+  const anioParam = /^\d{4}$/.test(searchParams.anio ?? "")
+    ? (searchParams.anio as string)
+    : null;
+  const filtros: Filtros = { categoria, q, anio: anioParam };
+
+  const [fetched, intro] = await Promise.all([
     getPublishedNews({ category: categoria ?? undefined }),
     getBlock("noticias", "intro"),
   ]);
 
+  // Años disponibles (para el selector), sobre el conjunto de la categoría.
+  const anios = [...new Set(fetched.map((n) => n.publishedAt.slice(0, 4)))].sort(
+    (a, b) => b.localeCompare(a),
+  );
+
+  let all = fetched;
+  if (anioParam) all = all.filter((n) => n.publishedAt.startsWith(anioParam));
+  if (q) {
+    const nq = normalize(q);
+    all = all.filter((n) =>
+      normalize(`${n.title} ${n.excerpt}`).includes(nq),
+    );
+  }
+
   // La destacada solo abre la primera página del listado sin filtrar.
-  const showFeatured = !categoria;
+  const showFeatured = !categoria && !q && !anioParam;
   const featured = showFeatured ? all[0] : null;
   const rest = showFeatured ? all.slice(1) : all;
 
@@ -109,7 +145,7 @@ export default async function NoticiasPage({
             {NEWS_CATEGORIES.map((c) => (
               <Link
                 key={c}
-                href={pageHref(c, 1)}
+                href={pageHref({ ...filtros, categoria: c }, 1)}
                 aria-current={categoria === c ? "page" : undefined}
                 className={cn(
                   "flex h-[34px] items-center rounded-full border px-4 text-sm font-medium transition-colors",
@@ -122,6 +158,66 @@ export default async function NoticiasPage({
               </Link>
             ))}
           </nav>
+
+          {/* Búsqueda en el archivo (2010–hoy): formulario GET, sin JS */}
+          <form
+            method="get"
+            action="/noticias"
+            className="mt-4 flex flex-wrap items-center gap-2.5"
+            role="search"
+            aria-label="Buscar en las noticias"
+          >
+            {categoria ? (
+              <input type="hidden" name="categoria" value={categoria} />
+            ) : null}
+            <div className="relative w-full sm:w-[320px]">
+              <Search
+                className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+                aria-hidden="true"
+              />
+              <input
+                type="search"
+                name="q"
+                defaultValue={q}
+                placeholder="Buscar en el archivo de noticias…"
+                aria-label="Texto a buscar"
+                className="h-10 w-full rounded-full border border-gray-300 bg-surface-card pl-10 pr-4 text-sm text-gray-900 outline-none transition-colors focus:border-iuce-blue focus:ring-2 focus:ring-iuce-blue/25"
+              />
+            </div>
+            <select
+              name="anio"
+              defaultValue={anioParam ?? ""}
+              aria-label="Filtrar por año"
+              className="h-10 rounded-full border border-gray-300 bg-surface-card px-3.5 text-sm text-gray-700 outline-none transition-colors focus:border-iuce-blue"
+            >
+              <option value="">Todos los años</option>
+              {anios.map((a) => (
+                <option key={a} value={a}>
+                  {a}
+                </option>
+              ))}
+            </select>
+            <button
+              type="submit"
+              className="h-10 rounded-full bg-iuce-blue-dark px-5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+            >
+              Buscar
+            </button>
+            {q || anioParam ? (
+              <Link
+                href={pageHref({ categoria, q: "", anio: null }, 1)}
+                className="text-sm font-medium text-iuce-blue hover:underline"
+              >
+                Limpiar
+              </Link>
+            ) : null}
+            {q || anioParam ? (
+              <p className="w-full text-xs text-gray-500 sm:w-auto">
+                <strong className="text-gray-900">{all.length}</strong>{" "}
+                {all.length === 1 ? "resultado" : "resultados"}
+              </p>
+            ) : null}
+          </form>
         </div>
       </section>
 
@@ -174,7 +270,7 @@ export default async function NoticiasPage({
         <div className="mx-auto max-w-6xl px-6 pb-6 pt-7">
           {feed.length === 0 ? (
             <p className="py-12 text-center text-sm text-gray-400">
-              No hay noticias en esta categoría todavía.
+              No hay noticias que coincidan con la búsqueda o el filtro.
             </p>
           ) : (
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -221,7 +317,7 @@ export default async function NoticiasPage({
         >
           {currentPage > 1 ? (
             <Link
-              href={pageHref(categoria, currentPage - 1)}
+              href={pageHref(filtros, currentPage - 1)}
               aria-label="Página anterior"
               className="flex h-9 w-9 items-center justify-center rounded-md border border-gray-300 bg-surface-card text-gray-600 transition-colors hover:bg-gray-50"
             >
@@ -252,7 +348,7 @@ export default async function NoticiasPage({
             ) : (
               <Link
                 key={p}
-                href={pageHref(categoria, p)}
+                href={pageHref(filtros, p)}
                 className="flex h-9 w-9 items-center justify-center rounded-md border border-gray-300 bg-surface-card text-sm text-gray-700 transition-colors hover:bg-gray-50"
               >
                 {p}
@@ -262,7 +358,7 @@ export default async function NoticiasPage({
 
           {currentPage < totalPages ? (
             <Link
-              href={pageHref(categoria, currentPage + 1)}
+              href={pageHref(filtros, currentPage + 1)}
               aria-label="Página siguiente"
               className="flex h-9 w-9 items-center justify-center rounded-md border border-gray-300 bg-surface-card text-gray-600 transition-colors hover:bg-gray-50"
             >

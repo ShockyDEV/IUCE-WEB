@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Plus, RotateCcw, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { ICON_NAMES, iconFor } from "@/lib/icon-map";
@@ -99,6 +99,28 @@ export function ListBlockEditor({
           <span className="text-[11px] text-gray-400">
             {items.length} elementos
           </span>
+          {JSON.stringify(items) !== JSON.stringify(def.defaultItems) ? (
+            <button
+              type="button"
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "¿Restablecer esta lista a sus valores originales? (Tendrás que pulsar Guardar para publicarla.)",
+                  )
+                ) {
+                  setItems(def.defaultItems);
+                  toast("Lista original restaurada: revisa y pulsa Guardar", {
+                    icon: "↩️",
+                  });
+                }
+              }}
+              title="Volver a los valores originales de esta lista"
+              className="inline-flex items-center gap-1 text-[11px] font-medium text-gray-400 transition-colors hover:text-gray-700"
+            >
+              <RotateCcw className="h-3 w-3" aria-hidden="true" />
+              Restablecer original
+            </button>
+          ) : null}
           <Button
             variant={dirty ? "primary" : "outline"}
             size="sm"

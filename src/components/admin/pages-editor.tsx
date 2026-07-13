@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Languages } from "lucide-react";
+import { Languages, RotateCcw } from "lucide-react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { RichTextEditor } from "@/components/admin/rich-text-editor";
@@ -17,6 +17,8 @@ interface BlockEditorProps {
   blockKey: string;
   title: string;
   initialContent: string;
+  /** Texto de fábrica del bloque (registro): permite restablecerlo. */
+  defaultContent: string;
 }
 
 function BlockEditor({
@@ -24,11 +26,26 @@ function BlockEditor({
   blockKey,
   title,
   initialContent,
+  defaultContent,
 }: Readonly<BlockEditorProps>) {
   const [content, setContent] = useState(initialContent);
   const [savedContent, setSavedContent] = useState(initialContent);
   const [saving, setSaving] = useState(false);
+  // Remonta el RichTextEditor al restablecer (su estado interno es propio)
+  const [editorKey, setEditorKey] = useState(0);
   const dirty = content !== savedContent;
+
+  function handleReset() {
+    if (
+      !window.confirm(
+        "¿Restablecer este bloque al texto original? (Tendrás que pulsar Guardar para publicarlo.)",
+      )
+    )
+      return;
+    setContent(defaultContent);
+    setEditorKey((k) => k + 1);
+    toast("Texto original restaurado: revisa y pulsa Guardar", { icon: "↩️" });
+  }
 
   async function handleSave() {
     setSaving(true);
@@ -66,6 +83,17 @@ function BlockEditor({
             <Languages className="h-3 w-3" aria-hidden="true" />
             Auto EN
           </span>
+          {content !== defaultContent ? (
+            <button
+              type="button"
+              onClick={handleReset}
+              title="Volver al texto original de este bloque"
+              className="inline-flex items-center gap-1 text-[11px] font-medium text-gray-400 transition-colors hover:text-gray-700"
+            >
+              <RotateCcw className="h-3 w-3" aria-hidden="true" />
+              Restablecer original
+            </button>
+          ) : null}
           <Button
             variant={dirty ? "primary" : "outline"}
             size="sm"
@@ -77,7 +105,12 @@ function BlockEditor({
         </div>
       </div>
       <div className="px-6 pb-6">
-        <RichTextEditor value={content} onChange={setContent} minHeight={130} />
+        <RichTextEditor
+          key={editorKey}
+          value={content}
+          onChange={setContent}
+          minHeight={130}
+        />
       </div>
     </div>
   );
@@ -132,6 +165,7 @@ export function PagesEditor({ saved }: Readonly<PagesEditorProps>) {
           initialContent={
             saved[`${page.pageSlug}:${b.blockKey}`] ?? b.defaultContent
           }
+          defaultContent={b.defaultContent}
         />
       ))}
 

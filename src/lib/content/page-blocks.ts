@@ -431,8 +431,40 @@ export const PAGE_BLOCKS: PageDef[] = [
   },
   {
     pageSlug: "legal",
-    label: "Legal — Política de cookies",
+    label: "Legal — Cookies, aviso legal y accesibilidad",
     blocks: [
+      {
+        blockKey: "aviso-legal",
+        title: "Aviso legal — texto completo",
+        defaultContent: `<p>Este sitio web es la página institucional del <strong>Instituto Universitario de Ciencias de la Educación (IUCE)</strong>, instituto propio de la Universidad de Salamanca, con sede en el Paseo de Canalejas, 169 (Edificio Solís, 1.ª planta), 37008 Salamanca. Contacto: iuce@usal.es · +34 923 294 634.</p>
+<h2>Titularidad y condiciones de uso</h2>
+<p>La titularidad del sitio corresponde a la Universidad de Salamanca (CIF Q3718001E, Patio de Escuelas 1, 37008 Salamanca). El acceso al sitio atribuye la condición de persona usuaria e implica la aceptación de estas condiciones. Los contenidos se ofrecen con finalidad informativa; el IUCE procura su exactitud y actualización, sin que el contenido de esta web constituya, por sí mismo, fuente de efectos jurídicos vinculantes.</p>
+<h2>Propiedad intelectual</h2>
+<p>Salvo indicación expresa, los contenidos propios de este sitio (textos, imágenes y logotipos institucionales) pertenecen a la Universidad de Salamanca o se publican con autorización de sus titulares. Se permite la cita y el enlace con mención de la fuente; cualquier otro uso requiere autorización previa.</p>
+<h2>Protección de datos</h2>
+<p>El tratamiento de datos personales (formulario de contacto y área de miembros) se rige por la <a href="https://www.usal.es/proteccion-de-datos">política de protección de datos de la Universidad de Salamanca</a>, conforme al RGPD y a la LOPDGDD. Los datos se utilizan únicamente para atender las consultas o gestionar el acceso del personal del Instituto.</p>
+<h2>Enlaces externos</h2>
+<p>Este sitio enlaza a páginas de terceros (revistas, portales de investigación, entidades colaboradoras) sobre cuyos contenidos el IUCE no tiene responsabilidad.</p>`,
+      },
+      {
+        blockKey: "accesibilidad",
+        title: "Declaración de accesibilidad — texto completo",
+        defaultContent: `<p>El Instituto Universitario de Ciencias de la Educación (IUCE) de la Universidad de Salamanca se ha comprometido a hacer accesible su sitio web de conformidad con el <strong>Real Decreto 1112/2018</strong>, de 7 de septiembre, sobre accesibilidad de los sitios web y aplicaciones para dispositivos móviles del sector público.</p>
+<p>La presente declaración de accesibilidad se aplica al sitio web <strong>iuce.usal.es</strong>.</p>
+<h2>Situación de cumplimiento</h2>
+<p>Este sitio web es <strong>parcialmente conforme</strong> con el RD 1112/2018 debido a las excepciones y a la falta de conformidad de los aspectos que se indican a continuación.</p>
+<h2>Contenido no accesible</h2>
+<p>El contenido que se recoge a continuación no es accesible por lo siguiente:</p>
+<ul><li>Algunos documentos PDF históricos (planes de formación y actas anteriores a 2026) pueden no estar completamente etiquetados.</li>
+<li>Algunas imágenes de noticias migradas de la web anterior (2010–2026) pueden carecer de texto alternativo descriptivo.</li>
+<li>El vídeo histórico embebido del Edificio Solís, alojado en YouTube, puede carecer de subtítulos.</li></ul>
+<h2>Preparación de la declaración</h2>
+<p>Esta declaración fue preparada el 13 de julio de 2026, mediante una autoevaluación llevada a cabo por el propio Instituto.</p>
+<h2>Observaciones y datos de contacto</h2>
+<p>Puedes comunicar cualquier problema de accesibilidad o solicitar información sobre contenidos excluidos escribiendo a <a href="mailto:iuce.tecnico@usal.es">iuce.tecnico@usal.es</a> o llamando al 923 294 634. También puedes presentar una queja o solicitud a través del <a href="https://www.usal.es/accesibilidad">canal de accesibilidad de la Universidad de Salamanca</a>.</p>
+<h2>Procedimiento de aplicación</h2>
+<p>Si una vez realizada una solicitud de información accesible o queja, esta hubiera sido desestimada o no se estuviera de acuerdo con la decisión, puede iniciarse una reclamación conforme al artículo 13 del RD 1112/2018 ante la unidad responsable de accesibilidad de la Universidad de Salamanca.</p>`,
+      },
       {
         blockKey: "cookies",
         title: "Política de cookies — texto completo",
