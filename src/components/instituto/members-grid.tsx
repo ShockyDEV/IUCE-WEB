@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Search } from "lucide-react";
 import { InitialsAvatar } from "@/components/ui/initials-avatar";
+import { pick, type Locale } from "@/lib/locale";
 
 export interface PublicMember {
   name: string;
@@ -26,7 +27,8 @@ function initialsOf(name: string) {
  */
 export function MembersGrid({
   members,
-}: Readonly<{ members: PublicMember[] }>) {
+  locale = "es",
+}: Readonly<{ members: PublicMember[]; locale?: Locale }>) {
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
@@ -49,16 +51,32 @@ export function MembersGrid({
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar por nombre o área…"
-          aria-label="Buscar miembros por nombre o área"
+          placeholder={pick(
+            locale,
+            "Buscar por nombre o área…",
+            "Search by name or area…",
+          )}
+          aria-label={pick(
+            locale,
+            "Buscar miembros por nombre o área",
+            "Search members by name or area",
+          )}
           className="min-w-0 flex-1 border-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400"
         />
       </div>
 
       <p className="mb-4 text-xs text-gray-400" aria-live="polite">
         {filtered.length === members.length
-          ? `${members.length} miembros`
-          : `${filtered.length} de ${members.length} miembros`}
+          ? pick(
+              locale,
+              `${members.length} miembros`,
+              `${members.length} members`,
+            )
+          : pick(
+              locale,
+              `${filtered.length} de ${members.length} miembros`,
+              `${filtered.length} of ${members.length} members`,
+            )}
       </p>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -101,7 +119,11 @@ export function MembersGrid({
                   href={m.portalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  title={`Producción científica de ${m.name} (Portal de Investigación USAL)`}
+                  title={pick(
+                    locale,
+                    `Producción científica de ${m.name} (Portal de Investigación USAL)`,
+                    `${m.name}'s scientific output (USAL Research Portal)`,
+                  )}
                   className="group/persona flex min-w-0 flex-1 items-center gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
                 >
                   {persona}
@@ -116,7 +138,11 @@ export function MembersGrid({
                   href={m.orcid}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`ORCID de ${m.name}`}
+                  aria-label={pick(
+                    locale,
+                    `ORCID de ${m.name}`,
+                    `${m.name}'s ORCID`,
+                  )}
                   title="ORCID"
                   className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-gray-200 text-[10px] font-bold text-[#A6CE39] transition-colors hover:border-[#A6CE39] hover:bg-[#A6CE39]/10"
                 >
@@ -128,7 +154,11 @@ export function MembersGrid({
         })}
         {filtered.length === 0 ? (
           <p className="col-span-full py-8 text-center text-sm text-gray-400">
-            Sin resultados para «{query}».
+            {pick(
+              locale,
+              `Sin resultados para «${query}».`,
+              `No results for “${query}”.`,
+            )}
           </p>
         ) : null}
       </div>

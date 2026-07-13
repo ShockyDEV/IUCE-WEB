@@ -8,6 +8,8 @@ import { ChartCard } from "@/components/stats/chart-card";
 import { BarsChart, DonutChart, type Datum } from "@/components/stats/stat-charts";
 import { getBlock, getBlockText, getListBlock } from "@/lib/content-blocks-service";
 import { iconFor } from "@/lib/icon-map";
+import { withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +18,49 @@ export const metadata: Metadata = {
   description:
     "La transferencia de conocimiento es uno de los objetivos principales del IUCE: contratos y convenios (art. 60), formación a demanda, propiedad industrial y divulgación.",
 };
+
+// Textos fijos de la página en ambos idiomas (el contenido editable llega ya
+// traducido desde el servicio de bloques).
+const T = {
+  es: {
+    inicio: "Inicio",
+    transferencia: "Transferencia",
+    eyebrow: "Investigación al servicio de la sociedad",
+    titulo: "Transferencia de conocimiento",
+    comoTransferimos: "Cómo transferimos",
+    datosTitulo: "La transferencia, en datos",
+    verEstadisticas: "Ver todas las estadísticas",
+    importeTitulo: "Importe contratado por año",
+    importeInsight: "Contratos y convenios de transferencia (art. 60 LOSU)",
+    importeSerie: "Importe",
+    implicacionTitulo: "Grado de implicación del IUCE",
+    implicacionInsight:
+      "En 2 de cada 3 contratos, el trabajo es 100% del Instituto",
+    contratosSerie: "Contratos",
+    contratosCentro: "contratos",
+    otcNombre: "Oficina de Transferencia de Conocimiento de la USAL",
+    contactar: "Contactar con el IUCE",
+  },
+  en: {
+    inicio: "Home",
+    transferencia: "Knowledge transfer",
+    eyebrow: "Research at the service of society",
+    titulo: "Knowledge transfer",
+    comoTransferimos: "How we transfer knowledge",
+    datosTitulo: "Knowledge transfer in figures",
+    verEstadisticas: "See all the statistics",
+    importeTitulo: "Contracted amount per year",
+    importeInsight: "Knowledge transfer contracts and agreements (art. 60 LOSU)",
+    importeSerie: "Amount",
+    implicacionTitulo: "IUCE's degree of involvement",
+    implicacionInsight:
+      "In 2 out of 3 contracts, 100% of the work is the Institute's",
+    contratosSerie: "Contracts",
+    contratosCentro: "contracts",
+    otcNombre: "Knowledge Transfer Office (OTC) of the USAL",
+    contactar: "Contact the IUCE",
+  },
+} as const;
 
 function num(v: unknown): number {
   const n = Number(String(v ?? "").trim().replace(/\./g, "").replace(",", "."));
@@ -29,6 +74,9 @@ function toData(rows: Array<Record<string, unknown>>): Datum[] {
 }
 
 export default async function TransferenciaPage() {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
   // Textos editables (Contenido → Páginas → Transferencia). Las gráficas
   // leen las MISMAS listas que /estadisticas: un solo lugar que actualizar.
   const [
@@ -60,14 +108,17 @@ export default async function TransferenciaPage() {
         <div className="mx-auto max-w-6xl px-6 pb-11 pt-12">
           <div className="mb-3.5">
             <Breadcrumb
-              items={[{ label: "Inicio", href: "/" }, { label: "Transferencia" }]}
+              items={[
+                { label: t.inicio, href: href("/") },
+                { label: t.transferencia },
+              ]}
             />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-            Investigación al servicio de la sociedad
+            {t.eyebrow}
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
-            Transferencia de conocimiento
+            {t.titulo}
           </h1>
           <div
             className="page-block max-w-[80ch] text-base leading-relaxed text-gray-600"
@@ -92,7 +143,7 @@ export default async function TransferenciaPage() {
         {/* Vías de transferencia */}
         <div className="mx-auto max-w-6xl px-6 py-12">
           <h2 className="mb-6 text-2xl font-bold tracking-tight text-gray-900">
-            Cómo transferimos
+            {t.comoTransferimos}
           </h2>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {vias.map((v, i) => {
@@ -123,7 +174,7 @@ export default async function TransferenciaPage() {
           <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-                La transferencia, en datos
+                {t.datosTitulo}
               </h2>
               <div
                 className="page-block max-w-[75ch] text-sm text-gray-500"
@@ -131,29 +182,31 @@ export default async function TransferenciaPage() {
               />
             </div>
             <Link
-              href="/estadisticas#transferencia"
+              href={href("/estadisticas#transferencia")}
               className="inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
             >
-              Ver todas las estadísticas
+              {t.verEstadisticas}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            <ChartCard
-              title="Importe contratado por año"
-              insight="Contratos y convenios de transferencia (art. 60 LOSU)"
-            >
-              <BarsChart data={toData(importe)} name="Importe" format="euro" accent />
+            <ChartCard title={t.importeTitulo} insight={t.importeInsight}>
+              <BarsChart
+                data={toData(importe)}
+                name={t.importeSerie}
+                format="euro"
+                accent
+              />
             </ChartCard>
             <ChartCard
-              title="Grado de implicación del IUCE"
-              insight="En 2 de cada 3 contratos, el trabajo es 100% del Instituto"
+              title={t.implicacionTitulo}
+              insight={t.implicacionInsight}
               delay={90}
             >
               <DonutChart
                 data={toData(implicacion)}
-                name="Contratos"
-                centerLabel="contratos"
+                name={t.contratosSerie}
+                centerLabel={t.contratosCentro}
               />
             </ChartCard>
           </div>
@@ -171,7 +224,7 @@ export default async function TransferenciaPage() {
                 </span>
                 <div>
                   <p className="text-base font-semibold text-gray-900">
-                    Oficina de Transferencia de Conocimiento de la USAL
+                    {t.otcNombre}
                   </p>
                   <div
                     className="page-block mt-0.5 max-w-[70ch] text-sm leading-relaxed text-gray-600"
@@ -203,7 +256,7 @@ export default async function TransferenciaPage() {
             dangerouslySetInnerHTML={{ __html: cta }}
           />
           <a href="mailto:iuce@usal.es" className={buttonClassName() + " flex-none"}>
-            Contactar con el IUCE
+            {t.contactar}
           </a>
         </div>
       </section>

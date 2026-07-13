@@ -16,6 +16,8 @@ import {
   getBlockText,
   getListBlock,
 } from "@/lib/content-blocks-service";
+import { withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const dynamic = "force-dynamic";
 
@@ -25,14 +27,161 @@ export const metadata: Metadata = {
     "Estadísticas del IUCE 2020–2025: proyectos de investigación, transferencia, tesis doctorales, formación del profesorado, redes y movilidad.",
 };
 
-const subnav = [
-  { id: "proyectos", label: "Proyectos" },
-  { id: "transferencia", label: "Transferencia" },
-  { id: "doctorado", label: "Doctorado" },
-  { id: "formacion", label: "Formación" },
-  { id: "redes", label: "Redes y movilidad" },
-  { id: "gestion", label: "Gestión y posgrado" },
-];
+// Textos fijos de la página en ambos idiomas (los textos de sección y las
+// etiquetas de datos de las gráficas llegan ya traducidos desde el servicio
+// de bloques).
+const T = {
+  es: {
+    inicio: "Inicio",
+    estadisticas: "Estadísticas",
+    titulo: "Estadísticas del IUCE",
+    navProyectos: "Proyectos",
+    navTransferencia: "Transferencia",
+    navDoctorado: "Doctorado",
+    navFormacion: "Formación",
+    navRedes: "Redes y movilidad",
+    navGestion: "Gestión y posgrado",
+    proyectosEyebrow: "Investigación competitiva",
+    proyectosTitulo: "Proyectos de investigación",
+    proyectosAnoTitulo: "Proyectos iniciados por año",
+    proyectosAnoInsight:
+      "Convocatorias competitivas con participación del IUCE",
+    proyectosSerie: "Proyectos",
+    importeAnoTitulo: "Importe concedido por año",
+    importeAnoInsight:
+      "En miles de euros — 2023 concentra la mayor financiación",
+    importeSerie: "Importe",
+    financiadorasTitulo: "¿Quién financia la investigación del IUCE?",
+    financiadorasInsight: "Proyectos por entidad financiadora (2020–2025)",
+    transferenciaEyebrow: "Contratos y convenios",
+    transferenciaTitulo: "Transferencia de conocimiento",
+    contratosImporteTitulo: "Importe contratado por año",
+    contratosImporteInsight:
+      "Contratos y convenios de transferencia (art. 60 LOSU)",
+    entidadesTitulo: "Principales entidades contratantes",
+    entidadesInsight: "Fundaciones, administraciones y empresas",
+    contratosSerie: "Contratos",
+    implicacionTitulo: "Grado de implicación del IUCE",
+    implicacionInsight:
+      "En 2 de cada 3 contratos, el trabajo es 100% del Instituto",
+    contratosCentro: "contratos",
+    doctoradoEyebrow: "Tesis y TFM",
+    doctoradoTitulo: "Doctorado y posgrado dirigido",
+    tesisTitulo: "Tesis doctorales defendidas por año",
+    tesisInsight: "101 tesis en el conjunto del periodo",
+    tesisSerie: "Tesis",
+    mencionesTitulo: "Calidad de las tesis",
+    mencionesInsight: "El 91% obtiene la máxima calificación (Cum Laude)",
+    tesisCentro: "tesis",
+    tfmTitulo: "TFM dirigidos por año",
+    tfmInsight: "2025 marca el máximo del periodo: 61 trabajos",
+    tfmSerie: "TFM",
+    gredosTfm:
+      "Consulta los TFM en Gredos, el repositorio institucional de la USAL ↗",
+    formacionEyebrow: "Formación continua",
+    formacionTitulo: "Formación del profesorado",
+    pdiTitulo: "Plan de Formación del PDI",
+    pdiInsight: "Cursos impartidos y recibidos por el personal del IUCE",
+    pdiSerie1: "Impartidas",
+    pdiSerie2: "Recibidas",
+    horasTitulo: "Horas de formación por bloque",
+    horasInsight: "Más de 2.600 horas en el periodo",
+    horasSerie: "Horas",
+    redesEyebrow: "Proyección exterior",
+    redesTitulo: "Redes y movilidad",
+    estanciasTitulo: "Estancias por país de destino",
+    estanciasInsight: "34 estancias de investigación en 12 países",
+    estanciasSerie: "Estancias",
+    ambitoTitulo: "Redes de investigación por ámbito",
+    ambitoInsight: "Más de la mitad son internacionales",
+    redesSerie: "Redes",
+    redesCentro: "redes",
+    gestionEyebrow: "Compromiso institucional",
+    gestionTitulo: "Gestión y docencia de posgrado",
+    posgradosTitulo: "Posgrados con docencia del IUCE",
+    posgradosInsight: "Títulos por curso académico — 2024-25 duplica la cifra",
+    posgradosSerie: "Posgrados",
+    cargosTitulo: "Cargos de gestión por categoría",
+    cargosInsight:
+      "Comisiones, comités editoriales, dirección de grupos y evaluación",
+    cargosSerie: "Cargos",
+  },
+  en: {
+    inicio: "Home",
+    estadisticas: "Statistics",
+    titulo: "IUCE statistics",
+    navProyectos: "Projects",
+    navTransferencia: "Knowledge transfer",
+    navDoctorado: "PhD",
+    navFormacion: "Training",
+    navRedes: "Networks and mobility",
+    navGestion: "Management and postgraduate",
+    proyectosEyebrow: "Competitive research",
+    proyectosTitulo: "Research projects",
+    proyectosAnoTitulo: "Projects started per year",
+    proyectosAnoInsight: "Competitive calls with IUCE participation",
+    proyectosSerie: "Projects",
+    importeAnoTitulo: "Funding awarded per year",
+    importeAnoInsight:
+      "In thousands of euros — 2023 accounts for the largest share of funding",
+    importeSerie: "Amount",
+    financiadorasTitulo: "Who funds IUCE research?",
+    financiadorasInsight: "Projects by funding body (2020–2025)",
+    transferenciaEyebrow: "Contracts and agreements",
+    transferenciaTitulo: "Knowledge transfer",
+    contratosImporteTitulo: "Contracted amount per year",
+    contratosImporteInsight:
+      "Knowledge transfer contracts and agreements (art. 60 LOSU)",
+    entidadesTitulo: "Main contracting entities",
+    entidadesInsight: "Foundations, public administrations and companies",
+    contratosSerie: "Contracts",
+    implicacionTitulo: "IUCE's degree of involvement",
+    implicacionInsight:
+      "In 2 out of 3 contracts, 100% of the work is the Institute's",
+    contratosCentro: "contracts",
+    doctoradoEyebrow: "Theses and master's dissertations",
+    doctoradoTitulo: "PhD and supervised postgraduate work",
+    tesisTitulo: "Doctoral theses defended per year",
+    tesisInsight: "101 theses over the whole period",
+    tesisSerie: "Theses",
+    mencionesTitulo: "Quality of the theses",
+    mencionesInsight: "91% earn the highest grade (Cum Laude)",
+    tesisCentro: "theses",
+    tfmTitulo: "Master's dissertations supervised per year",
+    tfmInsight: "2025 marks the period's peak: 61 dissertations",
+    tfmSerie: "Dissertations",
+    gredosTfm:
+      "Browse the master's dissertations in Gredos, the institutional repository of the USAL ↗",
+    formacionEyebrow: "Continuing education",
+    formacionTitulo: "Teacher training",
+    pdiTitulo: "Academic Staff Training Plan (PDI)",
+    pdiInsight: "Courses taught and attended by IUCE staff",
+    pdiSerie1: "Taught",
+    pdiSerie2: "Attended",
+    horasTitulo: "Training hours by block",
+    horasInsight: "More than 2,600 hours over the period",
+    horasSerie: "Hours",
+    redesEyebrow: "International outreach",
+    redesTitulo: "Networks and mobility",
+    estanciasTitulo: "Research stays by destination country",
+    estanciasInsight: "34 research stays in 12 countries",
+    estanciasSerie: "Stays",
+    ambitoTitulo: "Research networks by scope",
+    ambitoInsight: "More than half are international",
+    redesSerie: "Networks",
+    redesCentro: "networks",
+    gestionEyebrow: "Institutional commitment",
+    gestionTitulo: "Management and postgraduate teaching",
+    posgradosTitulo: "Postgraduate programmes with IUCE teaching",
+    posgradosInsight:
+      "Degrees per academic year — 2024-25 doubles the figure",
+    posgradosSerie: "Programmes",
+    cargosTitulo: "Management positions by category",
+    cargosInsight:
+      "Committees, editorial boards, research group leadership and evaluation",
+    cargosSerie: "Positions",
+  },
+} as const;
 
 /** «2.288» / «250,5» / «11527» → número (formato es-ES tolerado). */
 function num(v: unknown): number {
@@ -75,6 +224,17 @@ function SectionHeader({
 }
 
 export default async function EstadisticasPage() {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
+  const subnav = [
+    { id: "proyectos", label: t.navProyectos },
+    { id: "transferencia", label: t.navTransferencia },
+    { id: "doctorado", label: t.navDoctorado },
+    { id: "formacion", label: t.navFormacion },
+    { id: "redes", label: t.navRedes },
+    { id: "gestion", label: t.navGestion },
+  ];
   // Textos y datos editables desde el panel (Contenido → Páginas → Estadísticas)
   const [
     heroEyebrow,
@@ -139,14 +299,17 @@ export default async function EstadisticasPage() {
         <div className="mx-auto max-w-6xl px-6 pt-12">
           <div className="mb-3.5">
             <Breadcrumb
-              items={[{ label: "Inicio", href: "/" }, { label: "Estadísticas" }]}
+              items={[
+                { label: t.inicio, href: href("/") },
+                { label: t.estadisticas },
+              ]}
             />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
             {heroEyebrow}
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
-            Estadísticas del IUCE
+            {t.titulo}
           </h1>
           <div
             className="page-block max-w-[80ch] text-base leading-relaxed text-gray-600"
@@ -179,34 +342,37 @@ export default async function EstadisticasPage() {
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHeader
             id="proyectos"
-            eyebrow="Investigación competitiva"
-            title="Proyectos de investigación"
+            eyebrow={t.proyectosEyebrow}
+            title={t.proyectosTitulo}
             html={proyectosDesc}
           />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
             <ChartCard
-              title="Proyectos iniciados por año"
-              insight="Convocatorias competitivas con participación del IUCE"
+              title={t.proyectosAnoTitulo}
+              insight={t.proyectosAnoInsight}
             >
-              <BarsChart data={toData(proyectosAno)} name="Proyectos" />
+              <BarsChart data={toData(proyectosAno)} name={t.proyectosSerie} />
             </ChartCard>
             <ChartCard
-              title="Importe concedido por año"
-              insight="En miles de euros — 2023 concentra la mayor financiación"
+              title={t.importeAnoTitulo}
+              insight={t.importeAnoInsight}
               delay={90}
             >
               <BarsChart
                 data={toData(proyectosImporte)}
-                name="Importe"
+                name={t.importeSerie}
                 format="milesEuro"
               />
             </ChartCard>
             <ChartCard
-              title="¿Quién financia la investigación del IUCE?"
-              insight="Proyectos por entidad financiadora (2020–2025)"
+              title={t.financiadorasTitulo}
+              insight={t.financiadorasInsight}
               wide
             >
-              <HBarsChart data={toData(financiadoras)} name="Proyectos" />
+              <HBarsChart
+                data={toData(financiadoras)}
+                name={t.proyectosSerie}
+              />
             </ChartCard>
           </div>
         </div>
@@ -217,38 +383,38 @@ export default async function EstadisticasPage() {
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHeader
             id="transferencia"
-            eyebrow="Contratos y convenios"
-            title="Transferencia de conocimiento"
+            eyebrow={t.transferenciaEyebrow}
+            title={t.transferenciaTitulo}
             html={transferenciaDesc}
           />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
             <ChartCard
-              title="Importe contratado por año"
-              insight="Contratos y convenios de transferencia (art. 60 LOSU)"
+              title={t.contratosImporteTitulo}
+              insight={t.contratosImporteInsight}
               wide
             >
               <BarsChart
                 data={toData(contratosImporte)}
-                name="Importe"
+                name={t.importeSerie}
                 format="euro"
                 accent
               />
             </ChartCard>
-            <ChartCard
-              title="Principales entidades contratantes"
-              insight="Fundaciones, administraciones y empresas"
-            >
-              <HBarsChart data={toData(contratosEntidades)} name="Contratos" />
+            <ChartCard title={t.entidadesTitulo} insight={t.entidadesInsight}>
+              <HBarsChart
+                data={toData(contratosEntidades)}
+                name={t.contratosSerie}
+              />
             </ChartCard>
             <ChartCard
-              title="Grado de implicación del IUCE"
-              insight="En 2 de cada 3 contratos, el trabajo es 100% del Instituto"
+              title={t.implicacionTitulo}
+              insight={t.implicacionInsight}
               delay={90}
             >
               <DonutChart
                 data={toData(contratosImplicacion)}
-                name="Contratos"
-                centerLabel="contratos"
+                name={t.contratosSerie}
+                centerLabel={t.contratosCentro}
               />
             </ChartCard>
           </div>
@@ -260,34 +426,27 @@ export default async function EstadisticasPage() {
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHeader
             id="doctorado"
-            eyebrow="Tesis y TFM"
-            title="Doctorado y posgrado dirigido"
+            eyebrow={t.doctoradoEyebrow}
+            title={t.doctoradoTitulo}
             html={doctoradoDesc}
           />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            <ChartCard
-              title="Tesis doctorales defendidas por año"
-              insight="101 tesis en el conjunto del periodo"
-              wide
-            >
-              <BarsChart data={toData(tesis)} name="Tesis" />
+            <ChartCard title={t.tesisTitulo} insight={t.tesisInsight} wide>
+              <BarsChart data={toData(tesis)} name={t.tesisSerie} />
             </ChartCard>
-            <ChartCard
-              title="Calidad de las tesis"
-              insight="El 91% obtiene la máxima calificación (Cum Laude)"
-            >
+            <ChartCard title={t.mencionesTitulo} insight={t.mencionesInsight}>
               <DonutChart
                 data={toData(tesisMenciones)}
-                name="Tesis"
-                centerLabel="tesis"
+                name={t.tesisSerie}
+                centerLabel={t.tesisCentro}
               />
             </ChartCard>
             <ChartCard
-              title="TFM dirigidos por año"
-              insight="2025 marca el máximo del periodo: 61 trabajos"
+              title={t.tfmTitulo}
+              insight={t.tfmInsight}
               delay={90}
             >
-              <BarsChart data={toData(tfm)} name="TFM" />
+              <BarsChart data={toData(tfm)} name={t.tfmSerie} />
               {urlGredosTfm ? (
                 <p className="mt-3 border-t border-gray-100 pt-3 text-[13px]">
                   <a
@@ -296,8 +455,7 @@ export default async function EstadisticasPage() {
                     rel="noopener noreferrer"
                     className="font-medium text-iuce-blue hover:underline"
                   >
-                    Consulta los TFM en Gredos, el repositorio institucional de
-                    la USAL ↗
+                    {t.gredosTfm}
                   </a>
                 </p>
               ) : null}
@@ -311,27 +469,24 @@ export default async function EstadisticasPage() {
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHeader
             id="formacion"
-            eyebrow="Formación continua"
-            title="Formación del profesorado"
+            eyebrow={t.formacionEyebrow}
+            title={t.formacionTitulo}
             html={formacionDesc}
           />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            <ChartCard
-              title="Plan de Formación del PDI"
-              insight="Cursos impartidos y recibidos por el personal del IUCE"
-            >
+            <ChartCard title={t.pdiTitulo} insight={t.pdiInsight}>
               <DuoBarsChart
                 data={toData(formacionPdi)}
-                name="Impartidas"
-                name2="Recibidas"
+                name={t.pdiSerie1}
+                name2={t.pdiSerie2}
               />
             </ChartCard>
             <ChartCard
-              title="Horas de formación por bloque"
-              insight="Más de 2.600 horas en el periodo"
+              title={t.horasTitulo}
+              insight={t.horasInsight}
               delay={90}
             >
-              <HBarsChart data={toData(formacionHoras)} name="Horas" />
+              <HBarsChart data={toData(formacionHoras)} name={t.horasSerie} />
             </ChartCard>
           </div>
         </div>
@@ -342,26 +497,26 @@ export default async function EstadisticasPage() {
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHeader
             id="redes"
-            eyebrow="Proyección exterior"
-            title="Redes y movilidad"
+            eyebrow={t.redesEyebrow}
+            title={t.redesTitulo}
             html={redesDesc}
           />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            <ChartCard
-              title="Estancias por país de destino"
-              insight="34 estancias de investigación en 12 países"
-            >
-              <HBarsChart data={toData(estanciasPais)} name="Estancias" />
+            <ChartCard title={t.estanciasTitulo} insight={t.estanciasInsight}>
+              <HBarsChart
+                data={toData(estanciasPais)}
+                name={t.estanciasSerie}
+              />
             </ChartCard>
             <ChartCard
-              title="Redes de investigación por ámbito"
-              insight="Más de la mitad son internacionales"
+              title={t.ambitoTitulo}
+              insight={t.ambitoInsight}
               delay={90}
             >
               <DonutChart
                 data={toData(redesAmbito)}
-                name="Redes"
-                centerLabel="redes"
+                name={t.redesSerie}
+                centerLabel={t.redesCentro}
               />
             </ChartCard>
           </div>
@@ -373,23 +528,27 @@ export default async function EstadisticasPage() {
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHeader
             id="gestion"
-            eyebrow="Compromiso institucional"
-            title="Gestión y docencia de posgrado"
+            eyebrow={t.gestionEyebrow}
+            title={t.gestionTitulo}
             html={gestionDesc}
           />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            <ChartCard
-              title="Posgrados con docencia del IUCE"
-              insight="Títulos por curso académico — 2024-25 duplica la cifra"
-            >
-              <BarsChart data={toData(posgradosCurso)} name="Posgrados" accent />
+            <ChartCard title={t.posgradosTitulo} insight={t.posgradosInsight}>
+              <BarsChart
+                data={toData(posgradosCurso)}
+                name={t.posgradosSerie}
+                accent
+              />
             </ChartCard>
             <ChartCard
-              title="Cargos de gestión por categoría"
-              insight="Comisiones, comités editoriales, dirección de grupos y evaluación"
+              title={t.cargosTitulo}
+              insight={t.cargosInsight}
               delay={90}
             >
-              <HBarsChart data={toData(gestionCategorias)} name="Cargos" />
+              <HBarsChart
+                data={toData(gestionCategorias)}
+                name={t.cargosSerie}
+              />
             </ChartCard>
           </div>
 

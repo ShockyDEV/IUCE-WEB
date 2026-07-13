@@ -18,6 +18,8 @@ import { Reveal } from "@/components/ui/reveal";
 import { CountUp } from "@/components/ui/count-up";
 import { PdfEmbed } from "@/components/ui/pdf-embed";
 import { cn } from "@/lib/cn";
+import { withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +33,80 @@ export const metadata: Metadata = {
 
 
 
+// Textos fijos de la página en ambos idiomas (el contenido editable llega ya
+// traducido desde los servicios de bloques).
+const T = {
+  es: {
+    inicio: "Inicio",
+    formacion: "Formación",
+    accesoPortal: "Acceso al Portal de Formación",
+    verPlan: "Ver el Plan completo (PDF)",
+    dirigidoTitulo: "¿A quién va dirigido?",
+    inscribirseTitulo: "Cómo inscribirse",
+    inscribirseTexto:
+      "Las inscripciones se realizan en el Portal de Formación de la USAL, eligiendo el subplan que corresponda.",
+    manualPortal: "Manual del Portal de Formación",
+    irPortal: "Ir al Portal",
+    actividadesTitulo: "Actividades formativas",
+    actividadesTexto:
+      "Tres vías complementarias de formación, organizadas desde el IUCE.",
+    planTitulo: "El Plan, al completo",
+    planTexto:
+      "Consulta aquí el documento íntegro del Plan de Formación Docente del Profesorado, con todos los cursos, fechas y condiciones.",
+    planPdfTitle:
+      "Plan de Formación Docente del Profesorado — documento completo",
+    planPdfDownload: "Descargar el Plan (PDF)",
+    pdfFallback: "Tu navegador no puede mostrar el PDF incrustado.",
+    pdfOpen: "Abrir el documento",
+    fdiEyebrow: "Universidades públicas de Castilla y León",
+    fdiTitulo: "Programa de Formación Docente Inicial",
+    fdiDudas: "Dudas sobre la formación:",
+    fiuniAlt:
+      "Formación Inicial Universitaria — programa conjunto de las universidades públicas de Castilla y León",
+    edicionesTitulo: "Ediciones 2026",
+    edicionesTexto:
+      "Calendario orientativo; cada edición se comunica por correo al profesorado ayudante doctor.",
+    verCalendario: "Ver calendario completo",
+    contactar: "Contactar",
+  },
+  en: {
+    inicio: "Home",
+    formacion: "Training",
+    accesoPortal: "Access the Training Portal",
+    verPlan: "View the full Plan (PDF)",
+    dirigidoTitulo: "Who is it for?",
+    inscribirseTitulo: "How to register",
+    inscribirseTexto:
+      "Registration takes place on the USAL Training Portal, selecting the relevant subplan.",
+    manualPortal: "Training Portal manual",
+    irPortal: "Go to the Portal",
+    actividadesTitulo: "Training activities",
+    actividadesTexto:
+      "Three complementary training pathways, organised by the IUCE.",
+    planTitulo: "The Plan, in full",
+    planTexto:
+      "Browse the complete Teaching Staff Training Plan document here, with all courses, dates and conditions.",
+    planPdfTitle: "Teaching Staff Training Plan — full document",
+    planPdfDownload: "Download the Plan (PDF)",
+    pdfFallback: "Your browser cannot display the embedded PDF.",
+    pdfOpen: "Open the document",
+    fdiEyebrow: "Public universities of Castilla y León",
+    fdiTitulo: "Initial Teacher Training Programme",
+    fdiDudas: "Questions about the training:",
+    fiuniAlt:
+      "Initial University Training — joint programme of the public universities of Castilla y León",
+    edicionesTitulo: "2026 editions",
+    edicionesTexto:
+      "Indicative calendar; each edition is announced by email to assistant professors (ayudantes doctores).",
+    verCalendario: "View full calendar",
+    contactar: "Contact us",
+  },
+} as const;
+
 export default async function FormacionPage() {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
   // Contenido editable desde el gestor (Contenido → Páginas → Formación)
   const [
     heroEyebrow,
@@ -80,7 +155,7 @@ export default async function FormacionPage() {
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-11 pt-12 lg:grid-cols-[1.3fr_1fr]">
           <div>
             <div className="mb-3.5">
-              <Breadcrumb items={[{ label: "Inicio", href: "/" }, { label: "Formación" }]} />
+              <Breadcrumb items={[{ label: t.inicio, href: href("/") }, { label: t.formacion }]} />
             </div>
             <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
               {heroEyebrow}
@@ -106,7 +181,7 @@ export default async function FormacionPage() {
                   rel="noopener noreferrer"
                   className={buttonClassName({ size: "lg" }) + " gap-1.5"}
                 >
-                  Acceso al Portal de Formación
+                  {t.accesoPortal}
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </a>
               ) : null}
@@ -115,7 +190,7 @@ export default async function FormacionPage() {
                   href="#plan"
                   className="inline-flex items-center gap-2 px-2 py-3 text-base font-medium text-iuce-blue hover:underline"
                 >
-                  Ver el Plan completo (PDF)
+                  {t.verPlan}
                   <ArrowDown className="h-4 w-4" aria-hidden="true" />
                 </a>
               ) : null}
@@ -152,7 +227,7 @@ export default async function FormacionPage() {
       <section className="border-b border-gray-200">
         <div className="mx-auto max-w-6xl px-6 py-10">
           <h2 className="mb-[18px] text-xl font-bold text-gray-900">
-            ¿A quién va dirigido?
+            {t.dirigidoTitulo}
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {destinatarios.map((d, i) => {
@@ -183,11 +258,10 @@ export default async function FormacionPage() {
       <section className="border-b border-gray-200 bg-surface-card">
         <div className="mx-auto max-w-6xl px-6 py-10">
           <h2 className="mb-1.5 text-xl font-bold text-gray-900">
-            Cómo inscribirse
+            {t.inscribirseTitulo}
           </h2>
           <p className="mb-5 max-w-[80ch] text-sm text-gray-500">
-            Las inscripciones se realizan en el Portal de Formación de la USAL,
-            eligiendo el subplan que corresponda.
+            {t.inscribirseTexto}
           </p>
           <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {subplanes.map((s, i) => (
@@ -217,7 +291,7 @@ export default async function FormacionPage() {
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
                 >
                   <BookOpen className="h-4 w-4" aria-hidden="true" />
-                  Manual del Portal de Formación
+                  {t.manualPortal}
                 </a>
               ) : null}
               {urlPortal ? (
@@ -227,7 +301,7 @@ export default async function FormacionPage() {
                   rel="noopener noreferrer"
                   className={buttonClassName() + " gap-1.5"}
                 >
-                  Ir al Portal
+                  {t.irPortal}
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </a>
               ) : null}
@@ -240,10 +314,10 @@ export default async function FormacionPage() {
       <section className="border-b border-gray-200">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-            Actividades formativas
+            {t.actividadesTitulo}
           </h2>
           <p className="mb-7 max-w-[80ch] text-sm text-gray-500">
-            Tres vías complementarias de formación, organizadas desde el IUCE.
+            {t.actividadesTexto}
           </p>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {actividades.map((a, i) => {
@@ -272,7 +346,11 @@ export default async function FormacionPage() {
                   </p>
                   {a.cta && a.enlace ? (
                     <a
-                      href={String(a.enlace)}
+                      href={
+                        String(a.enlace).startsWith("/")
+                          ? href(String(a.enlace))
+                          : String(a.enlace)
+                      }
                       className="mt-auto text-sm font-medium text-iuce-blue hover:underline"
                     >
                       {String(a.cta)}
@@ -291,16 +369,17 @@ export default async function FormacionPage() {
         <section id="plan" className="scroll-mt-20 border-b border-gray-200 bg-surface-card">
           <div className="mx-auto max-w-6xl px-6 py-14">
             <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-              El Plan, al completo
+              {t.planTitulo}
             </h2>
             <p className="mb-6 max-w-[80ch] text-sm text-gray-500">
-              Consulta aquí el documento íntegro del Plan de Formación Docente
-              del Profesorado, con todos los cursos, fechas y condiciones.
+              {t.planTexto}
             </p>
             <PdfEmbed
               src={urlPlan}
-              title="Plan de Formación Docente del Profesorado — documento completo"
-              downloadLabel="Descargar el Plan (PDF)"
+              title={t.planPdfTitle}
+              downloadLabel={t.planPdfDownload}
+              fallbackText={t.pdfFallback}
+              openLabel={t.pdfOpen}
             />
           </div>
         </section>
@@ -311,10 +390,10 @@ export default async function FormacionPage() {
         <div className="mx-auto grid max-w-6xl items-start gap-12 px-6 py-14 lg:grid-cols-[1.4fr_1fr]">
           <div>
             <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-              Universidades públicas de Castilla y León
+              {t.fdiEyebrow}
             </p>
             <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
-              Programa de Formación Docente Inicial
+              {t.fdiTitulo}
             </h2>
             <div
               className="page-block mb-6 text-base leading-relaxed text-gray-600"
@@ -368,7 +447,7 @@ export default async function FormacionPage() {
               ))}
             </div>
             <p className="text-sm text-gray-500">
-              Dudas sobre la formación:{" "}
+              {t.fdiDudas}{" "}
               <a
                 href="mailto:coord.docencia@usal.es"
                 className="text-iuce-blue hover:underline"
@@ -385,16 +464,15 @@ export default async function FormacionPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/fiuni.png"
-                alt="Formación Inicial Universitaria — programa conjunto de las universidades públicas de Castilla y León"
+                alt={t.fiuniAlt}
                 className="max-h-16 w-auto"
               />
             </div>
             <h3 className="mb-1 text-base font-semibold text-gray-900">
-              Ediciones 2026
+              {t.edicionesTitulo}
             </h3>
             <p className="mb-[18px] text-xs text-gray-500">
-              Calendario orientativo; cada edición se comunica por correo al
-              profesorado ayudante doctor.
+              {t.edicionesTexto}
             </p>
             <div className="flex flex-col">
               {ediciones.map((e, i) => (
@@ -425,7 +503,7 @@ export default async function FormacionPage() {
                     "w-full",
                   )}
                 >
-                  Ver calendario completo
+                  {t.verCalendario}
                 </a>
               </div>
             ) : null}
@@ -449,7 +527,7 @@ export default async function FormacionPage() {
             href="mailto:iuce@usal.es"
             className={cn(buttonClassName(), "flex-none")}
           >
-            Contactar
+            {t.contactar}
           </a>
         </div>
       </section>

@@ -1,15 +1,19 @@
 import type { News } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { news as staticNews, type NewsItem } from "@/lib/content/news";
+import { getLocale, type Locale } from "@/lib/locale-server";
 
 /**
  * Servicio de noticias para las páginas públicas: lee de la base de datos
  * (contenido gestionado desde el panel) y, si la BD no está disponible
  * (p. ej. desarrollo sin Docker), recurre al contenido semilla estático.
+ *
+ * En la versión inglesa (/en) se usan los campos *En si existen (los rellena
+ * la auto-traducción al guardar); si no, se sirve el original en español.
  */
 
-function formatShort(date: Date): string {
-  return new Intl.DateTimeFormat("es-ES", {
+function formatShort(date: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "es-ES", {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -18,8 +22,8 @@ function formatShort(date: Date): string {
     .replace(".", "");
 }
 
-function formatLong(date: Date): string {
-  return new Intl.DateTimeFormat("es-ES", {
+function formatLong(date: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "es-ES", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -92,20 +96,21 @@ export function stripCoverFromContent(
   return out;
 }
 
-function toItem(row: News): NewsItem {
+function toItem(row: News, locale: Locale): NewsItem {
   const published = row.publishedAt ?? row.createdAt;
+  const en = locale === "en";
   return {
     slug: row.slug,
-    title: row.title,
+    title: (en ? row.titleEn : null) ?? row.title,
     category: row.category,
     publishedAt: published.toISOString().slice(0, 10),
-    dateDisplay: formatShort(published),
-    dateLong: formatLong(published),
-    author: "Redacción IUCE",
-    excerpt: row.excerpt ?? "",
-    photoLabel: "Imagen de la noticia",
+    dateDisplay: formatShort(published, locale),
+    dateLong: formatLong(published, locale),
+    author: en ? "IUCE editorial team" : "Redacción IUCE",
+    excerpt: (en ? row.excerptEn : null) ?? row.excerpt ?? "",
+    photoLabel: en ? "News image" : "Imagen de la noticia",
     coverImage: row.coverImage,
-    content: row.content,
+    content: (en ? row.contentEn : null) ?? row.content,
   };
 }
 
@@ -117,6 +122,7 @@ function toItem(row: News): NewsItem {
 export async function getPublishedNews(
   options: { withContent?: boolean; category?: string } = {},
 ): Promise<NewsItem[]> {
+  const locale = getLocale();
   try {
     const rows = await prisma.news.findMany({
       where: {
@@ -134,8 +140,10 @@ export async function getPublishedNews(
             select: {
               id: true,
               title: true,
+              titleEn: true,
               slug: true,
               excerpt: true,
+              excerptEn: true,
               coverImage: true,
               category: true,
               status: true,
@@ -148,10 +156,13 @@ export async function getPublishedNews(
     if (rows.length > 0) {
       // Sin withContent la consulta no trae `content`: se rellena con "".
       return rows.map((r) =>
-        toItem({
-          ...r,
-          content: (r as { content?: string }).content ?? "",
-        } as News),
+        toItem(
+          {
+            ...r,
+            content: (r as { content?: string }).content ?? "",
+          } as News,
+          locale,
+        ),
       );
     }
   } catch {
@@ -168,10 +179,11 @@ export async function getPublishedNews(
 export async function getPublishedNewsBySlug(
   slug: string,
 ): Promise<NewsItem | null> {
+  const locale = getLocale();
   try {
     const row = await prisma.news.findUnique({ where: { slug } });
     if (row && row.status === "PUBLISHED" && !row.internal) {
-      const item = toItem(row);
+      const item = toItem(row, locale);
       // La portada se muestra como cabecera: no repetirla dentro del cuerpo.
       return {
         ...item,
@@ -198,7 +210,8 @@ export async function getInternalNews(): Promise<NewsItem[]> {
       { createdAt: "desc" },
     ],
   });
-  return rows.map(toItem);
+  // El área de miembros no tiene versión EN: siempre en español.
+  return rows.map((r) => toItem(r, "es"));
 }
 
 export async function getInternalNewsBySlug(
@@ -206,7 +219,7 @@ export async function getInternalNewsBySlug(
 ): Promise<NewsItem | null> {
   const row = await prisma.news.findUnique({ where: { slug } });
   if (!row || row.status !== "PUBLISHED" || !row.internal) return null;
-  const item = toItem(row);
+  const item = toItem(row, "es");
   return {
     ...item,
     content: stripCoverFromContent(item.content, item.coverImage),

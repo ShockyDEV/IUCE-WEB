@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { getLocale } from "@/lib/locale-server";
 
 export interface SubnavItem {
   id: string;
@@ -24,7 +25,9 @@ export function SectionSubnav({
   const active = activeId ?? items[0]?.id;
   return (
     <nav
-      aria-label="Secciones de esta página"
+      aria-label={
+        getLocale() === "en" ? "Sections on this page" : "Secciones de esta página"
+      }
       className="flex gap-6 overflow-x-auto text-sm font-medium"
     >
       {items.map((item) => {

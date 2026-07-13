@@ -14,6 +14,8 @@ import {
   upcomingEvents as upcomingFallback,
 } from "@/lib/content/events";
 import { cn } from "@/lib/cn";
+import { withLocale, type Locale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const metadata: Metadata = {
   title: "Eventos",
@@ -23,9 +25,55 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
+// Textos fijos de la página en ambos idiomas (los bloques editables llegan ya
+// traducidos desde el servicio de contenidos).
+const T = {
+  es: {
+    inicio: "Inicio",
+    eventos: "Eventos",
+    agenda: "Agenda",
+    seminarioDesc:
+      "El encuentro anual donde los grupos de investigación del Instituto ponen en común su trabajo: ediciones, crónicas y actas.",
+    conocerSeminario: "Conocer el Seminario",
+    destacado: "Destacado",
+    proximo: "Próximo",
+    webEvento: "Web del evento ↗",
+    proximos: "Próximos",
+    celebrados: "Celebrados",
+    celebrado: "Celebrado",
+    sinCelebrados: "No hay eventos celebrados registrados.",
+    imagen: "Imagen",
+  },
+  en: {
+    inicio: "Home",
+    eventos: "Events",
+    agenda: "Agenda",
+    seminarioDesc:
+      "The annual meeting where the Institute's research groups share their work: past editions, reports and proceedings.",
+    conocerSeminario: "Discover the Seminar",
+    destacado: "Featured",
+    proximo: "Upcoming",
+    webEvento: "Event website ↗",
+    proximos: "Upcoming",
+    celebrados: "Past events",
+    celebrado: "Past",
+    sinCelebrados: "No past events on record.",
+    imagen: "Image",
+  },
+} as const;
+
+// El campo `type` es dato en español (Congreso/Seminario/Jornada); en inglés
+// solo se traduce su presentación.
+const TYPE_EN: Record<string, string> = {
+  Congreso: "Conference",
+  Seminario: "Seminar",
+  Jornada: "Workshop",
+};
+
 interface EventVM {
   id: string;
   title: string;
+  titleEn: string | null;
   type: string;
   startsAt: Date;
   location: string | null;
@@ -33,23 +81,28 @@ interface EventVM {
   image: string | null;
 }
 
-function monthShort(d: Date): string {
-  return new Intl.DateTimeFormat("es-ES", { month: "short" })
+function monthShort(d: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "es-ES", {
+    month: "short",
+  })
     .format(d)
     .replace(".", "")
     .toUpperCase();
 }
 
-function monthYear(d: Date): string {
-  const s = new Intl.DateTimeFormat("es-ES", {
+function monthYear(d: Date, locale: Locale): string {
+  const s = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "es-ES", {
     month: "long",
     year: "numeric",
   }).format(d);
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-function dayMonth(d: Date): string {
-  return new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short" })
+function dayMonth(d: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "es-ES", {
+    day: "numeric",
+    month: "short",
+  })
     .format(d)
     .replace(".", "");
 }
@@ -77,6 +130,14 @@ async function getEventos(): Promise<{
 }
 
 export default async function EventosPage() {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
+  const eventTitle = (e: { title: string; titleEn: string | null }) =>
+    locale === "en" ? (e.titleEn ?? e.title) : e.title;
+  const typeLabel = (type: string) =>
+    locale === "en" ? (TYPE_EN[type] ?? type) : type;
+
   const [intro, destacadoDesc, eventos] = await Promise.all([
     getBlock("eventos", "intro"),
     getBlock("eventos", "destacado-descripcion"),
@@ -117,36 +178,36 @@ export default async function EventosPage() {
     if (destacado) {
       featured = {
         id: destacado.id,
-        title: destacado.title,
-        type: destacado.type,
-        dateDisplay: monthYear(destacado.startsAt),
+        title: eventTitle(destacado),
+        type: typeLabel(destacado.type),
+        dateDisplay: monthYear(destacado.startsAt, locale),
         location: destacado.location ?? "Salamanca",
         url: destacado.url,
         image: destacado.image,
-        photoLabel: `Imagen — ${destacado.title}`,
+        photoLabel: `${t.imagen} — ${eventTitle(destacado)}`,
       };
     }
     upcomingRest = eventos.upcoming
       .filter((e) => e.id !== (destacado?.id ?? ""))
       .map((e) => ({
         key: e.id,
-        title: e.title,
-        meta: [e.type, e.location].filter(Boolean).join(" · "),
+        title: eventTitle(e),
+        meta: [typeLabel(e.type), e.location].filter(Boolean).join(" · "),
         top: String(e.startsAt.getDate()),
-        bottom: monthShort(e.startsAt),
+        bottom: monthShort(e.startsAt, locale),
       }));
     past = eventos.past.map((e) => ({
       key: e.id,
-      title: e.title,
-      meta: [e.type, e.location].filter(Boolean).join(" · "),
-      dateRange: dayMonth(e.startsAt),
+      title: eventTitle(e),
+      meta: [typeLabel(e.type), e.location].filter(Boolean).join(" · "),
+      dateRange: dayMonth(e.startsAt, locale),
     }));
   } else {
-    // Fallback estático (BD no disponible)
+    // Fallback estático (BD no disponible): contenido semilla en español.
     featured = {
       id: null,
       title: featuredFallback.title,
-      type: featuredFallback.type,
+      type: typeLabel(featuredFallback.type),
       dateDisplay: featuredFallback.dateDisplay,
       location: featuredFallback.location,
       url: featuredFallback.url,
@@ -175,14 +236,17 @@ export default async function EventosPage() {
         <div className="mx-auto max-w-6xl px-6 pb-8 pt-12">
           <div className="mb-3.5">
             <Breadcrumb
-              items={[{ label: "Inicio", href: "/" }, { label: "Eventos" }]}
+              items={[
+                { label: t.inicio, href: href("/") },
+                { label: t.eventos },
+              ]}
             />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-            Agenda
+            {t.agenda}
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
-            Eventos
+            {t.eventos}
           </h1>
           <div
             className="page-block max-w-[70ch] text-base leading-relaxed text-gray-600"
@@ -203,17 +267,15 @@ export default async function EventosPage() {
                 Seminario IUCE
               </h2>
               <p className="max-w-[70ch] text-sm leading-relaxed text-gray-600">
-                El encuentro anual donde los grupos de investigación del
-                Instituto ponen en común su trabajo: ediciones, crónicas y
-                actas.
+                {t.seminarioDesc}
               </p>
             </div>
           </div>
           <Link
-            href="/seminario-iuce"
+            href={href("/seminario-iuce")}
             className={buttonClassName() + " flex-none gap-1.5"}
           >
-            Conocer el Seminario
+            {t.conocerSeminario}
             <ChevronRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
@@ -224,7 +286,7 @@ export default async function EventosPage() {
         <section>
           <div className="mx-auto max-w-6xl px-6 pb-2 pt-12">
             <h2 className="mb-[18px] text-xl font-bold text-gray-900">
-              Destacado
+              {t.destacado}
             </h2>
             <Reveal from="scale">
             <article className="grid overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm lg:grid-cols-[1.2fr_1fr]">
@@ -234,7 +296,7 @@ export default async function EventosPage() {
                     {featured.type}
                   </span>
                   <span className="rounded-full bg-[#DBEAFE] px-3 py-[3px] text-xs font-medium text-[#1D4ED8]">
-                    Próximo
+                    {t.proximo}
                   </span>
                 </div>
                 <h3 className="text-balance text-2xl font-bold leading-snug text-ink">
@@ -268,7 +330,7 @@ export default async function EventosPage() {
                       rel="noopener noreferrer"
                       className={buttonClassName({ variant: "outline" })}
                     >
-                      Web del evento ↗
+                      {t.webEvento}
                     </a>
                   ) : null}
                 </div>
@@ -298,7 +360,7 @@ export default async function EventosPage() {
         <section>
           <div className="mx-auto max-w-6xl px-6 pb-2 pt-10">
             <h2 className="mb-[18px] text-xl font-bold text-gray-900">
-              Próximos
+              {t.proximos}
             </h2>
             <div className="flex flex-col gap-3">
               {upcomingRest.map((e, i) => (
@@ -334,7 +396,7 @@ export default async function EventosPage() {
       <section>
         <div className="mx-auto max-w-6xl px-6 pb-16 pt-10">
           <h2 className="mb-[18px] text-xl font-bold text-gray-900">
-            Celebrados
+            {t.celebrados}
           </h2>
           <div className="flex flex-col">
             {past.map((e, i) => (
@@ -355,14 +417,14 @@ export default async function EventosPage() {
                   <p className="text-xs text-gray-500">{e.meta}</p>
                 </div>
                 <span className="justify-self-start rounded-full bg-gray-100 px-3 py-[3px] text-xs font-medium text-gray-700 sm:justify-self-auto">
-                  Celebrado
+                  {t.celebrado}
                 </span>
               </article>
               </Reveal>
             ))}
             {past.length === 0 ? (
               <p className="py-6 text-sm text-gray-400">
-                No hay eventos celebrados registrados.
+                {t.sinCelebrados}
               </p>
             ) : null}
           </div>

@@ -6,45 +6,58 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ExternalLink, KeyRound, Menu, X } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { pathLocale, pick, stripLocale, withLocale } from "@/lib/locale";
 import { ThemeToggle } from "./theme-toggle";
 
 interface NavItem {
   label: string;
+  labelEn: string;
   href: string;
   external?: boolean;
 }
 
 const NAV: NavItem[] = [
-  { label: "Inicio", href: "/" },
-  { label: "Instituto", href: "/instituto" },
-  { label: "Investigación", href: "/investigacion" },
-  { label: "Transferencia", href: "/transferencia" },
-  { label: "Estadísticas", href: "/estadisticas" },
-  { label: "Formación", href: "/formacion" },
-  { label: "Eventos", href: "/eventos" },
-  { label: "Doctorado", href: "/doctorado" },
+  { label: "Inicio", labelEn: "Home", href: "/" },
+  { label: "Instituto", labelEn: "Institute", href: "/instituto" },
+  { label: "Investigación", labelEn: "Research", href: "/investigacion" },
+  {
+    label: "Transferencia",
+    labelEn: "Knowledge transfer",
+    href: "/transferencia",
+  },
+  { label: "Estadísticas", labelEn: "Statistics", href: "/estadisticas" },
+  { label: "Formación", labelEn: "Training", href: "/formacion" },
+  { label: "Eventos", labelEn: "Events", href: "/eventos" },
+  { label: "Doctorado", labelEn: "PhD", href: "/doctorado" },
   {
     label: "EKS",
+    labelEn: "EKS",
     href: "https://revistas.usal.es/index.php/eks",
     external: true,
   },
-  { label: "Noticias", href: "/noticias" },
-  { label: "Contacto", href: "/contacto" },
-  { label: "Área de miembros", href: "/miembros" },
+  { label: "Noticias", labelEn: "News", href: "/noticias" },
+  { label: "Contacto", labelEn: "Contact", href: "/contacto" },
+  { label: "Área de miembros", labelEn: "Members area", href: "/miembros" },
 ];
 
 // En escritorio, Inicio vive en el logo y el área de miembros en el botón
 // de la llave (zona de acciones); el menú móvil sí muestra ambos.
 const DESKTOP_HIDDEN = new Set(["/", "/miembros"]);
 
-function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/";
-  return pathname === href || pathname.startsWith(`${href}/`);
+function isActive(basePath: string, href: string) {
+  if (href === "/") return basePath === "/";
+  return basePath === href || basePath.startsWith(`${href}/`);
 }
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const locale = pathLocale(pathname);
+  const basePath = stripLocale(pathname);
+  // El área de miembros y el panel no tienen versión EN.
+  const localizedHref = (href: string) =>
+    href === "/miembros" ? href : withLocale(href, locale);
 
   // Cierra el menú móvil al navegar a otra página.
   useEffect(() => {
@@ -60,8 +73,8 @@ export function SiteHeader() {
         <div className="mx-auto flex h-[68px] max-w-6xl items-center justify-between gap-6 px-6">
           {/* Logo */}
           <Link
-            href="/"
-            aria-label="IUCE — Inicio"
+            href={withLocale("/", locale)}
+            aria-label={pick(locale, "IUCE — Inicio", "IUCE — Home")}
             className="flex flex-none items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
           >
             <Image
@@ -84,10 +97,11 @@ export function SiteHeader() {
 
           {/* Navegación de escritorio */}
           <nav
-            aria-label="Navegación principal"
+            aria-label={pick(locale, "Navegación principal", "Main navigation")}
             className="hidden items-center gap-2.5 text-sm font-medium text-gray-600 lg:flex xl:gap-3.5 2xl:gap-5"
           >
             {NAV.filter((item) => !DESKTOP_HIDDEN.has(item.href)).map((item) => {
+              const label = pick(locale, item.label, item.labelEn);
               if (item.external) {
                 return (
                   <a
@@ -97,16 +111,16 @@ export function SiteHeader() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 transition-colors hover:text-gray-900"
                   >
-                    {item.label}
+                    {label}
                     <ExternalLink className="h-3 w-3" aria-hidden="true" />
                   </a>
                 );
               }
-              const active = isActive(pathname, item.href);
+              const active = isActive(basePath, item.href);
               return (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={localizedHref(item.href)}
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "flex h-[68px] items-center border-b-2 border-transparent transition-colors",
@@ -115,7 +129,7 @@ export function SiteHeader() {
                       : "hover:text-gray-900",
                   )}
                 >
-                  {item.label}
+                  {label}
                 </Link>
               );
             })}
@@ -125,29 +139,61 @@ export function SiteHeader() {
           <div className="flex flex-none items-center gap-2.5">
             <Link
               href="/miembros"
-              title="Área de miembros — solo personal del IUCE"
+              title={pick(
+                locale,
+                "Área de miembros — solo personal del IUCE",
+                "Members area — IUCE staff only",
+              )}
               className="hidden h-9 items-center gap-1.5 rounded-md px-2.5 text-xs font-semibold text-gray-500 transition-colors hover:text-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page lg:flex"
             >
               <KeyRound className="h-4 w-4" aria-hidden="true" />
-              <span className="hidden xl:inline">Miembros</span>
+              <span className="hidden xl:inline">
+                {pick(locale, "Miembros", "Members")}
+              </span>
             </Link>
             <ThemeToggle />
-            <span
-              className="text-xs font-semibold text-gray-700"
-              aria-label="Selector de idioma"
+            {/* Selector de idioma: misma página en el otro idioma */}
+            <nav
+              aria-label={pick(locale, "Idioma", "Language")}
+              className="text-xs font-semibold"
             >
-              ES <span className="font-normal text-gray-300">·</span>{" "}
-              <span
-                title="Versión en inglés próximamente"
-                className="cursor-default font-normal text-gray-300"
+              <Link
+                href={withLocale(basePath, "es")}
+                aria-current={locale === "es" ? "true" : undefined}
+                hrefLang="es"
+                className={cn(
+                  "rounded px-0.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400",
+                  locale === "es"
+                    ? "text-gray-800"
+                    : "font-normal text-gray-400 hover:text-gray-700",
+                )}
+              >
+                ES
+              </Link>
+              <span className="font-normal text-gray-300"> · </span>
+              <Link
+                href={withLocale(basePath, "en")}
+                aria-current={locale === "en" ? "true" : undefined}
+                hrefLang="en"
+                title={pick(locale, "English version", "Versión en español")}
+                className={cn(
+                  "rounded px-0.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400",
+                  locale === "en"
+                    ? "text-gray-800"
+                    : "font-normal text-gray-400 hover:text-gray-700",
+                )}
               >
                 EN
-              </span>
-            </span>
+              </Link>
+            </nav>
             {/* Hamburguesa (móvil y tablet) */}
             <button
               type="button"
-              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-label={
+                menuOpen
+                  ? pick(locale, "Cerrar menú", "Close menu")
+                  : pick(locale, "Abrir menú", "Open menu")
+              }
               aria-expanded={menuOpen}
               aria-controls="menu-movil"
               onClick={() => setMenuOpen((v) => !v)}
@@ -166,11 +212,16 @@ export function SiteHeader() {
         {menuOpen ? (
           <nav
             id="menu-movil"
-            aria-label="Navegación principal (móvil)"
+            aria-label={pick(
+              locale,
+              "Navegación principal (móvil)",
+              "Main navigation (mobile)",
+            )}
             className="border-t border-gray-200 bg-surface-card lg:hidden"
           >
             <div className="mx-auto flex max-w-6xl flex-col px-6 py-2">
               {NAV.map((item) => {
+                const label = pick(locale, item.label, item.labelEn);
                 if (item.external) {
                   return (
                     <a
@@ -180,16 +231,16 @@ export function SiteHeader() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 border-l-2 border-transparent py-3 pl-3 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900"
                     >
-                      {item.label}
+                      {label}
                       <ExternalLink className="h-3 w-3" aria-hidden="true" />
                     </a>
                   );
                 }
-                const active = isActive(pathname, item.href);
+                const active = isActive(basePath, item.href);
                 return (
                   <Link
                     key={item.href}
-                    href={item.href}
+                    href={localizedHref(item.href)}
                     aria-current={active ? "page" : undefined}
                     className={cn(
                       "border-l-2 py-3 pl-3 text-sm font-medium transition-colors",
@@ -198,7 +249,7 @@ export function SiteHeader() {
                         : "border-transparent text-gray-600 hover:text-gray-900",
                     )}
                   >
-                    {item.label}
+                    {label}
                   </Link>
                 );
               })}

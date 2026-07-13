@@ -2,6 +2,7 @@
 
 import { Link as LinkIcon } from "lucide-react";
 import toast from "react-hot-toast";
+import { pick, type Locale } from "@/lib/locale";
 
 const btnClass =
   "flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 bg-surface-card text-gray-600 transition-colors hover:border-brand-400 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page";
@@ -9,7 +10,10 @@ const btnClass =
 /**
  * Fila «Compartir» del detalle de noticia: X, LinkedIn y copiar enlace.
  */
-export function ShareRow({ title }: Readonly<{ title: string }>) {
+export function ShareRow({
+  title,
+  locale = "es",
+}: Readonly<{ title: string; locale?: Locale }>) {
   function shareUrl() {
     return typeof window !== "undefined" ? window.location.href : "";
   }
@@ -22,18 +26,22 @@ export function ShareRow({ title }: Readonly<{ title: string }>) {
   async function copyLink() {
     try {
       await navigator.clipboard.writeText(shareUrl());
-      toast.success("Enlace copiado");
+      toast.success(pick(locale, "Enlace copiado", "Link copied"));
     } catch {
-      toast.error("No se pudo copiar el enlace");
+      toast.error(
+        pick(locale, "No se pudo copiar el enlace", "Could not copy the link"),
+      );
     }
   }
 
   return (
     <div className="my-0 flex items-center gap-2.5 border-y border-gray-100 py-5">
-      <span className="mr-1 text-sm font-medium text-gray-600">Compartir</span>
+      <span className="mr-1 text-sm font-medium text-gray-600">
+        {pick(locale, "Compartir", "Share")}
+      </span>
       <button
         type="button"
-        aria-label="Compartir en X"
+        aria-label={pick(locale, "Compartir en X", "Share on X")}
         onClick={() =>
           openShare(
             `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=`,
@@ -53,7 +61,7 @@ export function ShareRow({ title }: Readonly<{ title: string }>) {
       </button>
       <button
         type="button"
-        aria-label="Compartir en LinkedIn"
+        aria-label={pick(locale, "Compartir en LinkedIn", "Share on LinkedIn")}
         onClick={() =>
           openShare("https://www.linkedin.com/sharing/share-offsite/?url=")
         }
@@ -71,7 +79,7 @@ export function ShareRow({ title }: Readonly<{ title: string }>) {
       </button>
       <button
         type="button"
-        aria-label="Copiar enlace"
+        aria-label={pick(locale, "Copiar enlace", "Copy link")}
         onClick={copyLink}
         className={btnClass}
       >

@@ -22,6 +22,8 @@ import { getBlock, getListBlock } from "@/lib/content-blocks-service";
 import { iconFor } from "@/lib/icon-map";
 import { prisma } from "@/lib/prisma";
 import { groups as groupsFallback } from "@/lib/content/groups";
+import { withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const dynamic = "force-dynamic";
 
@@ -104,8 +106,62 @@ async function getCoordinador(): Promise<Coordinator> {
 /** ORCID del coordinador (no consta en el export; verificar con el IUCE). */
 const COORDINATOR_ORCID = "https://orcid.org/0000-0001-9987-5584";
 
+// Textos fijos de la página en ambos idiomas (el contenido editable llega ya
+// traducido desde los servicios de bloques). El nombre del programa,
+// «Formación en la Sociedad del Conocimiento», es nombre propio y no se traduce.
+const T = {
+  es: {
+    inicio: "Inicio",
+    doctorado: "Doctorado",
+    eyebrow:
+      "Programa de Doctorado · Escuela de Doctorado «Studii Salamantini»",
+    portalPrograma: "Portal del programa ↗",
+    escuelaDoctorado: "Escuela de Doctorado ↗",
+    lineasTitulo: "Líneas de investigación",
+    lineasIntro:
+      "Grandes descriptores del programa, cubiertos por investigadores de la USAL y un amplio plantel nacional e internacional.",
+    gruposTitulo: "Grupos de investigación",
+    gruposIntro:
+      "Grupos de Investigación Reconocidos de la USAL que soportan el programa.",
+    todaInvestigacion: "Toda la investigación del IUCE →",
+    logotipoDe: "Logotipo de",
+    webDe: "Web de",
+    perfilIngreso: "Perfil de ingreso",
+    coordinacion: "Coordinación",
+    fotografiaDe: "Fotografía de",
+    cargoCoordinador: "Coordinador del programa · Subdirector del IUCE",
+    produccionCientifica: "Producción científica (Portal USAL) ↗",
+    semanaDoctoral: "Semana Doctoral",
+  },
+  en: {
+    inicio: "Home",
+    doctorado: "PhD programme",
+    eyebrow: "PhD programme · «Studii Salamantini» Doctoral School",
+    portalPrograma: "Programme website ↗",
+    escuelaDoctorado: "Doctoral School ↗",
+    lineasTitulo: "Research lines",
+    lineasIntro:
+      "Broad descriptors of the programme, covered by USAL researchers and a large national and international teaching staff.",
+    gruposTitulo: "Research groups",
+    gruposIntro:
+      "USAL Recognised Research Groups that support the programme.",
+    todaInvestigacion: "All IUCE research →",
+    logotipoDe: "Logo of",
+    webDe: "Website of",
+    perfilIngreso: "Admission profile",
+    coordinacion: "Coordination",
+    fotografiaDe: "Photograph of",
+    cargoCoordinador: "Programme coordinator · IUCE Deputy Director",
+    produccionCientifica: "Scientific output (USAL portal) ↗",
+    semanaDoctoral: "Doctoral Week",
+  },
+} as const;
+
 
 export default async function DoctoradoPage() {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
   // Bloque editable (doctorado:programa) + grupos y coordinador del gestor
   const [programa, semanaDoctoral, grupos, coordinador, lineas, pasos] =
     await Promise.all([
@@ -124,11 +180,14 @@ export default async function DoctoradoPage() {
         <div className="mx-auto max-w-6xl px-6 pb-11 pt-12">
           <div className="mb-3.5">
             <Breadcrumb
-              items={[{ label: "Inicio", href: "/" }, { label: "Doctorado" }]}
+              items={[
+                { label: t.inicio, href: href("/") },
+                { label: t.doctorado },
+              ]}
             />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-            Programa de Doctorado · Escuela de Doctorado «Studii Salamantini»
+            {t.eyebrow}
           </p>
           <h1 className="mb-3.5 max-w-[24ch] text-balance text-4xl font-bold leading-tight tracking-tight text-ink">
             Formación en la Sociedad del Conocimiento
@@ -144,7 +203,7 @@ export default async function DoctoradoPage() {
               rel="noopener noreferrer"
               className={buttonClassName({ size: "lg" })}
             >
-              Portal del programa ↗
+              {t.portalPrograma}
             </a>
             <a
               href="https://doctorado.usal.es"
@@ -152,7 +211,7 @@ export default async function DoctoradoPage() {
               rel="noopener noreferrer"
               className={buttonClassName({ variant: "outline", size: "lg" })}
             >
-              Escuela de Doctorado ↗
+              {t.escuelaDoctorado}
             </a>
           </div>
         </div>
@@ -162,11 +221,10 @@ export default async function DoctoradoPage() {
       <section>
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-            Líneas de investigación
+            {t.lineasTitulo}
           </h2>
           <p className="mb-7 max-w-[80ch] text-sm text-gray-500">
-            Grandes descriptores del programa, cubiertos por investigadores de
-            la USAL y un amplio plantel nacional e internacional.
+            {t.lineasIntro}
           </p>
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
             {lineas.map((l, i) => {
@@ -192,18 +250,15 @@ export default async function DoctoradoPage() {
           <div className="mb-7 flex flex-wrap items-baseline justify-between gap-6">
             <div>
               <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-                Grupos de investigación
+                {t.gruposTitulo}
               </h2>
-              <p className="text-sm text-gray-500">
-                Grupos de Investigación Reconocidos de la USAL que soportan el
-                programa.
-              </p>
+              <p className="text-sm text-gray-500">{t.gruposIntro}</p>
             </div>
             <Link
-              href="/investigacion"
+              href={href("/investigacion")}
               className="flex-none text-sm font-medium text-iuce-blue hover:underline"
             >
-              Toda la investigación del IUCE →
+              {t.todaInvestigacion}
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -217,7 +272,7 @@ export default async function DoctoradoPage() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={g.logo}
-                        alt={`Logotipo de ${g.acronym}`}
+                        alt={`${t.logotipoDe} ${g.acronym}`}
                         className="max-h-9 max-w-[130px] object-contain"
                       />
                     </div>
@@ -247,7 +302,7 @@ export default async function DoctoradoPage() {
                     href={g.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title={`Web de ${g.acronym}`}
+                    title={`${t.webDe} ${g.acronym}`}
                     className="group/web block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
                   >
                     {cabecera}
@@ -269,7 +324,7 @@ export default async function DoctoradoPage() {
         <div className="mx-auto grid max-w-6xl items-start gap-12 px-6 py-14 lg:grid-cols-[1.3fr_1fr]">
           <div>
             <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
-              Perfil de ingreso
+              {t.perfilIngreso}
             </h2>
             <div className="flex flex-col gap-3.5">
               {pasos.map((p, i) => (
@@ -295,13 +350,13 @@ export default async function DoctoradoPage() {
           <Reveal from="right" delay={150} className="flex flex-col gap-4">
             <div className="rounded-xl border border-gray-200 border-t-[3px] border-t-usal-red bg-surface-card p-6 shadow-sm">
               <p className="mb-3 text-xs font-bold uppercase tracking-wider text-usal-red">
-                Coordinación
+                {t.coordinacion}
               </p>
               <div className="mb-3.5 flex items-center gap-4">
                 {coordinador.photo ? (
                   <Image
                     src={coordinador.photo}
-                    alt={`Fotografía de ${coordinador.name}`}
+                    alt={`${t.fotografiaDe} ${coordinador.name}`}
                     width={72}
                     height={72}
                     className="h-[72px] w-[72px] flex-none rounded-full object-cover"
@@ -312,7 +367,7 @@ export default async function DoctoradoPage() {
                     {coordinador.name}
                   </p>
                   <p className="text-xs text-gray-500">
-                    Coordinador del programa · Subdirector del IUCE
+                    {t.cargoCoordinador}
                   </p>
                 </div>
               </div>
@@ -334,7 +389,7 @@ export default async function DoctoradoPage() {
                     className="inline-flex items-center gap-1.5 text-sm text-iuce-blue hover:underline"
                   >
                     <BookOpenCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                    Producción científica (Portal USAL) ↗
+                    {t.produccionCientifica}
                   </a>
                 ) : null}
                 <a
@@ -355,7 +410,7 @@ export default async function DoctoradoPage() {
                   aria-hidden="true"
                 />
                 <p className="text-sm font-semibold text-gray-900">
-                  Semana Doctoral
+                  {t.semanaDoctoral}
                 </p>
               </div>
               <div

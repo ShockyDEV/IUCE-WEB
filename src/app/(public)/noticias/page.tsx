@@ -8,6 +8,8 @@ import { getPublishedNews } from "@/lib/news-service";
 import { getBlock } from "@/lib/content-blocks-service";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/cn";
+import { withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const metadata: Metadata = {
   title: "Noticias",
@@ -18,6 +20,65 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 9;
+
+// Textos fijos de la página en ambos idiomas (título, extracto y fecha de
+// cada noticia llegan ya localizados desde el servicio).
+const T = {
+  es: {
+    inicio: "Inicio",
+    noticias: "Noticias",
+    actualidad: "Actualidad",
+    filtrarCategoria: "Filtrar por categoría",
+    todas: "Todas",
+    buscarEnNoticias: "Buscar en las noticias",
+    placeholder: "Buscar en el archivo de noticias…",
+    textoABuscar: "Texto a buscar",
+    filtrarAnio: "Filtrar por año",
+    todosLosAnios: "Todos los años",
+    buscar: "Buscar",
+    limpiar: "Limpiar",
+    resultado: "resultado",
+    resultados: "resultados",
+    leerNoticia: "Leer la noticia",
+    sinResultados: "No hay noticias que coincidan con la búsqueda o el filtro.",
+    paginacion: "Paginación de noticias",
+    paginaAnterior: "Página anterior",
+    paginaSiguiente: "Página siguiente",
+  },
+  en: {
+    inicio: "Home",
+    noticias: "News",
+    actualidad: "News",
+    filtrarCategoria: "Filter by category",
+    todas: "All",
+    buscarEnNoticias: "Search the news",
+    placeholder: "Search the news archive…",
+    textoABuscar: "Text to search",
+    filtrarAnio: "Filter by year",
+    todosLosAnios: "All years",
+    buscar: "Search",
+    limpiar: "Clear",
+    resultado: "result",
+    resultados: "results",
+    leerNoticia: "Read the article",
+    sinResultados: "No news match your search or filter.",
+    paginacion: "News pagination",
+    paginaAnterior: "Previous page",
+    paginaSiguiente: "Next page",
+  },
+} as const;
+
+// Etiqueta inglesa de cada categoría. El VALOR (dato de la noticia y
+// parámetro `categoria` de la URL) sigue siendo siempre el español.
+const CATEGORY_EN: Record<string, string> = {
+  Congresos: "Conferences",
+  Formación: "Training",
+  "Innovación docente": "Teaching innovation",
+  Investigación: "Research",
+  Premios: "Awards",
+  Doctorado: "PhD",
+  Institucional: "Institutional",
+};
 
 interface PageProps {
   searchParams: { categoria?: string; pagina?: string; q?: string; anio?: string };
@@ -64,6 +125,14 @@ function pageNumbers(current: number, total: number): Array<number | "…"> {
 export default async function NoticiasPage({
   searchParams,
 }: Readonly<PageProps>) {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
+  // Enlaces de filtros y paginación: misma query, con prefijo /en si toca.
+  const localizedPageHref = (f: Filtros, p: number) =>
+    withLocale(pageHref(f, p), locale);
+  const catLabel = (c: string) =>
+    locale === "en" ? (CATEGORY_EN[c] ?? c) : c;
   const categoria =
     NEWS_CATEGORIES.find((c) => c === searchParams.categoria) ?? null;
   const q = (searchParams.q ?? "").trim().slice(0, 100);
@@ -113,14 +182,17 @@ export default async function NoticiasPage({
         <div className="mx-auto max-w-6xl px-6 pb-8 pt-12">
           <div className="mb-3.5">
             <Breadcrumb
-              items={[{ label: "Inicio", href: "/" }, { label: "Noticias" }]}
+              items={[
+                { label: t.inicio, href: href("/") },
+                { label: t.noticias },
+              ]}
             />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-            Actualidad
+            {t.actualidad}
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
-            Noticias
+            {t.noticias}
           </h1>
           <div
             className="page-block mb-6 max-w-[70ch] text-base leading-relaxed text-gray-600"
@@ -128,10 +200,10 @@ export default async function NoticiasPage({
           />
           <nav
             className="flex flex-wrap gap-2"
-            aria-label="Filtrar por categoría"
+            aria-label={t.filtrarCategoria}
           >
             <Link
-              href="/noticias"
+              href={href("/noticias")}
               aria-current={!categoria ? "page" : undefined}
               className={cn(
                 "flex h-[34px] items-center rounded-full border px-4 text-sm font-medium transition-colors",
@@ -140,12 +212,12 @@ export default async function NoticiasPage({
                   : "border-gray-300 bg-surface-card text-gray-600 hover:border-brand-400 hover:text-ink",
               )}
             >
-              Todas
+              {t.todas}
             </Link>
             {NEWS_CATEGORIES.map((c) => (
               <Link
                 key={c}
-                href={pageHref({ ...filtros, categoria: c }, 1)}
+                href={localizedPageHref({ ...filtros, categoria: c }, 1)}
                 aria-current={categoria === c ? "page" : undefined}
                 className={cn(
                   "flex h-[34px] items-center rounded-full border px-4 text-sm font-medium transition-colors",
@@ -154,7 +226,7 @@ export default async function NoticiasPage({
                     : "border-gray-300 bg-surface-card text-gray-600 hover:border-brand-400 hover:text-ink",
                 )}
               >
-                {c}
+                {catLabel(c)}
               </Link>
             ))}
           </nav>
@@ -162,10 +234,10 @@ export default async function NoticiasPage({
           {/* Búsqueda en el archivo (2010–hoy): formulario GET, sin JS */}
           <form
             method="get"
-            action="/noticias"
+            action={withLocale("/noticias", locale)}
             className="mt-4 flex flex-wrap items-center gap-2.5"
             role="search"
-            aria-label="Buscar en las noticias"
+            aria-label={t.buscarEnNoticias}
           >
             {categoria ? (
               <input type="hidden" name="categoria" value={categoria} />
@@ -179,18 +251,18 @@ export default async function NoticiasPage({
                 type="search"
                 name="q"
                 defaultValue={q}
-                placeholder="Buscar en el archivo de noticias…"
-                aria-label="Texto a buscar"
+                placeholder={t.placeholder}
+                aria-label={t.textoABuscar}
                 className="h-10 w-full rounded-full border border-gray-300 bg-surface-card pl-10 pr-4 text-sm text-gray-900 outline-none transition-colors focus:border-iuce-blue focus:ring-2 focus:ring-iuce-blue/25"
               />
             </div>
             <select
               name="anio"
               defaultValue={anioParam ?? ""}
-              aria-label="Filtrar por año"
+              aria-label={t.filtrarAnio}
               className="h-10 rounded-full border border-gray-300 bg-surface-card px-3.5 text-sm text-gray-700 outline-none transition-colors focus:border-iuce-blue"
             >
-              <option value="">Todos los años</option>
+              <option value="">{t.todosLosAnios}</option>
               {anios.map((a) => (
                 <option key={a} value={a}>
                   {a}
@@ -201,20 +273,20 @@ export default async function NoticiasPage({
               type="submit"
               className="h-10 rounded-full bg-iuce-blue-dark px-5 text-sm font-medium text-white transition-opacity hover:opacity-90"
             >
-              Buscar
+              {t.buscar}
             </button>
             {q || anioParam ? (
               <Link
-                href={pageHref({ categoria, q: "", anio: null }, 1)}
+                href={localizedPageHref({ categoria, q: "", anio: null }, 1)}
                 className="text-sm font-medium text-iuce-blue hover:underline"
               >
-                Limpiar
+                {t.limpiar}
               </Link>
             ) : null}
             {q || anioParam ? (
               <p className="w-full text-xs text-gray-500 sm:w-auto">
                 <strong className="text-gray-900">{all.length}</strong>{" "}
-                {all.length === 1 ? "resultado" : "resultados"}
+                {all.length === 1 ? t.resultado : t.resultados}
               </p>
             ) : null}
           </form>
@@ -226,7 +298,10 @@ export default async function NoticiasPage({
         <section>
           <div className="mx-auto max-w-6xl px-6 pb-3 pt-12">
             <Reveal from="scale">
-            <Link href={`/noticias/${featured.slug}`} className="group block">
+            <Link
+              href={href(`/noticias/${featured.slug}`)}
+              className="group block"
+            >
               <article className="card-lift grid overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm hover:border-brand-400 hover:shadow-md lg:grid-cols-[1.2fr_1fr]">
                 <CoverImage
                   src={featured.coverImage}
@@ -238,7 +313,7 @@ export default async function NoticiasPage({
                 <div className="flex flex-col gap-3 p-8">
                   <div className="flex items-center gap-2.5 text-xs">
                     <span className="rounded-full bg-iuce-blue-pale px-3 py-[3px] font-medium text-ink">
-                      {featured.category}
+                      {catLabel(featured.category)}
                     </span>
                     <span className="text-gray-400">
                       {featured.dateDisplay}
@@ -251,7 +326,7 @@ export default async function NoticiasPage({
                     {featured.excerpt}
                   </p>
                   <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue">
-                    Leer la noticia
+                    {t.leerNoticia}
                     <ArrowRight
                       className="h-[15px] w-[15px]"
                       aria-hidden="true"
@@ -270,13 +345,16 @@ export default async function NoticiasPage({
         <div className="mx-auto max-w-6xl px-6 pb-6 pt-7">
           {feed.length === 0 ? (
             <p className="py-12 text-center text-sm text-gray-400">
-              No hay noticias que coincidan con la búsqueda o el filtro.
+              {t.sinResultados}
             </p>
           ) : (
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {feed.map((n, i) => (
                 <Reveal key={n.slug} delay={(i % 3) * 80} className="h-full">
-                <Link href={`/noticias/${n.slug}`} className="group block h-full">
+                <Link
+                  href={href(`/noticias/${n.slug}`)}
+                  className="group block h-full"
+                >
                   <article className="card-lift flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm hover:border-brand-400 hover:shadow-md">
                     <CoverImage
                       src={n.coverImage}
@@ -287,7 +365,7 @@ export default async function NoticiasPage({
                     <div className="flex flex-col gap-2 px-5 pb-5 pt-[18px]">
                       <div className="flex items-center gap-2 text-xs">
                         <span className="rounded-full bg-iuce-blue-pale px-2.5 py-0.5 font-medium text-ink">
-                          {n.category}
+                          {catLabel(n.category)}
                         </span>
                         <span className="text-gray-400">{n.dateDisplay}</span>
                       </div>
@@ -312,13 +390,13 @@ export default async function NoticiasPage({
       {/* Paginación */}
       {totalPages > 1 ? (
         <nav
-          aria-label="Paginación de noticias"
+          aria-label={t.paginacion}
           className="mx-auto flex max-w-6xl items-center justify-center gap-1.5 px-6 pb-16 pt-2"
         >
           {currentPage > 1 ? (
             <Link
-              href={pageHref(filtros, currentPage - 1)}
-              aria-label="Página anterior"
+              href={localizedPageHref(filtros, currentPage - 1)}
+              aria-label={t.paginaAnterior}
               className="flex h-9 w-9 items-center justify-center rounded-md border border-gray-300 bg-surface-card text-gray-600 transition-colors hover:bg-gray-50"
             >
               <ChevronLeft className="h-4 w-4" aria-hidden="true" />
@@ -348,7 +426,7 @@ export default async function NoticiasPage({
             ) : (
               <Link
                 key={p}
-                href={pageHref(filtros, p)}
+                href={localizedPageHref(filtros, p)}
                 className="flex h-9 w-9 items-center justify-center rounded-md border border-gray-300 bg-surface-card text-sm text-gray-700 transition-colors hover:bg-gray-50"
               >
                 {p}
@@ -358,8 +436,8 @@ export default async function NoticiasPage({
 
           {currentPage < totalPages ? (
             <Link
-              href={pageHref(filtros, currentPage + 1)}
-              aria-label="Página siguiente"
+              href={localizedPageHref(filtros, currentPage + 1)}
+              aria-label={t.paginaSiguiente}
               className="flex h-9 w-9 items-center justify-center rounded-md border border-gray-300 bg-surface-card text-gray-600 transition-colors hover:bg-gray-50"
             >
               <ChevronRight className="h-4 w-4" aria-hidden="true" />

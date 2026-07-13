@@ -13,6 +13,8 @@ import { prisma } from "@/lib/prisma";
 import { groups as groupsFallback } from "@/lib/content/groups";
 import { getPublicProjects } from "@/lib/projects-service";
 import { ProjectsExplorer } from "@/components/investigacion/projects-explorer";
+import { withLocale, type Locale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const dynamic = "force-dynamic";
 
@@ -22,11 +24,50 @@ export const metadata: Metadata = {
     "Grupos de investigación, proyectos y publicaciones del IUCE: investigación interdisciplinar sobre los procesos de formación en Educación Superior.",
 };
 
-const subnav = [
-  { id: "grupos", label: "Grupos" },
-  { id: "proyectos", label: "Proyectos" },
-  { id: "publicaciones", label: "Publicaciones" },
-];
+// Textos fijos de la página en ambos idiomas (el contenido editable llega ya
+// traducido desde los servicios de bloques; los datos de BD se muestran tal cual).
+const T = {
+  es: {
+    inicio: "Inicio",
+    investigacion: "Investigación",
+    titulo: "La investigación del IUCE",
+    subnavGrupos: "Grupos",
+    subnavProyectos: "Proyectos",
+    subnavPublicaciones: "Publicaciones",
+    gruposTitulo: "Grupos de investigación",
+    gruposDescripcion:
+      "Grupos de Investigación Reconocidos de la USAL vinculados al Instituto.",
+    logoDe: "Logotipo de",
+    webDe: "Web de",
+    equipoInterdisciplinar: "Equipo interdisciplinar",
+    proyectosTitulo: "Proyectos",
+    publicacionesTitulo: "Publicaciones",
+    portalEyebrow: "Portal de Investigación de la USAL",
+    portalTitulo: "Producción científica del IUCE",
+    verProduccion: "Ver la producción científica",
+    visitarRevista: "Visitar la revista",
+  },
+  en: {
+    inicio: "Home",
+    investigacion: "Research",
+    titulo: "Research at the IUCE",
+    subnavGrupos: "Groups",
+    subnavProyectos: "Projects",
+    subnavPublicaciones: "Publications",
+    gruposTitulo: "Research groups",
+    gruposDescripcion:
+      "USAL Recognised Research Groups linked to the Institute.",
+    logoDe: "Logo of",
+    webDe: "Website of",
+    equipoInterdisciplinar: "Interdisciplinary team",
+    proyectosTitulo: "Projects",
+    publicacionesTitulo: "Publications",
+    portalEyebrow: "USAL Research Portal",
+    portalTitulo: "Scientific output of the IUCE",
+    verProduccion: "View the scientific output",
+    visitarRevista: "Visit the journal",
+  },
+} as const;
 
 interface GroupCard {
   acronym: string;
@@ -39,9 +80,10 @@ interface GroupCard {
 
 /**
  * Grupos de investigación desde el gestor. La lista oficial (9 grupos,
- * verificada contra la web original) actúa de fallback sin BD.
+ * verificada contra la web original) actúa de fallback sin BD. El nombre
+ * usa nameEn (si existe) cuando la web se sirve en inglés.
  */
-async function getGrupos(): Promise<GroupCard[]> {
+async function getGrupos(locale: Locale): Promise<GroupCard[]> {
   try {
     const rows = await prisma.researchGroup.findMany({
       orderBy: { acronym: "asc" },
@@ -49,7 +91,7 @@ async function getGrupos(): Promise<GroupCard[]> {
     if (rows.length > 0) {
       return rows.map((g) => ({
         acronym: g.acronym,
-        name: g.name,
+        name: locale === "en" ? (g.nameEn ?? g.name) : g.name,
         chip: g.chip,
         lead: g.lead,
         url: g.url,
@@ -71,6 +113,14 @@ async function getGrupos(): Promise<GroupCard[]> {
 
 
 export default async function InvestigacionPage() {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
+  const subnav = [
+    { id: "grupos", label: t.subnavGrupos },
+    { id: "proyectos", label: t.subnavProyectos },
+    { id: "publicaciones", label: t.subnavPublicaciones },
+  ];
   // Contenido editable desde el gestor (Contenido → Páginas → Investigación).
   // Nota: DIDEROT figuraba por error entre los proyectos; es un grupo.
   const [
@@ -86,7 +136,7 @@ export default async function InvestigacionPage() {
     proyectos,
     articulos,
   ] = await Promise.all([
-    getGrupos(),
+    getGrupos(locale),
     getBlock("investigacion", "intro"),
     getBlock("investigacion", "publicaciones-descripcion"),
     getBlock("investigacion", "portal-descripcion"),
@@ -106,14 +156,17 @@ export default async function InvestigacionPage() {
         <div className="mx-auto max-w-6xl px-6 pt-12">
           <div className="mb-3.5">
             <Breadcrumb
-              items={[{ label: "Inicio", href: "/" }, { label: "Investigación" }]}
+              items={[
+                { label: t.inicio, href: href("/") },
+                { label: t.investigacion },
+              ]}
             />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-            Investigación
+            {t.investigacion}
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
-            La investigación del IUCE
+            {t.titulo}
           </h1>
           <div
             className="page-block max-w-[75ch] text-base leading-relaxed text-gray-600"
@@ -130,11 +183,10 @@ export default async function InvestigacionPage() {
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="mb-7">
             <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-              Grupos de investigación
+              {t.gruposTitulo}
             </h2>
             <p className="max-w-[75ch] text-sm text-gray-500">
-              Grupos de Investigación Reconocidos de la USAL vinculados al
-              Instituto.
+              {t.gruposDescripcion}
             </p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -153,7 +205,7 @@ export default async function InvestigacionPage() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={g.logo}
-                        alt={`Logotipo de ${g.acronym}`}
+                        alt={`${t.logoDe} ${g.acronym}`}
                         className="max-h-12 max-w-[160px] object-contain"
                       />
                     </div>
@@ -183,7 +235,7 @@ export default async function InvestigacionPage() {
                       href={g.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      title={`Web de ${g.acronym} — ${urlLabel}`}
+                      title={`${t.webDe} ${g.acronym} — ${urlLabel}`}
                       className="group/web flex flex-col gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
                     >
                       {cabecera}
@@ -199,7 +251,7 @@ export default async function InvestigacionPage() {
                       className="h-[13px] w-[13px] flex-none"
                       aria-hidden="true"
                     />
-                    {g.lead ?? "Equipo interdisciplinar"}
+                    {g.lead ?? t.equipoInterdisciplinar}
                   </p>
                 </article>
                 </Reveal>
@@ -216,7 +268,7 @@ export default async function InvestigacionPage() {
       >
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-            Proyectos
+            {t.proyectosTitulo}
           </h2>
           <div
             className="page-block mb-6 max-w-[80ch] text-sm text-gray-500"
@@ -225,6 +277,7 @@ export default async function InvestigacionPage() {
           <ProjectsExplorer
             projects={proyectos}
             currentYear={new Date().getFullYear()}
+            locale={locale}
           />
         </div>
       </section>
@@ -233,7 +286,7 @@ export default async function InvestigacionPage() {
       <section id="publicaciones" className="scroll-mt-20">
         <div className="mx-auto max-w-6xl px-6 pb-16 pt-14">
           <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-            Publicaciones
+            {t.publicacionesTitulo}
           </h2>
           <div
             className="page-block mb-6 max-w-[80ch] text-sm text-gray-500"
@@ -250,10 +303,10 @@ export default async function InvestigacionPage() {
                 </span>
                 <div>
                   <p className="mb-1 text-xs font-bold uppercase tracking-wider text-usal-red">
-                    Portal de Investigación de la USAL
+                    {t.portalEyebrow}
                   </p>
                   <p className="text-xl font-bold text-gray-900">
-                    Producción científica del IUCE
+                    {t.portalTitulo}
                   </p>
                   <div
                     className="page-block mt-1 max-w-[62ch] text-sm leading-relaxed text-gray-600"
@@ -268,7 +321,7 @@ export default async function InvestigacionPage() {
                   rel="noopener noreferrer"
                   className={buttonClassName({ size: "lg" }) + " flex-none gap-1.5"}
                 >
-                  Ver la producción científica
+                  {t.verProduccion}
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </a>
               ) : null}
@@ -343,7 +396,7 @@ export default async function InvestigacionPage() {
                 rel="noopener noreferrer"
                 className="inline-flex flex-none items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
               >
-                Visitar la revista
+                {t.visitarRevista}
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
             ) : null}

@@ -8,12 +8,42 @@ import {
   getPublishedNews,
   getPublishedNewsBySlug,
 } from "@/lib/news-service";
+import { withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 interface PageProps {
   params: { slug: string };
 }
 
 export const dynamic = "force-dynamic";
+
+// Textos fijos de la página en ambos idiomas (título, extracto, cuerpo y
+// fechas de la noticia llegan ya localizados desde el servicio).
+const T = {
+  es: {
+    inicio: "Inicio",
+    noticias: "Noticias",
+    masActualidad: "Más actualidad",
+    todasLasNoticias: "Todas las noticias →",
+  },
+  en: {
+    inicio: "Home",
+    noticias: "News",
+    masActualidad: "Related news",
+    todasLasNoticias: "All news →",
+  },
+} as const;
+
+// Etiqueta inglesa de cada categoría; el valor del dato sigue en español.
+const CATEGORY_EN: Record<string, string> = {
+  Congresos: "Conferences",
+  Formación: "Training",
+  "Innovación docente": "Teaching innovation",
+  Investigación: "Research",
+  Premios: "Awards",
+  Doctorado: "PhD",
+  Institucional: "Institutional",
+};
 
 export async function generateMetadata({
   params,
@@ -36,6 +66,11 @@ export async function generateMetadata({
 }
 
 export default async function NoticiaPage({ params }: Readonly<PageProps>) {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
+  const catLabel = (c: string) =>
+    locale === "en" ? (CATEGORY_EN[c] ?? c) : c;
   const item = await getPublishedNewsBySlug(params.slug);
   if (!item) notFound();
 
@@ -79,15 +114,15 @@ export default async function NoticiaPage({ params }: Readonly<PageProps>) {
         <div className="mb-5">
           <Breadcrumb
             items={[
-              { label: "Inicio", href: "/" },
-              { label: "Noticias", href: "/noticias" },
+              { label: t.inicio, href: href("/") },
+              { label: t.noticias, href: href("/noticias") },
               { label: shortTitle },
             ]}
           />
         </div>
         <div className="mb-4 flex items-center gap-2.5 text-xs">
           <span className="rounded-full bg-iuce-blue-pale px-3 py-[3px] font-medium text-ink">
-            {item.category}
+            {catLabel(item.category)}
           </span>
           <span className="text-gray-400">
             {item.dateLong} · {item.author}
@@ -132,27 +167,29 @@ export default async function NoticiaPage({ params }: Readonly<PageProps>) {
         />
 
         <div className="mt-8">
-          <ShareRow title={item.title} />
+          <ShareRow title={item.title} locale={locale} />
         </div>
       </div>
 
       {/* Más actualidad */}
       <div className="mx-auto max-w-6xl px-6 pb-16 pt-12">
         <div className="mb-5 flex items-baseline justify-between">
-          <h2 className="text-xl font-bold text-gray-900">Más actualidad</h2>
+          <h2 className="text-xl font-bold text-gray-900">
+            {t.masActualidad}
+          </h2>
           <Link
-            href="/noticias"
+            href={href("/noticias")}
             className="text-sm font-medium text-iuce-blue hover:underline"
           >
-            Todas las noticias →
+            {t.todasLasNoticias}
           </Link>
         </div>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {related.map((n) => (
-            <Link key={n.slug} href={`/noticias/${n.slug}`}>
+            <Link key={n.slug} href={href(`/noticias/${n.slug}`)}>
               <article className="h-full rounded-xl border border-gray-200 bg-surface-card px-5 py-[18px] shadow-sm transition-all hover:border-brand-400 hover:shadow-md">
                 <p className="mb-1.5 text-xs text-gray-400">
-                  {n.category} · {n.dateDisplay}
+                  {catLabel(n.category)} · {n.dateDisplay}
                 </p>
                 <h3 className="text-sm font-semibold leading-snug text-gray-900">
                   {n.title}

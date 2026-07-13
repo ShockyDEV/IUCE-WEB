@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, Globe } from "lucide-react";
+import { pick, withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export function InstitutionalFooter() {
   const year = new Date().getFullYear();
+  const locale = getLocale();
   return (
     <footer className="mt-16 bg-gray-950 text-white">
       <div className="mx-auto grid max-w-6xl items-center gap-8 px-6 py-10 sm:grid-cols-3">
@@ -58,19 +61,25 @@ export function InstitutionalFooter() {
           <p>
             © {year} IUCE – Universidad de Salamanca
             {" · "}
-            <Link href="/aviso-legal" className="transition-colors hover:text-white">
-              Aviso legal
+            <Link
+              href={withLocale("/aviso-legal", locale)}
+              className="transition-colors hover:text-white"
+            >
+              {pick(locale, "Aviso legal", "Legal notice")}
             </Link>
             {" · "}
             <Link
-              href="/politica-de-cookies"
+              href={withLocale("/politica-de-cookies", locale)}
               className="transition-colors hover:text-white"
             >
               Cookies
             </Link>
             {" · "}
-            <Link href="/accesibilidad" className="transition-colors hover:text-white">
-              Accesibilidad
+            <Link
+              href={withLocale("/accesibilidad", locale)}
+              className="transition-colors hover:text-white"
+            >
+              {pick(locale, "Accesibilidad", "Accessibility")}
             </Link>
           </p>
           <div className="flex items-center gap-3">

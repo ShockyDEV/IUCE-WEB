@@ -5,6 +5,8 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { buttonClassName } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { getBlock, getListBlock } from "@/lib/content-blocks-service";
+import { withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +16,45 @@ export const metadata: Metadata = {
     "El encuentro anual de los grupos de investigación del IUCE: cooperación, transferencia y sinergias entre líneas de investigación en educación.",
 };
 
+// Textos fijos de la página en ambos idiomas ("Seminario IUCE" es nombre
+// propio; el contenido editable llega ya traducido desde el servicio de
+// bloques, incluidas las ediciones).
+const T = {
+  es: {
+    inicio: "Inicio",
+    eventos: "Eventos",
+    eyebrow: "El encuentro anual de los grupos de investigación",
+    ediciones: "Ediciones",
+    leerCronica: "Leer la crónica",
+    actasPdf: "Actas de la edición (PDF)",
+    actasEnPreparacion: "Actas en preparación",
+    notaPanel:
+      "Cada edición se añade desde el panel de administración con su crónica y sus actas.",
+    contactar: "Contactar con el IUCE",
+  },
+  en: {
+    inicio: "Home",
+    eventos: "Events",
+    eyebrow: "The annual meeting of the research groups",
+    ediciones: "Editions",
+    leerCronica: "Read the report",
+    actasPdf: "Proceedings of the edition (PDF)",
+    actasEnPreparacion: "Proceedings in preparation",
+    notaPanel:
+      "Each edition is added from the admin panel with its report and its proceedings.",
+    contactar: "Contact the IUCE",
+  },
+} as const;
+
 /**
  * Página del Seminario IUCE: qué es el encuentro anual de los grupos y el
  * archivo de ediciones por año (crónica + actas de cada edición). Todo se
  * edita desde el panel (Contenido → Páginas → Seminario IUCE).
  */
 export default async function SeminarioIucePage() {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
   const [intro, objetivo, cta, ediciones] = await Promise.all([
     getBlock("seminario", "intro"),
     getBlock("seminario", "objetivo"),
@@ -35,14 +70,14 @@ export default async function SeminarioIucePage() {
           <div className="mb-3.5">
             <Breadcrumb
               items={[
-                { label: "Inicio", href: "/" },
-                { label: "Eventos", href: "/eventos" },
+                { label: t.inicio, href: href("/") },
+                { label: t.eventos, href: href("/eventos") },
                 { label: "Seminario IUCE" },
               ]}
             />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-            El encuentro anual de los grupos de investigación
+            {t.eyebrow}
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
             Seminario IUCE
@@ -73,7 +108,7 @@ export default async function SeminarioIucePage() {
         {/* Ediciones por año */}
         <div className="mx-auto max-w-6xl px-6 py-12">
           <h2 className="mb-6 text-2xl font-bold tracking-tight text-gray-900">
-            Ediciones
+            {t.ediciones}
           </h2>
           <div className="flex flex-col gap-5">
             {ediciones.map((e, i) => {
@@ -95,10 +130,10 @@ export default async function SeminarioIucePage() {
                       <div className="flex flex-wrap items-center gap-3">
                         {noticia ? (
                           <Link
-                            href={noticia}
+                            href={noticia.startsWith("http") ? noticia : href(noticia)}
                             className="inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
                           >
-                            Leer la crónica
+                            {t.leerCronica}
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />
                           </Link>
                         ) : null}
@@ -113,12 +148,12 @@ export default async function SeminarioIucePage() {
                             }
                           >
                             <FileText className="h-3.5 w-3.5" aria-hidden="true" />
-                            Actas de la edición (PDF)
+                            {t.actasPdf}
                           </a>
                         ) : (
                           <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FEF9C3] px-3 py-1 text-xs font-semibold text-[#A16207]">
                             <Hourglass className="h-3.5 w-3.5" aria-hidden="true" />
-                            Actas en preparación
+                            {t.actasEnPreparacion}
                           </span>
                         )}
                       </div>
@@ -128,10 +163,7 @@ export default async function SeminarioIucePage() {
               );
             })}
           </div>
-          <p className="mt-5 text-xs text-gray-400">
-            Cada edición se añade desde el panel de administración con su
-            crónica y sus actas.
-          </p>
+          <p className="mt-5 text-xs text-gray-400">{t.notaPanel}</p>
         </div>
       </section>
 
@@ -143,7 +175,7 @@ export default async function SeminarioIucePage() {
             dangerouslySetInnerHTML={{ __html: cta }}
           />
           <a href="mailto:iuce@usal.es" className={buttonClassName() + " flex-none"}>
-            Contactar con el IUCE
+            {t.contactar}
           </a>
         </div>
       </section>

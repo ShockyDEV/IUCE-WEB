@@ -5,6 +5,8 @@ import { MapEmbed } from "@/components/ui/map-embed";
 import { ContactForm } from "@/components/contact/contact-form";
 import { Reveal } from "@/components/ui/reveal";
 import { getBlock, getBlockText } from "@/lib/content-blocks-service";
+import { withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const metadata: Metadata = {
   title: "Contacto",
@@ -14,7 +16,41 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
+// Textos fijos de la página en ambos idiomas (los datos editables —dirección,
+// teléfonos, horario, cómo llegar— llegan ya traducidos del servicio de bloques).
+const T = {
+  es: {
+    inicio: "Inicio",
+    contacto: "Contacto",
+    titulo: "Contacta con el IUCE",
+    direccion: "Dirección",
+    telefono: "Teléfono",
+    correo: "Correo electrónico",
+    horario: "Horario de Secretaría",
+    mapaTitle: "Mapa — Edificio Solís, Paseo de Canalejas 169, Salamanca",
+    reservaPregunta: "¿Necesitas un aula o una sala? Usa el sistema de",
+    reservaEnlace: "reserva de espacios ↗",
+    comoLlegar: "Cómo llegar",
+  },
+  en: {
+    inicio: "Home",
+    contacto: "Contact",
+    titulo: "Contact the IUCE",
+    direccion: "Address",
+    telefono: "Phone",
+    correo: "Email",
+    horario: "Secretariat opening hours",
+    mapaTitle: "Map — Solís Building, Paseo de Canalejas 169, Salamanca",
+    reservaPregunta: "Need a classroom or a meeting room? Use the",
+    reservaEnlace: "room booking system ↗",
+    comoLlegar: "How to find us",
+  },
+} as const;
+
 export default async function ContactoPage() {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
   // Todos los textos de datos salen del gestor (Contenido → Páginas → Contacto).
   const [intro, direccion, telefonos, horario, urlPrivacidad, comoLlegar] =
     await Promise.all([
@@ -27,14 +63,14 @@ export default async function ContactoPage() {
     ]);
 
   const datos = [
-    { icon: MapPin, title: "Dirección", html: direccion },
-    { icon: Phone, title: "Teléfono", html: telefonos },
+    { icon: MapPin, title: t.direccion, html: direccion },
+    { icon: Phone, title: t.telefono, html: telefonos },
     {
       icon: Mail,
-      title: "Correo electrónico",
+      title: t.correo,
       html: `<p><a href="mailto:iuce@usal.es">iuce@usal.es</a></p>`,
     },
-    { icon: Clock, title: "Horario de Secretaría", html: horario },
+    { icon: Clock, title: t.horario, html: horario },
   ];
 
   return (
@@ -44,14 +80,17 @@ export default async function ContactoPage() {
         <div className="mx-auto max-w-6xl px-6 pb-10 pt-12">
           <div className="mb-3.5">
             <Breadcrumb
-              items={[{ label: "Inicio", href: "/" }, { label: "Contacto" }]}
+              items={[
+                { label: t.inicio, href: href("/") },
+                { label: t.contacto },
+              ]}
             />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-            Contacto
+            {t.contacto}
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
-            Contacta con el IUCE
+            {t.titulo}
           </h1>
           <div
             className="page-block max-w-[70ch] text-base leading-relaxed text-gray-600"
@@ -84,25 +123,25 @@ export default async function ContactoPage() {
               );
             })}
 
-            <MapEmbed className="h-[280px]" />
+            <MapEmbed className="h-[280px]" title={t.mapaTitle} />
 
             <div className="rounded-md border border-gray-200 border-l-[3px] border-l-usal-red bg-surface-card px-[18px] py-3.5">
               <p className="text-sm leading-relaxed text-gray-600">
-                ¿Necesitas un aula o una sala? Usa el sistema de{" "}
+                {t.reservaPregunta}{" "}
                 <a
                   href="https://reservas.iuce.usal.es"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-iuce-blue hover:underline"
                 >
-                  reserva de espacios ↗
+                  {t.reservaEnlace}
                 </a>
               </p>
             </div>
           </Reveal>
 
           <Reveal from="right" delay={120}>
-            <ContactForm privacyUrl={urlPrivacidad} />
+            <ContactForm privacyUrl={urlPrivacidad} locale={locale} />
           </Reveal>
         </div>
       </section>
@@ -116,7 +155,7 @@ export default async function ContactoPage() {
                 <Compass className="h-[18px] w-[18px]" aria-hidden="true" />
               </span>
               <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-                Cómo llegar
+                {t.comoLlegar}
               </h2>
             </div>
             <div

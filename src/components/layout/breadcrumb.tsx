@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getLocale } from "@/lib/locale-server";
 
 export interface BreadcrumbItem {
   label: string;
@@ -12,7 +13,10 @@ export function Breadcrumb({
   items,
 }: Readonly<{ items: BreadcrumbItem[] }>) {
   return (
-    <nav aria-label="Miga de pan" className="text-xs text-gray-400">
+    <nav
+      aria-label={getLocale() === "en" ? "Breadcrumb" : "Miga de pan"}
+      className="text-xs text-gray-400"
+    >
       {items.map((item, i) => {
         const last = i === items.length - 1;
         return (

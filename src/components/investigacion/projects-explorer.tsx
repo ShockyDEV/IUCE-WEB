@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Search, XCircle } from "lucide-react";
 import { cn } from "@/lib/cn";
+import type { Locale } from "@/lib/locale";
 import type { PublicProject } from "@/lib/projects-service";
 
 const PAGE_SIZE = 12;
@@ -15,6 +16,60 @@ const SCOPE_STYLES: Record<string, string> = {
   Institucional: "bg-iuce-blue-pale text-ink",
   Local: "bg-gray-100 text-gray-700",
 };
+
+/**
+ * Etiquetas de ámbito en inglés SOLO para mostrar: los valores de datos
+ * (p.scope) y el filtrado siguen usando el texto español de la BD.
+ */
+const SCOPE_EN: Record<string, string> = {
+  Europeo: "European",
+  Internacional: "International",
+  Nacional: "National",
+  Autonómico: "Regional",
+  Institucional: "Institutional",
+  Local: "Local",
+};
+
+// Textos fijos de la interfaz en ambos idiomas (los datos de proyecto —
+// título, financiadora, IP, línea, ámbito — vienen de la BD en español).
+const T = {
+  es: {
+    placeholder: "Buscar por título, IP, financiadora o grupo…",
+    buscarAria: "Buscar proyectos",
+    proyecto: "proyecto",
+    proyectos: "proyectos",
+    enCursoContador: "en curso",
+    chipTodos: "Todos",
+    chipEnCurso: "En curso",
+    chipFinalizados: "Finalizados",
+    todosAmbitos: "Todos los ámbitos",
+    limpiarFiltros: "Limpiar filtros",
+    vacio:
+      "Ningún proyecto coincide con la búsqueda. Prueba con otros términos o limpia los filtros.",
+    ipLabel: "IP:",
+    enCursoBadge: "En curso",
+    mostrarMas: "Mostrar más",
+    restantes: "restantes",
+  },
+  en: {
+    placeholder: "Search by title, PI, funder or group…",
+    buscarAria: "Search projects",
+    proyecto: "project",
+    proyectos: "projects",
+    enCursoContador: "ongoing",
+    chipTodos: "All",
+    chipEnCurso: "Ongoing",
+    chipFinalizados: "Completed",
+    todosAmbitos: "All scopes",
+    limpiarFiltros: "Clear filters",
+    vacio:
+      "No projects match your search. Try other terms or clear the filters.",
+    ipLabel: "PI:",
+    enCursoBadge: "Ongoing",
+    mostrarMas: "Show more",
+    restantes: "remaining",
+  },
+} as const;
 
 type Estado = "todos" | "curso" | "finalizados";
 
@@ -33,11 +88,20 @@ function normalize(s: string): string {
 export function ProjectsExplorer({
   projects,
   currentYear,
-}: Readonly<{ projects: PublicProject[]; currentYear: number }>) {
+  locale = "es",
+}: Readonly<{
+  projects: PublicProject[];
+  currentYear: number;
+  locale?: Locale;
+}>) {
   const [query, setQuery] = useState("");
   const [estado, setEstado] = useState<Estado>("todos");
   const [scope, setScope] = useState<string>("todos");
   const [visible, setVisible] = useState(PAGE_SIZE);
+  const t = T[locale];
+  // Ámbitos: en inglés solo cambia el texto mostrado, nunca el valor filtrado.
+  const scopeLabel = (s: string) =>
+    locale === "en" ? (SCOPE_EN[s] ?? s) : s;
 
   const scopes = useMemo(
     () =>
@@ -89,16 +153,19 @@ export function ProjectsExplorer({
               setQuery(e.target.value);
               resetPage();
             }}
-            placeholder="Buscar por título, IP, financiadora o grupo…"
-            aria-label="Buscar proyectos"
+            placeholder={t.placeholder}
+            aria-label={t.buscarAria}
             className="h-11 w-full rounded-full border border-gray-300 bg-surface-card pl-10 pr-4 text-sm text-gray-900 outline-none transition-colors focus:border-iuce-blue focus:ring-2 focus:ring-iuce-blue/25"
           />
         </div>
         <p className="text-sm text-gray-500">
           <strong className="text-gray-900">{filtered.length}</strong>{" "}
-          {filtered.length === 1 ? "proyecto" : "proyectos"}
+          {filtered.length === 1 ? t.proyecto : t.proyectos}
           {!hayFiltros ? (
-            <span className="text-gray-400"> · {activos} en curso</span>
+            <span className="text-gray-400">
+              {" "}
+              · {activos} {t.enCursoContador}
+            </span>
           ) : null}
         </p>
       </div>
@@ -107,9 +174,9 @@ export function ProjectsExplorer({
       <div className="mb-6 flex flex-wrap items-center gap-2">
         {(
           [
-            ["todos", "Todos"],
-            ["curso", "En curso"],
-            ["finalizados", "Finalizados"],
+            ["todos", t.chipTodos],
+            ["curso", t.chipEnCurso],
+            ["finalizados", t.chipFinalizados],
           ] as Array<[Estado, string]>
         ).map(([value, label]) => (
           <button
@@ -145,7 +212,7 @@ export function ProjectsExplorer({
               : "border-gray-300 bg-surface-card text-gray-600 hover:border-brand-400 hover:text-gray-900",
           )}
         >
-          Todos los ámbitos
+          {t.todosAmbitos}
         </button>
         {scopes.map((s) => (
           <button
@@ -163,7 +230,7 @@ export function ProjectsExplorer({
                 : "border-gray-300 bg-surface-card text-gray-600 hover:border-brand-400 hover:text-gray-900",
             )}
           >
-            {s}
+            {scopeLabel(s)}
           </button>
         ))}
         {hayFiltros ? (
@@ -178,7 +245,7 @@ export function ProjectsExplorer({
             className="inline-flex h-9 items-center gap-1.5 px-2 text-[13px] font-medium text-iuce-blue hover:underline"
           >
             <XCircle className="h-4 w-4" aria-hidden="true" />
-            Limpiar filtros
+            {t.limpiarFiltros}
           </button>
         ) : null}
       </div>
@@ -186,8 +253,7 @@ export function ProjectsExplorer({
       {/* Resultados */}
       {shown.length === 0 ? (
         <p className="rounded-xl border border-dashed border-gray-300 px-6 py-12 text-center text-sm text-gray-400">
-          Ningún proyecto coincide con la búsqueda. Prueba con otros términos o
-          limpia los filtros.
+          {t.vacio}
         </p>
       ) : (
         <div className="flex flex-col">
@@ -206,7 +272,7 @@ export function ProjectsExplorer({
                     {p.title}
                   </h3>
                   <p className="text-[13px] leading-relaxed text-gray-500">
-                    {[p.funder, p.ip ? `IP: ${p.ip}` : null]
+                    {[p.funder, p.ip ? `${t.ipLabel} ${p.ip}` : null]
                       .filter(Boolean)
                       .join(" · ")}
                   </p>
@@ -224,7 +290,7 @@ export function ProjectsExplorer({
                     {enCurso ? (
                       <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-[#DCFCE7] px-2.5 py-[3px] text-[11px] font-semibold text-[#15803D]">
                         <span className="h-1.5 w-1.5 rounded-full bg-[#15803D]" aria-hidden="true" />
-                        En curso
+                        {t.enCursoBadge}
                       </span>
                     ) : null}
                     {p.scope ? (
@@ -234,7 +300,7 @@ export function ProjectsExplorer({
                           SCOPE_STYLES[p.scope] ?? "bg-gray-100 text-gray-700",
                         )}
                       >
-                        {p.scope}
+                        {scopeLabel(p.scope)}
                       </span>
                     ) : null}
                   </span>
@@ -252,7 +318,7 @@ export function ProjectsExplorer({
             onClick={() => setVisible((v) => v + 18)}
             className="h-11 rounded-full border border-gray-300 bg-surface-card px-6 text-sm font-medium text-gray-700 transition-colors hover:border-brand-400 hover:text-ink"
           >
-            Mostrar más ({filtered.length - shown.length} restantes)
+            {t.mostrarMas} ({filtered.length - shown.length} {t.restantes})
           </button>
         </div>
       ) : null}

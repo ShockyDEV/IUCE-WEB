@@ -12,7 +12,17 @@ export function PdfEmbed({
   src,
   title,
   downloadLabel = "Descargar el PDF",
-}: Readonly<{ src: string; title: string; downloadLabel?: string }>) {
+  fallbackText = "Tu navegador no puede mostrar el PDF incrustado.",
+  openLabel = "Abrir el documento",
+}: Readonly<{
+  src: string;
+  title: string;
+  downloadLabel?: string;
+  /** Texto del contenido alternativo cuando no se puede incrustar el PDF. */
+  fallbackText?: string;
+  /** Etiqueta del enlace de apertura en el contenido alternativo. */
+  openLabel?: string;
+}>) {
   return (
     <figure className="flex flex-col gap-3.5">
       <object
@@ -23,11 +33,9 @@ export function PdfEmbed({
         className="h-[75vh] min-h-[420px] w-full rounded-xl border border-gray-200 bg-surface-card shadow-sm"
       >
         <div className="flex h-full flex-col items-center justify-center gap-3 p-8 text-center">
-          <p className="text-sm text-gray-500">
-            Tu navegador no puede mostrar el PDF incrustado.
-          </p>
+          <p className="text-sm text-gray-500">{fallbackText}</p>
           <a href={src} target="_blank" rel="noopener noreferrer" className={buttonClassName()}>
-            Abrir el documento
+            {openLabel}
           </a>
         </div>
       </object>

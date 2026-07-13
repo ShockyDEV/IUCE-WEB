@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeScript } from "@/components/theme-script";
+import { getLocale } from "@/lib/locale-server";
 import { ToastProvider } from "@/components/toast-provider";
 
 export const metadata: Metadata = {
@@ -42,7 +43,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang={getLocale()} suppressHydrationWarning>
       <body className="min-h-screen bg-surface-page text-gray-600 antialiased">
         <ThemeScript />
         {children}

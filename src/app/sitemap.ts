@@ -29,5 +29,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...newsRoutes];
+  // Versión en inglés: mismas rutas estáticas bajo /en (las noticias EN se
+  // añadirán cuando la auto-traducción DeepL rellene los campos *En).
+  const enRoutes: MetadataRoute.Sitemap = staticRoutes.map((r) => ({
+    ...r,
+    url: r.url === `${BASE}/` ? `${BASE}/en` : r.url.replace(BASE, `${BASE}/en`),
+    priority: (r.priority ?? 0.5) * 0.8,
+  }));
+
+  return [...staticRoutes, ...enRoutes, ...newsRoutes];
 }

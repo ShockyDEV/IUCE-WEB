@@ -14,11 +14,40 @@ import {
 } from "@/lib/content-blocks-service";
 import { iconFor } from "@/lib/icon-map";
 import { cn } from "@/lib/cn";
+import { withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const dynamic = "force-dynamic";
 
+// Textos fijos de la página en ambos idiomas (el contenido editable llega ya
+// traducido desde los servicios de bloques/noticias).
+const T = {
+  es: {
+    conoceInstituto: "Conoce el Instituto",
+    planFormacion: "Plan de Formación Docente",
+    altEdificio: "Fachada del Edificio Solís, sede del IUCE",
+    estadisticasTitulo: "Estadísticas del IUCE",
+    explorarEstadisticas: "Explorar las estadísticas",
+    actualidad: "Actualidad",
+    verTodas: "Ver todas las noticias →",
+    visitarRevista: "Visitar la revista",
+  },
+  en: {
+    conoceInstituto: "Discover the Institute",
+    planFormacion: "Teaching Training Plan",
+    altEdificio: "Façade of the Solís Building, home of the IUCE",
+    estadisticasTitulo: "IUCE in figures",
+    explorarEstadisticas: "Explore the statistics",
+    actualidad: "Latest news",
+    verTodas: "See all news →",
+    visitarRevista: "Visit the journal",
+  },
+} as const;
 
 export default async function HomePage() {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
   // Últimas 3 noticias + hero editable desde el panel (Contenido → Páginas).
   const [
     latestNews,
@@ -69,16 +98,16 @@ export default async function HomePage() {
             </Reveal>
             <Reveal delay={300} className="flex flex-wrap items-center gap-3">
               <Link
-                href="/instituto"
+                href={href("/instituto")}
                 className={buttonClassName({ size: "lg" })}
               >
-                Conoce el Instituto
+                {t.conoceInstituto}
               </Link>
               <Link
-                href="/formacion"
+                href={href("/formacion")}
                 className={buttonClassName({ variant: "outline", size: "lg" })}
               >
-                Plan de Formación Docente
+                {t.planFormacion}
               </Link>
             </Reveal>
             <Reveal
@@ -107,7 +136,7 @@ export default async function HomePage() {
             <div className="relative h-[380px] w-full overflow-hidden rounded-xl">
               <Image
                 src="/images/edificio-solis.jpg"
-                alt="Fachada del Edificio Solís, sede del IUCE"
+                alt={t.altEdificio}
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 45vw"
@@ -131,7 +160,7 @@ export default async function HomePage() {
             return (
               <Reveal key={enlace + i} delay={i * 80} className="h-full">
                 <Link
-                  href={enlace}
+                  href={external ? enlace : href(enlace)}
                   {...(external
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
@@ -167,17 +196,17 @@ export default async function HomePage() {
               {memoriaEyebrow}
             </p>
             <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-              Estadísticas del IUCE
+              {t.estadisticasTitulo}
             </h2>
             <div
               className="page-block mb-4 text-sm leading-relaxed text-gray-600"
               dangerouslySetInnerHTML={{ __html: estadisticasTeaser }}
             />
             <Link
-              href="/estadisticas"
+              href={href("/estadisticas")}
               className={buttonClassName() + " gap-1.5"}
             >
-              Explorar las estadísticas
+              {t.explorarEstadisticas}
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
@@ -203,19 +232,19 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl px-6 pb-16 pt-14">
           <div className="mb-6 flex items-baseline justify-between">
             <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-              Actualidad
+              {t.actualidad}
             </h2>
             <Link
-              href="/noticias"
+              href={href("/noticias")}
               className="text-sm font-medium text-iuce-blue hover:underline"
             >
-              Ver todas las noticias →
+              {t.verTodas}
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {latestNews.map((item, i) => (
               <Reveal key={item.slug} delay={i * 90} className="h-full">
-              <Link href={`/noticias/${item.slug}`} className="group block h-full">
+              <Link href={href(`/noticias/${item.slug}`)} className="group block h-full">
                 <article className="card-lift flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-surface-card shadow-sm hover:border-brand-400 hover:shadow-md">
                   <CoverImage
                     src={item.coverImage}
@@ -271,7 +300,7 @@ export default async function HomePage() {
               "flex-none gap-1.5",
             )}
           >
-            Visitar la revista
+            {t.visitarRevista}
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           </a>
         </Reveal>

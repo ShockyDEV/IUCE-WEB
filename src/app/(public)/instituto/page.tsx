@@ -35,6 +35,8 @@ import {
 } from "@/lib/content-blocks-service";
 import { iconFor } from "@/lib/icon-map";
 import { prisma } from "@/lib/prisma";
+import { withLocale } from "@/lib/locale";
+import { getLocale } from "@/lib/locale-server";
 
 export const dynamic = "force-dynamic";
 
@@ -44,14 +46,126 @@ export const metadata: Metadata = {
     "Perfil del IUCE, equipo de dirección, miembros, ubicación en el Edificio Solís, instalaciones y edificio histórico.",
 };
 
-const subnav = [
-  { id: "perfil", label: "Perfil" },
-  { id: "equipo", label: "Equipo de dirección" },
-  { id: "miembros", label: "Miembros" },
-  { id: "ubicacion", label: "Ubicación" },
-  { id: "instalaciones", label: "Instalaciones" },
-  { id: "edificio", label: "Edificio histórico" },
-];
+// Textos fijos de la página en ambos idiomas (el contenido editable llega ya
+// traducido desde los servicios de bloques; los datos del gestor no se tocan).
+const T = {
+  es: {
+    breadcrumbInicio: "Inicio",
+    breadcrumbActual: "Instituto",
+    titulo: "El Instituto",
+    subnavPerfil: "Perfil",
+    subnavEquipo: "Equipo de dirección",
+    subnavMiembros: "Miembros",
+    subnavUbicacion: "Ubicación",
+    subnavInstalaciones: "Instalaciones",
+    subnavEdificio: "Edificio histórico",
+    perfilTitulo: "Perfil",
+    funcionesTitulo: "Funciones del Instituto",
+    reglamentoNota:
+      "Art. 3 del Reglamento del IUCE, aprobado por Consejo de Gobierno de 28 de junio de 2023.",
+    descargarReglamento: "Descargar reglamento",
+    honorifico: "Dra.",
+    directoraIuce: "Directora del IUCE",
+    conocerRiie: "Conocer la RIIE",
+    equipoTitulo: "Equipo de dirección",
+    equipoContacto:
+      "Para contactar por teléfono: 923 294 634 (Secretaría del IUCE) o 923 294 500 (centralita de la USAL) seguido de la extensión.",
+    ptgasTitulo: "Personal técnico y de administración",
+    ptgasAbbr: "Personal Técnico, de Gestión y de Administración y Servicios",
+    escribir: "Escribir",
+    miembrosTitulo: "Miembros",
+    miembrosIntro:
+      "Investigadoras e investigadores de todas las ramas de conocimiento vinculados al Instituto. El listado se gestiona desde el panel de administración.",
+    ubicacionTitulo: "Ubicación",
+    contactoDireccion: "Dirección",
+    contactoDireccionLineas: [
+      "Paseo de Canalejas, 169 · Edificio Solís, 1.ª planta",
+      "37008 Salamanca",
+    ] as readonly string[],
+    contactoTelefono: "Teléfono",
+    contactoTelefonoLineas: [
+      "+34 923 294 634 (Secretaría)",
+      "+34 923 294 500 (centralita USAL + extensión)",
+    ] as readonly string[],
+    correoTitulo: "Correo electrónico",
+    rorTitulo: "Identificador ROR",
+    mapaTitulo: "Mapa — cómo llegar al Edificio Solís",
+    instalacionesTitulo: "Instalaciones",
+    instalacionesIntro:
+      "Espacios de investigación, formación y trabajo en la primera planta del Edificio Solís.",
+    reservar: "Reservar un espacio ↗",
+    fotoPrefijo: "Foto",
+    edificioTitulo: "Edificio histórico",
+    altEdificio: "Fachada del Edificio Solís, sede del IUCE",
+    videoTitulo: "El Colegio de Huérfanos, sede histórica del IUCE",
+    paraSaberMas: "Para saber más",
+    altFoto: (name: string) => `Fotografía de ${name}`,
+    orcidLabel: (name: string) => `ORCID de ${name}`,
+  },
+  en: {
+    breadcrumbInicio: "Home",
+    breadcrumbActual: "Institute",
+    titulo: "The Institute",
+    subnavPerfil: "Profile",
+    subnavEquipo: "Management team",
+    subnavMiembros: "Members",
+    subnavUbicacion: "Location",
+    subnavInstalaciones: "Facilities",
+    subnavEdificio: "Historic building",
+    perfilTitulo: "Profile",
+    funcionesTitulo: "Functions of the Institute",
+    reglamentoNota:
+      "Art. 3 of the IUCE Regulations, approved by the Governing Council on 28 June 2023.",
+    descargarReglamento: "Download the regulations",
+    honorifico: "Dr",
+    directoraIuce: "Director of the IUCE",
+    conocerRiie: "About RIIE",
+    equipoTitulo: "Management team",
+    equipoContacto:
+      "To reach us by phone, call 923 294 634 (IUCE Administrative Office) or 923 294 500 (USAL switchboard) followed by the extension.",
+    ptgasTitulo: "Technical and administrative staff",
+    ptgasAbbr: "Technical, Management, Administration and Services Staff",
+    escribir: "Write",
+    miembrosTitulo: "Members",
+    miembrosIntro:
+      "Researchers from every branch of knowledge affiliated with the Institute. The list is managed from the administration panel.",
+    ubicacionTitulo: "Location",
+    contactoDireccion: "Address",
+    contactoDireccionLineas: [
+      "Paseo de Canalejas, 169 · Solís Building, 1st floor",
+      "37008 Salamanca",
+    ] as readonly string[],
+    contactoTelefono: "Phone",
+    contactoTelefonoLineas: [
+      "+34 923 294 634 (Administrative Office)",
+      "+34 923 294 500 (USAL switchboard + extension)",
+    ] as readonly string[],
+    correoTitulo: "Email",
+    rorTitulo: "ROR identifier",
+    mapaTitulo: "Map — how to get to the Solís Building",
+    instalacionesTitulo: "Facilities",
+    instalacionesIntro:
+      "Research, training and work spaces on the first floor of the Solís Building.",
+    reservar: "Book a space ↗",
+    fotoPrefijo: "Photo",
+    edificioTitulo: "Historic building",
+    altEdificio: "Façade of the Solís Building, home of the IUCE",
+    videoTitulo: "The Colegio de Huérfanos, historic seat of the IUCE",
+    paraSaberMas: "Further reading",
+    altFoto: (name: string) => `Photograph of ${name}`,
+    orcidLabel: (name: string) => `${name}'s ORCID`,
+  },
+} as const;
+
+// Cargos que llegan de la BD en español, con su equivalente para la web en
+// inglés (los datos del gestor no se traducen; solo su presentación).
+const ROLES_EN: Record<string, string> = {
+  Directora: "Director",
+  Subdirector: "Deputy Director",
+  "Secretario Académico": "Academic Secretary",
+  "Secretaría Administrativa": "Administrative Office",
+  "Técnico Informático": "IT Technician",
+};
 
 
 
@@ -190,21 +304,33 @@ async function getMiembros(): Promise<PublicMember[]> {
   }));
 }
 
-const contacto = [
-  {
-    icon: MapPin,
-    title: "Dirección",
-    lines: ["Paseo de Canalejas, 169 · Edificio Solís, 1.ª planta", "37008 Salamanca"],
-  },
-  {
-    icon: Phone,
-    title: "Teléfono",
-    lines: ["+34 923 294 634 (Secretaría)", "+34 923 294 500 (centralita USAL + extensión)"],
-  },
-];
-
-
 export default async function InstitutoPage() {
+  const locale = getLocale();
+  const t = T[locale];
+  const href = (path: string) => withLocale(path, locale);
+  // Cargos de BD (en español) mostrados con su equivalente en inglés.
+  const roleLabel = (role: string) =>
+    locale === "en" ? (ROLES_EN[role] ?? role) : role;
+  const subnav = [
+    { id: "perfil", label: t.subnavPerfil },
+    { id: "equipo", label: t.subnavEquipo },
+    { id: "miembros", label: t.subnavMiembros },
+    { id: "ubicacion", label: t.subnavUbicacion },
+    { id: "instalaciones", label: t.subnavInstalaciones },
+    { id: "edificio", label: t.subnavEdificio },
+  ];
+  const contacto = [
+    {
+      icon: MapPin,
+      title: t.contactoDireccion,
+      lines: t.contactoDireccionLineas,
+    },
+    {
+      icon: Phone,
+      title: t.contactoTelefono,
+      lines: t.contactoTelefonoLineas,
+    },
+  ];
   // Bloques editables desde el panel (Contenido → Páginas) + datos del gestor
   const [
     heroParrafo,
@@ -245,13 +371,18 @@ export default async function InstitutoPage() {
       <section className="border-b border-gray-200 bg-surface-card">
         <div className="mx-auto max-w-6xl px-6 pt-12">
           <div className="mb-3.5">
-            <Breadcrumb items={[{ label: "Inicio", href: "/" }, { label: "Instituto" }]} />
+            <Breadcrumb
+              items={[
+                { label: t.breadcrumbInicio, href: href("/") },
+                { label: t.breadcrumbActual },
+              ]}
+            />
           </div>
           <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
             Instituto Universitario de Ciencias de la Educación
           </p>
           <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
-            El Instituto
+            {t.titulo}
           </h1>
           <div
             className="page-block max-w-[70ch] text-base leading-relaxed text-gray-600"
@@ -269,7 +400,7 @@ export default async function InstitutoPage() {
           <Reveal from="left">
           <div>
             <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
-              Perfil
+              {t.perfilTitulo}
             </h2>
             <div
               className="page-block mb-7 text-base leading-relaxed text-gray-600"
@@ -277,7 +408,7 @@ export default async function InstitutoPage() {
               dangerouslySetInnerHTML={{ __html: perfilIntro }}
             />
             <h3 className="mb-3.5 text-lg font-semibold text-gray-900">
-              Funciones del Instituto
+              {t.funcionesTitulo}
             </h3>
             <ul className="mb-2.5 grid list-none grid-cols-1 gap-2.5 p-0 sm:grid-cols-2">
               {funciones.map((f, i) => (
@@ -294,8 +425,7 @@ export default async function InstitutoPage() {
               ))}
             </ul>
             <p className="text-xs text-gray-400">
-              Art. 3 del Reglamento del IUCE, aprobado por Consejo de Gobierno
-              de 28 de junio de 2023.
+              {t.reglamentoNota}
               {urlReglamento ? (
                 <>
                   {" "}
@@ -305,7 +435,7 @@ export default async function InstitutoPage() {
                     rel="noopener noreferrer"
                     className="text-iuce-blue hover:underline"
                   >
-                    Descargar reglamento
+                    {t.descargarReglamento}
                   </a>
                 </>
               ) : null}
@@ -339,9 +469,9 @@ export default async function InstitutoPage() {
                 )}
                 <div>
                   <p className="text-sm font-semibold text-gray-900">
-                    Dra. {directora?.name ?? "Susana Olmos Migueláñez"}
+                    {t.honorifico} {directora?.name ?? "Susana Olmos Migueláñez"}
                   </p>
-                  <p className="text-xs text-gray-500">Directora del IUCE</p>
+                  <p className="text-xs text-gray-500">{t.directoraIuce}</p>
                 </div>
               </div>
             </div>
@@ -388,7 +518,7 @@ export default async function InstitutoPage() {
                   rel="noopener noreferrer"
                   className="inline-flex flex-none items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
                 >
-                  Conocer la RIIE
+                  {t.conocerRiie}
                   <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                 </a>
               </div>
@@ -404,11 +534,10 @@ export default async function InstitutoPage() {
       >
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-            Equipo de dirección
+            {t.equipoTitulo}
           </h2>
           <p className="mb-7 max-w-[80ch] text-sm text-gray-500">
-            Para contactar por teléfono: 923 294 634 (Secretaría del IUCE) o 923
-            294 500 (centralita de la USAL) seguido de la extensión.
+            {t.equipoContacto}
           </p>
           <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {equipo.map((p, i) => (
@@ -417,7 +546,7 @@ export default async function InstitutoPage() {
                 {p.photo ? (
                   <Image
                     src={p.photo}
-                    alt={`Fotografía de ${p.name}`}
+                    alt={t.altFoto(p.name)}
                     width={96}
                     height={96}
                     className="h-24 w-24 flex-none rounded-full object-cover"
@@ -434,7 +563,7 @@ export default async function InstitutoPage() {
                     {p.name}
                   </p>
                   <p className="text-xs font-bold uppercase tracking-wider text-usal-red">
-                    {p.role}
+                    {roleLabel(p.role)}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -452,8 +581,8 @@ export default async function InstitutoPage() {
                       href={p.orcid}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`ORCID de ${p.name}`}
-                      title={`ORCID de ${p.name}`}
+                      aria-label={t.orcidLabel(p.name)}
+                      title={t.orcidLabel(p.name)}
                       className="flex h-7 w-7 flex-none items-center justify-center rounded-full border border-gray-200 text-[10px] font-bold text-[#A6CE39] transition-colors hover:border-[#A6CE39] hover:bg-[#A6CE39]/10"
                     >
                       iD
@@ -468,11 +597,8 @@ export default async function InstitutoPage() {
           {/* PTGAS: personal técnico y de administración del Instituto */}
           <div className="rounded-xl border border-gray-200 bg-surface-tinted px-6 py-5">
             <p className="mb-4 text-xs font-bold uppercase tracking-wider text-gray-500">
-              Personal técnico y de administración{" "}
-              <abbr
-                title="Personal Técnico, de Gestión y de Administración y Servicios"
-                className="no-underline"
-              >
+              {t.ptgasTitulo}{" "}
+              <abbr title={t.ptgasAbbr} className="no-underline">
                 (PTGAS)
               </abbr>
             </p>
@@ -485,7 +611,7 @@ export default async function InstitutoPage() {
                   {p.photo ? (
                     <Image
                       src={p.photo}
-                      alt={`Fotografía de ${p.name}`}
+                      alt={t.altFoto(p.name)}
                       width={56}
                       height={56}
                       className="h-14 w-14 flex-none rounded-full object-cover"
@@ -500,7 +626,7 @@ export default async function InstitutoPage() {
                       {p.name}
                     </p>
                     <p className="mt-0.5 text-xs text-gray-500">
-                      {p.role}
+                      {roleLabel(p.role)}
                       {p.email ? <> · {p.email}</> : null}
                       {p.role === "Secretaría Administrativa" ? (
                         <> · Ext. 4634</>
@@ -512,7 +638,7 @@ export default async function InstitutoPage() {
                       href={`mailto:${p.email}`}
                       className={buttonClassName({ variant: "outline", size: "sm" })}
                     >
-                      Escribir
+                      {t.escribir}
                     </a>
                   ) : null}
                 </div>
@@ -527,15 +653,13 @@ export default async function InstitutoPage() {
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="mb-6">
             <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-              Miembros
+              {t.miembrosTitulo}
             </h2>
             <p className="max-w-[70ch] text-sm text-gray-500">
-              Investigadoras e investigadores de todas las ramas de
-              conocimiento vinculados al Instituto. El listado se gestiona
-              desde el panel de administración.
+              {t.miembrosIntro}
             </p>
           </div>
-          <MembersGrid members={miembros} />
+          <MembersGrid members={miembros} locale={locale} />
         </div>
       </section>
 
@@ -547,7 +671,7 @@ export default async function InstitutoPage() {
         <div className="mx-auto grid max-w-6xl items-stretch gap-10 px-6 py-14 lg:grid-cols-[1fr_1.3fr]">
           <div>
             <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
-              Ubicación
+              {t.ubicacionTitulo}
             </h2>
             <div className="flex flex-col gap-[18px]">
               {contacto.map((c) => {
@@ -579,7 +703,7 @@ export default async function InstitutoPage() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-gray-900">
-                    Correo electrónico
+                    {t.correoTitulo}
                   </p>
                   <p className="mt-0.5 text-sm text-gray-600">
                     <a
@@ -597,7 +721,7 @@ export default async function InstitutoPage() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-gray-900">
-                    Identificador ROR
+                    {t.rorTitulo}
                   </p>
                   <p className="mt-0.5 text-sm text-gray-600">
                     <a
@@ -613,10 +737,7 @@ export default async function InstitutoPage() {
               </div>
             </div>
           </div>
-          <MapEmbed
-            title="Mapa — cómo llegar al Edificio Solís"
-            className="min-h-[320px] w-full"
-          />
+          <MapEmbed title={t.mapaTitulo} className="min-h-[320px] w-full" />
         </div>
       </section>
 
@@ -626,11 +747,10 @@ export default async function InstitutoPage() {
           <div className="mb-6 flex items-baseline justify-between gap-6">
             <div>
               <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-                Instalaciones
+                {t.instalacionesTitulo}
               </h2>
               <p className="max-w-[70ch] text-sm text-gray-500">
-                Espacios de investigación, formación y trabajo en la primera
-                planta del Edificio Solís.
+                {t.instalacionesIntro}
               </p>
             </div>
             <a
@@ -639,7 +759,7 @@ export default async function InstitutoPage() {
               rel="noopener noreferrer"
               className="flex-none text-sm font-medium text-iuce-blue hover:underline"
             >
-              Reservar un espacio ↗
+              {t.reservar}
             </a>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -658,7 +778,7 @@ export default async function InstitutoPage() {
                   </div>
                 ) : (
                   <ImagePlaceholder
-                    label={`Foto — ${String(f.titulo)}`}
+                    label={`${t.fotoPrefijo} — ${String(f.titulo)}`}
                     rounded="none"
                     className="h-[140px] w-full border-x-0 border-t-0"
                   />
@@ -686,7 +806,7 @@ export default async function InstitutoPage() {
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-16 pt-14 lg:grid-cols-[1fr_1.2fr]">
           <div>
             <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
-              Edificio histórico
+              {t.edificioTitulo}
             </h2>
             <div
               className="page-block text-base leading-relaxed text-gray-600"
@@ -697,7 +817,7 @@ export default async function InstitutoPage() {
           <Reveal from="right" className="relative h-[340px] w-full overflow-hidden rounded-xl">
             <Image
               src="/images/edificio-solis.jpg"
-              alt="Fachada del Edificio Solís, sede del IUCE"
+              alt={t.altEdificio}
               fill
               sizes="(max-width: 1024px) 100vw, 55vw"
               className="object-cover"
@@ -710,17 +830,14 @@ export default async function InstitutoPage() {
           <div className="mx-auto grid max-w-6xl items-start gap-12 px-6 pb-16 lg:grid-cols-[1.2fr_1fr]">
             {urlVideoHistoria ? (
               <Reveal>
-                <VideoEmbed
-                  src={urlVideoHistoria}
-                  title="El Colegio de Huérfanos, sede histórica del IUCE"
-                />
+                <VideoEmbed src={urlVideoHistoria} title={t.videoTitulo} />
               </Reveal>
             ) : null}
             {edificioBiblio ? (
               <Reveal from="right">
                 <div className="rounded-xl border border-gray-200 bg-surface-page p-6">
                   <h3 className="mb-3 text-base font-semibold text-gray-900">
-                    Para saber más
+                    {t.paraSaberMas}
                   </h3>
                   <div
                     className="page-block text-sm leading-relaxed text-gray-600 [&_li]:mb-2.5 [&_ul]:list-disc [&_ul]:pl-5"

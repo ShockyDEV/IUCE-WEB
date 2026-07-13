@@ -22,6 +22,27 @@ export default auth((req) => {
   const role = req.auth?.user?.role as string | undefined;
   const isApi = pathname.startsWith("/api/");
 
+  // Versión en inglés: /en/* se reescribe a la ruta española con la cabecera
+  // x-locale=en (getLocale() la lee en los server components). El área de
+  // miembros, el panel y las API no tienen versión EN.
+  if (pathname === "/en" || pathname.startsWith("/en/")) {
+    const rest = pathname === "/en" ? "/" : pathname.slice(3);
+    if (
+      rest.startsWith("/admin") ||
+      rest.startsWith("/api") ||
+      rest.startsWith("/miembros") ||
+      rest.startsWith("/auth") ||
+      rest.startsWith("/_next")
+    ) {
+      return NextResponse.redirect(new URL(rest + req.nextUrl.search, req.url));
+    }
+    const url = req.nextUrl.clone();
+    url.pathname = rest;
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set("x-locale", "en");
+    return NextResponse.rewrite(url, { request: { headers: requestHeaders } });
+  }
+
   if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
     if (!req.auth) {
       if (isApi) {
@@ -59,5 +80,7 @@ export const config = {
     "/admin/:path*",
     "/api/admin/:path*",
     "/api/intranet/files/:path*",
+    "/en",
+    "/en/:path*",
   ],
 };
