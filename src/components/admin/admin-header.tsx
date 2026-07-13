@@ -5,20 +5,20 @@ import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
 
 const TITLES: Array<[prefix: string, title: string]> = [
-  ["/admin/news/new", "Nueva noticia"],
-  ["/admin/news/", "Editar noticia"],
-  ["/admin/news", "Noticias"],
-  ["/admin/pages", "Contenido de páginas"],
-  ["/admin/members", "Equipo y miembros"],
-  ["/admin/groups", "Grupos de investigación"],
-  ["/admin/projects", "Proyectos de investigación"],
-  ["/admin/events", "Eventos"],
-  ["/admin/files", "Archivos"],
-  ["/admin/messages", "Mensajes de contacto"],
-  ["/admin/settings", "Configuración"],
-  ["/admin/intranet/users", "Área de miembros — Usuarios autorizados"],
-  ["/admin/intranet/files", "Área de miembros — Documentos internos"],
-  ["/admin", "Dashboard"],
+  ["/backstage/news/new", "Nueva noticia"],
+  ["/backstage/news/", "Editar noticia"],
+  ["/backstage/news", "Noticias"],
+  ["/backstage/pages", "Contenido de páginas"],
+  ["/backstage/members", "Equipo y miembros"],
+  ["/backstage/groups", "Grupos de investigación"],
+  ["/backstage/projects", "Proyectos de investigación"],
+  ["/backstage/events", "Eventos"],
+  ["/backstage/files", "Archivos"],
+  ["/backstage/messages", "Mensajes de contacto"],
+  ["/backstage/settings", "Configuración"],
+  ["/backstage/intranet/users", "Área de miembros — Usuarios autorizados"],
+  ["/backstage/intranet/files", "Área de miembros — Documentos internos"],
+  ["/backstage", "Dashboard"],
 ];
 
 const ROLE_LABELS: Record<string, string> = {

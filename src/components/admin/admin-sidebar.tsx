@@ -26,34 +26,34 @@ const NAV_GROUPS = [
   {
     title: null,
     items: [
-      { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
-      { label: "Noticias", icon: Newspaper, href: "/admin/news" },
+      { label: "Dashboard", icon: LayoutDashboard, href: "/backstage" },
+      { label: "Noticias", icon: Newspaper, href: "/backstage/news" },
     ],
   },
   {
     title: "Contenido",
     items: [
-      { label: "Páginas", icon: FileText, href: "/admin/pages" },
-      { label: "Archivos", icon: FolderOpen, href: "/admin/files" },
+      { label: "Páginas", icon: FileText, href: "/backstage/pages" },
+      { label: "Archivos", icon: FolderOpen, href: "/backstage/files" },
     ],
   },
   {
     title: "Instituto",
     items: [
-      { label: "Equipo y miembros", icon: Users, href: "/admin/members" },
+      { label: "Equipo y miembros", icon: Users, href: "/backstage/members" },
       {
         label: "Grupos de investigación",
         icon: Microscope,
-        href: "/admin/groups",
+        href: "/backstage/groups",
       },
-      { label: "Proyectos", icon: FlaskConical, href: "/admin/projects" },
+      { label: "Proyectos", icon: FlaskConical, href: "/backstage/projects" },
     ],
   },
   {
     title: "Actividad",
     items: [
-      { label: "Eventos", icon: Calendar, href: "/admin/events" },
-      { label: "Mensajes de contacto", icon: Inbox, href: "/admin/messages" },
+      { label: "Eventos", icon: Calendar, href: "/backstage/events" },
+      { label: "Mensajes de contacto", icon: Inbox, href: "/backstage/messages" },
     ],
   },
   {
@@ -62,23 +62,23 @@ const NAV_GROUPS = [
       {
         label: "Usuarios autorizados",
         icon: KeyRound,
-        href: "/admin/intranet/users",
+        href: "/backstage/intranet/users",
       },
       {
         label: "Documentos internos",
         icon: FolderLock,
-        href: "/admin/intranet/files",
+        href: "/backstage/intranet/files",
       },
     ],
   },
   {
     title: "Sistema",
-    items: [{ label: "Configuración", icon: Settings, href: "/admin/settings" }],
+    items: [{ label: "Configuración", icon: Settings, href: "/backstage/settings" }],
   },
 ];
 
 function isActive(pathname: string, href: string) {
-  if (href === "/admin") return pathname === "/admin";
+  if (href === "/backstage") return pathname === "/backstage";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -88,7 +88,7 @@ export function AdminSidebar() {
   return (
     <aside className="fixed bottom-0 left-0 top-0 z-30 flex w-[260px] flex-col border-r border-gray-200 bg-white">
       <div className="border-b border-gray-100 px-6 py-[18px]">
-        <Link href="/admin" className="flex flex-col gap-0.5">
+        <Link href="/backstage" className="flex flex-col gap-0.5">
           <Image
             src="/images/iuce-logo.png"
             alt="IUCE"

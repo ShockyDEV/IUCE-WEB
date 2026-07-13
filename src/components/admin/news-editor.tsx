@@ -124,7 +124,7 @@ export function NewsEditor({
       if (!res.ok) throw new Error(json.error ?? "No se pudo guardar");
 
       toast.success("Guardado");
-      router.push("/admin/news");
+      router.push("/backstage/news");
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "No se pudo guardar");
@@ -137,7 +137,7 @@ export function NewsEditor({
     <div className="flex flex-col gap-6">
       <div>
         <Link
-          href="/admin/news"
+          href="/backstage/news"
           className={cn(
             buttonClassName({ variant: "ghost", size: "sm" }),
             "gap-2",
@@ -284,7 +284,7 @@ export function NewsEditor({
                 )}
               />
               <Link
-                href="/admin/files"
+                href="/backstage/files"
                 aria-label="Elegir archivo"
                 title="Elegir archivo (Archivos)"
                 className="flex h-10 w-10 flex-none items-center justify-center rounded-md border border-gray-300 bg-white text-gray-500 transition-colors hover:bg-gray-50"
@@ -378,7 +378,7 @@ export function NewsEditor({
             <Button variant="primary" onClick={handleSave} disabled={saving}>
               {saving ? "Guardando…" : "Guardar cambios"}
             </Button>
-            <Link href="/admin/news" className={buttonClassName({ variant: "ghost" })}>
+            <Link href="/backstage/news" className={buttonClassName({ variant: "ghost" })}>
               Cancelar
             </Link>
             <span className="inline-flex items-center gap-1.5 text-[11px] text-gray-400">

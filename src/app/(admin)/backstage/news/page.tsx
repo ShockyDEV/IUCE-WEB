@@ -34,7 +34,7 @@ export default async function AdminNewsPage() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-end">
         <Link
-          href="/admin/news/new"
+          href="/backstage/news/new"
           className={buttonClassName({ variant: "primary" })}
         >
           + Nueva noticia

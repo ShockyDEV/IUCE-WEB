@@ -100,7 +100,7 @@ export function NewsTable({ rows }: Readonly<{ rows: NewsRow[] }>) {
               <td className="px-6 py-3">
                 <div className="flex gap-1">
                   <Link
-                    href={`/admin/news/${row.id}`}
+                    href={`/backstage/news/${row.id}`}
                     aria-label="Editar"
                     className="flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
                   >

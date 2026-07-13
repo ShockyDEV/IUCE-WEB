@@ -6,7 +6,7 @@ import { authConfig } from "@/auth.config";
  * Protección por roles. Usa solo la configuración edge-safe (sin Prisma):
  * la verificación es del JWT de sesión.
  *
- * - /admin/** y /api/admin/**: solo ADMIN o SUPER_ADMIN. Una sesión de
+ * - /backstage/** y /api/admin/**: solo ADMIN o SUPER_ADMIN. Una sesión de
  *   intranet NO da acceso al panel.
  * - /api/intranet/files/**: cualquier sesión (INTRANET o administración).
  *   La página /miembros (área de miembros) hace su propia comprobación para
@@ -28,7 +28,7 @@ export default auth((req) => {
   if (pathname === "/en" || pathname.startsWith("/en/")) {
     const rest = pathname === "/en" ? "/" : pathname.slice(3);
     if (
-      rest.startsWith("/admin") ||
+      rest.startsWith("/backstage") ||
       rest.startsWith("/api") ||
       rest.startsWith("/miembros") ||
       rest.startsWith("/auth") ||
@@ -43,7 +43,7 @@ export default auth((req) => {
     return NextResponse.rewrite(url, { request: { headers: requestHeaders } });
   }
 
-  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+  if (pathname.startsWith("/backstage") || pathname.startsWith("/api/admin")) {
     if (!req.auth) {
       if (isApi) {
         return NextResponse.json({ error: "No autorizado" }, { status: 401 });
@@ -77,7 +77,7 @@ export default auth((req) => {
 
 export const config = {
   matcher: [
-    "/admin/:path*",
+    "/backstage/:path*",
     "/api/admin/:path*",
     "/api/intranet/files/:path*",
     "/en",

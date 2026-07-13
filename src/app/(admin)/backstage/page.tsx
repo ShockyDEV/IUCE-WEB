@@ -194,25 +194,25 @@ export default async function AdminDashboardPage() {
         </div>
         <div className="flex flex-wrap gap-3 px-6 pb-6 pt-5">
           <Link
-            href="/admin/news/new"
+            href="/backstage/news/new"
             className={buttonClassName({ variant: "primary" })}
           >
             + Nueva noticia
           </Link>
           <Link
-            href="/admin/events"
+            href="/backstage/events"
             className={buttonClassName({ variant: "secondary" })}
           >
             Nuevo evento
           </Link>
           <Link
-            href="/admin/files"
+            href="/backstage/files"
             className={buttonClassName({ variant: "outline" })}
           >
             Subir archivo
           </Link>
           <Link
-            href="/admin/pages"
+            href="/backstage/pages"
             className={buttonClassName({ variant: "ghost" })}
           >
             Editar contenido de páginas

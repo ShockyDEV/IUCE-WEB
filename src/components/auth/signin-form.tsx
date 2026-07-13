@@ -35,7 +35,7 @@ export function SignInForm() {
       setError("Credenciales no válidas. Comprueba el correo y la contraseña.");
       return;
     }
-    router.push(searchParams.get("callbackUrl") ?? "/admin");
+    router.push(searchParams.get("callbackUrl") ?? "/backstage");
     router.refresh();
   }
 

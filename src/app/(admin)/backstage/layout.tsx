@@ -13,7 +13,7 @@ export default async function AdminLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const session = await auth();
   if (!session?.user) {
-    redirect("/auth/signin?callbackUrl=/admin");
+    redirect("/auth/signin?callbackUrl=/backstage");
   }
 
   return (
