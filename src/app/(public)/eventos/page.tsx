@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Calendar, CalendarPlus, ChevronRight, MapPin, Users2 } from "lucide-react";
+import { Calendar, ChevronRight, MapPin, Users2 } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { CoverImage } from "@/components/news/cover-image";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
@@ -269,15 +269,6 @@ export default async function EventosPage() {
                       className={buttonClassName({ variant: "outline" })}
                     >
                       Web del evento ↗
-                    </a>
-                  ) : null}
-                  {featured.id ? (
-                    <a
-                      href={`/api/events/${featured.id}/ics`}
-                      className="inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
-                    >
-                      <CalendarPlus className="h-4 w-4" aria-hidden="true" />
-                      Añadir a mi calendario
                     </a>
                   ) : null}
                 </div>

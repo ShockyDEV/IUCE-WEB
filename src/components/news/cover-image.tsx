@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { cn } from "@/lib/cn";
 
 interface CoverImageProps {
@@ -15,8 +14,10 @@ interface CoverImageProps {
 }
 
 /**
- * Portada de noticia: imagen real si existe, hueco ImagePlaceholder si no
- * (45 noticias históricas no traían imagen).
+ * Portada de noticia. Si no hay imagen (47 noticias históricas tampoco la
+ * tenían en la web antigua), se muestra una portada de marca: degradado
+ * suave con el logo del IUCE en filigrana, para que la tarjeta se vea
+ * intencionada y no "rota".
  */
 export function CoverImage({
   src,
@@ -28,11 +29,29 @@ export function CoverImage({
 }: Readonly<CoverImageProps>) {
   if (!src) {
     return (
-      <ImagePlaceholder
-        label={alt}
-        rounded={rounded === "xl" ? "lg" : "none"}
-        className={cn("border-0", className)}
-      />
+      <div
+        aria-hidden="true"
+        className={cn(
+          "relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-iuce-blue-pale via-surface-card to-iuce-blue-pale",
+          rounded === "xl" && "rounded-xl",
+          className,
+        )}
+      >
+        <Image
+          src="/images/iuce-logo.png"
+          alt=""
+          width={800}
+          height={362}
+          className="h-auto w-[42%] max-w-[210px] opacity-[0.18] saturate-[0.6] dark:hidden"
+        />
+        <Image
+          src="/images/iuce-logo-white.webp"
+          alt=""
+          width={640}
+          height={196}
+          className="hidden h-auto w-[46%] max-w-[220px] opacity-[0.22] dark:block"
+        />
+      </div>
     );
   }
   return (
