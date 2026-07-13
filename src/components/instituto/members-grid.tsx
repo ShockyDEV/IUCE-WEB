@@ -4,11 +4,14 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Search } from "lucide-react";
 import { InitialsAvatar } from "@/components/ui/initials-avatar";
+import { CopyEmail } from "@/components/ui/copy-email";
 import { pick, type Locale } from "@/lib/locale";
 
 export interface PublicMember {
   name: string;
   area: string;
+  /** Correo (copiable al portapapeles). */
+  email: string | null;
   photo: string | null;
   /** Perfil en el Portal de Investigación de la USAL (si consta). */
   portalUrl: string | null;
@@ -81,58 +84,62 @@ export function MembersGrid({
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((m) => {
-          const persona = (
+          const avatar = m.photo ? (
+            <Image
+              src={m.photo}
+              alt=""
+              width={64}
+              height={64}
+              className="h-16 w-16 flex-none rounded-full object-cover"
+            />
+          ) : (
+            <InitialsAvatar
+              initials={initialsOf(m.name)}
+              className="h-16 w-16 flex-none text-lg"
+            />
+          );
+          const nombreArea = (
             <>
-              {m.photo ? (
-                <Image
-                  src={m.photo}
-                  alt=""
-                  width={64}
-                  height={64}
-                  className="h-16 w-16 flex-none rounded-full object-cover"
-                />
-              ) : (
-                <InitialsAvatar
-                  initials={initialsOf(m.name)}
-                  className="h-16 w-16 text-lg"
-                />
-              )}
-              <div className="min-w-0">
-                <p className="text-[15px] font-semibold leading-snug text-gray-900 transition-colors group-hover/persona:text-iuce-blue">
-                  {m.name}
-                </p>
-                <p className="mt-0.5 truncate text-[13px] text-gray-500">
-                  {m.area}
-                </p>
-              </div>
+              <p className="text-[15px] font-semibold leading-snug text-gray-900 transition-colors group-hover/persona:text-iuce-blue">
+                {m.name}
+              </p>
+              <p className="mt-0.5 truncate text-[13px] text-gray-500">
+                {m.area}
+              </p>
             </>
           );
           return (
             <div
               key={m.name}
-              className="card-lift flex items-center gap-3 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:border-brand-400 hover:shadow-md"
+              className="card-lift flex items-start gap-3 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:border-brand-400 hover:shadow-md"
             >
-              {/* Foto + nombre enlazan al perfil del Portal de Investigación
-                  (como en la web original) */}
-              {m.portalUrl ? (
-                <a
-                  href={m.portalUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={pick(
-                    locale,
-                    `Producción científica de ${m.name} (Portal de Investigación USAL)`,
-                    `${m.name}'s scientific output (USAL Research Portal)`,
-                  )}
-                  className="group/persona flex min-w-0 flex-1 items-center gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
-                >
-                  {persona}
-                </a>
-              ) : (
-                <div className="flex min-w-0 flex-1 items-center gap-4">
-                  {persona}
-                </div>
-              )}
+              {avatar}
+              <div className="min-w-0 flex-1">
+                {/* Nombre + área enlazan al perfil del Portal de Investigación
+                    (como en la web original) */}
+                {m.portalUrl ? (
+                  <a
+                    href={m.portalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={pick(
+                      locale,
+                      `Producción científica de ${m.name} (Portal de Investigación USAL)`,
+                      `${m.name}'s scientific output (USAL Research Portal)`,
+                    )}
+                    className="group/persona block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
+                  >
+                    {nombreArea}
+                  </a>
+                ) : (
+                  <div>{nombreArea}</div>
+                )}
+                {m.email ? (
+                  <div className="mt-1.5">
+                    <CopyEmail email={m.email} locale={locale} />
+                  </div>
+                ) : null}
+              </div>
               {m.orcid ? (
                 <a
                   href={m.orcid}

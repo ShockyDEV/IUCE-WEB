@@ -22,6 +22,7 @@ export const memberInputSchema = z.object({
   name: z.string().trim().min(2).max(200),
   area: z.string().trim().max(300).optional().nullable(),
   email: z.string().trim().email().max(200).optional().nullable().or(z.literal("")),
+  extension: z.string().trim().max(20).optional().nullable(),
   role: z.string().trim().max(100).optional().nullable(),
   photo: z.string().trim().max(500).optional().nullable(),
   portalUrl: z

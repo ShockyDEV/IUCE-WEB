@@ -27,7 +27,7 @@ import {
   MembersGrid,
   type PublicMember,
 } from "@/components/instituto/members-grid";
-import { buttonClassName } from "@/components/ui/button";
+import { CopyEmail } from "@/components/ui/copy-email";
 import {
   getBlock,
   getBlockText,
@@ -175,6 +175,7 @@ interface DirectionMember {
   name: string;
   role: string;
   email: string | null;
+  extension: string | null;
   photo: string | null;
   orcid: string | null;
 }
@@ -185,6 +186,7 @@ const direccionFallback: DirectionMember[] = [
     name: "Susana Olmos Migueláñez",
     role: "Directora",
     email: "solmos@usal.es",
+    extension: null,
     photo: null,
     orcid: "https://orcid.org/0000-0002-0816-4179",
   },
@@ -192,6 +194,7 @@ const direccionFallback: DirectionMember[] = [
     name: "Francisco José García Peñalvo",
     role: "Subdirector",
     email: "fgarcia@usal.es",
+    extension: null,
     photo: null,
     orcid: "https://orcid.org/0000-0001-9987-5584",
   },
@@ -199,6 +202,7 @@ const direccionFallback: DirectionMember[] = [
     name: "Javier Félix Merchán Sánchez-Jara",
     role: "Secretario Académico",
     email: "javiermerchan@usal.es",
+    extension: null,
     photo: null,
     orcid: "https://orcid.org/0000-0003-1828-5182",
   },
@@ -214,6 +218,7 @@ const ptgasFallback: DirectionMember[] = [
     name: "María Begoña Sánchez Martín",
     role: "Secretaría Administrativa",
     email: "begosan@usal.es",
+    extension: "4634",
     photo: null,
     orcid: null,
   },
@@ -221,6 +226,7 @@ const ptgasFallback: DirectionMember[] = [
     name: "Enrique González Gutiérrez",
     role: "Técnico Informático",
     email: "iuce.tecnico@usal.es",
+    extension: "1903",
     photo: null,
     orcid: null,
   },
@@ -243,6 +249,7 @@ async function getDireccion(): Promise<{
           name: m.name,
           role: m.role!,
           email: m.email,
+          extension: m.extension,
           photo: m.photo,
           orcid: m.orcid,
         }));
@@ -290,6 +297,7 @@ async function getMiembros(): Promise<PublicMember[]> {
       return rows.map((m) => ({
         name: m.name,
         area: [m.role, m.area].filter(Boolean).join(" · "),
+        email: m.email,
         photo: m.photo,
         portalUrl: m.portalUrl,
         orcid: m.orcid,
@@ -300,6 +308,7 @@ async function getMiembros(): Promise<PublicMember[]> {
   }
   return miembrosFallback.map((m) => ({
     ...m,
+    email: null,
     photo: null,
     portalUrl: null,
     orcid: null,
@@ -593,15 +602,7 @@ export default async function InstitutoPage() {
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  {p.email ? (
-                    <a
-                      href={`mailto:${p.email}`}
-                      className="inline-flex items-center gap-1.5 text-sm text-iuce-blue hover:underline"
-                    >
-                      <Mail className="h-3.5 w-3.5" aria-hidden="true" />
-                      {p.email}
-                    </a>
-                  ) : null}
+                  {p.email ? <CopyEmail email={p.email} locale={locale} /> : null}
                   {p.orcid ? (
                     <a
                       href={p.orcid}
@@ -653,20 +654,14 @@ export default async function InstitutoPage() {
                     </p>
                     <p className="mt-0.5 text-xs text-gray-500">
                       {roleLabel(p.role)}
-                      {p.email ? <> · {p.email}</> : null}
-                      {p.role === "Secretaría Administrativa" ? (
-                        <> · Ext. 4634</>
-                      ) : null}
+                      {p.extension ? <> · Ext. {p.extension}</> : null}
                     </p>
+                    {p.email ? (
+                      <div className="mt-1.5">
+                        <CopyEmail email={p.email} locale={locale} />
+                      </div>
+                    ) : null}
                   </div>
-                  {p.email ? (
-                    <a
-                      href={`mailto:${p.email}`}
-                      className={buttonClassName({ variant: "outline", size: "sm" })}
-                    >
-                      {t.escribir}
-                    </a>
-                  ) : null}
                 </div>
               ))}
             </div>

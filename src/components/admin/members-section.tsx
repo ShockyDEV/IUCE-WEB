@@ -17,6 +17,7 @@ export interface MemberRow {
   name: string;
   area: string | null;
   email: string | null;
+  extension: string | null;
   role: string | null;
   photo: string | null;
   portalUrl: string | null;
@@ -42,6 +43,7 @@ interface FormState {
   name: string;
   area: string;
   email: string;
+  extension: string;
   role: string;
   photo: string;
   portalUrl: string;
@@ -55,6 +57,7 @@ const EMPTY: FormState = {
   name: "",
   area: "",
   email: "",
+  extension: "",
   role: "",
   photo: "",
   portalUrl: "",
@@ -95,6 +98,7 @@ export function MembersSection({
         name: form.name,
         area: form.area || null,
         email: form.email || null,
+        extension: form.extension || null,
         role: form.role || null,
         photo: form.photo || null,
         portalUrl: form.portalUrl || "",
@@ -234,6 +238,7 @@ export function MembersSection({
                           name: row.name,
                           area: row.area ?? "",
                           email: row.email ?? "",
+                          extension: row.extension ?? "",
                           role: row.role ?? "",
                           photo: row.photo ?? "",
                           portalUrl: row.portalUrl ?? "",
@@ -311,6 +316,23 @@ export function MembersSection({
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  className={inputClass}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="m-ext" className={labelClass}>
+                  Extensión telefónica (opcional)
+                </label>
+                <input
+                  id="m-ext"
+                  type="text"
+                  value={form.extension}
+                  placeholder="p. ej. 4634"
+                  onChange={(e) =>
+                    setForm({ ...form, extension: e.target.value })
+                  }
                   className={inputClass}
                 />
               </div>

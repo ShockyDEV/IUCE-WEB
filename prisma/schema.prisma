@@ -70,6 +70,7 @@ model Member {
   name      String
   area      String?
   email     String?
+  extension String? // extensión telefónica interna (p. ej. 4634)
   photo     String?
   portalUrl String? // perfil en produccioncientifica.usal.es
   orcid     String? // p. ej. https://orcid.org/0000-0001-9987-5584

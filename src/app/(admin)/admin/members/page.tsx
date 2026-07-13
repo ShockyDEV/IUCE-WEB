@@ -23,6 +23,7 @@ export default async function AdminMembersPage() {
     name: m.name,
     area: m.area,
     email: m.email,
+    extension: m.extension,
     role: m.role,
     photo: m.photo,
     portalUrl: m.portalUrl,

@@ -32,6 +32,7 @@ export async function POST(request: Request) {
       name: d.name,
       area: d.area || null,
       email: d.email || null,
+      extension: d.extension || null,
       role: d.role || null,
       photo: d.photo || null,
       portalUrl: d.portalUrl || null,

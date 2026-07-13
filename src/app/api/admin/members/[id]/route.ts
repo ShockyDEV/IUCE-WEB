@@ -30,6 +30,7 @@ export async function PUT(request: Request, { params }: Params) {
       name: d.name,
       area: d.area || null,
       email: d.email || null,
+      extension: d.extension || null,
       role: d.role || null,
       photo: d.photo || null,
       portalUrl: d.portalUrl || null,
