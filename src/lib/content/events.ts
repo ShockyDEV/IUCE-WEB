@@ -31,15 +31,6 @@ export const featuredEvent = {
 
 export const upcomingEvents: EventItem[] = [
   {
-    title: "Seminario de investigación — Grupo GRIAL",
-    type: "Seminario",
-    startsAt: "2026-09-22",
-    location: "Sala de Juntas, IUCE",
-    meta: "Seminario · Sala de Juntas, IUCE · 12:00",
-    status: "UPCOMING",
-    dateBlock: { top: "22", bottom: "SEP" },
-  },
-  {
     title: "Semana Doctoral 2026 — Formación en la Sociedad del Conocimiento",
     type: "Jornada",
     startsAt: "2026-11-09",

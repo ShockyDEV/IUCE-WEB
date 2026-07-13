@@ -60,6 +60,7 @@ interface DirectionMember {
   role: string;
   email: string | null;
   photo: string | null;
+  orcid: string | null;
 }
 
 // Fallback si la BD no está disponible; en producción salen del gestor.
@@ -69,60 +70,74 @@ const direccionFallback: DirectionMember[] = [
     role: "Directora",
     email: "solmos@usal.es",
     photo: null,
+    orcid: "https://orcid.org/0000-0002-0816-4179",
   },
   {
     name: "Francisco José García Peñalvo",
     role: "Subdirector",
     email: "fgarcia@usal.es",
     photo: null,
+    orcid: "https://orcid.org/0000-0001-9987-5584",
   },
   {
     name: "Javier Félix Merchán Sánchez-Jara",
-    role: "Secretario",
+    role: "Secretario Académico",
     email: "javiermerchan@usal.es",
     photo: null,
+    orcid: "https://orcid.org/0000-0003-1828-5182",
   },
 ];
 
-const CARGOS_DIRECCION = ["Directora", "Subdirector", "Secretario"];
+const CARGOS_DIRECCION = ["Directora", "Subdirector", "Secretario Académico"];
 
-/** Equipo directivo y Secretaría administrativa, con sus fotos del gestor. */
+// PTGAS: Personal Técnico, de Gestión y de Administración y Servicios.
+const CARGOS_PTGAS = ["Secretaría Administrativa", "Técnico Informático"];
+
+const ptgasFallback: DirectionMember[] = [
+  {
+    name: "María Begoña Sánchez Martín",
+    role: "Secretaría Administrativa",
+    email: "begosan@usal.es",
+    photo: null,
+    orcid: null,
+  },
+  {
+    name: "Enrique González Gutiérrez",
+    role: "Técnico Informático",
+    email: "iuce.tecnico@usal.es",
+    photo: null,
+    orcid: null,
+  },
+];
+
+/** Equipo directivo y PTGAS (secretaría y técnico), con sus fotos del gestor. */
 async function getDireccion(): Promise<{
   equipo: DirectionMember[];
-  secretaria: DirectionMember | null;
+  ptgas: DirectionMember[];
 }> {
   try {
     const rows = await prisma.member.findMany({
       where: { role: { not: null }, active: true },
     });
-    const equipo = CARGOS_DIRECCION.map((cargo) =>
-      rows.find((m) => m.role === cargo),
-    )
-      .filter((m): m is NonNullable<typeof m> => Boolean(m))
-      .map((m) => ({
-        name: m.name,
-        role: m.role!,
-        email: m.email,
-        photo: m.photo,
-      }));
-    const sec = rows.find((m) => m.role?.startsWith("Secretaría"));
+    const pick = (cargos: string[]) =>
+      cargos
+        .map((cargo) => rows.find((m) => m.role === cargo))
+        .filter((m): m is NonNullable<typeof m> => Boolean(m))
+        .map((m) => ({
+          name: m.name,
+          role: m.role!,
+          email: m.email,
+          photo: m.photo,
+          orcid: m.orcid,
+        }));
+    const equipo = pick(CARGOS_DIRECCION);
     if (equipo.length > 0) {
-      return {
-        equipo,
-        secretaria: sec
-          ? {
-              name: sec.name,
-              role: sec.role!,
-              email: sec.email,
-              photo: sec.photo,
-            }
-          : null,
-      };
+      return { equipo, ptgas: pick(CARGOS_PTGAS) };
     }
   } catch {
     // BD no disponible
   }
-  return { equipo: direccionFallback, secretaria: null };
+  return { equipo: direccionFallback, ptgas: ptgasFallback };
 }
 
 // Miembros por defecto (si la BD no está disponible); en producción salen
@@ -202,7 +217,7 @@ export default async function InstitutoPage() {
     urlRiie,
     citaDirectora,
     miembros,
-    { equipo, secretaria },
+    { equipo, ptgas },
     funciones,
     hitos,
     instalaciones,
@@ -422,48 +437,87 @@ export default async function InstitutoPage() {
                     {p.role}
                   </p>
                 </div>
-                {p.email ? (
-                  <a
-                    href={`mailto:${p.email}`}
-                    className="inline-flex items-center gap-1.5 text-sm text-iuce-blue hover:underline"
-                  >
-                    <Mail className="h-3.5 w-3.5" aria-hidden="true" />
-                    {p.email}
-                  </a>
-                ) : null}
+                <div className="flex items-center gap-3">
+                  {p.email ? (
+                    <a
+                      href={`mailto:${p.email}`}
+                      className="inline-flex items-center gap-1.5 text-sm text-iuce-blue hover:underline"
+                    >
+                      <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+                      {p.email}
+                    </a>
+                  ) : null}
+                  {p.orcid ? (
+                    <a
+                      href={p.orcid}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`ORCID de ${p.name}`}
+                      title={`ORCID de ${p.name}`}
+                      className="flex h-7 w-7 flex-none items-center justify-center rounded-full border border-gray-200 text-[10px] font-bold text-[#A6CE39] transition-colors hover:border-[#A6CE39] hover:bg-[#A6CE39]/10"
+                    >
+                      iD
+                    </a>
+                  ) : null}
+                </div>
               </div>
               </Reveal>
             ))}
           </div>
-          <div className="flex flex-col items-start gap-4 rounded-xl border border-gray-200 bg-surface-tinted px-6 py-[18px] sm:flex-row sm:items-center">
-            {secretaria?.photo ? (
-              <Image
-                src={secretaria.photo}
-                alt={`Fotografía de ${secretaria.name}`}
-                width={56}
-                height={56}
-                className="h-14 w-14 flex-none rounded-full object-cover"
-              />
-            ) : (
-              <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-gray-200 bg-surface-card text-ink">
-                <Phone className="h-[18px] w-[18px]" aria-hidden="true" />
-              </span>
-            )}
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-gray-900">
-                Secretaría administrativa —{" "}
-                {secretaria?.name ?? "Begoña Sánchez Martín"}
-              </p>
-              <p className="mt-0.5 text-xs text-gray-500">
-                {secretaria?.email ?? "begosan@usal.es"} · Ext. 4634
-              </p>
+
+          {/* PTGAS: personal técnico y de administración del Instituto */}
+          <div className="rounded-xl border border-gray-200 bg-surface-tinted px-6 py-5">
+            <p className="mb-4 text-xs font-bold uppercase tracking-wider text-gray-500">
+              Personal técnico y de administración{" "}
+              <abbr
+                title="Personal Técnico, de Gestión y de Administración y Servicios"
+                className="no-underline"
+              >
+                (PTGAS)
+              </abbr>
+            </p>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+              {ptgas.map((p) => (
+                <div
+                  key={p.name}
+                  className="flex flex-col items-start gap-4 sm:flex-row sm:items-center"
+                >
+                  {p.photo ? (
+                    <Image
+                      src={p.photo}
+                      alt={`Fotografía de ${p.name}`}
+                      width={56}
+                      height={56}
+                      className="h-14 w-14 flex-none rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="flex h-14 w-14 flex-none items-center justify-center rounded-full border border-gray-200 bg-surface-card text-ink">
+                      <User className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-gray-900">
+                      {p.name}
+                    </p>
+                    <p className="mt-0.5 text-xs text-gray-500">
+                      {p.role}
+                      {p.email ? <> · {p.email}</> : null}
+                      {p.role === "Secretaría Administrativa" ? (
+                        <> · Ext. 4634</>
+                      ) : null}
+                    </p>
+                  </div>
+                  {p.email ? (
+                    <a
+                      href={`mailto:${p.email}`}
+                      className={buttonClassName({ variant: "outline", size: "sm" })}
+                    >
+                      Escribir
+                    </a>
+                  ) : null}
+                </div>
+              ))}
             </div>
-            <a
-              href={`mailto:${secretaria?.email ?? "begosan@usal.es"}`}
-              className={buttonClassName({ variant: "outline", size: "sm" })}
-            >
-              Escribir
-            </a>
           </div>
         </div>
       </section>

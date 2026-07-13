@@ -29,17 +29,19 @@ export const PAGE_BLOCKS: PageDef[] = [
       },
       {
         blockKey: "perfil-intro",
-        title: "Perfil — introducción (texto institucional completo)",
-        defaultContent: `<p>El Instituto Universitario de Ciencias de la Educación de la Universidad de Salamanca (IUCE) es un Instituto Interdisciplinar de Investigación, especializado en investigación en Educación Superior, creado con el fin de fomentar y llevar a la práctica acciones de investigación científica en Educación, de desarrollo tecnológico y de transferencia al ámbito educativo.</p>
-<p>En su origen, el Instituto se crea como centro de referencia nacional de investigación y apoyo a la formación inicial y permanente del profesorado no universitario (antiguo ICE); sin embargo, desde la década de los años 80, se perfila como un centro especializado exclusivamente en educación universitaria (IUCE).</p>
-<p>A raíz de la aprobación de la LOU (2001, modificada en 2007), los Institutos Universitarios de Investigación se conforman como piezas clave de desarrollo de las Universidades, en paralelo a las Escuelas, Facultades y Departamentos (art. 7, cap. I, Título II). El IUCE es verificado como Instituto de Investigación por la Agencia para la Calidad del Sistema Universitario de Castilla y León (ACSUCYL) y, por tanto, por la Consejería de Educación de la Junta de Castilla y León en junio de 2008.</p>
-<p>Durante este tiempo, el equipo interdisciplinar del IUCE ha logrado congregar a profesores e investigadores universitarios de todas las ramas de conocimiento, en torno a la investigación en procesos de formación en educación superior, centrada en concreto en el diseño, implementación y evaluación de recursos tecnológicos en educación. Se impulsan diversas líneas de investigación interdisciplinar sobre temas fundamentales para el desarrollo óptimo de la tarea universitaria, colaborando con otras universidades españolas, europeas y latinoamericanas, fundaciones, administraciones educativas, centros tecnológicos y de investigación, empresas y entidades relacionadas con la educación universitaria.</p>
-<p>Además, es un centro que ofrece formación, apoyo y asesoramiento al profesorado universitario y promueve la divulgación y empleo de nuevas metodologías, recursos y tecnologías educativas, contribuyendo al proceso de innovación y evaluación de la calidad de la enseñanza universitaria.</p>`,
+        title: "Perfil — introducción breve (el texto completo va en la cita de la directora)",
+        defaultContent: `<p>El IUCE es el Instituto Interdisciplinar de Investigación de la Universidad de Salamanca especializado en investigación en Educación Superior: investigación científica en Educación, desarrollo tecnológico y transferencia al ámbito educativo.</p>
+<p>Heredero del antiguo ICE, fue verificado como Instituto de Investigación por la ACSUCYL en junio de 2008. Congrega a profesorado e investigadores de todas las ramas de conocimiento y ofrece formación, apoyo y asesoramiento al profesorado universitario.</p>`,
       },
       {
         blockKey: "cita-directora",
-        title: "Perfil — bienvenida de la directora (la firma la pone la tarjeta)",
-        defaultContent: `<p>«En esta página institucional del IUCE queremos resaltar la información relacionada con tareas de investigación realizadas y en desarrollo, la convocatoria anual del Programa de Formación del PDI y la edición de nuestra revista electrónica "TESI". Os invitamos a participar activamente de las distintas iniciativas y programas que lideramos entre todos. En esta casa que es la vuestra, os invitamos a profesores, alumnos, investigadores, empresas, instituciones… a vincularos y desarrollar proyectos en nuestra querida Universidad.</p>
+        title: "Perfil — texto íntegro y bienvenida de la directora (la firma la pone la tarjeta)",
+        defaultContent: `<p>«El Instituto Universitario de Ciencias de la Educación de la Universidad de Salamanca (IUCE) es un Instituto Interdisciplinar de Investigación, especializado en investigación en Educación Superior, creado con el fin de fomentar y llevar a la práctica acciones de investigación científica en Educación, de desarrollo tecnológico y de transferencia al ámbito educativo.</p>
+<p>En su origen, el Instituto se crea como centro de referencia nacional de investigación y apoyo a la formación inicial y permanente del profesorado no universitario (antiguo ICE); sin embargo, desde la década de los años 80, se perfila como un centro especializado exclusivamente en educación universitaria (IUCE).</p>
+<p>A raíz de la aprobación de la LOU (2001, modificada en 2007), los Institutos Universitarios de Investigación se conforman como piezas clave de desarrollo de las Universidades, en paralelo a las Escuelas, Facultades y Departamentos (art.7, cap. I, Título II). El IUCE es verificado como Instituto de Investigación por la Agencia para la Calidad del Sistema Universitario de Castilla y León (ACSUCYL) y, por tanto, por la Consejería de Educación de la Junta de Castilla y León en junio de 2008.</p>
+<p>Durante este tiempo, el equipo interdisciplinar del IUCE ha logrado congregar a profesores e investigadores universitarios de todas las ramas de conocimiento, en torno a la investigación en procesos de formación en educación superior, centrada en concreto en el diseño, implementación y evaluación de recursos tecnológicos en educación. Se impulsan diversas líneas de investigación interdisciplinar sobre temas fundamentales para el desarrollo óptimo de la tarea universitaria, colaborando con otras universidades españolas, europeas, y latinoamericanas, fundaciones, administraciones educativas, centros tecnológicos y de investigación, empresas y entidades relacionadas con la educación universitaria.</p>
+<p>Además, es un centro que ofrece formación, apoyo y asesoramiento al profesorado universitario y promueve la divulgación y empleo de nuevas metodologías, recursos y tecnologías educativas, contribuyendo al proceso de innovación y evaluación de la calidad de la enseñanza universitaria.</p>
+<p>En esta página institucional del IUCE queremos resaltar la información relacionada con tareas de investigación realizadas y en desarrollo, la convocatoria anual del Programa de Formación del PDI y la edición de nuestra revista electrónica “TESI”. Os invitamos a participar activamente de las distintas iniciativas y programas que lideramos entre todos. En esta casa que es la vuestra, os invitamos a profesores, alumnos, investigadores, empresas, instituciones,… a vincularos y desarrollar proyectos en nuestra querida Universidad.</p>
 <p>Aprovecho para daros la bienvenida al IUCE de la Universidad de Salamanca.»</p>`,
       },
       {
@@ -341,7 +343,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "datos-descripcion",
         title: "Transferencia — subtítulo de «La transferencia, en datos»",
-        defaultContent: `<p>64 contratos y convenios con 36 entidades durante 2020–2025.</p>`,
+        defaultContent: `<p>60 contratos y 4 convenios con fundaciones, administraciones públicas y empresas durante 2019–2025.</p>`,
       },
       {
         blockKey: "cta",
@@ -378,7 +380,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "transferencia-descripcion",
         title: "Sección Transferencia — lectura rápida",
-        defaultContent: `<p>64 contratos y convenios de transferencia (art. 60 LOSU) por más de 770.000 €, con 36 entidades: fundaciones, administraciones públicas y empresas.</p>`,
+        defaultContent: `<p>64 contratos y convenios de transferencia (art. 60 LOSU) por un importe total de 766.970 €, con fundaciones, administraciones públicas y empresas (2019–2025).</p>`,
       },
       {
         blockKey: "doctorado-descripcion",
@@ -393,7 +395,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "redes-descripcion",
         title: "Sección Redes y movilidad — lectura rápida",
-        defaultContent: `<p>45 redes de investigación (25 internacionales) y 34 estancias de movilidad en 12 países respaldan la proyección exterior del Instituto.</p>`,
+        defaultContent: `<p>45 redes de investigación (25 internacionales) y 26 estancias de movilidad en 12 países respaldan la proyección exterior del Instituto.</p>`,
       },
       {
         blockKey: "gestion-descripcion",
