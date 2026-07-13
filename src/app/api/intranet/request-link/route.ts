@@ -83,7 +83,9 @@ export async function POST(request: Request) {
   if (canSend) {
     try {
       const resend = new Resend(apiKey);
-      await resend.emails.send({
+      // El SDK de Resend NO lanza en errores de API (dominio no verificado,
+      // destinatario restringido…): los devuelve en `error`. Hay que mirarlo.
+      const { data, error } = await resend.emails.send({
         from: process.env.EMAIL_FROM ?? "IUCE <onboarding@resend.dev>",
         to: email,
         subject: "Tu acceso al área de miembros del IUCE",
@@ -98,6 +100,14 @@ Si no has solicitado este acceso, ignora este mensaje.
 IUCE — Instituto Universitario de Ciencias de la Educación
 Universidad de Salamanca`,
       });
+      if (error) {
+        console.error("[intranet] Resend rechazó el magic link:", error);
+        return NextResponse.json(
+          { error: "No se pudo enviar el correo. Inténtalo de nuevo." },
+          { status: 502 },
+        );
+      }
+      console.log(`[intranet] Magic link enviado a ${email} (id ${data?.id})`);
     } catch (e) {
       console.error("[intranet] Error enviando magic link:", e);
       return NextResponse.json(

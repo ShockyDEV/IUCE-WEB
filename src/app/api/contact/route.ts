@@ -60,20 +60,32 @@ export async function POST(request: Request) {
       const from = process.env.EMAIL_FROM ?? "IUCE <onboarding@resend.dev>";
       const to = process.env.CONTACT_TO ?? "iuce@usal.es";
 
-      await resend.emails.send({
+      // El SDK de Resend devuelve los errores de API en `error` (no lanza):
+      // los registramos para saber si el envío llegó de verdad a salir.
+      const notify = await resend.emails.send({
         from,
         to,
         replyTo: email,
         subject: `[Web IUCE] ${subject} — ${name}`,
         text: `Nombre: ${name}\nCorreo: ${email}\nAsunto: ${subject}\n\n${message}`,
       });
+      if (notify.error) {
+        console.error("[contact] Resend rechazó el aviso a Secretaría:", notify.error);
+      } else {
+        console.log(`[contact] Aviso a Secretaría enviado (id ${notify.data?.id})`);
+      }
 
-      await resend.emails.send({
+      const auto = await resend.emails.send({
         from,
         to: email,
         subject: "Hemos recibido tu mensaje — IUCE",
         text: `Hola ${name}:\n\nHemos recibido tu consulta («${subject}») y te responderemos en un plazo de 2–3 días hábiles.\n\nCopia de tu mensaje:\n${message}\n\nIUCE — Instituto Universitario de Ciencias de la Educación\nUniversidad de Salamanca · +34 923 294 634 · iuce@usal.es`,
       });
+      if (auto.error) {
+        console.error("[contact] Resend rechazó la autorespuesta:", auto.error);
+      } else {
+        console.log(`[contact] Autorespuesta enviada (id ${auto.data?.id})`);
+      }
     } catch (e) {
       // El mensaje ya está registrado: no hacemos fallar la petición.
       console.error("[contact] Error al enviar email:", e);
