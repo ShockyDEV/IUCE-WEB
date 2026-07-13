@@ -22,6 +22,10 @@ const ORCIDS: Array<{ name: string; orcid: string }> = [
   { name: "Faraón Llorens Largo", orcid: "https://orcid.org/0000-0002-2117-0784" },
   { name: "Erla Mariela Morales Morgado", orcid: "https://orcid.org/0000-0001-5447-8251" },
   { name: "Nastaran Shoeibi", orcid: "https://orcid.org/0000-0003-4574-6220" },
+  { name: "Alicia García Holgado", orcid: "https://orcid.org/0000-0001-9663-1103" },
+  { name: "Erika García Silva", orcid: "https://orcid.org/0000-0001-8636-5534" },
+  { name: "José Antonio Caride Gómez", orcid: "https://orcid.org/0000-0002-8651-4859" },
+  { name: "María Soledad Ramírez Montoya", orcid: "https://orcid.org/0000-0002-1274-706X" },
 ];
 
 async function main() {
