@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { contactSchema } from "@/lib/validations";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { contactAutoReplyEmail, contactNotifyEmail } from "@/lib/email";
 
 /**
  * Formulario de contacto: valida, registra el mensaje en la BD (bandeja del
@@ -62,12 +63,14 @@ export async function POST(request: Request) {
 
       // El SDK de Resend devuelve los errores de API en `error` (no lanza):
       // los registramos para saber si el envío llegó de verdad a salir.
+      const notifyMail = contactNotifyEmail({ name, email, subject, message });
       const notify = await resend.emails.send({
         from,
         to,
         replyTo: email,
-        subject: `[Web IUCE] ${subject} — ${name}`,
-        text: `Nombre: ${name}\nCorreo: ${email}\nAsunto: ${subject}\n\n${message}`,
+        subject: notifyMail.subject,
+        html: notifyMail.html,
+        text: notifyMail.text,
       });
       if (notify.error) {
         console.error("[contact] Resend rechazó el aviso a Secretaría:", notify.error);
@@ -75,11 +78,13 @@ export async function POST(request: Request) {
         console.log(`[contact] Aviso a Secretaría enviado (id ${notify.data?.id})`);
       }
 
+      const autoMail = contactAutoReplyEmail({ name, subject, message });
       const auto = await resend.emails.send({
         from,
         to: email,
-        subject: "Hemos recibido tu mensaje — IUCE",
-        text: `Hola ${name}:\n\nHemos recibido tu consulta («${subject}») y te responderemos en un plazo de 2–3 días hábiles.\n\nCopia de tu mensaje:\n${message}\n\nIUCE — Instituto Universitario de Ciencias de la Educación\nUniversidad de Salamanca · +34 923 294 634 · iuce@usal.es`,
+        subject: autoMail.subject,
+        html: autoMail.html,
+        text: autoMail.text,
       });
       if (auto.error) {
         console.error("[contact] Resend rechazó la autorespuesta:", auto.error);

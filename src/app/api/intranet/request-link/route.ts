@@ -5,6 +5,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { resolveIntranetAccess } from "@/lib/intranet-access";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { magicLinkEmail } from "@/lib/email";
 
 const requestSchema = z.object({
   email: z.string().trim().toLowerCase().email("Correo no válido"),
@@ -83,22 +84,15 @@ export async function POST(request: Request) {
   if (canSend) {
     try {
       const resend = new Resend(apiKey);
+      const mail = magicLinkEmail({ name: access.name, link });
       // El SDK de Resend NO lanza en errores de API (dominio no verificado,
       // destinatario restringido…): los devuelve en `error`. Hay que mirarlo.
       const { data, error } = await resend.emails.send({
         from: process.env.EMAIL_FROM ?? "IUCE <onboarding@resend.dev>",
         to: email,
-        subject: "Tu acceso al área de miembros del IUCE",
-        text: `Hola${access.name ? ` ${access.name}` : ""}:
-
-Usa este enlace para entrar en el área de miembros del IUCE (caduca en 30 minutos y solo funciona una vez):
-
-${link}
-
-Si no has solicitado este acceso, ignora este mensaje.
-
-IUCE — Instituto Universitario de Ciencias de la Educación
-Universidad de Salamanca`,
+        subject: mail.subject,
+        html: mail.html,
+        text: mail.text,
       });
       if (error) {
         console.error("[intranet] Resend rechazó el magic link:", error);
