@@ -5,9 +5,45 @@
  * tablas, estilos en línea y color sólido de respaldo (Outlook no entiende
  * gradientes ni CSS externo).
  *
+ * El logo se INCRUSTA en el propio correo (adjunto inline con `cid:`), así se
+ * ve siempre, sin depender de que el servidor sea accesible desde la bandeja
+ * del destinatario. Los routers deben añadir `attachments: emailAttachments()`.
+ *
  * Cada builder devuelve { subject, html, text } — siempre se envían ambas
  * versiones (HTML + texto plano de respaldo).
  */
+import fs from "node:fs";
+import path from "node:path";
+
+const LOGO_CID = "iuce-logo";
+
+/** Logo en base64 (leído una vez). null si no se encuentra el fichero. */
+let logoCache: string | null | undefined;
+function logoBase64(): string | null {
+  if (logoCache !== undefined) return logoCache;
+  try {
+    const p = path.join(process.cwd(), "public", "images", "iuce-logo.png");
+    logoCache = fs.readFileSync(p).toString("base64");
+  } catch {
+    logoCache = null;
+  }
+  return logoCache;
+}
+
+/**
+ * Adjunto inline del logo para incluir en `resend.emails.send({ attachments })`.
+ * Vacío si no se pudo leer el logo (el correo se envía igualmente).
+ */
+export function emailAttachments(): Array<{
+  filename: string;
+  content: string;
+  inlineContentId: string;
+}> {
+  const b64 = logoBase64();
+  return b64
+    ? [{ filename: "iuce-logo.png", content: b64, inlineContentId: LOGO_CID }]
+    : [];
+}
 
 const C = {
   blueDark: "#1b3a5c",
@@ -94,6 +130,10 @@ function layout({
   footerNote,
 }: LayoutOpts): string {
   const base = appBaseUrl();
+  // Logo incrustado (cid:) si se pudo leer el fichero; si no, por URL absoluta.
+  const logoSrc = logoBase64()
+    ? `cid:${LOGO_CID}`
+    : `${base}/images/iuce-logo.png`;
   return `<!doctype html>
 <html lang="es">
 <head>
@@ -114,7 +154,7 @@ function layout({
           <td align="center" bgcolor="${C.blueDark}" style="background-color:${C.blueDark}; background-image:linear-gradient(135deg,#13293f 0%,${C.blueDark} 45%,${C.blue} 130%); padding:30px 24px 26px;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0">
               <tr><td align="center" bgcolor="#ffffff" style="background:#ffffff; border-radius:10px; padding:12px 16px;">
-                <img src="${base}/images/iuce-logo.png" width="132" alt="IUCE" style="display:block; border:0; width:132px; height:auto;">
+                <img src="${logoSrc}" width="132" alt="IUCE" style="display:block; border:0; width:132px; height:auto;">
               </td></tr>
             </table>
             <div style="font-family:Arial,Helvetica,sans-serif; font-size:20px; font-weight:bold; color:#ffffff; padding-top:16px;">${escapeHtml(section)}</div>

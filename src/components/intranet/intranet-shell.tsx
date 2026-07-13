@@ -52,7 +52,7 @@ export function IntranetShell({
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-                Solo personal del IUCE
+                Solo miembros del IUCE
               </p>
               <h1 className="mb-3.5 text-4xl font-bold leading-tight tracking-tight text-ink">
                 Área de miembros

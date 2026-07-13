@@ -186,7 +186,7 @@ const direccionFallback: DirectionMember[] = [
     name: "Susana Olmos Migueláñez",
     role: "Directora",
     email: "solmos@usal.es",
-    extension: null,
+    extension: "3406",
     photo: null,
     orcid: "https://orcid.org/0000-0002-0816-4179",
   },
@@ -194,7 +194,7 @@ const direccionFallback: DirectionMember[] = [
     name: "Francisco José García Peñalvo",
     role: "Subdirector",
     email: "fgarcia@usal.es",
-    extension: null,
+    extension: "6095",
     photo: null,
     orcid: "https://orcid.org/0000-0001-9987-5584",
   },
@@ -202,7 +202,7 @@ const direccionFallback: DirectionMember[] = [
     name: "Javier Félix Merchán Sánchez-Jara",
     role: "Secretario Académico",
     email: "javiermerchan@usal.es",
-    extension: null,
+    extension: "3368",
     photo: null,
     orcid: "https://orcid.org/0000-0003-1828-5182",
   },
@@ -600,6 +600,11 @@ export default async function InstitutoPage() {
                   <p className="text-xs font-bold uppercase tracking-wider text-usal-red">
                     {roleLabel(p.role)}
                   </p>
+                  {p.extension ? (
+                    <p className="mt-1 text-xs text-gray-500">
+                      Ext. {p.extension}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="flex items-center gap-3">
                   {p.email ? <CopyEmail email={p.email} locale={locale} /> : null}

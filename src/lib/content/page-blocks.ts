@@ -191,7 +191,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "intro",
         title: "Área de miembros — texto de bienvenida (solo lo ven los autorizados)",
-        defaultContent: `<p>Espacio reservado al personal del IUCE: actas, convocatorias, normativa interna y otra documentación de uso interno. Los documentos se gestionan desde el panel de administración.</p>`,
+        defaultContent: `<p>Espacio reservado a los miembros del IUCE: actas, convocatorias, normativa interna y otra documentación de uso interno.</p>`,
       },
     ],
   },
@@ -329,7 +329,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "mision",
         title: "Transferencia — texto de misión (banda destacada)",
-        defaultContent: `<p>El artículo 60 de la LOSU reconoce la transferencia como una función esencial de la universidad. El IUCE la ejerce poniendo su investigación —evaluación educativa, tecnología, formación, comunicación— al servicio de quien la necesita: mediante contratos y convenios, desarrollos a medida, formación especializada y asesoramiento experto.</p>`,
+        defaultContent: `<p>El artículo 60 de la LOSU reconoce la transferencia como una función esencial de la universidad. El IUCE la ejerce poniendo su investigación (evaluación educativa, tecnología, formación, comunicación) al servicio de quien la necesita: mediante contratos y convenios, desarrollos a medida, formación especializada y asesoramiento experto.</p>`,
       },
       {
         blockKey: "url-otc",

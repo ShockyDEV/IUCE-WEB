@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, Mail, Globe } from "lucide-react";
+import { Phone, Mail, Globe, Facebook } from "lucide-react";
 import { pick, withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
@@ -91,6 +91,15 @@ export function InstitutionalFooter() {
               className="transition-colors hover:text-white"
             >
               <Globe className="h-4 w-4" aria-hidden="true" />
+            </a>
+            <a
+              href="https://www.facebook.com/iuceusal"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook del IUCE"
+              className="transition-colors hover:text-white"
+            >
+              <Facebook className="h-4 w-4" aria-hidden="true" />
             </a>
             <a
               href="https://twitter.com/IUCE_USAL"

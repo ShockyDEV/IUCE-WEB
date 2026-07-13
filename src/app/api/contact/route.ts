@@ -3,7 +3,11 @@ import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { contactSchema } from "@/lib/validations";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
-import { contactAutoReplyEmail, contactNotifyEmail } from "@/lib/email";
+import {
+  contactAutoReplyEmail,
+  contactNotifyEmail,
+  emailAttachments,
+} from "@/lib/email";
 
 /**
  * Formulario de contacto: valida, registra el mensaje en la BD (bandeja del
@@ -71,6 +75,7 @@ export async function POST(request: Request) {
         subject: notifyMail.subject,
         html: notifyMail.html,
         text: notifyMail.text,
+        attachments: emailAttachments(),
       });
       if (notify.error) {
         console.error("[contact] Resend rechazó el aviso a Secretaría:", notify.error);
@@ -85,6 +90,7 @@ export async function POST(request: Request) {
         subject: autoMail.subject,
         html: autoMail.html,
         text: autoMail.text,
+        attachments: emailAttachments(),
       });
       if (auto.error) {
         console.error("[contact] Resend rechazó la autorespuesta:", auto.error);

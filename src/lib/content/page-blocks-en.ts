@@ -48,7 +48,7 @@ export const PAGE_BLOCKS_EN: Record<string, string> = {
   "eventos:destacado-descripcion": `<p>Salamanca hosts the leading international conference on educational development in higher education, organised with the participation of the IUCE. Three days of lectures, workshops and papers on teacher training in Higher Education.</p>`,
 
   // ── Intranet ───────────────────────────────────────────────────────────
-  "intranet:intro": `<p>A space reserved for IUCE staff: minutes, meeting notices, internal regulations and other documents for internal use. Documents are managed from the administration panel.</p>`,
+  "intranet:intro": `<p>A space reserved for IUCE members: minutes, meeting notices, internal regulations and other documents for internal use.</p>`,
 
   // ── Contacto ───────────────────────────────────────────────────────────
   "contacto:intro": `<p>The Institute's Secretariat handles enquiries about training, research, doctoral studies and the use of its premises.</p>`,
@@ -81,7 +81,7 @@ export const PAGE_BLOCKS_EN: Record<string, string> = {
 
   // ── Transferencia ──────────────────────────────────────────────────────
   "transferencia:intro": `<p>Transferring knowledge to society is one of the IUCE's main objectives: ensuring that educational research does not stay in scientific journals, but improves the practice of public authorities, educational institutions, companies and social organisations.</p>`,
-  "transferencia:mision": `<p>Article 60 of the LOSU recognises knowledge transfer as an essential function of the university. The IUCE exercises it by placing its research — educational assessment, technology, training, communication — at the service of those who need it: through contracts and agreements, tailor-made developments, specialised training and expert advice.</p>`,
+  "transferencia:mision": `<p>Article 60 of the LOSU recognises knowledge transfer as an essential function of the university. The IUCE exercises it by placing its research (educational assessment, technology, training, communication) at the service of those who need it: through contracts and agreements, tailor-made developments, specialised training and expert advice.</p>`,
   "transferencia:otc-descripcion": `<p>The Knowledge Transfer Office of the University of Salamanca channels Article 60 contracts, patents and collaboration with companies and institutions.</p>`,
   "transferencia:datos-descripcion": `<p>60 contracts and 4 agreements with foundations, public authorities and companies during 2019–2025.</p>`,
   "transferencia:cta": `<p><strong>Does your organisation face an educational challenge?</strong></p>

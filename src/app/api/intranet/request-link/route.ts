@@ -5,7 +5,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { resolveIntranetAccess } from "@/lib/intranet-access";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
-import { magicLinkEmail } from "@/lib/email";
+import { emailAttachments, magicLinkEmail } from "@/lib/email";
 
 const requestSchema = z.object({
   email: z.string().trim().toLowerCase().email("Correo no válido"),
@@ -93,6 +93,7 @@ export async function POST(request: Request) {
         subject: mail.subject,
         html: mail.html,
         text: mail.text,
+        attachments: emailAttachments(),
       });
       if (error) {
         console.error("[intranet] Resend rechazó el magic link:", error);
