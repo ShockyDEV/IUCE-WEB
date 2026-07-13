@@ -364,7 +364,7 @@ export const LIST_BLOCKS: ListBlockDef[] = [
     defaultItems: [
       { eyebrow: "Directora · 2026", titulo: "Inequidad educativa en Portugal: análisis del impacto del ESCS en PISA 2022", autores: "Martins Azinheiro, C. A.; Olmos-Migueláñez, S.; Torrecilla Sánchez, E. M.; Martínez Abad, F.", revista: "REICE. Revista Iberoamericana sobre Calidad, Eficacia y Cambio en Educación", enlace: "https://dialnet.unirioja.es/servlet/articulo?codigo=10533146" },
       { eyebrow: "Subdirector · 2026", titulo: "Evaluación asistida por inteligencia artificial generativa en prácticas de Ingeniería de Software: una prueba de concepto", autores: "García-Peñalvo, F. J.; Alier-Forment, M.; Vázquez-Ingelmo, A.; García-Holgado, A. et al.", revista: "RIED. Revista Iberoamericana de Educación a Distancia", enlace: "https://doi.org/10.5944/ried.47173" },
-      { eyebrow: "Secretario · 2025", titulo: "Hacia una ontología de factores de desapego en procesos de lectura digital en educación superior", autores: "Merchán-Sánchez-Jara, J. F.; Mastrobattista, L.; Muñoz-Rico, M. et al.", revista: "Ocnos. Revista de estudios sobre lectura", enlace: "https://doi.org/10.18239/ocnos_2025.24.1.438" },
+      { eyebrow: "Secretario · 2026", titulo: "Artificial Intelligence (AI) in Music Education Ecology: AI as an Agent for Understanding, Meaning-Making, and Creative and Cognitive Growth", autores: "Merchán-Sánchez-Jara, J. F.; González-Gutiérrez, S.; Navarro-Cáceres, M.; González-Gutiérrez, E. et al.", revista: "AI in Education", enlace: "https://doi.org/10.3390/aieduc2030022" },
     ],
   },
 
