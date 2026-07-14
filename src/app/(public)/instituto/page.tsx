@@ -27,6 +27,10 @@ import {
   MembersGrid,
   type PublicMember,
 } from "@/components/instituto/members-grid";
+import {
+  GroupBadge,
+  type MemberGroup,
+} from "@/components/instituto/group-badge";
 import { CopyEmail } from "@/components/ui/copy-email";
 import {
   getBlock,
@@ -178,6 +182,7 @@ interface DirectionMember {
   extension: string | null;
   photo: string | null;
   orcid: string | null;
+  group: MemberGroup | null;
 }
 
 // Fallback si la BD no está disponible; en producción salen del gestor.
@@ -188,6 +193,7 @@ const direccionFallback: DirectionMember[] = [
     email: "solmos@usal.es",
     extension: "3406",
     photo: null,
+    group: null,
     orcid: "https://orcid.org/0000-0002-0816-4179",
   },
   {
@@ -196,6 +202,7 @@ const direccionFallback: DirectionMember[] = [
     email: "fgarcia@usal.es",
     extension: "6095",
     photo: null,
+    group: null,
     orcid: "https://orcid.org/0000-0001-9987-5584",
   },
   {
@@ -204,6 +211,7 @@ const direccionFallback: DirectionMember[] = [
     email: "javiermerchan@usal.es",
     extension: "3368",
     photo: null,
+    group: null,
     orcid: "https://orcid.org/0000-0003-1828-5182",
   },
 ];
@@ -220,6 +228,7 @@ const ptgasFallback: DirectionMember[] = [
     email: "fdecastro@usal.es",
     extension: "4634",
     photo: null,
+    group: null,
     orcid: null,
   },
   {
@@ -228,6 +237,7 @@ const ptgasFallback: DirectionMember[] = [
     email: "iuce.tecnico@usal.es",
     extension: "1903",
     photo: null,
+    group: null,
     orcid: null,
   },
 ];
@@ -240,6 +250,7 @@ async function getDireccion(): Promise<{
   try {
     const rows = await prisma.member.findMany({
       where: { role: { not: null }, active: true },
+      include: { group: true },
     });
     const pick = (cargos: string[]) =>
       cargos
@@ -252,6 +263,14 @@ async function getDireccion(): Promise<{
           extension: m.extension,
           photo: m.photo,
           orcid: m.orcid,
+          group: m.group
+            ? {
+                acronym: m.group.acronym,
+                name: m.group.name,
+                logo: m.group.logo,
+                url: m.group.url,
+              }
+            : null,
         }));
     const equipo = pick(CARGOS_DIRECCION);
     if (equipo.length > 0) {
@@ -292,6 +311,7 @@ async function getMiembros(): Promise<PublicMember[]> {
     const rows = await prisma.member.findMany({
       where: { active: true },
       orderBy: [{ order: "asc" }, { name: "asc" }],
+      include: { group: true },
     });
     if (rows.length > 0) {
       return rows.map((m) => ({
@@ -301,6 +321,14 @@ async function getMiembros(): Promise<PublicMember[]> {
         photo: m.photo,
         portalUrl: m.portalUrl,
         orcid: m.orcid,
+        group: m.group
+          ? {
+              acronym: m.group.acronym,
+              name: m.group.name,
+              logo: m.group.logo,
+              url: m.group.url,
+            }
+          : null,
       }));
     }
   } catch {
@@ -310,6 +338,7 @@ async function getMiembros(): Promise<PublicMember[]> {
     ...m,
     email: null,
     photo: null,
+    group: null,
     portalUrl: null,
     orcid: null,
   }));
@@ -606,7 +635,8 @@ export default async function InstitutoPage() {
                     </p>
                   ) : null}
                 </div>
-                <div className="flex items-center gap-3">
+                {p.group ? <GroupBadge group={p.group} /> : null}
+                <div className="mt-auto flex items-center gap-3">
                   {p.email ? <CopyEmail email={p.email} locale={locale} /> : null}
                   {p.orcid ? (
                     <a

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Pencil, Search, Trash2 } from "lucide-react";
+import { Pencil, Search, Trash2, Upload } from "lucide-react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/admin/modal";
@@ -75,6 +75,27 @@ export function MembersSection({
   const [query, setQuery] = useState("");
   const [form, setForm] = useState<FormState | null>(null);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  async function handlePhotoUpload(file: File) {
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/admin/members/photo", {
+        method: "POST",
+        body: fd,
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error ?? "No se pudo subir la foto");
+      setForm((f) => (f ? { ...f, photo: json.photo } : f));
+      toast.success("Foto subida");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No se pudo subir la foto");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -350,17 +371,70 @@ export function MembersSection({
               />
             </div>
             <div className="flex flex-col gap-2">
-              <label htmlFor="m-photo" className={labelClass}>
-                Foto (URL — súbela antes en Archivos)
-              </label>
+              <label className={labelClass}>Foto</label>
+              <div className="flex items-center gap-3">
+                {form.photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={form.photo}
+                    alt=""
+                    className="h-16 w-16 flex-none rounded-full border border-gray-200 object-cover"
+                  />
+                ) : (
+                  <span
+                    aria-hidden="true"
+                    className="flex h-16 w-16 flex-none items-center justify-center rounded-full bg-iuce-blue-pale text-sm font-bold text-iuce-blue-dark"
+                  >
+                    {initialsOf(form.name || "· ·")}
+                  </span>
+                )}
+                <div className="flex flex-col items-start gap-1.5">
+                  <label
+                    className={cn(
+                      "inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-md border border-gray-300 bg-white px-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50",
+                      uploading && "pointer-events-none opacity-60",
+                    )}
+                  >
+                    <Upload className="h-4 w-4" aria-hidden="true" />
+                    {uploading
+                      ? "Subiendo…"
+                      : form.photo
+                        ? "Cambiar foto"
+                        : "Subir foto"}
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="hidden"
+                      disabled={uploading}
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) handlePhotoUpload(f);
+                        e.target.value = "";
+                      }}
+                    />
+                  </label>
+                  {form.photo ? (
+                    <button
+                      type="button"
+                      onClick={() => setForm({ ...form, photo: "" })}
+                      className="text-xs text-red-600 hover:underline"
+                    >
+                      Quitar foto
+                    </button>
+                  ) : null}
+                </div>
+              </div>
               <input
                 id="m-photo"
                 type="text"
                 value={form.photo}
-                placeholder="/uploads/…"
+                placeholder="…o pega una URL (/uploads/…)"
                 onChange={(e) => setForm({ ...form, photo: e.target.value })}
                 className={inputClass}
               />
+              <p className="text-xs text-gray-400">
+                Sube una imagen (se recorta a 512×512) o pega una URL.
+              </p>
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="m-portal" className={labelClass}>

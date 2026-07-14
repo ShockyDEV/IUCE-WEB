@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Search } from "lucide-react";
 import { InitialsAvatar } from "@/components/ui/initials-avatar";
 import { CopyEmail } from "@/components/ui/copy-email";
+import { GroupBadge, type MemberGroup } from "@/components/instituto/group-badge";
 import { pick, type Locale } from "@/lib/locale";
 
 export interface PublicMember {
@@ -17,6 +18,8 @@ export interface PublicMember {
   portalUrl: string | null;
   /** URL del ORCID (si consta; se edita desde el panel). */
   orcid: string | null;
+  /** Grupo de investigación al que pertenece (si consta). */
+  group: MemberGroup | null;
 }
 
 function initialsOf(name: string) {
@@ -134,6 +137,11 @@ export function MembersGrid({
                 ) : (
                   <div>{nombreArea}</div>
                 )}
+                {m.group ? (
+                  <div className="mt-2">
+                    <GroupBadge group={m.group} />
+                  </div>
+                ) : null}
                 {m.email ? (
                   <div className="mt-1.5">
                     <CopyEmail email={m.email} locale={locale} />
