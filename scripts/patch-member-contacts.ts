@@ -13,7 +13,7 @@ const EXTENSIONS: Array<{ email: string; extension: string }> = [
   { email: "solmos@usal.es", extension: "3406" }, // Directora
   { email: "fgarcia@usal.es", extension: "6095" }, // Subdirector
   { email: "javiermerchan@usal.es", extension: "3368" }, // Secretario Académico
-  { email: "begosan@usal.es", extension: "4634" }, // Secretaría administrativa
+  { email: "fdecastro@usal.es", extension: "4634" }, // Secretaría administrativa
   { email: "iuce.tecnico@usal.es", extension: "1903" }, // Técnico informático
 ];
 

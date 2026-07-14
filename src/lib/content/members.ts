@@ -56,7 +56,7 @@ export const members: MemberSeed[] = [
 ];
 
 export const secretariat = {
-  name: "Begoña Sánchez Martín",
-  email: "begosan@usal.es",
+  name: "Fernando De Castro de Arriba",
+  email: "fdecastro@usal.es",
   extension: "4634",
 };

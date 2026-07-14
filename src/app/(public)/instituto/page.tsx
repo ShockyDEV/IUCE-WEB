@@ -215,9 +215,9 @@ const CARGOS_PTGAS = ["Secretaría Administrativa", "Técnico Informático"];
 
 const ptgasFallback: DirectionMember[] = [
   {
-    name: "María Begoña Sánchez Martín",
+    name: "Fernando De Castro de Arriba",
     role: "Secretaría Administrativa",
-    email: "begosan@usal.es",
+    email: "fdecastro@usal.es",
     extension: "4634",
     photo: null,
     orcid: null,
