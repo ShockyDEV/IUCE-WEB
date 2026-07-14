@@ -10,7 +10,7 @@ const inputClass =
 
 /**
  * Formulario de acceso al panel. Autenticación con Credentials
- * (email + contraseña); en caso de éxito redirige al callbackUrl o /admin.
+ * (email + contraseña); en caso de éxito redirige al callbackUrl o /backstage.
  */
 export function SignInForm() {
   const router = useRouter();

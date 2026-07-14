@@ -53,14 +53,19 @@ export default auth((req) => {
       return NextResponse.redirect(signInUrl);
     }
     if (!role || !ADMIN_ROLES.has(role)) {
-      // Sesión de intranet intentando entrar al panel.
       if (isApi) {
         return NextResponse.json(
           { error: "Requiere cuenta de administración" },
           { status: 403 },
         );
       }
-      return NextResponse.redirect(new URL("/miembros", req.url));
+      // Sesión sin rol de administración (p. ej. de miembro): al login del
+      // panel, para poder entrar con la cuenta de administración (una sesión
+      // de miembro NO da acceso al panel). No se rebota al área de miembros
+      // porque confunde a quien es admin y miembro a la vez.
+      const signInUrl = new URL("/auth/signin", req.url);
+      signInUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(signInUrl);
     }
     return NextResponse.next();
   }
