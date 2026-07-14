@@ -76,6 +76,28 @@ export function MembersSection({
   const [form, setForm] = useState<FormState | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [gallery, setGallery] = useState<{ url: string; name: string }[] | null>(
+    null,
+  );
+  const [galleryLoading, setGalleryLoading] = useState(false);
+
+  async function toggleGallery() {
+    const next = !galleryOpen;
+    setGalleryOpen(next);
+    if (next && gallery === null) {
+      setGalleryLoading(true);
+      try {
+        const res = await fetch("/api/admin/members/photos");
+        const json = await res.json().catch(() => ({}));
+        setGallery(json.images ?? []);
+      } catch {
+        setGallery([]);
+      } finally {
+        setGalleryLoading(false);
+      }
+    }
+  }
 
   async function handlePhotoUpload(file: File) {
     setUploading(true);
@@ -89,6 +111,7 @@ export function MembersSection({
       const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json.error ?? "No se pudo subir la foto");
       setForm((f) => (f ? { ...f, photo: json.photo } : f));
+      setGallery(null); // que la galería incluya la recién subida al reabrir
       toast.success("Foto subida");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "No se pudo subir la foto");
@@ -413,17 +436,69 @@ export function MembersSection({
                       }}
                     />
                   </label>
+                  <button
+                    type="button"
+                    onClick={toggleGallery}
+                    className="text-left text-xs font-medium text-iuce-blue hover:underline"
+                  >
+                    {galleryOpen
+                      ? "Ocultar imágenes subidas"
+                      : "Elegir de las imágenes ya subidas"}
+                  </button>
                   {form.photo ? (
                     <button
                       type="button"
                       onClick={() => setForm({ ...form, photo: "" })}
-                      className="text-xs text-red-600 hover:underline"
+                      className="text-left text-xs text-red-600 hover:underline"
                     >
                       Quitar foto
                     </button>
                   ) : null}
                 </div>
               </div>
+
+              {galleryOpen ? (
+                <div className="max-h-56 overflow-y-auto rounded-md border border-gray-200 bg-gray-50 p-2">
+                  {galleryLoading ? (
+                    <p className="p-3 text-center text-xs text-gray-400">
+                      Cargando imágenes…
+                    </p>
+                  ) : gallery && gallery.length > 0 ? (
+                    <div className="grid grid-cols-6 gap-2">
+                      {gallery.map((img) => (
+                        <button
+                          key={img.url}
+                          type="button"
+                          title={img.name}
+                          onClick={() => {
+                            setForm({ ...form, photo: img.url });
+                            setGalleryOpen(false);
+                          }}
+                          className={cn(
+                            "aspect-square overflow-hidden rounded-md border-2 transition-colors",
+                            form.photo === img.url
+                              ? "border-iuce-blue"
+                              : "border-transparent hover:border-gray-300",
+                          )}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={img.url}
+                            alt=""
+                            loading="lazy"
+                            className="h-full w-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="p-3 text-center text-xs text-gray-400">
+                      No hay imágenes subidas todavía.
+                    </p>
+                  )}
+                </div>
+              ) : null}
+
               <input
                 id="m-photo"
                 type="text"
@@ -433,7 +508,8 @@ export function MembersSection({
                 className={inputClass}
               />
               <p className="text-xs text-gray-400">
-                Sube una imagen (se recorta a 512×512) o pega una URL.
+                Sube una imagen (se recorta a 512×512), elige una ya subida o
+                pega una URL.
               </p>
             </div>
             <div className="flex flex-col gap-2">
