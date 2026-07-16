@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { ExternalLink, KeyRound, Menu, X } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { pathLocale, pick, stripLocale, withLocale } from "@/lib/locale";
+import {
+  pathLocale,
+  pick,
+  stripLocale,
+  withLocale,
+  type Locale,
+} from "@/lib/locale";
 import { ThemeToggle } from "./theme-toggle";
 
 interface NavItem {
@@ -47,6 +53,68 @@ const DESKTOP_HIDDEN = new Set(["/", "/miembros"]);
 function isActive(basePath: string, href: string) {
   if (href === "/") return basePath === "/";
   return basePath === href || basePath.startsWith(`${href}/`);
+}
+
+/** Conmutador ES|EN: misma página en el otro idioma, conservando la query. */
+function LanguageToggleView({
+  basePath,
+  locale,
+  qs,
+}: Readonly<{ basePath: string; locale: Locale; qs: string }>) {
+  const hrefFor = (l: Locale) =>
+    withLocale(basePath, l) + (qs ? `?${qs}` : "");
+  const linkClass = (active: boolean) =>
+    cn(
+      "inline-flex h-6 min-w-[24px] items-center justify-center rounded px-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue",
+      active
+        ? "text-gray-800"
+        : "font-normal text-gray-500 hover:text-gray-700",
+    );
+  return (
+    <nav
+      aria-label={pick(locale, "Idioma", "Language")}
+      className="text-xs font-semibold"
+    >
+      <Link
+        href={hrefFor("es")}
+        aria-current={locale === "es" ? "true" : undefined}
+        hrefLang="es"
+        className={linkClass(locale === "es")}
+      >
+        ES
+      </Link>
+      {/* Separador decorativo: el lector de pantalla no debe leerlo. */}
+      <span aria-hidden="true" className="font-normal text-gray-300">
+        ·
+      </span>
+      <Link
+        href={hrefFor("en")}
+        aria-current={locale === "en" ? "true" : undefined}
+        hrefLang="en"
+        title={pick(locale, "English version", "Versión en español")}
+        className={linkClass(locale === "en")}
+      >
+        EN
+      </Link>
+    </nav>
+  );
+}
+
+/** Lee la query actual (filtros de noticias, paginación…) para no perderla
+ *  al cambiar de idioma. Separado de la vista porque useSearchParams exige
+ *  un límite de Suspense cuando el header se prerenderiza (página 404). */
+function LanguageToggle({
+  basePath,
+  locale,
+}: Readonly<{ basePath: string; locale: Locale }>) {
+  const searchParams = useSearchParams();
+  return (
+    <LanguageToggleView
+      basePath={basePath}
+      locale={locale}
+      qs={searchParams.toString()}
+    />
+  );
 }
 
 export function SiteHeader({
@@ -170,43 +238,15 @@ export function SiteHeader({
               </span>
             </Link>
             <ThemeToggle />
-            {/* Selector de idioma: misma página en el otro idioma */}
-            <nav
-              aria-label={pick(locale, "Idioma", "Language")}
-              className="text-xs font-semibold"
+            {/* Selector de idioma: misma página en el otro idioma. El
+                useSearchParams del conmutador exige Suspense al prerender
+                (la 404 estática monta este header); el fallback pinta el
+                mismo conmutador sin query. */}
+            <Suspense
+              fallback={<LanguageToggleView basePath={basePath} locale={locale} qs="" />}
             >
-              <Link
-                href={withLocale(basePath, "es")}
-                aria-current={locale === "es" ? "true" : undefined}
-                hrefLang="es"
-                className={cn(
-                  "inline-flex h-6 min-w-[24px] items-center justify-center rounded px-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue",
-                  locale === "es"
-                    ? "text-gray-800"
-                    : "font-normal text-gray-500 hover:text-gray-700",
-                )}
-              >
-                ES
-              </Link>
-              {/* Separador decorativo: el lector de pantalla no debe leerlo. */}
-              <span aria-hidden="true" className="font-normal text-gray-300">
-                ·
-              </span>
-              <Link
-                href={withLocale(basePath, "en")}
-                aria-current={locale === "en" ? "true" : undefined}
-                hrefLang="en"
-                title={pick(locale, "English version", "Versión en español")}
-                className={cn(
-                  "inline-flex h-6 min-w-[24px] items-center justify-center rounded px-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue",
-                  locale === "en"
-                    ? "text-gray-800"
-                    : "font-normal text-gray-500 hover:text-gray-700",
-                )}
-              >
-                EN
-              </Link>
-            </nav>
+              <LanguageToggle basePath={basePath} locale={locale} />
+            </Suspense>
             {/* Hamburguesa (móvil y tablet) */}
             <button
               type="button"
