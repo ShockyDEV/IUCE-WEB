@@ -16,6 +16,7 @@ import { iconFor } from "@/lib/icon-map";
 import { cn } from "@/lib/cn";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
+import { getHiddenPaths } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
@@ -73,6 +74,14 @@ export default async function HomePage() {
     getBlockText("estadisticas", "hero-eyebrow"),
     getBlock("inicio", "estadisticas-teaser"),
   ]);
+
+  // Una página oculta (panel → Visualización) tampoco se ofrece como acceso
+  // rápido: llevaría a un 404.
+  const hiddenPaths = await getHiddenPaths();
+  const accesos = quickAccess.filter(
+    (item) => !hiddenPaths.includes(String(item.enlace ?? "")),
+  );
+
   return (
     <>
       {/* Hero */}
@@ -153,7 +162,7 @@ export default async function HomePage() {
       {/* Accesos rápidos */}
       <section className="border-y border-gray-200 bg-surface-page">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-6 py-9 sm:grid-cols-2 lg:grid-cols-4">
-          {quickAccess.map((item, i) => {
+          {accesos.map((item, i) => {
             const Icon = iconFor(item.icon);
             const enlace = String(item.enlace ?? "#");
             const external = enlace.startsWith("http");

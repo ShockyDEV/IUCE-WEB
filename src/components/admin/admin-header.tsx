@@ -9,6 +9,7 @@ const TITLES: Array<[prefix: string, title: string]> = [
   ["/backstage/news/", "Editar noticia"],
   ["/backstage/news", "Noticias"],
   ["/backstage/pages", "Contenido de páginas"],
+  ["/backstage/visualizacion", "Visualización"],
   ["/backstage/members", "Equipo y miembros"],
   ["/backstage/groups", "Grupos de investigación"],
   ["/backstage/projects", "Proyectos de investigación"],

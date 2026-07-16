@@ -180,6 +180,14 @@ model IntranetDocument {
   createdAt   DateTime @default(now())
 }
 
+// Visibilidad de las páginas públicas (panel → Visualización). Sin fila = la
+// página se ve; se crea/actualiza al usar el interruptor del ojo.
+model PageVisibility {
+  slug      String   @id // clave del registro de public-pages.ts
+  hidden    Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+}
+
 // Analítica ligera (patrón mupes).
 model PageView {
   id        String   @id @default(cuid())

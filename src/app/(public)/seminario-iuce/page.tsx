@@ -8,6 +8,8 @@ import { getBlock, getListBlock } from "@/lib/content-blocks-service";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
+import { assertVisible } from "@/lib/page-visibility";
+
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -52,6 +54,8 @@ const T = {
  * edita desde el panel (Contenido → Páginas → Seminario IUCE).
  */
 export default async function SeminarioIucePage() {
+  await assertVisible("seminario-iuce");
+
   const locale = getLocale();
   const t = T[locale];
   const href = (path: string) => withLocale(path, locale);

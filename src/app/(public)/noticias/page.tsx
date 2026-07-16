@@ -11,6 +11,8 @@ import { cn } from "@/lib/cn";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
+import { assertVisible } from "@/lib/page-visibility";
+
 export const metadata: Metadata = {
   title: "Noticias",
   description:
@@ -125,6 +127,8 @@ function pageNumbers(current: number, total: number): Array<number | "…"> {
 export default async function NoticiasPage({
   searchParams,
 }: Readonly<PageProps>) {
+  await assertVisible("noticias");
+
   const locale = getLocale();
   const t = T[locale];
   const href = (path: string) => withLocale(path, locale);

@@ -1,9 +1,17 @@
 import { SiteHeader } from "@/components/layout/site-header";
 import { InstitutionalFooter } from "@/components/layout/institutional-footer";
+import { getHiddenPaths } from "@/lib/page-visibility";
 
-export default function PublicLayout({
+// El layout consulta en cada petición qué páginas están ocultas; sin esto se
+// cachearía y el menú seguiría mostrando una página recién ocultada.
+export const dynamic = "force-dynamic";
+
+export default async function PublicLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // Páginas ocultas desde el panel (Visualización): fuera del menú.
+  const hiddenPaths = await getHiddenPaths();
+
   return (
     <>
       <a
@@ -12,7 +20,7 @@ export default function PublicLayout({
       >
         Saltar al contenido principal
       </a>
-      <SiteHeader />
+      <SiteHeader hiddenPaths={hiddenPaths} />
       <main id="contenido">{children}</main>
       <InstitutionalFooter />
     </>

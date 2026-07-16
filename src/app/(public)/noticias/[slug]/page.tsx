@@ -15,6 +15,8 @@ interface PageProps {
   params: { slug: string };
 }
 
+import { assertVisible } from "@/lib/page-visibility";
+
 export const dynamic = "force-dynamic";
 
 // Textos fijos de la página en ambos idiomas (título, extracto, cuerpo y
@@ -66,6 +68,8 @@ export async function generateMetadata({
 }
 
 export default async function NoticiaPage({ params }: Readonly<PageProps>) {
+  await assertVisible("noticias");
+
   const locale = getLocale();
   const t = T[locale];
   const href = (path: string) => withLocale(path, locale);

@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 import { getPublishedNews } from "@/lib/news-service";
+import { getHiddenPaths } from "@/lib/page-visibility";
 
 const BASE = "https://iuce.usal.es";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticRoutes: MetadataRoute.Sitemap = [
+  const allStatic: MetadataRoute.Sitemap = [
     { url: `${BASE}/`, changeFrequency: "weekly", priority: 1 },
     { url: `${BASE}/instituto`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/investigacion`, changeFrequency: "weekly", priority: 0.8 },
@@ -21,7 +22,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/accesibilidad`, changeFrequency: "yearly", priority: 0.1 },
   ];
 
-  const news = await getPublishedNews();
+  // Las páginas ocultas (panel → Visualización) no se indexan.
+  const hiddenPaths = await getHiddenPaths();
+  const staticRoutes = allStatic.filter(
+    (r) => !hiddenPaths.some((p) => r.url === `${BASE}${p}`),
+  );
+  const noticiasOculta = hiddenPaths.includes("/noticias");
+
+  const news = noticiasOculta ? [] : await getPublishedNews();
   const newsRoutes: MetadataRoute.Sitemap = news.map((n) => ({
     url: `${BASE}/noticias/${n.slug}`,
     lastModified: new Date(n.publishedAt),

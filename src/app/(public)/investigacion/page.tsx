@@ -16,6 +16,8 @@ import { ProjectsExplorer } from "@/components/investigacion/projects-explorer";
 import { withLocale, type Locale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
+import { assertVisible } from "@/lib/page-visibility";
+
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -113,6 +115,8 @@ async function getGrupos(locale: Locale): Promise<GroupCard[]> {
 
 
 export default async function InvestigacionPage() {
+  await assertVisible("investigacion");
+
   const locale = getLocale();
   const t = T[locale];
   const href = (path: string) => withLocale(path, locale);

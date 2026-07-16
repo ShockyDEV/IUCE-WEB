@@ -49,12 +49,16 @@ function isActive(basePath: string, href: string) {
   return basePath === href || basePath.startsWith(`${href}/`);
 }
 
-export function SiteHeader() {
+export function SiteHeader({
+  hiddenPaths = [],
+}: Readonly<{ hiddenPaths?: string[] }>) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const locale = pathLocale(pathname);
   const basePath = stripLocale(pathname);
+  // Páginas ocultas desde el panel (Visualización): fuera del menú.
+  const nav = NAV.filter((item) => !hiddenPaths.includes(item.href));
   // El área de miembros y el panel no tienen versión EN.
   const localizedHref = (href: string) =>
     href === "/miembros" ? href : withLocale(href, locale);
@@ -100,7 +104,7 @@ export function SiteHeader() {
             aria-label={pick(locale, "Navegación principal", "Main navigation")}
             className="hidden items-center gap-2.5 text-sm font-medium text-gray-600 lg:flex xl:gap-3.5 2xl:gap-5"
           >
-            {NAV.filter((item) => !DESKTOP_HIDDEN.has(item.href)).map((item) => {
+            {nav.filter((item) => !DESKTOP_HIDDEN.has(item.href)).map((item) => {
               const label = pick(locale, item.label, item.labelEn);
               if (item.external) {
                 return (
@@ -220,7 +224,7 @@ export function SiteHeader() {
             className="border-t border-gray-200 bg-surface-card lg:hidden"
           >
             <div className="mx-auto flex max-w-6xl flex-col px-6 py-2">
-              {NAV.map((item) => {
+              {nav.map((item) => {
                 const label = pick(locale, item.label, item.labelEn);
                 if (item.external) {
                   return (

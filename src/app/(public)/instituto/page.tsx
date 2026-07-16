@@ -42,6 +42,8 @@ import { prisma } from "@/lib/prisma";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
+import { assertVisible } from "@/lib/page-visibility";
+
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -345,6 +347,8 @@ async function getMiembros(): Promise<PublicMember[]> {
 }
 
 export default async function InstitutoPage() {
+  await assertVisible("instituto");
+
   const locale = getLocale();
   const t = T[locale];
   const href = (path: string) => withLocale(path, locale);

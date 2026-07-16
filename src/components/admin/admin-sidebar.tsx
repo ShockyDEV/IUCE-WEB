@@ -7,6 +7,7 @@ import { signOut } from "next-auth/react";
 import {
   Calendar,
   ExternalLink,
+  Eye,
   FileText,
   FlaskConical,
   FolderLock,
@@ -34,6 +35,7 @@ const NAV_GROUPS = [
     title: "Contenido",
     items: [
       { label: "Páginas", icon: FileText, href: "/backstage/pages" },
+      { label: "Visualización", icon: Eye, href: "/backstage/visualizacion" },
       { label: "Archivos", icon: FolderOpen, href: "/backstage/files" },
     ],
   },

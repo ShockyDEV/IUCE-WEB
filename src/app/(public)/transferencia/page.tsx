@@ -11,6 +11,8 @@ import { iconFor } from "@/lib/icon-map";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
+import { assertVisible } from "@/lib/page-visibility";
+
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -74,6 +76,8 @@ function toData(rows: Array<Record<string, unknown>>): Datum[] {
 }
 
 export default async function TransferenciaPage() {
+  await assertVisible("transferencia");
+
   const locale = getLocale();
   const t = T[locale];
   const href = (path: string) => withLocale(path, locale);

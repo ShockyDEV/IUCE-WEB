@@ -21,6 +21,8 @@ import { cn } from "@/lib/cn";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
+import { assertVisible } from "@/lib/page-visibility";
+
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -104,6 +106,8 @@ const T = {
 } as const;
 
 export default async function FormacionPage() {
+  await assertVisible("formacion");
+
   const locale = getLocale();
   const t = T[locale];
   const href = (path: string) => withLocale(path, locale);
