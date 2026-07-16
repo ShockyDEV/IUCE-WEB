@@ -83,18 +83,18 @@ export const PAGE_BLOCKS_EN: Record<string, string> = {
   "transferencia:intro": `<p>Transferring knowledge to society is one of the IUCE's main objectives: ensuring that educational research does not stay in scientific journals, but improves the practice of public authorities, educational institutions, companies and social organisations.</p>`,
   "transferencia:mision": `<p>Article 60 of the LOSU recognises knowledge transfer as an essential function of the university. The IUCE exercises it by placing its research (educational assessment, technology, training, communication) at the service of those who need it: through contracts and agreements, tailor-made developments, specialised training and expert advice.</p>`,
   "transferencia:otc-descripcion": `<p>The Knowledge Transfer Office of the University of Salamanca channels Article 60 contracts, patents and collaboration with companies and institutions.</p>`,
-  "transferencia:datos-descripcion": `<p>60 contracts and 4 agreements with foundations, public authorities and companies during 2019–2025.</p>`,
+  "transferencia:datos-descripcion": `<p>60 contracts and 4 agreements with foundations, public authorities and companies during 2020–2025.</p>`,
   "transferencia:cta": `<p><strong>Does your organisation face an educational challenge?</strong></p>
 <p>Write to us and we will look at how the IUCE's research can help you: assessment, training, educational technology or communication.</p>`,
 
   // ── Estadísticas ───────────────────────────────────────────────────────
   "estadisticas:hero-eyebrow": `<p>2020–2025 Report</p>`,
   "estadisticas:intro": `<p>The Institute's activity over the 2020–2025 period, in figures: projects, knowledge transfer, theses, training, networks and management. The figures come from the IUCE's accreditation report.</p>`,
-  "estadisticas:proyectos-descripcion": `<p>108 competitive projects with €11.5 million in funding. The European Commission is the main funder, followed by the Government of Spain.</p>`,
-  "estadisticas:transferencia-descripcion": `<p>64 knowledge transfer contracts and agreements (art. 60 LOSU) worth a total of €766,970, with foundations, public authorities and companies (2019–2025).</p>`,
+  "estadisticas:proyectos-descripcion": `<p>114 research projects involving the IUCE, mobilising €11.9 million. The European Commission is the main funder, followed by the Government of Spain.</p>`,
+  "estadisticas:transferencia-descripcion": `<p>64 knowledge transfer contracts and agreements (art. 60 LOSU) worth a total of €766,970, with foundations, public authorities and companies (2020–2025).</p>`,
   "estadisticas:doctorado-descripcion": `<p>101 doctoral theses defended — 91% awarded Cum Laude and 4 in 10 with International Mention — and 213 master's dissertations supervised, with a clearly rising trend.</p>`,
   "estadisticas:formacion-descripcion": `<p>More than 2,600 hours of continuing training: the IUCE's teaching staff not only carry out research on teaching, they also deliver it and train continuously under the Training Plan for PDI (teaching and research staff).</p>`,
-  "estadisticas:redes-descripcion": `<p>45 research networks (25 of them international) and 26 mobility stays in 12 countries underpin the Institute's international outreach.</p>`,
+  "estadisticas:redes-descripcion": `<p>40 research networks (half of them with international reach) and 26 mobility stays in 12 countries underpin the Institute's international outreach.</p>`,
   "estadisticas:gestion-descripcion": `<p>IUCE staff hold 292 academic and scientific management positions and take part in 27 postgraduate programmes — with a notable leap in the 2024-25 academic year.</p>`,
   "estadisticas:nota-fuente": `<p>Source: IUCE accreditation report (2020–2025 period). The data are updated from the administration panel; figures for 2025 may be partial.</p>`,
 

@@ -13,7 +13,7 @@ export function InstitutionalFooter() {
         <div className="flex justify-center sm:justify-start">
           <Image
             src="/images/iuce-logo-white.webp"
-            alt="IUCE — Instituto Universitario de Ciencias de la Educación"
+            alt="IUCE - Instituto Universitario de Ciencias de la Educación"
             width={640}
             height={196}
             className="h-12 w-auto"

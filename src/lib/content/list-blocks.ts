@@ -443,12 +443,12 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "texto", label: "Texto", type: "textarea" },
     ],
     defaultItems: [
-      { cifra: "108", texto: "proyectos competitivos de investigación" },
-      { cifra: "11,5M€", texto: "de financiación en convocatorias competitivas" },
+      { cifra: "114", texto: "proyectos de investigación con participación del IUCE" },
+      { cifra: "11,9M€", texto: "de financiación en los proyectos en los que participa" },
       { cifra: "101", texto: "tesis doctorales defendidas" },
       { cifra: "213", texto: "trabajos fin de máster dirigidos" },
       { cifra: "420", texto: "actividades de formación continua" },
-      { cifra: "45", texto: "redes de investigación nacionales e internacionales" },
+      { cifra: "40", texto: "redes de investigación nacionales e internacionales" },
     ],
   },
   {
@@ -460,13 +460,18 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "etiqueta", label: "Año", type: "text" },
       { key: "valor", label: "Proyectos", type: "text" },
     ],
+    // Año de inicio según la columna «Periodo de duración» de la Tabla 4, las
+    // dos secciones sumadas. Los tramos «Hasta 2019» y «2026» hacen que el
+    // total cuadre con los 114 proyectos del contador de cabecera.
     defaultItems: [
-      { etiqueta: "2020", valor: "38" },
+      { etiqueta: "Hasta 2019", valor: "23" },
+      { etiqueta: "2020", valor: "14" },
       { etiqueta: "2021", valor: "13" },
-      { etiqueta: "2022", valor: "21" },
-      { etiqueta: "2023", valor: "21" },
+      { etiqueta: "2022", valor: "20" },
+      { etiqueta: "2023", valor: "20" },
       { etiqueta: "2024", valor: "8" },
-      { etiqueta: "2025", valor: "7" },
+      { etiqueta: "2025", valor: "6" },
+      { etiqueta: "2026", valor: "10" },
     ],
   },
   {
@@ -479,12 +484,14 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "valor", label: "Importe (miles €)", type: "text" },
     ],
     defaultItems: [
-      { etiqueta: "2020", valor: "2288" },
-      { etiqueta: "2021", valor: "286" },
-      { etiqueta: "2022", valor: "1171" },
+      { etiqueta: "Hasta 2019", valor: "1514" },
+      { etiqueta: "2020", valor: "748" },
+      { etiqueta: "2021", valor: "320" },
+      { etiqueta: "2022", valor: "1115" },
       { etiqueta: "2023", valor: "6767" },
       { etiqueta: "2024", valor: "350" },
-      { etiqueta: "2025", valor: "665" },
+      { etiqueta: "2025", valor: "610" },
+      { etiqueta: "2026", valor: "464" },
     ],
   },
   {
@@ -497,13 +504,13 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "valor", label: "Proyectos", type: "text" },
     ],
     defaultItems: [
-      { etiqueta: "Comisión Europea / UE", valor: "38" },
-      { etiqueta: "Ministerio (Gob. de España)", valor: "30" },
-      { etiqueta: "Universidad de Salamanca", valor: "14" },
+      { etiqueta: "Comisión Europea / UE", valor: "39" },
+      { etiqueta: "Ministerio (Gob. de España)", valor: "27" },
+      { etiqueta: "Universidad de Salamanca", valor: "19" },
       { etiqueta: "FECYT", valor: "8" },
-      { etiqueta: "Junta de Castilla y León", valor: "6" },
+      { etiqueta: "Junta de Castilla y León", valor: "7" },
       { etiqueta: "INCIBE", valor: "5" },
-      { etiqueta: "Otras", valor: "7" },
+      { etiqueta: "Otras", valor: "9" },
     ],
   },
   {
@@ -515,9 +522,10 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "etiqueta", label: "Año", type: "text" },
       { key: "valor", label: "Importe (€)", type: "text" },
     ],
+    // El año es el de cierre/asignación: los dos contratos de 2019 cierran
+    // dentro del periodo y la Tabla 5 los contabiliza en 2020.
     defaultItems: [
-      { etiqueta: "2019", valor: "16158" },
-      { etiqueta: "2020", valor: "101780" },
+      { etiqueta: "2020", valor: "117938" },
       { etiqueta: "2021", valor: "55591" },
       { etiqueta: "2022", valor: "86080" },
       { etiqueta: "2023", valor: "236922" },
@@ -539,9 +547,10 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { etiqueta: "Ayto. Salamanca (Mayores)", valor: "8" },
       { etiqueta: "IES Abroad Salamanca", valor: "4" },
       { etiqueta: "Universidad de Salamanca", valor: "4" },
-      { etiqueta: "Corporación RTVE", valor: "3" },
+      { etiqueta: "Corporación RTVE", valor: "2" },
+      { etiqueta: "OEI", valor: "2" },
       { etiqueta: "Compl. Asistencial USAL", valor: "2" },
-      { etiqueta: "Otras entidades", valor: "26" },
+      { etiqueta: "Otras entidades", valor: "25" },
     ],
   },
   {
@@ -674,10 +683,15 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "etiqueta", label: "Ámbito", type: "text" },
       { key: "valor", label: "Redes", type: "text" },
     ],
+    // Redes contadas una sola vez aunque participen en ellas varios
+    // investigadores o se repitan en varios cursos: 40 redes distintas.
     defaultItems: [
-      { etiqueta: "Internacional", valor: "25" },
-      { etiqueta: "Nacional", valor: "19" },
+      { etiqueta: "Internacional", valor: "19" },
+      { etiqueta: "Nacional", valor: "17" },
+      { etiqueta: "Mundial", valor: "1" },
+      { etiqueta: "Autonómica", valor: "1" },
       { etiqueta: "Local", valor: "1" },
+      { etiqueta: "Sin especificar", valor: "1" },
     ],
   },
   {
@@ -708,14 +722,14 @@ export const LIST_BLOCKS: ListBlockDef[] = [
     ],
     defaultItems: [
       { etiqueta: "Comisiones estatutarias (USAL)", valor: "53" },
-      { etiqueta: "Comités y consejos editoriales", valor: "51" },
       { etiqueta: "IP de proyectos", valor: "48" },
+      { etiqueta: "Evaluación (agencias de calidad)", valor: "45" },
+      { etiqueta: "Comités y consejos editoriales", valor: "40" },
       { etiqueta: "Dirección de grupos y unidades", valor: "40" },
-      { etiqueta: "Evaluación (agencias de calidad)", valor: "32" },
       { etiqueta: "Otras direcciones y coordinaciones", valor: "26" },
-      { etiqueta: "Otros cargos de gestión", valor: "17" },
+      { etiqueta: "Otros cargos de gestión", valor: "16" },
       { etiqueta: "Sociedades científicas y juntas", valor: "15" },
-      { etiqueta: "Comisiones y comités científicos", valor: "14" },
+      { etiqueta: "Comisiones y comités científicos", valor: "13" },
       { etiqueta: "Dirección/Secretaría del IUCE", valor: "8" },
     ],
   },

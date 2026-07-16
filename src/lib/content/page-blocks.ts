@@ -344,7 +344,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "datos-descripcion",
         title: "Transferencia — subtítulo de «La transferencia, en datos»",
-        defaultContent: `<p>60 contratos y 4 convenios con fundaciones, administraciones públicas y empresas durante 2019–2025.</p>`,
+        defaultContent: `<p>60 contratos y 4 convenios con fundaciones, administraciones públicas y empresas durante 2020–2025.</p>`,
       },
       {
         blockKey: "cta",
@@ -376,12 +376,12 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "proyectos-descripcion",
         title: "Sección Proyectos — lectura rápida",
-        defaultContent: `<p>108 proyectos competitivos con 11,5 millones de euros de financiación. La Comisión Europea es la principal financiadora, seguida del Gobierno de España.</p>`,
+        defaultContent: `<p>114 proyectos de investigación con participación del IUCE, que movilizan 11,9 millones de euros. La Comisión Europea es la principal financiadora, seguida del Gobierno de España.</p>`,
       },
       {
         blockKey: "transferencia-descripcion",
         title: "Sección Transferencia — lectura rápida",
-        defaultContent: `<p>64 contratos y convenios de transferencia (art. 60 LOSU) por un importe total de 766.970 €, con fundaciones, administraciones públicas y empresas (2019–2025).</p>`,
+        defaultContent: `<p>64 contratos y convenios de transferencia (art. 60 LOSU) por un importe total de 766.970 €, con fundaciones, administraciones públicas y empresas (2020–2025).</p>`,
       },
       {
         blockKey: "doctorado-descripcion",
@@ -396,7 +396,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "redes-descripcion",
         title: "Sección Redes y movilidad — lectura rápida",
-        defaultContent: `<p>45 redes de investigación (25 internacionales) y 26 estancias de movilidad en 12 países respaldan la proyección exterior del Instituto.</p>`,
+        defaultContent: `<p>40 redes de investigación (la mitad de proyección internacional) y 26 estancias de movilidad en 12 países respaldan la proyección exterior del Instituto.</p>`,
       },
       {
         blockKey: "gestion-descripcion",

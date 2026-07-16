@@ -33,7 +33,7 @@ export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>IUCE — Instituto Universitario de Ciencias de la Educación</title>
+    <title>IUCE - Instituto Universitario de Ciencias de la Educación</title>
     <link>${BASE}</link>
     <atom:link href="${BASE}/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Noticias del IUCE, Universidad de Salamanca: investigación, formación del profesorado, doctorado y vida académica.</description>

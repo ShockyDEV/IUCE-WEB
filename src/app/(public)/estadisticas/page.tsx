@@ -47,7 +47,7 @@ const T = {
     proyectosTitulo: "Proyectos de investigación",
     proyectosAnoTitulo: "Proyectos iniciados por año",
     proyectosAnoInsight:
-      "Convocatorias competitivas con participación del IUCE",
+      "23 ya estaban en marcha antes de 2020 y 10 arrancan en 2026",
     proyectosSerie: "Proyectos",
     importeAnoTitulo: "Importe concedido por año",
     importeAnoInsight:
@@ -95,7 +95,7 @@ const T = {
     estanciasInsight: "26 estancias de investigación en 12 países",
     estanciasSerie: "Estancias",
     ambitoTitulo: "Redes de investigación por ámbito",
-    ambitoInsight: "Más de la mitad son internacionales",
+    ambitoInsight: "La mitad son de proyección internacional",
     redesSerie: "Redes",
     redesCentro: "redes",
     gestionEyebrow: "Compromiso institucional",
@@ -121,7 +121,8 @@ const T = {
     proyectosEyebrow: "Competitive research",
     proyectosTitulo: "Research projects",
     proyectosAnoTitulo: "Projects started per year",
-    proyectosAnoInsight: "Competitive calls with IUCE participation",
+    proyectosAnoInsight:
+      "23 were already running before 2020 and 10 start in 2026",
     proyectosSerie: "Projects",
     importeAnoTitulo: "Funding awarded per year",
     importeAnoInsight:
@@ -169,7 +170,7 @@ const T = {
     estanciasInsight: "26 research stays in 12 countries",
     estanciasSerie: "Stays",
     ambitoTitulo: "Research networks by scope",
-    ambitoInsight: "More than half are international",
+    ambitoInsight: "Half of them have international reach",
     redesSerie: "Networks",
     redesCentro: "networks",
     gestionEyebrow: "Institutional commitment",

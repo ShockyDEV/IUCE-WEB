@@ -227,7 +227,7 @@ ${opts.link}
 
 Si no has solicitado este acceso, ignora este mensaje.
 
-IUCE — Instituto Universitario de Ciencias de la Educación
+IUCE - Instituto Universitario de Ciencias de la Educación
 Universidad de Salamanca`,
   };
 }
@@ -303,7 +303,7 @@ Hemos recibido tu consulta («${opts.subject}») y te responderemos en un plazo 
 Copia de tu mensaje:
 ${opts.message}
 
-IUCE — Instituto Universitario de Ciencias de la Educación
+IUCE - Instituto Universitario de Ciencias de la Educación
 Universidad de Salamanca · +34 923 294 634 · iuce@usal.es`,
   };
 }

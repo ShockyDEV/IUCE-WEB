@@ -7,7 +7,7 @@ import { ToastProvider } from "@/components/toast-provider";
 export const metadata: Metadata = {
   metadataBase: new URL("https://iuce.usal.es"),
   title: {
-    default: "IUCE — Instituto Universitario de Ciencias de la Educación",
+    default: "IUCE - Instituto Universitario de Ciencias de la Educación",
     template: "%s | IUCE",
   },
   description:
