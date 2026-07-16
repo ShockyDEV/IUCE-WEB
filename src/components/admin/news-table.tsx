@@ -121,7 +121,7 @@ export function NewsTable({ rows }: Readonly<{ rows: NewsRow[] }>) {
         })}
         {rows.length === 0 ? (
           <tr className="border-t border-gray-100">
-            <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-400">
+            <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
               No hay noticias todavía. Crea la primera con «+ Nueva noticia».
             </td>
           </tr>

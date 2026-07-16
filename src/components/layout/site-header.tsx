@@ -68,6 +68,19 @@ export function SiteHeader({
     setMenuOpen(false);
   }, [pathname]);
 
+  // Escape cierra el menú móvil y devuelve el foco a la hamburguesa, para no
+  // dejar a quien navega con teclado dentro de una lista de 12 enlaces.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setMenuOpen(false);
+      document.getElementById("boton-menu")?.focus();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
   return (
     <>
       {/* Barra institucional roja */}
@@ -79,7 +92,7 @@ export function SiteHeader({
           <Link
             href={withLocale("/", locale)}
             aria-label={pick(locale, "IUCE — Inicio", "IUCE — Home")}
-            className="flex flex-none items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
+            className="flex flex-none items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
           >
             <Image
               src="/images/iuce-logo.png"
@@ -148,7 +161,7 @@ export function SiteHeader({
                 "Área de miembros — solo miembros del IUCE",
                 "Members area — IUCE members only",
               )}
-              className="hidden h-9 items-center gap-1.5 rounded-md px-2.5 text-xs font-semibold text-gray-500 transition-colors hover:text-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page lg:flex"
+              className="hidden h-9 items-center gap-1.5 rounded-md px-2.5 text-xs font-semibold text-gray-500 transition-colors hover:text-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page lg:flex"
             >
               <KeyRound className="h-4 w-4" aria-hidden="true" />
               <span className="hidden xl:inline">
@@ -166,25 +179,28 @@ export function SiteHeader({
                 aria-current={locale === "es" ? "true" : undefined}
                 hrefLang="es"
                 className={cn(
-                  "rounded px-0.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400",
+                  "inline-flex h-6 min-w-[24px] items-center justify-center rounded px-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue",
                   locale === "es"
                     ? "text-gray-800"
-                    : "font-normal text-gray-400 hover:text-gray-700",
+                    : "font-normal text-gray-500 hover:text-gray-700",
                 )}
               >
                 ES
               </Link>
-              <span className="font-normal text-gray-300"> · </span>
+              {/* Separador decorativo: el lector de pantalla no debe leerlo. */}
+              <span aria-hidden="true" className="font-normal text-gray-300">
+                ·
+              </span>
               <Link
                 href={withLocale(basePath, "en")}
                 aria-current={locale === "en" ? "true" : undefined}
                 hrefLang="en"
                 title={pick(locale, "English version", "Versión en español")}
                 className={cn(
-                  "rounded px-0.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400",
+                  "inline-flex h-6 min-w-[24px] items-center justify-center rounded px-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue",
                   locale === "en"
                     ? "text-gray-800"
-                    : "font-normal text-gray-400 hover:text-gray-700",
+                    : "font-normal text-gray-500 hover:text-gray-700",
                 )}
               >
                 EN
@@ -193,6 +209,7 @@ export function SiteHeader({
             {/* Hamburguesa (móvil y tablet) */}
             <button
               type="button"
+              id="boton-menu"
               aria-label={
                 menuOpen
                   ? pick(locale, "Cerrar menú", "Close menu")
@@ -201,7 +218,7 @@ export function SiteHeader({
               aria-expanded={menuOpen}
               aria-controls="menu-movil"
               onClick={() => setMenuOpen((v) => !v)}
-              className="flex h-9 w-9 items-center justify-center rounded-md text-gray-600 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page lg:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-md text-gray-600 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page lg:hidden"
             >
               {menuOpen ? (
                 <X className="h-5 w-5" aria-hidden="true" />

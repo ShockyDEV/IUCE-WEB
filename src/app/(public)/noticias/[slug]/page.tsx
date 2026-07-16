@@ -128,7 +128,7 @@ export default async function NoticiaPage({ params }: Readonly<PageProps>) {
           <span className="rounded-full bg-iuce-blue-pale px-3 py-[3px] font-medium text-ink">
             {catLabel(item.category)}
           </span>
-          <span className="text-gray-400">
+          <span className="text-gray-500">
             {item.dateLong} · {item.author}
           </span>
         </div>
@@ -154,7 +154,7 @@ export default async function NoticiaPage({ params }: Readonly<PageProps>) {
               className="h-[420px] w-full"
             />
             {item.photoCaption ? (
-              <figcaption className="mt-2.5 text-xs text-gray-400">
+              <figcaption className="mt-2.5 text-xs text-gray-500">
                 {item.photoCaption}
               </figcaption>
             ) : null}
@@ -192,7 +192,7 @@ export default async function NoticiaPage({ params }: Readonly<PageProps>) {
           {related.map((n) => (
             <Link key={n.slug} href={href(`/noticias/${n.slug}`)}>
               <article className="h-full rounded-xl border border-gray-200 bg-surface-card px-5 py-[18px] shadow-sm transition-all hover:border-brand-400 hover:shadow-md">
-                <p className="mb-1.5 text-xs text-gray-400">
+                <p className="mb-1.5 text-xs text-gray-500">
                   {catLabel(n.category)} · {n.dateDisplay}
                 </p>
                 <h3 className="text-sm font-semibold leading-snug text-gray-900">

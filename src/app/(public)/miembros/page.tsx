@@ -57,7 +57,7 @@ export default async function IntranetPage() {
               {/* La antigua página pública /miembros era el listado del
                   Instituto: quien llegue por un enlace viejo encuentra aquí
                   el camino. */}
-              <p className="mt-5 border-t border-gray-100 pt-4 text-center text-xs text-gray-400">
+              <p className="mt-5 border-t border-gray-100 pt-4 text-center text-xs text-gray-500">
                 ¿Buscabas el listado de miembros del IUCE?{" "}
                 <Link
                   href="/instituto#miembros"
@@ -91,7 +91,7 @@ export default async function IntranetPage() {
         Documentos ({documentos.length})
       </h2>
       {documentos.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-gray-300 px-6 py-10 text-center text-sm text-gray-400">
+        <p className="rounded-xl border border-dashed border-gray-300 px-6 py-10 text-center text-sm text-gray-500">
           Todavía no hay documentos publicados.
         </p>
       ) : (
@@ -111,7 +111,7 @@ export default async function IntranetPage() {
                       {d.description}
                     </p>
                   ) : null}
-                  <p className="mt-1 text-xs text-gray-400">
+                  <p className="mt-1 text-xs text-gray-500">
                     {d.filename} · {formatSize(d.size)} ·{" "}
                     {new Intl.DateTimeFormat("es-ES", {
                       day: "numeric",
@@ -122,7 +122,7 @@ export default async function IntranetPage() {
                 </div>
                 <a
                   href={`/api/intranet/files/${d.id}`}
-                  className="inline-flex h-10 flex-none items-center gap-2 rounded-md border border-gray-300 bg-surface-card px-4 text-sm font-medium text-gray-700 transition-colors hover:border-brand-400 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
+                  className="inline-flex h-10 flex-none items-center gap-2 rounded-md border border-gray-300 bg-surface-card px-4 text-sm font-medium text-gray-700 transition-colors hover:border-brand-400 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2"
                 >
                   <Download className="h-4 w-4" aria-hidden="true" />
                   Descargar

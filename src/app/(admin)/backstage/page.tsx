@@ -229,7 +229,7 @@ export default async function AdminDashboardPage() {
         </div>
         <div className="flex flex-col px-6 pb-5 pt-4">
           {stats.sources.length === 0 ? (
-            <p className="py-2 text-sm text-gray-400">
+            <p className="py-2 text-sm text-gray-500">
               Sin datos de tráfico todavía.
             </p>
           ) : (

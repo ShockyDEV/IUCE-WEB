@@ -66,7 +66,7 @@ export function IntranetShell({
                       {member.name}
                     </p>
                   ) : null}
-                  <p className="text-xs text-gray-400">{email}</p>
+                  <p className="text-xs text-gray-500">{email}</p>
                 </div>
                 <IntranetSignOut />
               </div>

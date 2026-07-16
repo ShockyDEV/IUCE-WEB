@@ -40,7 +40,7 @@ export function PdfEmbed({
         </div>
       </object>
       <figcaption className="flex flex-wrap items-center justify-between gap-3">
-        <span className="text-xs text-gray-400">{title}</span>
+        <span className="text-xs text-gray-500">{title}</span>
         <a
           href={src}
           target="_blank"

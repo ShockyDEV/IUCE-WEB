@@ -266,7 +266,7 @@ export function NewsEditor({
                 })}
               </div>
             ) : (
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-500">
                 Aún no hay imágenes en el contenido. Insértalas con el botón de
                 imagen del editor y aquí podrás marcar la portada.
               </p>
@@ -295,7 +295,7 @@ export function NewsEditor({
                 <button
                   type="button"
                   onClick={() => update("coverImage", "")}
-                  className="flex-none text-xs text-gray-400 hover:text-red-600"
+                  className="flex-none text-xs text-gray-500 hover:text-red-600"
                 >
                   Sin portada
                 </button>
@@ -381,7 +381,7 @@ export function NewsEditor({
             <Link href="/backstage/news" className={buttonClassName({ variant: "ghost" })}>
               Cancelar
             </Link>
-            <span className="inline-flex items-center gap-1.5 text-[11px] text-gray-400">
+            <span className="inline-flex items-center gap-1.5 text-[11px] text-gray-500">
               <Languages className="h-[13px] w-[13px]" aria-hidden="true" />
               Se traduce automáticamente al inglés al guardar
             </span>

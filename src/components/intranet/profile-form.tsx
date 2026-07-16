@@ -134,7 +134,7 @@ export function ProfileForm({
           </div>
         </div>
         {account.lastLogin ? (
-          <p className="mt-3 text-xs text-gray-400">
+          <p className="mt-3 text-xs text-gray-500">
             Último acceso:{" "}
             {new Intl.DateTimeFormat("es-ES", {
               day: "numeric",
@@ -248,7 +248,7 @@ export function ProfileForm({
             </div>
           </div>
 
-          <p className="mt-4 text-xs leading-relaxed text-gray-400">
+          <p className="mt-4 text-xs leading-relaxed text-gray-500">
             Para corregir tu nombre público o tu grupo de investigación,
             escribe a{" "}
             <a

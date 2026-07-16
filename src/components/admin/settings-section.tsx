@@ -278,7 +278,7 @@ export function SettingsSection({
               </div>
             </div>
           ) : (
-            <p className="mt-2 border-t border-gray-100 pt-4 text-xs text-gray-400">
+            <p className="mt-2 border-t border-gray-100 pt-4 text-xs text-gray-500">
               Solo la cuenta con rol Super Administración puede crear cuentas
               nuevas.
             </p>

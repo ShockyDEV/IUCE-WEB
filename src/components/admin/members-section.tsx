@@ -188,7 +188,7 @@ export function MembersSection({
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-4">
         <div className="flex h-10 w-[300px] items-center gap-2 rounded-md border border-gray-300 bg-white px-3">
-          <Search className="h-[15px] w-[15px] text-gray-400" aria-hidden="true" />
+          <Search className="h-[15px] w-[15px] text-gray-500" aria-hidden="true" />
           <input
             type="text"
             value={query}
@@ -310,7 +310,7 @@ export function MembersSection({
             ))}
             {filtered.length === 0 ? (
               <tr className="border-t border-gray-100">
-                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-400">
+                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
                   Sin resultados.
                 </td>
               </tr>
@@ -460,7 +460,7 @@ export function MembersSection({
               {galleryOpen ? (
                 <div className="max-h-56 overflow-y-auto rounded-md border border-gray-200 bg-gray-50 p-2">
                   {galleryLoading ? (
-                    <p className="p-3 text-center text-xs text-gray-400">
+                    <p className="p-3 text-center text-xs text-gray-500">
                       Cargando imágenes…
                     </p>
                   ) : gallery && gallery.length > 0 ? (
@@ -492,7 +492,7 @@ export function MembersSection({
                       ))}
                     </div>
                   ) : (
-                    <p className="p-3 text-center text-xs text-gray-400">
+                    <p className="p-3 text-center text-xs text-gray-500">
                       No hay imágenes subidas todavía.
                     </p>
                   )}
@@ -507,7 +507,7 @@ export function MembersSection({
                 onChange={(e) => setForm({ ...form, photo: e.target.value })}
                 className={inputClass}
               />
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-500">
                 Sube una imagen (se recorta a 512×512), elige una ya subida o
                 pega una URL.
               </p>

@@ -109,13 +109,13 @@ export function FilesSection({ rows }: Readonly<{ rows: FileRow[] }>) {
           uploading && "opacity-60",
         )}
       >
-        <Upload className="h-[26px] w-[26px] text-gray-400" aria-hidden="true" />
+        <Upload className="h-[26px] w-[26px] text-gray-500" aria-hidden="true" />
         <p className="text-sm font-medium text-gray-700">
           {uploading
             ? "Subiendo…"
             : "Arrastra archivos aquí o haz clic para subir"}
         </p>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-500">
           PDF, imágenes y documentos · máx. 20 MB por archivo
         </p>
         <input
@@ -168,7 +168,7 @@ export function FilesSection({ rows }: Readonly<{ rows: FileRow[] }>) {
                   <td className="px-6 py-3">
                     <div className="flex items-center gap-2.5">
                       <Icon
-                        className="h-4 w-4 flex-none text-gray-400"
+                        className="h-4 w-4 flex-none text-gray-500"
                         aria-hidden="true"
                       />
                       <a
@@ -215,7 +215,7 @@ export function FilesSection({ rows }: Readonly<{ rows: FileRow[] }>) {
             })}
             {rows.length === 0 ? (
               <tr className="border-t border-gray-100">
-                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-400">
+                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
                   No hay archivos todavía.
                 </td>
               </tr>

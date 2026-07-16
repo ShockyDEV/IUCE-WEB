@@ -173,7 +173,7 @@ export default async function HomePage() {
                   {...(external
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
-                  className="card-lift flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:border-brand-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
+                  className="card-lift flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:border-brand-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
                 >
                   <span className="flex h-[38px] w-[38px] items-center justify-center rounded-md bg-iuce-blue-pale">
                     <Icon
@@ -266,7 +266,7 @@ export default async function HomePage() {
                       <span className="rounded-full bg-iuce-blue-pale px-2.5 py-0.5 font-medium text-ink">
                         {item.category}
                       </span>
-                      <span className="text-gray-400">{item.dateDisplay}</span>
+                      <span className="text-gray-500">{item.dateDisplay}</span>
                     </div>
                     <h3 className="text-base font-semibold leading-snug text-gray-900">
                       {item.title}

@@ -332,7 +332,7 @@ export function RichTextEditor({
       <div className="border border-t-0 border-gray-300 bg-white px-[18px] py-4 text-[14.5px] leading-[1.65] text-gray-700">
         <EditorContent editor={editor} />
       </div>
-      <div className="flex justify-end gap-4 rounded-b-md border border-t-0 border-gray-300 bg-gray-50 px-3 py-1.5 text-[11px] text-gray-400">
+      <div className="flex justify-end gap-4 rounded-b-md border border-t-0 border-gray-300 bg-gray-50 px-3 py-1.5 text-[11px] text-gray-500">
         <span>
           {chars.toLocaleString("es-ES")} caracteres
         </span>

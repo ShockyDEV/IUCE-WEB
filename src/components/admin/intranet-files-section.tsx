@@ -142,13 +142,13 @@ export function IntranetFilesSection({
           uploading && "opacity-60",
         )}
       >
-        <Upload className="h-[26px] w-[26px] text-gray-400" aria-hidden="true" />
+        <Upload className="h-[26px] w-[26px] text-gray-500" aria-hidden="true" />
         <p className="text-sm font-medium text-gray-700">
           {uploading
             ? "Subiendo…"
             : "Arrastra documentos aquí o haz clic para subir"}
         </p>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-500">
           Cualquier tipo de archivo · máx. 50 MB por documento
         </p>
         <input
@@ -248,7 +248,7 @@ export function IntranetFilesSection({
             ))}
             {rows.length === 0 ? (
               <tr className="border-t border-gray-100">
-                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-400">
+                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
                   No hay documentos todavía. Sube el primero arriba.
                 </td>
               </tr>

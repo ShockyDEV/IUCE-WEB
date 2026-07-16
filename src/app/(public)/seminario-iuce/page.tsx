@@ -167,7 +167,7 @@ export default async function SeminarioIucePage() {
               );
             })}
           </div>
-          <p className="mt-5 text-xs text-gray-400">{t.notaPanel}</p>
+          <p className="mt-5 text-xs text-gray-500">{t.notaPanel}</p>
         </div>
       </section>
 

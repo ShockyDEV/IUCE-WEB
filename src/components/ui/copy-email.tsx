@@ -40,7 +40,7 @@ export function CopyEmail({
       title={pick(locale, `Copiar ${email}`, `Copy ${email}`)}
       aria-label={pick(locale, `Copiar el correo ${email}`, `Copy the email ${email}`)}
       className={cn(
-        "group inline-flex max-w-full items-center gap-1.5 text-sm text-iuce-blue transition-colors hover:text-iuce-blue-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page rounded",
+        "group inline-flex max-w-full items-center gap-1.5 text-sm text-iuce-blue transition-colors hover:text-iuce-blue-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page rounded",
         className,
       )}
     >
@@ -50,7 +50,7 @@ export function CopyEmail({
         <Check className="h-3.5 w-3.5 flex-none text-emerald-600" aria-hidden="true" />
       ) : (
         <Copy
-          className="h-3.5 w-3.5 flex-none text-gray-400 transition-colors group-hover:text-iuce-blue"
+          className="h-3.5 w-3.5 flex-none text-gray-500 transition-colors group-hover:text-iuce-blue"
           aria-hidden="true"
         />
       )}

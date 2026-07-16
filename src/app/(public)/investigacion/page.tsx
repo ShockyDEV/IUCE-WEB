@@ -240,7 +240,7 @@ export default async function InvestigacionPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       title={`${t.webDe} ${g.acronym} — ${urlLabel}`}
-                      className="group/web flex flex-col gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
+                      className="group/web flex flex-col gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2"
                     >
                       {cabecera}
                     </a>
@@ -365,7 +365,7 @@ export default async function InvestigacionPage() {
                       href={enlace}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
+                      className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2"
                     >
                       {tarjeta}
                     </a>

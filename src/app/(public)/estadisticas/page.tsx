@@ -558,7 +558,7 @@ export default async function EstadisticasPage() {
           </div>
 
           <div
-            className="page-block mt-10 border-t border-gray-100 pt-5 text-xs leading-relaxed text-gray-400"
+            className="page-block mt-10 border-t border-gray-100 pt-5 text-xs leading-relaxed text-gray-500"
             dangerouslySetInnerHTML={{ __html: notaFuente }}
           />
         </div>

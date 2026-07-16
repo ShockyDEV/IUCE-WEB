@@ -221,7 +221,7 @@ export function EventsSection({ rows }: Readonly<{ rows: EventRow[] }>) {
             })}
             {rows.length === 0 ? (
               <tr className="border-t border-gray-100">
-                <td colSpan={6} className="px-6 py-8 text-center text-sm text-gray-400">
+                <td colSpan={6} className="px-6 py-8 text-center text-sm text-gray-500">
                   No hay eventos todavía.
                 </td>
               </tr>

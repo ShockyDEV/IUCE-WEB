@@ -497,7 +497,7 @@ export default async function InstitutoPage() {
                 </li>
               ))}
             </ul>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-500">
               {t.reglamentoNota}
               {urlReglamento ? (
                 <>

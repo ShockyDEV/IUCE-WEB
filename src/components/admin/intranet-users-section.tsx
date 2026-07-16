@@ -156,7 +156,7 @@ export function IntranetUsersSection({
           <h3 className="text-base font-semibold text-gray-900">
             Usuarios autorizados ({rows.length})
           </h3>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             Lista blanca manual + miembros que ya han accedido
           </p>
         </div>
@@ -227,7 +227,7 @@ export function IntranetUsersSection({
             ))}
             {rows.length === 0 ? (
               <tr className="border-t border-gray-100">
-                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-400">
+                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
                   Nadie autorizado todavía. Añade el primer correo arriba.
                 </td>
               </tr>

@@ -143,7 +143,7 @@ export function ProjectsExplorer({
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative w-full sm:max-w-[380px]">
           <Search
-            className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+            className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500"
             aria-hidden="true"
           />
           <input
@@ -162,7 +162,7 @@ export function ProjectsExplorer({
           <strong className="text-gray-900">{filtered.length}</strong>{" "}
           {filtered.length === 1 ? t.proyecto : t.proyectos}
           {!hayFiltros ? (
-            <span className="text-gray-400">
+            <span className="text-gray-500">
               {" "}
               · {activos} {t.enCursoContador}
             </span>
@@ -252,7 +252,7 @@ export function ProjectsExplorer({
 
       {/* Resultados */}
       {shown.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-gray-300 px-6 py-12 text-center text-sm text-gray-400">
+        <p className="rounded-xl border border-dashed border-gray-300 px-6 py-12 text-center text-sm text-gray-500">
           {t.vacio}
         </p>
       ) : (
@@ -277,7 +277,7 @@ export function ProjectsExplorer({
                       .join(" · ")}
                   </p>
                   {p.line ? (
-                    <p className="mt-1 text-xs text-gray-400">{p.line}</p>
+                    <p className="mt-1 text-xs text-gray-500">{p.line}</p>
                   ) : null}
                 </div>
                 <div className="flex flex-row flex-wrap items-center gap-2 sm:flex-col sm:items-end">

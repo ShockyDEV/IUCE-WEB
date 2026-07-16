@@ -248,7 +248,7 @@ export default async function NoticiasPage({
             ) : null}
             <div className="relative w-full sm:w-[320px]">
               <Search
-                className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+                className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500"
                 aria-hidden="true"
               />
               <input
@@ -319,7 +319,7 @@ export default async function NoticiasPage({
                     <span className="rounded-full bg-iuce-blue-pale px-3 py-[3px] font-medium text-ink">
                       {catLabel(featured.category)}
                     </span>
-                    <span className="text-gray-400">
+                    <span className="text-gray-500">
                       {featured.dateDisplay}
                     </span>
                   </div>
@@ -348,7 +348,7 @@ export default async function NoticiasPage({
       <section>
         <div className="mx-auto max-w-6xl px-6 pb-6 pt-7">
           {feed.length === 0 ? (
-            <p className="py-12 text-center text-sm text-gray-400">
+            <p className="py-12 text-center text-sm text-gray-500">
               {t.sinResultados}
             </p>
           ) : (
@@ -371,7 +371,7 @@ export default async function NoticiasPage({
                         <span className="rounded-full bg-iuce-blue-pale px-2.5 py-0.5 font-medium text-ink">
                           {catLabel(n.category)}
                         </span>
-                        <span className="text-gray-400">{n.dateDisplay}</span>
+                        <span className="text-gray-500">{n.dateDisplay}</span>
                       </div>
                       <h3 className="text-base font-semibold leading-snug text-gray-900">
                         {n.title}
@@ -415,7 +415,7 @@ export default async function NoticiasPage({
             p === "…" ? (
               <span
                 key={`gap-${i}`}
-                className="px-1 text-sm text-gray-400"
+                className="px-1 text-sm text-gray-500"
               >
                 …
               </span>

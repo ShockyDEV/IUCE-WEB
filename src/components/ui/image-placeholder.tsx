@@ -41,7 +41,7 @@ export function ImagePlaceholder({
         className,
       )}
     >
-      <Icon className="h-6 w-6 flex-none text-gray-400" aria-hidden="true" />
+      <Icon className="h-6 w-6 flex-none text-gray-500" aria-hidden="true" />
       {label ? (
         <span className="max-w-[80%] text-xs leading-snug text-gray-500">
           {label}

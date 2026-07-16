@@ -183,7 +183,7 @@ export function GroupsSection({ rows }: Readonly<{ rows: GroupRow[] }>) {
             ))}
             {rows.length === 0 ? (
               <tr className="border-t border-gray-100">
-                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-400">
+                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
                   No hay grupos todavía.
                 </td>
               </tr>

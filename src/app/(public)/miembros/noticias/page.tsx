@@ -41,7 +41,7 @@ export default async function IntranetNoticiasPage() {
       </p>
 
       {noticias.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-gray-300 px-6 py-10 text-center text-sm text-gray-400">
+        <p className="rounded-xl border border-dashed border-gray-300 px-6 py-10 text-center text-sm text-gray-500">
           Todavía no hay noticias internas publicadas.
         </p>
       ) : (
@@ -63,7 +63,7 @@ export default async function IntranetNoticiasPage() {
                     />
                   ) : null}
                   <div className="flex flex-1 flex-col px-5 py-[18px]">
-                    <p className="mb-1.5 text-xs text-gray-400">
+                    <p className="mb-1.5 text-xs text-gray-500">
                       <span className="mr-1.5 inline-flex rounded-full bg-[#E0E7FF] px-2 py-0.5 text-[11px] font-semibold text-[#3730A3]">
                         Interna
                       </span>

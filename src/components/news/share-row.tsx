@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { pick, type Locale } from "@/lib/locale";
 
 const btnClass =
-  "flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 bg-surface-card text-gray-600 transition-colors hover:border-brand-400 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page";
+  "flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 bg-surface-card text-gray-600 transition-colors hover:border-brand-400 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page";
 
 /**
  * Fila «Compartir» del detalle de noticia: X, LinkedIn y copiar enlace.

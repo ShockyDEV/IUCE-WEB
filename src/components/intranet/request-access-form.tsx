@@ -159,7 +159,7 @@ export function RequestAccessForm() {
           : "Enviarme el enlace de acceso"}
       </Button>
 
-      <p className="text-xs leading-relaxed text-gray-400">
+      <p className="text-xs leading-relaxed text-gray-500">
         El acceso está restringido al personal autorizado por el IUCE.
         Recibirás un enlace de un solo uso, válido durante 30 minutos.
       </p>

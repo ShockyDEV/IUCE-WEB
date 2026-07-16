@@ -385,7 +385,7 @@ export default async function EventosPage() {
                     <p className="text-xs text-gray-500">{e.meta}</p>
                   </div>
                   <ChevronRight
-                    className="h-[18px] w-[18px] flex-none text-gray-400"
+                    className="h-[18px] w-[18px] flex-none text-gray-500"
                     aria-hidden="true"
                   />
                 </article>
@@ -411,7 +411,7 @@ export default async function EventosPage() {
                   i === past.length - 1 && "border-b",
                 )}
               >
-                <span className="text-xs uppercase tracking-wider text-gray-400">
+                <span className="text-xs uppercase tracking-wider text-gray-500">
                   {e.dateRange}
                 </span>
                 <div>
@@ -427,7 +427,7 @@ export default async function EventosPage() {
               </Reveal>
             ))}
             {past.length === 0 ? (
-              <p className="py-6 text-sm text-gray-400">
+              <p className="py-6 text-sm text-gray-500">
                 {t.sinCelebrados}
               </p>
             ) : null}

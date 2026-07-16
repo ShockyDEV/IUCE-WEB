@@ -82,13 +82,15 @@ export function InstitutionalFooter() {
               {pick(locale, "Accesibilidad", "Accessibility")}
             </Link>
           </p>
-          <div className="flex items-center gap-3">
+          {/* Los iconos siguen midiendo 14-16 px, pero el área de pulsación de
+              cada enlace llega a 24x24 (mínimo de WCAG 2.2 para objetivos). */}
+          <div className="flex items-center gap-2">
             <a
               href="https://iuce.usal.es"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Web del IUCE"
-              className="transition-colors hover:text-white"
+              className="inline-flex h-6 w-6 items-center justify-center rounded transition-colors hover:text-white"
             >
               <Globe className="h-4 w-4" aria-hidden="true" />
             </a>
@@ -97,7 +99,7 @@ export function InstitutionalFooter() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook del IUCE"
-              className="transition-colors hover:text-white"
+              className="inline-flex h-6 w-6 items-center justify-center rounded transition-colors hover:text-white"
             >
               <Facebook className="h-4 w-4" aria-hidden="true" />
             </a>
@@ -106,7 +108,7 @@ export function InstitutionalFooter() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="X / Twitter del IUCE"
-              className="transition-colors hover:text-white"
+              className="inline-flex h-6 w-6 items-center justify-center rounded transition-colors hover:text-white"
             >
               <XIcon className="h-3.5 w-3.5" />
             </a>

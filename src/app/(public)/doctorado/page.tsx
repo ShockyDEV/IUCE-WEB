@@ -307,7 +307,7 @@ export default async function DoctoradoPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={`${t.webDe} ${g.acronym}`}
-                    className="group/web block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
+                    className="group/web block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2"
                   >
                     {cabecera}
                   </a>

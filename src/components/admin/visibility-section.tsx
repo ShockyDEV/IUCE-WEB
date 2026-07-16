@@ -69,7 +69,7 @@ export function VisibilitySection({
           </strong>{" "}
           con tu sesión del panel, para trabajar en ella antes de publicarla.
         </p>
-        <p className="mt-3 text-xs text-gray-400">
+        <p className="mt-3 text-xs text-gray-500">
           La portada, las páginas legales y el área de miembros no se pueden
           ocultar.
         </p>
@@ -99,7 +99,7 @@ export function VisibilitySection({
                     <span
                       className={cn(
                         "text-sm font-medium",
-                        hidden ? "text-gray-400" : "text-gray-900",
+                        hidden ? "text-gray-500" : "text-gray-900",
                       )}
                     >
                       {row.label}
@@ -120,7 +120,7 @@ export function VisibilitySection({
                   target="_blank"
                   rel="noopener noreferrer"
                   title={`Ver ${row.path}`}
-                  className="hidden items-center gap-1 text-[13px] text-gray-400 transition-colors hover:text-iuce-blue sm:flex"
+                  className="hidden items-center gap-1 text-[13px] text-gray-500 transition-colors hover:text-iuce-blue sm:flex"
                 >
                   {row.path}
                   <ExternalLink className="h-3 w-3" aria-hidden="true" />
@@ -142,7 +142,7 @@ export function VisibilitySection({
                   className={cn(
                     "flex h-9 w-9 flex-none items-center justify-center rounded-md border transition-colors disabled:opacity-50",
                     hidden
-                      ? "border-gray-200 bg-gray-50 text-gray-400 hover:text-gray-600"
+                      ? "border-gray-200 bg-gray-50 text-gray-500 hover:text-gray-600"
                       : "border-[#BBF7D0] bg-[#DCFCE7] text-[#15803D] hover:bg-[#BBF7D0]",
                   )}
                 >

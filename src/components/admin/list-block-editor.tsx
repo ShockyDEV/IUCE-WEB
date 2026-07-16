@@ -96,7 +96,7 @@ export function ListBlockEditor({
           ) : null}
         </div>
         <div className="flex items-center gap-2.5">
-          <span className="text-[11px] text-gray-400">
+          <span className="text-[11px] text-gray-500">
             {items.length} elementos
           </span>
           {JSON.stringify(items) !== JSON.stringify(def.defaultItems) ? (
@@ -115,7 +115,7 @@ export function ListBlockEditor({
                 }
               }}
               title="Volver a los valores originales de esta lista"
-              className="inline-flex items-center gap-1 text-[11px] font-medium text-gray-400 transition-colors hover:text-gray-700"
+              className="inline-flex items-center gap-1 text-[11px] font-medium text-gray-500 transition-colors hover:text-gray-700"
             >
               <RotateCcw className="h-3 w-3" aria-hidden="true" />
               Restablecer original
@@ -141,7 +141,7 @@ export function ListBlockEditor({
               className="rounded-lg border border-gray-200 bg-gray-50 p-3.5"
             >
               <div className="mb-2.5 flex items-center justify-between">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-500">
                   {def.itemLabel} {index + 1}
                 </p>
                 <div className="flex gap-0.5">
@@ -192,7 +192,7 @@ export function ListBlockEditor({
                       >
                         {field.label}
                         {field.hint ? (
-                          <span className="font-normal text-gray-400">
+                          <span className="font-normal text-gray-500">
                             {" "}
                             — {field.hint}
                           </span>

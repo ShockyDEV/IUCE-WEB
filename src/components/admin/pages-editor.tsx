@@ -79,7 +79,7 @@ function BlockEditor({
           ) : null}
         </div>
         <div className="flex items-center gap-2.5">
-          <span className="inline-flex items-center gap-1 text-[11px] text-gray-400">
+          <span className="inline-flex items-center gap-1 text-[11px] text-gray-500">
             <Languages className="h-3 w-3" aria-hidden="true" />
             Auto EN
           </span>
@@ -88,7 +88,7 @@ function BlockEditor({
               type="button"
               onClick={handleReset}
               title="Volver al texto original de este bloque"
-              className="inline-flex items-center gap-1 text-[11px] font-medium text-gray-400 transition-colors hover:text-gray-700"
+              className="inline-flex items-center gap-1 text-[11px] font-medium text-gray-500 transition-colors hover:text-gray-700"
             >
               <RotateCcw className="h-3 w-3" aria-hidden="true" />
               Restablecer original

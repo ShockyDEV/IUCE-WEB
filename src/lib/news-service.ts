@@ -108,7 +108,10 @@ function toItem(row: News, locale: Locale): NewsItem {
     dateLong: formatLong(published, locale),
     author: en ? "IUCE editorial team" : "Redacción IUCE",
     excerpt: (en ? row.excerptEn : null) ?? row.excerpt ?? "",
-    photoLabel: en ? "News image" : "Imagen de la noticia",
+    // Las noticias migradas no traen descripción propia de la imagen, y
+    // «Imagen de la noticia» no aporta nada: el lector de pantalla ya lee el
+    // titular, que va en el mismo enlace. Alt vacío = imagen decorativa.
+    photoLabel: "",
     coverImage: row.coverImage,
     content: (en ? row.contentEn : null) ?? row.content,
   };

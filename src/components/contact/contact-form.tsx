@@ -253,7 +253,7 @@ export function ContactForm({
         <Button type="submit" size="lg" disabled={sending}>
           {sending ? t.enviando : t.enviar}
         </Button>
-        <span className="inline-flex items-center gap-1.5 text-xs text-gray-400">
+        <span className="inline-flex items-center gap-1.5 text-xs text-gray-500">
           <MailCheck className="h-3.5 w-3.5" aria-hidden="true" />
           {t.copia}
         </span>

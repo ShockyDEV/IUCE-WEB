@@ -50,7 +50,7 @@ export function MembersGrid({
     <div>
       <div className="mb-6 flex h-11 w-full max-w-[360px] items-center gap-2.5 rounded-md border border-gray-300 bg-surface-card px-3.5">
         <Search
-          className="h-4 w-4 flex-none text-gray-400"
+          className="h-4 w-4 flex-none text-gray-500"
           aria-hidden="true"
         />
         <input
@@ -67,11 +67,11 @@ export function MembersGrid({
             "Buscar miembros por nombre o área",
             "Search members by name or area",
           )}
-          className="min-w-0 flex-1 border-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400"
+          className="min-w-0 flex-1 border-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-500"
         />
       </div>
 
-      <p className="mb-4 text-xs text-gray-400" aria-live="polite">
+      <p className="mb-4 text-xs text-gray-500" aria-live="polite">
         {filtered.length === members.length
           ? pick(
               locale,
@@ -130,7 +130,7 @@ export function MembersGrid({
                       `Producción científica de ${m.name} (Portal de Investigación USAL)`,
                       `${m.name}'s scientific output (USAL Research Portal)`,
                     )}
-                    className="group/persona block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
+                    className="group/persona block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2"
                   >
                     {nombreArea}
                   </a>
@@ -168,7 +168,7 @@ export function MembersGrid({
           );
         })}
         {filtered.length === 0 ? (
-          <p className="col-span-full py-8 text-center text-sm text-gray-400">
+          <p className="col-span-full py-8 text-center text-sm text-gray-500">
             {pick(
               locale,
               `Sin resultados para «${query}».`,

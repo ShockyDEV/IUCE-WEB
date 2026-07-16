@@ -70,7 +70,7 @@ export function MessagesSection({ rows }: Readonly<{ rows: MessageRow[] }>) {
           <h3 className="text-base font-semibold text-gray-900">
             Mensajes de contacto ({rows.length})
           </h3>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             Los mensajes del formulario llegan también a iuce@usal.es vía
             Resend
           </p>
@@ -172,7 +172,7 @@ export function MessagesSection({ rows }: Readonly<{ rows: MessageRow[] }>) {
             })}
             {rows.length === 0 ? (
               <tr className="border-t border-gray-100">
-                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-400">
+                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
                   No hay mensajes.
                 </td>
               </tr>
@@ -189,14 +189,14 @@ export function MessagesSection({ rows }: Readonly<{ rows: MessageRow[] }>) {
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
+                <p className="text-xs font-medium uppercase tracking-wider text-gray-500">
                   De
                 </p>
                 <p className="mt-1 text-gray-900">{viewing.name}</p>
                 <p className="text-gray-500">{viewing.email}</p>
               </div>
               <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
+                <p className="text-xs font-medium uppercase tracking-wider text-gray-500">
                   Asunto
                 </p>
                 <p className="mt-1 text-gray-900">{viewing.subject}</p>

@@ -145,7 +145,7 @@ export function ProjectsSection({ rows }: Readonly<{ rows: ProjectRow[] }>) {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative w-full sm:max-w-[340px]">
           <Search
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500"
             aria-hidden="true"
           />
           <input
@@ -172,7 +172,7 @@ export function ProjectsSection({ rows }: Readonly<{ rows: ProjectRow[] }>) {
           <h3 className="text-base font-semibold text-gray-900">
             Proyectos ({filtered.length})
           </h3>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             Los inactivos no se muestran en la web pública
           </p>
         </div>
@@ -244,7 +244,7 @@ export function ProjectsSection({ rows }: Readonly<{ rows: ProjectRow[] }>) {
             ))}
             {filtered.length === 0 ? (
               <tr className="border-t border-gray-100">
-                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-400">
+                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
                   {query
                     ? "Ningún proyecto coincide con la búsqueda."
                     : "No hay proyectos. Añade el primero con «Nuevo proyecto»."}

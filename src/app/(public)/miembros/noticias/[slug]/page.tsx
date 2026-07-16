@@ -36,7 +36,7 @@ export default async function IntranetNoticiaPage({
           <span className="inline-flex rounded-full bg-[#E0E7FF] px-2.5 py-[3px] font-semibold text-[#3730A3]">
             Noticia interna
           </span>
-          <span className="text-gray-400">{item.dateLong}</span>
+          <span className="text-gray-500">{item.dateLong}</span>
         </div>
         <h2 className="mb-4 text-balance text-3xl font-bold leading-tight tracking-tight text-ink">
           {item.title}

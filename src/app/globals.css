@@ -9,8 +9,13 @@
    resuelven en cascada y siguen al tema automáticamente.
    ========================================================================== */
 :root {
-  /* Marca — azul IUCE */
-  --iuce-blue: #3b7dd8;
+  /* Marca — azul IUCE.
+     #3b7dd8 se quedaba en 4,11:1 sobre blanco (y 3,72:1 sobre --iuce-blue-pale),
+     por debajo del 4,5:1 que pide WCAG AA para texto. Se oscurece manteniendo el
+     tono: 5:1 sobre blanco y 4,53:1 sobre el tinte. El token es sobre todo color
+     de TEXTO (49 usos) y de bordes/anillos; las bandas azules grandes usan
+     --iuce-blue-dark, así que la identidad visual no cambia. */
+  --iuce-blue: #356fc0;
   --iuce-blue-dark: #1b3a5c;
   --iuce-blue-pale: #eff4fb;
 
@@ -72,7 +77,9 @@ html.dark {
   --iuce-blue-pale: #152a42;
 
   --iuce-blue: #7dafea;
-  --usal-red: #e56276;
+  /* #e56276 daba 4,40:1 sobre --iuce-blue-pale oscuro; se aclara hasta 4,79:1
+     (con #e86378 se quedaba en 4,499, justo por debajo del umbral). */
+  --usal-red: #ea6b7f;
   --usal-red-dark: #c8102e;
   --brand-ink: #a9c7ee;
 
@@ -104,7 +111,7 @@ html.dark {
   --iuce-blue-pale: #eff4fb;
   --surface-tinted: var(--iuce-blue-pale);
 
-  --iuce-blue: #3b7dd8;
+  --iuce-blue: #356fc0;
   --usal-red: #c8102e;
   --usal-red-dark: #a00d24;
   --brand-ink: #1b3a5c;

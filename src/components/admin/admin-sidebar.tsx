@@ -111,7 +111,7 @@ export function AdminSidebar() {
         {NAV_GROUPS.map((group, gi) => (
           <div key={group.title ?? gi}>
             {group.title ? (
-              <p className="mb-1 px-3 text-[10px] font-semibold uppercase tracking-[.06em] text-gray-400">
+              <p className="mb-1 px-3 text-[10px] font-semibold uppercase tracking-[.06em] text-gray-500">
                 {group.title}
               </p>
             ) : null}

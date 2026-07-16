@@ -15,7 +15,7 @@ export function Breadcrumb({
   return (
     <nav
       aria-label={getLocale() === "en" ? "Breadcrumb" : "Miga de pan"}
-      className="text-xs text-gray-400"
+      className="text-xs text-gray-500"
     >
       {items.map((item, i) => {
         const last = i === items.length - 1;
