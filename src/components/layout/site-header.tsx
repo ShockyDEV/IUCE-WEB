@@ -96,7 +96,8 @@ export function SiteHeader({
           >
             <Image
               src="/images/iuce-logo.png"
-              alt="IUCE — Universidad de Salamanca"
+              // Decorativo: el enlace que lo envuelve ya tiene aria-label.
+              alt=""
               width={800}
               height={362}
               priority
@@ -104,7 +105,7 @@ export function SiteHeader({
             />
             <Image
               src="/images/iuce-logo-white.webp"
-              alt="IUCE — Universidad de Salamanca"
+              alt=""
               width={640}
               height={196}
               priority

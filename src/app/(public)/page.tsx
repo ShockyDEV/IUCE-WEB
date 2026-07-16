@@ -7,6 +7,7 @@ import { CoverImage } from "@/components/news/cover-image";
 import { Reveal } from "@/components/ui/reveal";
 import { CountUp } from "@/components/ui/count-up";
 import { getPublishedNews } from "@/lib/news-service";
+import { categoryLabel } from "@/lib/content/news";
 import {
   getBlock,
   getBlockText,
@@ -264,7 +265,7 @@ export default async function HomePage() {
                   <div className="flex flex-col gap-2 px-5 pb-5 pt-[18px]">
                     <div className="flex items-center gap-2 text-xs">
                       <span className="rounded-full bg-iuce-blue-pale px-2.5 py-0.5 font-medium text-ink">
-                        {item.category}
+                        {categoryLabel(item.category, locale)}
                       </span>
                       <span className="text-gray-500">{item.dateDisplay}</span>
                     </div>

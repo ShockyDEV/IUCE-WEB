@@ -8,6 +8,7 @@ import {
   getPublishedNews,
   getPublishedNewsBySlug,
 } from "@/lib/news-service";
+import { categoryLabel } from "@/lib/content/news";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
@@ -36,17 +37,6 @@ const T = {
   },
 } as const;
 
-// Etiqueta inglesa de cada categoría; el valor del dato sigue en español.
-const CATEGORY_EN: Record<string, string> = {
-  Congresos: "Conferences",
-  Formación: "Training",
-  "Innovación docente": "Teaching innovation",
-  Investigación: "Research",
-  Premios: "Awards",
-  Doctorado: "PhD",
-  Institucional: "Institutional",
-};
-
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
@@ -73,8 +63,7 @@ export default async function NoticiaPage({ params }: Readonly<PageProps>) {
   const locale = getLocale();
   const t = T[locale];
   const href = (path: string) => withLocale(path, locale);
-  const catLabel = (c: string) =>
-    locale === "en" ? (CATEGORY_EN[c] ?? c) : c;
+  const catLabel = (c: string) => categoryLabel(c, locale);
   const item = await getPublishedNewsBySlug(params.slug);
   if (!item) notFound();
 

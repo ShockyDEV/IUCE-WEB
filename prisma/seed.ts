@@ -73,18 +73,23 @@ async function main() {
     const existing = await prisma.researchGroup.findFirst({
       where: { acronym: g.acronym },
     });
-    const row =
-      existing ??
-      (await prisma.researchGroup.create({
-        data: {
-          acronym: g.acronym,
-          name: g.name,
-          lead: g.lead,
-          url: g.url,
-          logo: g.logo,
-          chip: g.chip,
-        },
-      }));
+    const row = existing
+      ? // Refresca la traducción EN en grupos ya sembrados (idempotente).
+        await prisma.researchGroup.update({
+          where: { id: existing.id },
+          data: { nameEn: g.nameEn ?? existing.nameEn },
+        })
+      : await prisma.researchGroup.create({
+          data: {
+            acronym: g.acronym,
+            name: g.name,
+            nameEn: g.nameEn,
+            lead: g.lead,
+            url: g.url,
+            logo: g.logo,
+            chip: g.chip,
+          },
+        });
     groupIds.set(g.acronym, row.id);
   }
   console.log(`✓ ${groups.length} grupos de investigación`);
@@ -113,6 +118,7 @@ async function main() {
   const allEvents = [
     {
       title: featuredEvent.title,
+      titleEn: featuredEvent.titleEn,
       type: featuredEvent.type,
       startsAt: new Date(featuredEvent.startsAt),
       location: featuredEvent.location,
@@ -121,6 +127,7 @@ async function main() {
     },
     ...upcomingEvents.map((e) => ({
       title: e.title,
+      titleEn: e.titleEn,
       type: e.type,
       startsAt: new Date(e.startsAt),
       location: e.location,
@@ -129,6 +136,7 @@ async function main() {
     })),
     ...pastEvents.map((e) => ({
       title: e.title,
+      titleEn: e.titleEn,
       type: e.type,
       startsAt: new Date(e.startsAt),
       location: e.location,
@@ -140,7 +148,13 @@ async function main() {
     const existing = await prisma.event.findFirst({
       where: { title: e.title },
     });
-    if (!existing) {
+    if (existing) {
+      // Refresca la traducción EN en eventos ya sembrados (idempotente).
+      await prisma.event.update({
+        where: { id: existing.id },
+        data: { titleEn: e.titleEn ?? existing.titleEn },
+      });
+    } else {
       await prisma.event.create({ data: e });
     }
   }

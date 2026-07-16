@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import Link from "next/link";
 import { Calendar, ChevronRight, MapPin, Users2 } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
@@ -19,11 +19,18 @@ import { getLocale } from "@/lib/locale-server";
 
 import { assertVisible } from "@/lib/page-visibility";
 
-export const metadata: Metadata = {
-  title: "Eventos",
-  description:
-    "Congresos, seminarios y jornadas organizados por el IUCE o con participación del Instituto.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Eventos",
+    description:
+      "Congresos, seminarios y jornadas organizados por el IUCE o con participación del Instituto.",
+  },
+  {
+    title: "Events",
+    description:
+      "Conferences, seminars and workshops organised by the IUCE or with the Institute's participation.",
+  },
+);
 
 export const dynamic = "force-dynamic";
 

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import {
   BookOpenCheck,
   Bot,
@@ -22,18 +22,25 @@ import { getBlock, getListBlock } from "@/lib/content-blocks-service";
 import { iconFor } from "@/lib/icon-map";
 import { prisma } from "@/lib/prisma";
 import { groups as groupsFallback } from "@/lib/content/groups";
-import { withLocale } from "@/lib/locale";
+import { withLocale, type Locale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
 import { assertVisible } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Doctorado",
-  description:
-    "Programa de Doctorado «Formación en la Sociedad del Conocimiento» del IUCE: líneas de investigación, grupos y perfil de ingreso.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Doctorado",
+    description:
+      "Programa de Doctorado «Formación en la Sociedad del Conocimiento» del IUCE: líneas de investigación, grupos y perfil de ingreso.",
+  },
+  {
+    title: "PhD",
+    description:
+      "The IUCE's «Education in the Knowledge Society» doctoral programme: research lines, groups and entry profile.",
+  },
+);
 
 
 interface GroupMini {
@@ -45,7 +52,8 @@ interface GroupMini {
 }
 
 /** Grupos del gestor (lista oficial de 9 como fallback sin BD). */
-async function getGrupos(): Promise<GroupMini[]> {
+async function getGrupos(locale: Locale): Promise<GroupMini[]> {
+  const en = locale === "en";
   try {
     const rows = await prisma.researchGroup.findMany({
       orderBy: { acronym: "asc" },
@@ -53,7 +61,7 @@ async function getGrupos(): Promise<GroupMini[]> {
     if (rows.length > 0) {
       return rows.map((g) => ({
         acronym: g.acronym,
-        desc: g.name,
+        desc: en ? (g.nameEn ?? g.name) : g.name,
         chip: g.chip,
         logo: g.logo,
         url: g.url,
@@ -64,7 +72,7 @@ async function getGrupos(): Promise<GroupMini[]> {
   }
   return groupsFallback.map((g) => ({
     acronym: g.acronym,
-    desc: g.name,
+    desc: en ? (g.nameEn ?? g.name) : g.name,
     chip: g.chip ?? null,
     logo: g.logo ?? null,
     url: g.url ?? null,
@@ -171,7 +179,7 @@ export default async function DoctoradoPage() {
     await Promise.all([
       getBlock("doctorado", "programa"),
       getBlock("doctorado", "semana-doctoral"),
-      getGrupos(),
+      getGrupos(locale),
       getCoordinador(),
       getListBlock("doctorado", "list:lineas"),
       getListBlock("doctorado", "list:pasos"),

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import { ArrowUpRight, ExternalLink, Library, User, Users } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SectionSubnav } from "@/components/layout/section-subnav";
@@ -20,11 +20,18 @@ import { assertVisible } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Investigación",
-  description:
-    "Grupos de investigación, proyectos y publicaciones del IUCE: investigación interdisciplinar sobre los procesos de formación en Educación Superior.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Investigación",
+    description:
+      "Grupos de investigación, proyectos y publicaciones del IUCE: investigación interdisciplinar sobre los procesos de formación en Educación Superior.",
+  },
+  {
+    title: "Research",
+    description:
+      "IUCE research groups, projects and publications: interdisciplinary research on training processes in Higher Education.",
+  },
+);
 
 // Textos fijos de la página en ambos idiomas (el contenido editable llega ya
 // traducido desde los servicios de bloques; los datos de BD se muestran tal cual).

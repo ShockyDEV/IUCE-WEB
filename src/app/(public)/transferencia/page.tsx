@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Building2 } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
@@ -15,11 +15,18 @@ import { assertVisible } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Transferencia de conocimiento",
-  description:
-    "La transferencia de conocimiento es uno de los objetivos principales del IUCE: contratos y convenios (art. 60), formación a demanda, propiedad industrial y divulgación.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Transferencia de conocimiento",
+    description:
+      "La transferencia de conocimiento es uno de los objetivos principales del IUCE: contratos y convenios (art. 60), formación a demanda, propiedad industrial y divulgación.",
+  },
+  {
+    title: "Knowledge transfer",
+    description:
+      "Knowledge transfer is one of the IUCE’s main objectives: contracts and agreements (art. 60), tailor-made training, industrial property and outreach.",
+  },
+);
 
 // Textos fijos de la página en ambos idiomas (el contenido editable llega ya
 // traducido desde el servicio de bloques).

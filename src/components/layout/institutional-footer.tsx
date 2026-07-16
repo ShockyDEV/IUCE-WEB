@@ -59,7 +59,8 @@ export function InstitutionalFooter() {
       <div className="border-t border-white/10 bg-gray-950">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-3 text-[11px] text-white/55 sm:flex-row">
           <p>
-            © {year} IUCE – Universidad de Salamanca
+            © {year} IUCE –{" "}
+            {pick(locale, "Universidad de Salamanca", "University of Salamanca")}
             {" · "}
             <Link
               href={withLocale("/aviso-legal", locale)}

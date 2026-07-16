@@ -36,6 +36,23 @@ export const NEWS_CATEGORIES = [
   "Institucional",
 ] as const;
 
+// Etiqueta EN de cada categoría (el valor guardado y el filtro de URL siguen
+// siendo el español). Compartido por la portada, el listado y el detalle.
+export const NEWS_CATEGORY_EN: Record<string, string> = {
+  Congresos: "Conferences",
+  Formación: "Training",
+  "Innovación docente": "Teaching innovation",
+  Investigación: "Research",
+  Premios: "Awards",
+  Doctorado: "PhD",
+  Institucional: "Institutional",
+};
+
+/** Etiqueta de categoría según idioma (es = tal cual; en = traducida). */
+export function categoryLabel(category: string, locale: "es" | "en"): string {
+  return locale === "en" ? (NEWS_CATEGORY_EN[category] ?? category) : category;
+}
+
 export const news: NewsItem[] = [
   {
     slug: "xxii-congreso-tecnologia-conocimiento-sociedad",

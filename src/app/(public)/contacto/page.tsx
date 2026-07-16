@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import { Clock, Compass, Mail, MapPin, Phone } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { MapEmbed } from "@/components/ui/map-embed";
@@ -10,11 +10,18 @@ import { getLocale } from "@/lib/locale-server";
 
 import { assertVisible } from "@/lib/page-visibility";
 
-export const metadata: Metadata = {
-  title: "Contacto",
-  description:
-    "Contacta con la Secretaría del IUCE: formación, investigación, doctorado y uso de espacios. Paseo de Canalejas 169, Salamanca.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Contacto",
+    description:
+      "Contacta con la Secretaría del IUCE: formación, investigación, doctorado y uso de espacios. Paseo de Canalejas 169, Salamanca.",
+  },
+  {
+    title: "Contact",
+    description:
+      "Get in touch with the IUCE Secretariat: training, research, doctoral studies and use of facilities. Paseo de Canalejas 169, Salamanca.",
+  },
+);
 
 export const dynamic = "force-dynamic";
 

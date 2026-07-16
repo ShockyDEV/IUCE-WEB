@@ -1,14 +1,21 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { getBlock } from "@/lib/content-blocks-service";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
-export const metadata: Metadata = {
-  title: "Declaración de accesibilidad",
-  description:
-    "Declaración de accesibilidad del sitio web del IUCE conforme al RD 1112/2018.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Declaración de accesibilidad",
+    description:
+      "Declaración de accesibilidad del sitio web del IUCE conforme al RD 1112/2018.",
+  },
+  {
+    title: "Accessibility statement",
+    description:
+      "Accessibility statement for the IUCE website in accordance with Royal Decree 1112/2018.",
+  },
+);
 
 export const dynamic = "force-dynamic";
 

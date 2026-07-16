@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import {
   Check,
   ExternalLink,
@@ -39,18 +39,25 @@ import {
 } from "@/lib/content-blocks-service";
 import { iconFor } from "@/lib/icon-map";
 import { prisma } from "@/lib/prisma";
-import { withLocale } from "@/lib/locale";
+import { withLocale, type Locale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
 import { assertVisible } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Instituto",
-  description:
-    "Perfil del IUCE, equipo de dirección, miembros, ubicación en el Edificio Solís, instalaciones y edificio histórico.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Instituto",
+    description:
+      "Perfil del IUCE, equipo de dirección, miembros, ubicación en el Edificio Solís, instalaciones y edificio histórico.",
+  },
+  {
+    title: "Institute",
+    description:
+      "IUCE profile, management team, members, location in the Solís Building, facilities and historic building.",
+  },
+);
 
 // Textos fijos de la página en ambos idiomas (el contenido editable llega ya
 // traducido desde los servicios de bloques; los datos del gestor no se tocan).
@@ -173,6 +180,17 @@ const ROLES_EN: Record<string, string> = {
   "Secretario Académico": "Academic Secretary",
   "Secretaría Administrativa": "Administrative Office",
   "Técnico Informático": "IT Technician",
+};
+
+// Áreas/adscripciones más habituales de los miembros (campo libre en BD). Solo
+// se traducen las categorías genéricas; las líneas concretas de un grupo se
+// dejan como están. El nombre del grupo tras « · Grupo …» es nombre propio.
+const AREAS_EN: Record<string, string> = {
+  Investigadores: "Researchers",
+  "Consejo asesor": "Advisory board",
+  "Personal de Administración y Servicios": "Administration and services staff",
+  "Gestora Proyectos Investigación": "Research Projects Manager",
+  "Gestor Proyectos Investigación": "Research Projects Manager",
 };
 
 
@@ -308,7 +326,17 @@ function initialsOf(name: string) {
   return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
 }
 
-async function getMiembros(): Promise<PublicMember[]> {
+async function getMiembros(locale: Locale): Promise<PublicMember[]> {
+  const en = locale === "en";
+  // Traduce cada segmento «rol · área» por separado con sus mapas; deja igual
+  // lo que no tenga traducción conocida (líneas concretas, nombres propios).
+  const localizeArea = (role: string | null, area: string | null) =>
+    [
+      role ? (en ? (ROLES_EN[role] ?? role) : role) : null,
+      area ? (en ? (AREAS_EN[area] ?? area) : area) : null,
+    ]
+      .filter(Boolean)
+      .join(" · ");
   try {
     const rows = await prisma.member.findMany({
       where: { active: true },
@@ -318,7 +346,7 @@ async function getMiembros(): Promise<PublicMember[]> {
     if (rows.length > 0) {
       return rows.map((m) => ({
         name: m.name,
-        area: [m.role, m.area].filter(Boolean).join(" · "),
+        area: localizeArea(m.role, m.area),
         email: m.email,
         photo: m.photo,
         portalUrl: m.portalUrl,
@@ -326,7 +354,7 @@ async function getMiembros(): Promise<PublicMember[]> {
         group: m.group
           ? {
               acronym: m.group.acronym,
-              name: m.group.name,
+              name: en ? (m.group.nameEn ?? m.group.name) : m.group.name,
               logo: m.group.logo,
               url: m.group.url,
             }
@@ -401,7 +429,7 @@ export default async function InstitutoPage() {
     getBlock("instituto", "riie"),
     getBlockText("instituto", "url-riie"),
     getBlock("instituto", "cita-directora"),
-    getMiembros(),
+    getMiembros(locale),
     getDireccion(),
     getListBlock("instituto", "list:funciones"),
     getListBlock("instituto", "list:hitos"),

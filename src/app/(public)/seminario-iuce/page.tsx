@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import Link from "next/link";
 import { ArrowRight, FileText, Hourglass, Users2 } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
@@ -12,11 +12,18 @@ import { assertVisible } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Seminario IUCE",
-  description:
-    "El encuentro anual de los grupos de investigación del IUCE: cooperación, transferencia y sinergias entre líneas de investigación en educación.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Seminario IUCE",
+    description:
+      "El encuentro anual de los grupos de investigación del IUCE: cooperación, transferencia y sinergias entre líneas de investigación en educación.",
+  },
+  {
+    title: "IUCE Seminar",
+    description:
+      "The annual meeting of the IUCE's research groups: cooperation, knowledge transfer and synergies between research lines in education.",
+  },
+);
 
 // Textos fijos de la página en ambos idiomas ("Seminario IUCE" es nombre
 // propio; el contenido editable llega ya traducido desde el servicio de

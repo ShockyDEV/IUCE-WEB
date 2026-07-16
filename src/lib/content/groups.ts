@@ -14,6 +14,8 @@
 export interface GroupSeed {
   acronym: string;
   name: string;
+  /** Nombre en inglés (la web /en usa nameEn ?? name). */
+  nameEn?: string;
   lead?: string;
   url?: string;
   /** Ruta del logo bajo public/ (copiado del export original). */
@@ -26,6 +28,7 @@ export const groups: GroupSeed[] = [
   {
     acronym: "GRIAL",
     name: "Grupo de Investigación en InterAcción y eLearning",
+    nameEn: "Research Group in InterAction and eLearning",
     lead: "F. J. García Peñalvo",
     url: "https://grial.usal.es",
     logo: "/images/groups/grial.png",
@@ -33,6 +36,7 @@ export const groups: GroupSeed[] = [
   {
     acronym: "OCA",
     name: "Observatorio de los Contenidos Audiovisuales",
+    nameEn: "Audiovisual Content Observatory",
     lead: "J. J. Igartua",
     url: "https://www.ocausal.es/",
     logo: "/images/groups/oca.png",
@@ -41,6 +45,7 @@ export const groups: GroupSeed[] = [
   {
     acronym: "VisualMed",
     name: "Grupo de investigación en sistemas de visualización médica avanzada",
+    nameEn: "Research Group on Advanced Medical Visualisation Systems",
     lead: "J. A. Juanes",
     url: "https://visualmed.usal.es/",
     logo: "/images/groups/visualmed.png",
@@ -48,12 +53,14 @@ export const groups: GroupSeed[] = [
   {
     acronym: "GROUSAL",
     name: "Grupo de Robótica y Sociedad",
+    nameEn: "Robotics and Society Group",
     url: "http://gro.usal.es",
     logo: "/images/groups/grousal.gif",
   },
   {
     acronym: "DIDEROT",
     name: "Didácticas Digitales de la Expresión Musical y las Artes Performativas",
+    nameEn: "Digital Didactics of Musical Expression and the Performing Arts",
     // El export no documenta responsable; completar desde el panel cuando
     // el IUCE lo confirme.
     url: "https://diderot.usal.es/",
@@ -62,24 +69,28 @@ export const groups: GroupSeed[] = [
   {
     acronym: "CaUSAL",
     name: "Cultura académica, patrimonio y memoria social",
+    nameEn: "Academic Culture, Heritage and Social Memory",
     url: "https://causal.usal.es",
     logo: "/images/groups/causal.jpg",
   },
   {
     acronym: "MOVERE",
     name: "Grupo de Investigación sobre Actividad Física, Movimiento y Educación",
+    nameEn: "Research Group on Physical Activity, Movement and Education",
     url: "https://movere.usal.es/",
     logo: "/images/groups/movere.png",
   },
   {
     acronym: "EduDIG",
     name: "Grupo de Investigación en Innovación y Educación Digital",
+    nameEn: "Research Group on Digital Innovation and Education",
     url: "https://edudig.usal.es/",
     logo: "/images/groups/edudig.png",
   },
   {
     acronym: "INDIE",
     name: "Grupo de investigación interdisciplinar sobre inteligencia digital en procesos educativos",
+    nameEn: "Interdisciplinary Research Group on Digital Intelligence in Educational Processes",
     url: "https://indieusal.es/",
     logo: "/images/groups/indie.png",
   },

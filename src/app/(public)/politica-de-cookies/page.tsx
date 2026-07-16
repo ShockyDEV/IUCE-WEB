@@ -4,12 +4,16 @@ import { getBlock } from "@/lib/content-blocks-service";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
-export const metadata: Metadata = {
-  title: "Política de cookies",
-  description:
-    "Política de cookies del sitio web del IUCE: solo se utilizan cookies estrictamente necesarias.",
-  robots: { index: false },
-};
+export function generateMetadata(): Metadata {
+  const en = getLocale() === "en";
+  return {
+    title: en ? "Cookie policy" : "Política de cookies",
+    description: en
+      ? "Cookie policy for the IUCE website: only strictly necessary cookies are used."
+      : "Política de cookies del sitio web del IUCE: solo se utilizan cookies estrictamente necesarias.",
+    robots: { index: false },
+  };
+}
 
 export const dynamic = "force-dynamic";
 

@@ -4,11 +4,16 @@ import { getBlock } from "@/lib/content-blocks-service";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
-export const metadata: Metadata = {
-  title: "Aviso legal",
-  description: "Aviso legal del sitio web del IUCE, Universidad de Salamanca.",
-  robots: { index: false },
-};
+export function generateMetadata(): Metadata {
+  const en = getLocale() === "en";
+  return {
+    title: en ? "Legal notice" : "Aviso legal",
+    description: en
+      ? "Legal notice for the IUCE website, University of Salamanca."
+      : "Aviso legal del sitio web del IUCE, Universidad de Salamanca.",
+    robots: { index: false },
+  };
+}
 
 export const dynamic = "force-dynamic";
 

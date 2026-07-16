@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { CoverImage } from "@/components/news/cover-image";
-import { NEWS_CATEGORIES } from "@/lib/content/news";
+import { NEWS_CATEGORIES, categoryLabel } from "@/lib/content/news";
 import { getPublishedNews } from "@/lib/news-service";
 import { getBlock } from "@/lib/content-blocks-service";
 import { Reveal } from "@/components/ui/reveal";
@@ -13,11 +13,18 @@ import { getLocale } from "@/lib/locale-server";
 
 import { assertVisible } from "@/lib/page-visibility";
 
-export const metadata: Metadata = {
-  title: "Noticias",
-  description:
-    "La actualidad del IUCE: congresos, formación, premios y vida académica.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Noticias",
+    description:
+      "La actualidad del IUCE: congresos, formación, premios y vida académica.",
+  },
+  {
+    title: "News",
+    description:
+      "The latest from the IUCE: conferences, training, awards and academic life.",
+  },
+);
 
 export const dynamic = "force-dynamic";
 
@@ -69,18 +76,6 @@ const T = {
     paginaSiguiente: "Next page",
   },
 } as const;
-
-// Etiqueta inglesa de cada categoría. El VALOR (dato de la noticia y
-// parámetro `categoria` de la URL) sigue siendo siempre el español.
-const CATEGORY_EN: Record<string, string> = {
-  Congresos: "Conferences",
-  Formación: "Training",
-  "Innovación docente": "Teaching innovation",
-  Investigación: "Research",
-  Premios: "Awards",
-  Doctorado: "PhD",
-  Institucional: "Institutional",
-};
 
 interface PageProps {
   searchParams: { categoria?: string; pagina?: string; q?: string; anio?: string };
@@ -135,8 +130,7 @@ export default async function NoticiasPage({
   // Enlaces de filtros y paginación: misma query, con prefijo /en si toca.
   const localizedPageHref = (f: Filtros, p: number) =>
     withLocale(pageHref(f, p), locale);
-  const catLabel = (c: string) =>
-    locale === "en" ? (CATEGORY_EN[c] ?? c) : c;
+  const catLabel = (c: string) => categoryLabel(c, locale);
   const categoria =
     NEWS_CATEGORIES.find((c) => c === searchParams.categoria) ?? null;
   const q = (searchParams.q ?? "").trim().slice(0, 100);

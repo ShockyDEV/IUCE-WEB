@@ -4,15 +4,21 @@ import { ThemeScript } from "@/components/theme-script";
 import { getLocale } from "@/lib/locale-server";
 import { ToastProvider } from "@/components/toast-provider";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://iuce.usal.es"),
-  title: {
-    default: "IUCE - Instituto Universitario de Ciencias de la Educación",
-    template: "%s | IUCE",
-  },
-  description:
-    "Instituto Universitario de Ciencias de la Educación (IUCE) de la Universidad de Salamanca: investigación e innovación en Educación Superior, formación del profesorado, doctorado y publicaciones.",
-};
+export function generateMetadata(): Metadata {
+  const en = getLocale() === "en";
+  return {
+    metadataBase: new URL("https://iuce.usal.es"),
+    title: {
+      default: en
+        ? "IUCE - University Institute of Education Sciences"
+        : "IUCE - Instituto Universitario de Ciencias de la Educación",
+      template: "%s | IUCE",
+    },
+    description: en
+      ? "University Institute of Education Sciences (IUCE) of the University of Salamanca: research and innovation in Higher Education, teacher training, doctoral studies and publications."
+      : "Instituto Universitario de Ciencias de la Educación (IUCE) de la Universidad de Salamanca: investigación e innovación en Educación Superior, formación del profesorado, doctorado y publicaciones.",
+  };
+}
 
 // Datos estructurados de la organización (Google, agregadores académicos).
 const ORGANIZATION_JSONLD = {

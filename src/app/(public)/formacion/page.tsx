@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -25,11 +25,18 @@ import { assertVisible } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Formación",
-  description:
-    "Plan de Formación Docente 2026 de la Universidad de Salamanca: formación permanente del PDI, SPOCs y Formación Docente Inicial (FDI) de las universidades públicas de Castilla y León.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Formación",
+    description:
+      "Plan de Formación Docente 2026 de la Universidad de Salamanca: formación permanente del PDI, SPOCs y Formación Docente Inicial (FDI) de las universidades públicas de Castilla y León.",
+  },
+  {
+    title: "Training",
+    description:
+      "The University of Salamanca's 2026 Teaching Training Plan: continuing training for academic staff, SPOCs and Initial Teacher Training (FDI) at the public universities of Castilla y León.",
+  },
+);
 
 
 

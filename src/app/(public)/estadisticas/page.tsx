@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { metadataBilingue } from "@/lib/metadata";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SectionSubnav } from "@/components/layout/section-subnav";
 import { Reveal } from "@/components/ui/reveal";
@@ -23,11 +23,18 @@ import { assertVisible } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Estadísticas del IUCE",
-  description:
-    "Estadísticas del IUCE 2020–2025: proyectos de investigación, transferencia, tesis doctorales, formación del profesorado, redes y movilidad.",
-};
+export const generateMetadata = metadataBilingue(
+  {
+    title: "Estadísticas del IUCE",
+    description:
+      "Estadísticas del IUCE 2020–2025: proyectos de investigación, transferencia, tesis doctorales, formación del profesorado, redes y movilidad.",
+  },
+  {
+    title: "IUCE statistics",
+    description:
+      "IUCE statistics 2020–2025: research projects, knowledge transfer, doctoral theses, teacher training, networks and mobility.",
+  },
+);
 
 // Textos fijos de la página en ambos idiomas (los textos de sección y las
 // etiquetas de datos de las gráficas llegan ya traducidos desde el servicio
