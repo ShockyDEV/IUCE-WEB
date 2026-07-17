@@ -55,7 +55,14 @@ function isActive(basePath: string, href: string) {
   return basePath === href || basePath.startsWith(`${href}/`);
 }
 
-/** Conmutador ES|EN: misma página en el otro idioma, conservando la query. */
+/** Conmutador ES|EN: misma página en el otro idioma, conservando la query.
+ *
+ * OJO: son <a> nativos a propósito, NO <Link>. El i18n reescribe /en/* a la
+ * misma ruta española con la cabecera x-locale, así que ambos idiomas
+ * comparten árbol en el router cache de Next: con <Link>, al pulsar EN el
+ * cliente reutilizaba el árbol recién pintado en español y solo cambiaba la
+ * URL. La navegación de documento completo fuerza el render del servidor en
+ * el idioma nuevo y vacía el router cache, dejando toda la sesión coherente. */
 function LanguageToggleView({
   basePath,
   locale,
@@ -75,19 +82,19 @@ function LanguageToggleView({
       aria-label={pick(locale, "Idioma", "Language")}
       className="text-xs font-semibold"
     >
-      <Link
+      <a
         href={hrefFor("es")}
         aria-current={locale === "es" ? "true" : undefined}
         hrefLang="es"
         className={linkClass(locale === "es")}
       >
         ES
-      </Link>
+      </a>
       {/* Separador decorativo: el lector de pantalla no debe leerlo. */}
       <span aria-hidden="true" className="font-normal text-gray-300">
         ·
       </span>
-      <Link
+      <a
         href={hrefFor("en")}
         aria-current={locale === "en" ? "true" : undefined}
         hrefLang="en"
@@ -95,7 +102,7 @@ function LanguageToggleView({
         className={linkClass(locale === "en")}
       >
         EN
-      </Link>
+      </a>
     </nav>
   );
 }
