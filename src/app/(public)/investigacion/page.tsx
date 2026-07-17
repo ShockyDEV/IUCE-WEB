@@ -1,8 +1,10 @@
 import { metadataBilingue } from "@/lib/metadata";
+import Image from "next/image";
 import { ArrowUpRight, ExternalLink, Library, User, Users } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SectionSubnav } from "@/components/layout/section-subnav";
 import { buttonClassName } from "@/components/ui/button";
+import { InitialsAvatar } from "@/components/ui/initials-avatar";
 import { Reveal } from "@/components/ui/reveal";
 import {
   getBlock,
@@ -85,6 +87,45 @@ interface GroupCard {
   lead: string | null;
   url: string | null;
   logo: string | null;
+  /** Ficha del responsable, para poner su retrato junto al nombre. */
+  leadMember: { name: string; photo: string | null } | null;
+}
+
+const sinTildes = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase();
+
+/** Iniciales del nombre, para el avatar de quien no tiene foto. */
+function iniciales(name: string) {
+  const parts = name.trim().split(/\s+/);
+  return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
+}
+
+/**
+ * Empareja el responsable del grupo (texto libre y abreviado en el panel,
+ * p. ej. «J. J. Mena») con su ficha de miembro, para poder mostrar su foto.
+ *
+ * Se busca SOLO entre los miembros del propio grupo: los responsables lo son
+ * (invariante comprobado), y así un apellido común no puede emparejar con un
+ * homónimo de otro grupo. Si el texto no cuadra con nadie (el panel admite
+ * escribir cualquier cosa), devuelve null y la tarjeta cae al icono genérico.
+ */
+function buscarResponsable<T extends { name: string; photo: string | null }>(
+  lead: string | null,
+  members: T[],
+): T | null {
+  if (!lead) return null;
+  const inicial = sinTildes(lead).charAt(0);
+  const apellidos = sinTildes(lead.replace(/^(?:\p{Lu}\.\s*)+/u, "")).trim();
+  if (!apellidos) return null;
+  const hits = members.filter((m) => {
+    const n = sinTildes(m.name);
+    return n.startsWith(inicial) && n.includes(apellidos);
+  });
+  // Ante ambigüedad (dos personas del grupo encajarían), mejor el icono.
+  return hits.length === 1 ? hits[0] : null;
 }
 
 /**
@@ -96,6 +137,12 @@ async function getGrupos(locale: Locale): Promise<GroupCard[]> {
   try {
     const rows = await prisma.researchGroup.findMany({
       orderBy: { acronym: "asc" },
+      include: {
+        members: {
+          where: { active: true },
+          select: { name: true, photo: true },
+        },
+      },
     });
     if (rows.length > 0) {
       return rows.map((g) => ({
@@ -105,6 +152,7 @@ async function getGrupos(locale: Locale): Promise<GroupCard[]> {
         lead: g.lead,
         url: g.url,
         logo: g.logo,
+        leadMember: buscarResponsable(g.lead, g.members),
       }));
     }
   } catch {
@@ -117,6 +165,7 @@ async function getGrupos(locale: Locale): Promise<GroupCard[]> {
     lead: g.lead ?? null,
     url: g.url ?? null,
     logo: g.logo ?? null,
+    leadMember: null,
   }));
 }
 
@@ -203,6 +252,27 @@ export default async function InvestigacionPage() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {grupos.map((g, i) => {
               const LeadIcon = g.lead ? User : Users;
+              // Retrato del responsable; si no se pudo emparejar con su ficha
+              // (texto libre del panel) o no tiene foto, cae al icono.
+              const responsable = g.leadMember?.photo ? (
+                <Image
+                  src={g.leadMember.photo}
+                  alt=""
+                  width={22}
+                  height={22}
+                  className="h-[22px] w-[22px] flex-none rounded-full object-cover"
+                />
+              ) : g.leadMember ? (
+                <InitialsAvatar
+                  initials={iniciales(g.leadMember.name)}
+                  className="h-[22px] w-[22px] flex-none text-[9px]"
+                />
+              ) : (
+                <LeadIcon
+                  className="h-[13px] w-[13px] flex-none"
+                  aria-hidden="true"
+                />
+              );
               const urlLabel = g.url
                 ? g.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")
                 : null;
@@ -257,11 +327,8 @@ export default async function InvestigacionPage() {
                   <p className="text-sm leading-normal text-gray-600">
                     {g.name}
                   </p>
-                  <p className="mt-auto flex items-center gap-1.5 text-xs text-gray-500">
-                    <LeadIcon
-                      className="h-[13px] w-[13px] flex-none"
-                      aria-hidden="true"
-                    />
+                  <p className="mt-auto flex items-center gap-2 text-xs text-gray-500">
+                    {responsable}
                     {g.lead ?? t.equipoInterdisciplinar}
                   </p>
                 </article>
