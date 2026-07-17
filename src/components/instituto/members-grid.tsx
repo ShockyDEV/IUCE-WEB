@@ -13,6 +13,8 @@ export interface PublicMember {
   area: string;
   /** Correo (copiable al portapapeles). */
   email: string | null;
+  /** Perfil de Scopus (si consta; se edita desde el panel). */
+  scopus: string | null;
   photo: string | null;
   /** Perfil en el Portal de Investigación de la USAL (si consta). */
   portalUrl: string | null;
@@ -161,21 +163,42 @@ export function MembersGrid({
                   </div>
                 ) : null}
               </div>
-              {m.orcid ? (
-                <a
-                  href={m.orcid}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={pick(
-                    locale,
-                    `ORCID de ${m.name}`,
-                    `${m.name}'s ORCID`,
-                  )}
-                  title="ORCID"
-                  className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-gray-200 text-[10px] font-bold text-[#A6CE39] transition-colors hover:border-[#A6CE39] hover:bg-[#A6CE39]/10"
-                >
-                  iD
-                </a>
+              {/* Identificadores del investigador: ORCID y Scopus. */}
+              {m.orcid || m.scopus ? (
+                <div className="flex flex-none flex-col gap-1.5">
+                  {m.orcid ? (
+                    <a
+                      href={m.orcid}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={pick(
+                        locale,
+                        `ORCID de ${m.name}`,
+                        `${m.name}'s ORCID`,
+                      )}
+                      title="ORCID"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 text-[10px] font-bold text-[#A6CE39] transition-colors hover:border-[#A6CE39] hover:bg-[#A6CE39]/10"
+                    >
+                      iD
+                    </a>
+                  ) : null}
+                  {m.scopus ? (
+                    <a
+                      href={m.scopus}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={pick(
+                        locale,
+                        `Scopus de ${m.name}`,
+                        `${m.name}'s Scopus`,
+                      )}
+                      title="Scopus"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 text-[9px] font-bold text-[#E9711C] transition-colors hover:border-[#E9711C] hover:bg-[#E9711C]/10"
+                    >
+                      Sc
+                    </a>
+                  ) : null}
+                </div>
               ) : null}
             </div>
           );

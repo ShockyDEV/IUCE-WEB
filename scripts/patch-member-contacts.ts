@@ -5,6 +5,7 @@
  *   npx ts-node --compiler-options {"module":"CommonJS"} scripts/patch-member-contacts.ts
  */
 import { PrismaClient } from "@prisma/client";
+import scopusProfiles from "./data/member-scopus.json";
 
 const prisma = new PrismaClient();
 
@@ -45,10 +46,27 @@ async function main() {
     console.log(`  orcid → ${name} (${r.count} fila/s)`);
   }
 
+  // Perfiles de Scopus sacados de la ficha del Portal de Producción
+  // Científica (enlace estructurado title="Scopus"), en member-scopus.json.
+  // SOLO-RELLENO: no pisa uno puesto a mano desde el panel.
+  let scopus = 0;
+  for (const { name, scopus: url } of scopusProfiles) {
+    const r = await prisma.member.updateMany({
+      where: { name, OR: [{ scopus: null }, { scopus: "" }] },
+      data: { scopus: url },
+    });
+    scopus += r.count;
+  }
+  console.log(`  scopus → ${scopus} miembros`);
+
   const sinOrcid = await prisma.member.count({
     where: { active: true, OR: [{ orcid: null }, { orcid: "" }] },
   });
+  const conScopus = await prisma.member.count({
+    where: { active: true, NOT: { scopus: null } },
+  });
   console.log(`\nMiembros activos aún sin ORCID: ${sinOrcid}`);
+  console.log(`Miembros activos con Scopus: ${conScopus}`);
   await prisma.$disconnect();
 }
 

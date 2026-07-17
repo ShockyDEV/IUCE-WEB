@@ -304,6 +304,7 @@ async function getDireccion(): Promise<{
           photo: m.photo,
           portalUrl: m.portalUrl,
           orcid: m.orcid,
+          scopus: m.scopus,
           group: m.group
             ? {
                 acronym: m.group.acronym,
@@ -378,6 +379,7 @@ async function getMiembros(
           photo: m.photo,
           portalUrl: m.portalUrl,
           orcid: m.orcid,
+          scopus: m.scopus,
           group: m.group
             ? {
                 acronym: m.group.acronym,
@@ -403,6 +405,7 @@ async function getMiembros(
       group: null,
       portalUrl: null,
       orcid: null,
+      scopus: null,
     })),
     consejo: [],
   };

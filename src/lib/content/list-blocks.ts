@@ -156,8 +156,8 @@ export const LIST_BLOCKS: ListBlockDef[] = [
         etiqueta: "2008",
         texto: "Verificación como Instituto Universitario de Investigación",
         enlace:
-          "https://www.acsucyl.es/web/jcyl/binarios/82/991/Tabla%20peri%C3%B3dica%20IUI_.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&blobnocache=true",
-        enlaceTexto: "Institutos universitarios de CyL en ACSUCYL",
+          "https://www.acsucyl.es/web/jcyl/binarios/1006/812/20241007-Tabla-creacion-IUI.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&blobnocache=true",
+        enlaceTexto: "Creación de institutos universitarios (ACSUCYL)",
       },
       { icon: "file-check", etiqueta: "2023", texto: "Nuevo Reglamento del IUCE", enlace: "", enlaceTexto: "" },
     ],

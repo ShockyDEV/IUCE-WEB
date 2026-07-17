@@ -22,6 +22,7 @@ export interface MemberRow {
   photo: string | null;
   portalUrl: string | null;
   orcid: string | null;
+  scopus: string | null;
   active: boolean;
   order: number;
   groupId: string | null;
@@ -48,6 +49,7 @@ interface FormState {
   photo: string;
   portalUrl: string;
   orcid: string;
+  scopus: string;
   order: number;
   groupId: string;
   active: boolean;
@@ -62,6 +64,7 @@ const EMPTY: FormState = {
   photo: "",
   portalUrl: "",
   orcid: "",
+  scopus: "",
   order: 0,
   groupId: "",
   active: true,
@@ -147,6 +150,7 @@ export function MembersSection({
         photo: form.photo || null,
         portalUrl: form.portalUrl || "",
         orcid: form.orcid || "",
+        scopus: form.scopus || "",
         order: form.order,
         groupId: form.groupId || null,
         active: form.active,
@@ -287,6 +291,7 @@ export function MembersSection({
                           photo: row.photo ?? "",
                           portalUrl: row.portalUrl ?? "",
                           orcid: row.orcid ?? "",
+                          scopus: row.scopus ?? "",
                           order: row.order,
                           groupId: row.groupId ?? "",
                           active: row.active,
@@ -527,18 +532,33 @@ export function MembersSection({
                 className={inputClass}
               />
             </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="m-orcid" className={labelClass}>
-                ORCID (URL)
-              </label>
-              <input
-                id="m-orcid"
-                type="url"
-                value={form.orcid}
-                placeholder="https://orcid.org/0000-0000-0000-0000"
-                onChange={(e) => setForm({ ...form, orcid: e.target.value })}
-                className={inputClass}
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="m-orcid" className={labelClass}>
+                  ORCID (URL)
+                </label>
+                <input
+                  id="m-orcid"
+                  type="url"
+                  value={form.orcid}
+                  placeholder="https://orcid.org/0000-0000-0000-0000"
+                  onChange={(e) => setForm({ ...form, orcid: e.target.value })}
+                  className={inputClass}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="m-scopus" className={labelClass}>
+                  Scopus (URL)
+                </label>
+                <input
+                  id="m-scopus"
+                  type="url"
+                  value={form.scopus}
+                  placeholder="https://www.scopus.com/authid/detail.uri?authorId=…"
+                  onChange={(e) => setForm({ ...form, scopus: e.target.value })}
+                  className={inputClass}
+                />
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">

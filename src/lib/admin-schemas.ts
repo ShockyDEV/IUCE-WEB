@@ -41,6 +41,14 @@ export const memberInputSchema = z.object({
     .optional()
     .nullable()
     .or(z.literal("")),
+  scopus: z
+    .string()
+    .trim()
+    .url()
+    .max(300)
+    .optional()
+    .nullable()
+    .or(z.literal("")),
   active: z.boolean().optional(),
   order: z.number().int().min(0).optional(),
   groupId: z.string().optional().nullable(),

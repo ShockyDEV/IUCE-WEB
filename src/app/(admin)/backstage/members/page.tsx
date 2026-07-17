@@ -28,6 +28,7 @@ export default async function AdminMembersPage() {
     photo: m.photo,
     portalUrl: m.portalUrl,
     orcid: m.orcid,
+    scopus: m.scopus,
     active: m.active,
     order: m.order,
     groupId: m.groupId,
