@@ -69,6 +69,7 @@ const T = {
     cronologia: "Cronología del Instituto",
     titulo: "El Instituto",
     subnavPerfil: "Perfil",
+    subnavRiie: "RIIE",
     subnavEquipo: "Equipo de dirección",
     subnavMiembros: "Miembros",
     subnavUbicacion: "Ubicación",
@@ -128,6 +129,7 @@ const T = {
     cronologia: "Timeline of the Institute",
     titulo: "The Institute",
     subnavPerfil: "Profile",
+    subnavRiie: "RIIE",
     subnavEquipo: "Management team",
     subnavMiembros: "Members",
     subnavUbicacion: "Location",
@@ -417,6 +419,7 @@ export default async function InstitutoPage() {
     locale === "en" ? (ROLES_EN[role] ?? role) : role;
   const subnav = [
     { id: "perfil", label: t.subnavPerfil },
+    { id: "riie", label: t.subnavRiie },
     { id: "equipo", label: t.subnavEquipo },
     { id: "miembros", label: t.subnavMiembros },
     { id: "ubicacion", label: t.subnavUbicacion },
@@ -610,9 +613,10 @@ export default async function InstitutoPage() {
           </Reveal>
         </div>
 
-        {/* Red de Institutos de Investigación en Educación (RIIE) */}
+        {/* Red de Institutos de Investigación en Educación (RIIE). Tiene ancla
+            propia: la subnavegación (y el desplegable del menú) enlazan aquí. */}
         {urlRiie ? (
-          <div className="mx-auto max-w-6xl px-6 pb-14">
+          <div id="riie" className="mx-auto max-w-6xl scroll-mt-20 px-6 pb-14">
             <Reveal>
               <div className="flex flex-col items-start gap-5 rounded-xl border border-gray-200 border-l-[3px] border-l-usal-red bg-surface-tinted p-6 md:flex-row md:items-center md:justify-between">
                 <div className="flex items-start gap-4 sm:items-center">

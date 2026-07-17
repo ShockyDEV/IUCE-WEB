@@ -13,25 +13,72 @@ import {
   withLocale,
   type Locale,
 } from "@/lib/locale";
+import { NavDropdown } from "./nav-dropdown";
 import { ThemeToggle } from "./theme-toggle";
+
+interface SubNavItem {
+  label: string;
+  labelEn: string;
+  /** Ancla dentro de la propia página (el id de su <section>). */
+  hash: string;
+}
 
 interface NavItem {
   label: string;
   labelEn: string;
   href: string;
   external?: boolean;
+  /**
+   * Apartados de la página, para el desplegable. Deben coincidir con los ids
+   * y rótulos de la SectionSubnav de esa página: llevan al mismo sitio.
+   */
+  sub?: SubNavItem[];
 }
 
 const NAV: NavItem[] = [
   { label: "Inicio", labelEn: "Home", href: "/" },
-  { label: "Instituto", labelEn: "Institute", href: "/instituto" },
-  { label: "Investigación", labelEn: "Research", href: "/investigacion" },
+  {
+    label: "Instituto",
+    labelEn: "Institute",
+    href: "/instituto",
+    sub: [
+      { label: "Perfil", labelEn: "Profile", hash: "perfil" },
+      { label: "RIIE", labelEn: "RIIE", hash: "riie" },
+      { label: "Equipo de dirección", labelEn: "Management team", hash: "equipo" },
+      { label: "Miembros", labelEn: "Members", hash: "miembros" },
+      { label: "Ubicación", labelEn: "Location", hash: "ubicacion" },
+      { label: "Instalaciones", labelEn: "Facilities", hash: "instalaciones" },
+      { label: "Edificio histórico", labelEn: "Historic building", hash: "edificio" },
+    ],
+  },
+  {
+    label: "Investigación",
+    labelEn: "Research",
+    href: "/investigacion",
+    sub: [
+      { label: "Grupos", labelEn: "Groups", hash: "grupos" },
+      { label: "Proyectos", labelEn: "Projects", hash: "proyectos" },
+      { label: "Publicaciones", labelEn: "Publications", hash: "publicaciones" },
+    ],
+  },
   {
     label: "Transferencia",
     labelEn: "Knowledge transfer",
     href: "/transferencia",
   },
-  { label: "Estadísticas", labelEn: "Statistics", href: "/estadisticas" },
+  {
+    label: "Estadísticas",
+    labelEn: "Statistics",
+    href: "/estadisticas",
+    sub: [
+      { label: "Proyectos", labelEn: "Projects", hash: "proyectos" },
+      { label: "Transferencia", labelEn: "Knowledge transfer", hash: "transferencia" },
+      { label: "Doctorado", labelEn: "PhD", hash: "doctorado" },
+      { label: "Formación", labelEn: "Training", hash: "formacion" },
+      { label: "Redes y movilidad", labelEn: "Networks and mobility", hash: "redes" },
+      { label: "Gestión y posgrado", labelEn: "Management and postgraduate", hash: "gestion" },
+    ],
+  },
   { label: "Formación", labelEn: "Training", href: "/formacion" },
   { label: "Eventos", labelEn: "Events", href: "/eventos" },
   { label: "Doctorado", labelEn: "PhD", href: "/doctorado" },
@@ -210,6 +257,25 @@ export function SiteHeader({
                 );
               }
               const active = isActive(basePath, item.href);
+              if (item.sub) {
+                return (
+                  <NavDropdown
+                    key={item.href}
+                    label={label}
+                    href={localizedHref(item.href)}
+                    active={active}
+                    toggleLabel={pick(
+                      locale,
+                      `Apartados de ${label}`,
+                      `${label} sections`,
+                    )}
+                    items={item.sub.map((s) => ({
+                      label: pick(locale, s.label, s.labelEn),
+                      href: `${localizedHref(item.href)}#${s.hash}`,
+                    }))}
+                  />
+                );
+              }
               return (
                 <Link
                   key={item.href}
@@ -307,19 +373,35 @@ export function SiteHeader({
                 }
                 const active = isActive(basePath, item.href);
                 return (
-                  <Link
-                    key={item.href}
-                    href={localizedHref(item.href)}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "border-l-2 py-3 pl-3 text-sm font-medium transition-colors",
-                      active
-                        ? "border-usal-red text-ink"
-                        : "border-transparent text-gray-600 hover:text-gray-900",
-                    )}
-                  >
-                    {label}
-                  </Link>
+                  <div key={item.href}>
+                    <Link
+                      href={localizedHref(item.href)}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        "block border-l-2 py-3 pl-3 text-sm font-medium transition-colors",
+                        active
+                          ? "border-usal-red text-ink"
+                          : "border-transparent text-gray-600 hover:text-gray-900",
+                      )}
+                    >
+                      {label}
+                    </Link>
+                    {/* Los apartados, indentados bajo su sección: en móvil no
+                        hay hover, así que se muestran siempre. */}
+                    {item.sub ? (
+                      <div className="mb-1 flex flex-col border-l-2 border-transparent pl-3">
+                        {item.sub.map((s) => (
+                          <Link
+                            key={s.hash}
+                            href={`${localizedHref(item.href)}#${s.hash}`}
+                            className="py-1.5 pl-3 text-[13px] text-gray-500 transition-colors hover:text-gray-900"
+                          >
+                            {pick(locale, s.label, s.labelEn)}
+                          </Link>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
                 );
               })}
             </div>
