@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
+import { SectionSubnav } from "@/components/layout/section-subnav";
 import { buttonClassName } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { getBlock, getListBlock } from "@/lib/content-blocks-service";
@@ -226,113 +227,20 @@ export default async function DoctoradoPage() {
               {t.escuelaDoctorado}
             </a>
           </div>
-        </div>
-      </section>
-
-      {/* Líneas de investigación */}
-      <section>
-        <div className="mx-auto max-w-6xl px-6 py-14">
-          <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-            {t.lineasTitulo}
-          </h2>
-          <p className="mb-7 max-w-[80ch] text-sm text-gray-500">
-            {t.lineasIntro}
-          </p>
-          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-            {lineas.map((l, i) => {
-              const Icon = iconFor(l.icon);
-              return (
-                <Reveal key={i} delay={(i % 4) * 80} className="h-full">
-                <div className="card-lift flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[18px] shadow-sm hover:shadow-md">
-                  <Icon className="h-5 w-5 text-ink" aria-hidden="true" />
-                  <p className="text-sm font-semibold leading-snug text-gray-900">
-                    {String(l.texto)}
-                  </p>
-                </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Grupos */}
-      <section className="border-y border-gray-200 bg-surface-card">
-        <div className="mx-auto max-w-6xl px-6 py-14">
-          <div className="mb-7 flex flex-wrap items-baseline justify-between gap-6">
-            <div>
-              <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-                {t.gruposTitulo}
-              </h2>
-              <p className="text-sm text-gray-500">{t.gruposIntro}</p>
-            </div>
-            <Link
-              href={href("/investigacion")}
-              className="flex-none text-sm font-medium text-iuce-blue hover:underline"
-            >
-              {t.todaInvestigacion}
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {grupos.map((g, i) => {
-              const cabecera = (
-                <>
-                  {g.logo ? (
-                    // Placa blanca fija: logos oscuros visibles también en
-                    // modo oscuro.
-                    <div className="mb-3 flex h-12 items-center rounded-md bg-white px-2.5">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={g.logo}
-                        alt={`${t.logotipoDe} ${g.acronym}`}
-                        className="max-h-9 max-w-[130px] object-contain"
-                      />
-                    </div>
-                  ) : null}
-                  <div className="mb-2 flex items-center justify-between">
-                    <p className="text-base font-bold text-ink transition-colors group-hover/web:text-iuce-blue">
-                      {g.acronym}
-                      {g.url ? (
-                        <span className="ml-1 text-xs font-normal text-gray-300 transition-colors group-hover/web:text-iuce-blue">
-                          ↗
-                        </span>
-                      ) : null}
-                    </p>
-                    {g.chip ? (
-                      <span className="rounded-full bg-iuce-blue-pale px-2.5 py-[3px] text-[10px] font-bold tracking-[.04em] text-ink">
-                        {g.chip}
-                      </span>
-                    ) : null}
-                  </div>
-                </>
-              );
-              return (
-              <Reveal key={g.acronym} delay={(i % 3) * 80} className="h-full">
-              <div className="card-lift h-full rounded-xl border border-gray-200 bg-surface-page p-5 shadow-sm hover:shadow-md">
-                {g.url ? (
-                  <a
-                    href={g.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={`${t.webDe} ${g.acronym}`}
-                    className="group/web block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2"
-                  >
-                    {cabecera}
-                  </a>
-                ) : (
-                  cabecera
-                )}
-                <p className="text-xs leading-snug text-gray-500">{g.desc}</p>
-              </div>
-              </Reveal>
-              );
-            })}
+          <div className="mt-7">
+            <SectionSubnav
+              items={[
+                { id: "perfil-ingreso", label: t.perfilIngreso },
+                { id: "lineas", label: t.lineasTitulo },
+                { id: "grupos", label: t.gruposTitulo },
+              ]}
+            />
           </div>
         </div>
       </section>
 
       {/* Perfil de ingreso */}
-      <section>
+      <section id="perfil-ingreso" className="scroll-mt-20">
         <div className="mx-auto grid max-w-6xl items-start gap-12 px-6 py-14 lg:grid-cols-[1.3fr_1fr]">
           <div>
             <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
@@ -433,6 +341,111 @@ export default async function DoctoradoPage() {
           </Reveal>
         </div>
       </section>
+      {/* Líneas de investigación */}
+      <section id="lineas" className="scroll-mt-20">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
+            {t.lineasTitulo}
+          </h2>
+          <p className="mb-7 max-w-[80ch] text-sm text-gray-500">
+            {t.lineasIntro}
+          </p>
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
+            {lineas.map((l, i) => {
+              const Icon = iconFor(l.icon);
+              return (
+                <Reveal key={i} delay={(i % 4) * 80} className="h-full">
+                <div className="card-lift flex h-full flex-col gap-2.5 rounded-xl border border-gray-200 bg-surface-card p-[18px] shadow-sm hover:shadow-md">
+                  <Icon className="h-5 w-5 text-ink" aria-hidden="true" />
+                  <p className="text-sm font-semibold leading-snug text-gray-900">
+                    {String(l.texto)}
+                  </p>
+                </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Grupos */}
+      <section
+        id="grupos"
+        className="scroll-mt-20 border-y border-gray-200 bg-surface-card"
+      >
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <div className="mb-7 flex flex-wrap items-baseline justify-between gap-6">
+            <div>
+              <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
+                {t.gruposTitulo}
+              </h2>
+              <p className="text-sm text-gray-500">{t.gruposIntro}</p>
+            </div>
+            <Link
+              href={href("/investigacion")}
+              className="flex-none text-sm font-medium text-iuce-blue hover:underline"
+            >
+              {t.todaInvestigacion}
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {grupos.map((g, i) => {
+              const cabecera = (
+                <>
+                  {g.logo ? (
+                    // Placa blanca fija: logos oscuros visibles también en
+                    // modo oscuro.
+                    <div className="mb-3 flex h-12 items-center rounded-md bg-white px-2.5">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={g.logo}
+                        alt={`${t.logotipoDe} ${g.acronym}`}
+                        className="max-h-9 max-w-[130px] object-contain"
+                      />
+                    </div>
+                  ) : null}
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="text-base font-bold text-ink transition-colors group-hover/web:text-iuce-blue">
+                      {g.acronym}
+                      {g.url ? (
+                        <span className="ml-1 text-xs font-normal text-gray-300 transition-colors group-hover/web:text-iuce-blue">
+                          ↗
+                        </span>
+                      ) : null}
+                    </p>
+                    {g.chip ? (
+                      <span className="rounded-full bg-iuce-blue-pale px-2.5 py-[3px] text-[10px] font-bold tracking-[.04em] text-ink">
+                        {g.chip}
+                      </span>
+                    ) : null}
+                  </div>
+                </>
+              );
+              return (
+              <Reveal key={g.acronym} delay={(i % 3) * 80} className="h-full">
+              <div className="card-lift h-full rounded-xl border border-gray-200 bg-surface-page p-5 shadow-sm hover:shadow-md">
+                {g.url ? (
+                  <a
+                    href={g.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`${t.webDe} ${g.acronym}`}
+                    className="group/web block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2"
+                  >
+                    {cabecera}
+                  </a>
+                ) : (
+                  cabecera
+                )}
+                <p className="text-xs leading-snug text-gray-500">{g.desc}</p>
+              </div>
+              </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
     </>
   );
 }

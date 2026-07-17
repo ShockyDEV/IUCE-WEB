@@ -7,6 +7,7 @@ import {
   MailQuestion,
 } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
+import { SectionSubnav } from "@/components/layout/section-subnav";
 import { buttonClassName } from "@/components/ui/button";
 import {
   getBlock,
@@ -69,6 +70,7 @@ const T = {
     pdfOpen: "Abrir el documento",
     fdiEyebrow: "Universidades públicas de Castilla y León",
     fdiTitulo: "Programa de Formación Docente Inicial",
+    fdiSubnav: "Formación Docente Inicial",
     fdiDudas: "Dudas sobre la formación:",
     fiuniAlt:
       "Formación Inicial Universitaria — programa conjunto de las universidades públicas de Castilla y León",
@@ -101,6 +103,7 @@ const T = {
     pdfOpen: "Open the document",
     fdiEyebrow: "Public universities of Castilla y León",
     fdiTitulo: "Initial Teacher Training Programme",
+    fdiSubnav: "Initial Teacher Training",
     fdiDudas: "Questions about the training:",
     fiuniAlt:
       "Initial University Training — joint programme of the public universities of Castilla y León",
@@ -232,10 +235,23 @@ export default async function FormacionPage() {
             ))}
           </div>
         </div>
+        {/* Fuera de la rejilla de dos columnas: la subnavegación va a todo
+            el ancho, bajo la cabecera. */}
+        <div className="mx-auto max-w-6xl px-6 pb-7">
+          <SectionSubnav
+            items={[
+              { id: "dirigido", label: t.dirigidoTitulo },
+              { id: "inscribirse", label: t.inscribirseTitulo },
+              { id: "actividades", label: t.actividadesTitulo },
+              { id: "plan", label: t.planTitulo },
+              { id: "inicial", label: t.fdiSubnav },
+            ]}
+          />
+        </div>
       </section>
 
       {/* ¿A quién va dirigido? */}
-      <section className="border-b border-gray-200">
+      <section id="dirigido" className="scroll-mt-20 border-b border-gray-200">
         <div className="mx-auto max-w-6xl px-6 py-10">
           <h2 className="mb-[18px] text-xl font-bold text-gray-900">
             {t.dirigidoTitulo}
@@ -266,7 +282,10 @@ export default async function FormacionPage() {
       </section>
 
       {/* Cómo inscribirse (Portal de Formación, subplanes y manual) */}
-      <section className="border-b border-gray-200 bg-surface-card">
+      <section
+        id="inscribirse"
+        className="scroll-mt-20 border-b border-gray-200 bg-surface-card"
+      >
         <div className="mx-auto max-w-6xl px-6 py-10">
           <h2 className="mb-1.5 text-xl font-bold text-gray-900">
             {t.inscribirseTitulo}
@@ -322,7 +341,7 @@ export default async function FormacionPage() {
       </section>
 
       {/* Actividades formativas */}
-      <section className="border-b border-gray-200">
+      <section id="actividades" className="scroll-mt-20 border-b border-gray-200">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
             {t.actividadesTitulo}

@@ -21,6 +21,8 @@ interface SubNavItem {
   labelEn: string;
   /** Ancla dentro de la propia página (el id de su <section>). */
   hash: string;
+  /** URL completa si el apartado vive fuera (p. ej. reserva de espacios). */
+  externalHref?: string;
 }
 
 interface NavItem {
@@ -49,6 +51,12 @@ const NAV: NavItem[] = [
       { label: "Ubicación", labelEn: "Location", hash: "ubicacion" },
       { label: "Instalaciones", labelEn: "Facilities", hash: "instalaciones" },
       { label: "Edificio histórico", labelEn: "Historic building", hash: "edificio" },
+      {
+        label: "Reserva de espacios",
+        labelEn: "Book a space",
+        hash: "reservas",
+        externalHref: "https://reservas.iuce.usal.es",
+      },
     ],
   },
   {
@@ -79,9 +87,29 @@ const NAV: NavItem[] = [
       { label: "Gestión y posgrado", labelEn: "Management and postgraduate", hash: "gestion" },
     ],
   },
-  { label: "Formación", labelEn: "Training", href: "/formacion" },
+  {
+    label: "Formación",
+    labelEn: "Training",
+    href: "/formacion",
+    sub: [
+      { label: "¿A quién va dirigido?", labelEn: "Who is it for?", hash: "dirigido" },
+      { label: "Cómo inscribirse", labelEn: "How to register", hash: "inscribirse" },
+      { label: "Actividades formativas", labelEn: "Training activities", hash: "actividades" },
+      { label: "El Plan, al completo", labelEn: "The Plan, in full", hash: "plan" },
+      { label: "Formación Docente Inicial", labelEn: "Initial Teacher Training", hash: "inicial" },
+    ],
+  },
   { label: "Eventos", labelEn: "Events", href: "/eventos" },
-  { label: "Doctorado", labelEn: "PhD", href: "/doctorado" },
+  {
+    label: "Doctorado",
+    labelEn: "PhD",
+    href: "/doctorado",
+    sub: [
+      { label: "Perfil de ingreso", labelEn: "Entry profile", hash: "perfil-ingreso" },
+      { label: "Líneas de investigación", labelEn: "Research lines", hash: "lineas" },
+      { label: "Grupos de investigación", labelEn: "Research groups", hash: "grupos" },
+    ],
+  },
   {
     label: "EKS",
     labelEn: "EKS",
@@ -271,7 +299,10 @@ export function SiteHeader({
                     )}
                     items={item.sub.map((s) => ({
                       label: pick(locale, s.label, s.labelEn),
-                      href: `${localizedHref(item.href)}#${s.hash}`,
+                      href:
+                        s.externalHref ??
+                        `${localizedHref(item.href)}#${s.hash}`,
+                      external: Boolean(s.externalHref),
                     }))}
                   />
                 );
@@ -390,15 +421,36 @@ export function SiteHeader({
                         hay hover, así que se muestran siempre. */}
                     {item.sub ? (
                       <div className="mb-1 flex flex-col border-l-2 border-transparent pl-3">
-                        {item.sub.map((s) => (
-                          <Link
-                            key={s.hash}
-                            href={`${localizedHref(item.href)}#${s.hash}`}
-                            className="py-1.5 pl-3 text-[13px] text-gray-500 transition-colors hover:text-gray-900"
-                          >
-                            {pick(locale, s.label, s.labelEn)}
-                          </Link>
-                        ))}
+                        {item.sub.map((s) => {
+                          const clase =
+                            "py-1.5 pl-3 text-[13px] text-gray-500 transition-colors hover:text-gray-900";
+                          if (s.externalHref) {
+                            return (
+                              <a
+                                key={s.hash}
+                                href={s.externalHref}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={cn(clase, "inline-flex items-center gap-1.5")}
+                              >
+                                {pick(locale, s.label, s.labelEn)}
+                                <ExternalLink
+                                  className="h-3 w-3 flex-none"
+                                  aria-hidden="true"
+                                />
+                              </a>
+                            );
+                          }
+                          return (
+                            <Link
+                              key={s.hash}
+                              href={`${localizedHref(item.href)}#${s.hash}`}
+                              className={clase}
+                            >
+                              {pick(locale, s.label, s.labelEn)}
+                            </Link>
+                          );
+                        })}
                       </div>
                     ) : null}
                   </div>

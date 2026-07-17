@@ -75,6 +75,7 @@ const T = {
     subnavUbicacion: "Ubicación",
     subnavInstalaciones: "Instalaciones",
     subnavEdificio: "Edificio histórico",
+    subnavReservas: "Reserva de espacios",
     perfilTitulo: "Perfil",
     funcionesTitulo: "Funciones del Instituto",
     reglamentoNota:
@@ -135,6 +136,7 @@ const T = {
     subnavUbicacion: "Location",
     subnavInstalaciones: "Facilities",
     subnavEdificio: "Historic building",
+    subnavReservas: "Book a space",
     perfilTitulo: "Profile",
     funcionesTitulo: "Functions of the Institute",
     reglamentoNota:
@@ -428,6 +430,12 @@ export default async function InstitutoPage() {
     { id: "ubicacion", label: t.subnavUbicacion },
     { id: "instalaciones", label: t.subnavInstalaciones },
     { id: "edificio", label: t.subnavEdificio },
+    // Vive en otra web: sale del sitio en vez de saltar a un ancla.
+    {
+      id: "reservas",
+      label: t.subnavReservas,
+      external: "https://reservas.iuce.usal.es",
+    },
   ];
   const contacto = [
     {

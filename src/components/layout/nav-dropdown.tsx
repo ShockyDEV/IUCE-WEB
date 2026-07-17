@@ -2,12 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 export interface DropdownLink {
   label: string;
   href: string;
+  /** Sale del sitio (p. ej. la reserva de espacios): <a> y aviso visual. */
+  external?: boolean;
 }
 
 interface NavDropdownProps {
@@ -102,17 +104,37 @@ export function NavDropdown({
       </span>
       {open ? (
         <ul className="absolute left-0 top-[64px] z-50 min-w-[220px] overflow-hidden rounded-lg border border-gray-200 bg-surface-card py-1.5 shadow-md">
-          {items.map((s) => (
-            <li key={s.href}>
-              <Link
-                href={s.href}
-                onClick={() => setOpen(false)}
-                className="block px-4 py-2 text-sm font-normal text-gray-600 transition-colors hover:bg-iuce-blue-pale hover:text-ink focus-visible:bg-iuce-blue-pale focus-visible:text-ink focus-visible:outline-none"
-              >
-                {s.label}
-              </Link>
-            </li>
-          ))}
+          {items.map((s) => {
+            const clase =
+              "block px-4 py-2 text-sm font-normal text-gray-600 transition-colors hover:bg-iuce-blue-pale hover:text-ink focus-visible:bg-iuce-blue-pale focus-visible:text-ink focus-visible:outline-none";
+            return (
+              <li key={s.href}>
+                {s.external ? (
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setOpen(false)}
+                    className={cn(clase, "flex items-center gap-1.5")}
+                  >
+                    {s.label}
+                    <ExternalLink
+                      className="h-3 w-3 flex-none"
+                      aria-hidden="true"
+                    />
+                  </a>
+                ) : (
+                  <Link
+                    href={s.href}
+                    onClick={() => setOpen(false)}
+                    className={clase}
+                  >
+                    {s.label}
+                  </Link>
+                )}
+              </li>
+            );
+          })}
         </ul>
       ) : null}
     </div>
