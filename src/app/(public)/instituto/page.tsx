@@ -32,6 +32,7 @@ import {
   type MemberGroup,
 } from "@/components/instituto/group-badge";
 import { CopyEmail } from "@/components/ui/copy-email";
+import { Timeline } from "@/components/instituto/timeline";
 import {
   getBlock,
   getBlockText,
@@ -65,6 +66,7 @@ const T = {
   es: {
     breadcrumbInicio: "Inicio",
     breadcrumbActual: "Instituto",
+    cronologia: "Cronología del Instituto",
     titulo: "El Instituto",
     subnavPerfil: "Perfil",
     subnavEquipo: "Equipo de dirección",
@@ -118,10 +120,12 @@ const T = {
     paraSaberMas: "Para saber más",
     altFoto: (name: string) => `Fotografía de ${name}`,
     orcidLabel: (name: string) => `ORCID de ${name}`,
+    portalDe: (name: string) => `Producción científica de ${name}`,
   },
   en: {
     breadcrumbInicio: "Home",
     breadcrumbActual: "Institute",
+    cronologia: "Timeline of the Institute",
     titulo: "The Institute",
     subnavPerfil: "Profile",
     subnavEquipo: "Management team",
@@ -175,6 +179,7 @@ const T = {
     paraSaberMas: "Further reading",
     altFoto: (name: string) => `Photograph of ${name}`,
     orcidLabel: (name: string) => `${name}'s ORCID`,
+    portalDe: (name: string) => `${name}: research output`,
   },
 } as const;
 
@@ -207,6 +212,8 @@ interface DirectionMember {
   email: string | null;
   extension: string | null;
   photo: string | null;
+  /** Ficha del Portal de Producción Científica (el nombre enlaza allí). */
+  portalUrl: string | null;
   orcid: string | null;
   group: MemberGroup | null;
 }
@@ -217,8 +224,9 @@ const direccionFallback: DirectionMember[] = [
     name: "Susana Olmos Migueláñez",
     role: "Directora",
     email: "solmos@usal.es",
-    extension: "3406",
+    extension: "3424",
     photo: null,
+    portalUrl: null,
     group: null,
     orcid: "https://orcid.org/0000-0002-0816-4179",
   },
@@ -228,6 +236,7 @@ const direccionFallback: DirectionMember[] = [
     email: "fgarcia@usal.es",
     extension: "6095",
     photo: null,
+    portalUrl: null,
     group: null,
     orcid: "https://orcid.org/0000-0001-9987-5584",
   },
@@ -237,6 +246,7 @@ const direccionFallback: DirectionMember[] = [
     email: "javiermerchan@usal.es",
     extension: "3368",
     photo: null,
+    portalUrl: null,
     group: null,
     orcid: "https://orcid.org/0000-0003-1828-5182",
   },
@@ -254,6 +264,7 @@ const ptgasFallback: DirectionMember[] = [
     email: "fdecastro@usal.es",
     extension: "4634",
     photo: null,
+    portalUrl: null,
     group: null,
     orcid: null,
   },
@@ -263,6 +274,7 @@ const ptgasFallback: DirectionMember[] = [
     email: "iuce.tecnico@usal.es",
     extension: "1903",
     photo: null,
+    portalUrl: null,
     group: null,
     orcid: null,
   },
@@ -288,6 +300,7 @@ async function getDireccion(): Promise<{
           email: m.email,
           extension: m.extension,
           photo: m.photo,
+          portalUrl: m.portalUrl,
           orcid: m.orcid,
           group: m.group
             ? {
@@ -503,24 +516,8 @@ export default async function InstitutoPage() {
               </div>
             </Reveal>
             <Reveal from="right" delay={120} className="h-full">
-              <div className="flex h-full flex-col justify-center gap-4 rounded-xl border border-gray-200 bg-surface-tinted px-6 py-5">
-                {hitos.map((h, i) => {
-                  const Icon = iconFor(h.icon);
-                  return (
-                    <div key={i} className="flex items-center gap-3">
-                      <Icon
-                        className="h-[18px] w-[18px] flex-none text-ink"
-                        aria-hidden="true"
-                      />
-                      <p className="text-sm text-gray-600">
-                        <strong className="text-gray-900">
-                          {String(h.etiqueta)}
-                        </strong>{" "}
-                        — {String(h.texto)}
-                      </p>
-                    </div>
-                  );
-                })}
+              <div className="flex h-full flex-col justify-center rounded-xl border border-gray-200 bg-surface-tinted px-7 py-7">
+                <Timeline items={hitos} label={t.cronologia} />
               </div>
             </Reveal>
           </div>
@@ -674,9 +671,29 @@ export default async function InstitutoPage() {
                   />
                 )}
                 <div>
-                  <p className="text-base font-semibold text-gray-900">
-                    {p.name}
-                  </p>
+                  {/* El nombre lleva a su producción científica, igual que la
+                      foto en la rejilla de miembros. */}
+                  {p.portalUrl ? (
+                    <a
+                      href={p.portalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={t.portalDe(p.name)}
+                      className="group/persona inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iuce-blue focus-visible:ring-offset-2 focus-visible:ring-offset-surface-page"
+                    >
+                      <span className="text-base font-semibold text-gray-900 transition-colors group-hover/persona:text-iuce-blue">
+                        {p.name}
+                      </span>
+                      <ExternalLink
+                        className="h-3 w-3 flex-none text-gray-300 transition-colors group-hover/persona:text-iuce-blue"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  ) : (
+                    <p className="text-base font-semibold text-gray-900">
+                      {p.name}
+                    </p>
+                  )}
                   <p className="text-xs font-bold uppercase tracking-wider text-usal-red">
                     {roleLabel(p.role)}
                   </p>

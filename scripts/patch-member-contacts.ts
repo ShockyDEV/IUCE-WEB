@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 
 /** Extensiones telefónicas internas (por correo). */
 const EXTENSIONS: Array<{ email: string; extension: string }> = [
-  { email: "solmos@usal.es", extension: "3406" }, // Directora
+  { email: "solmos@usal.es", extension: "3424" }, // Directora
   { email: "fgarcia@usal.es", extension: "6095" }, // Subdirector
   { email: "javiermerchan@usal.es", extension: "3368" }, // Secretario Académico
   { email: "fdecastro@usal.es", extension: "4634" }, // Secretaría administrativa

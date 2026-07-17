@@ -27,17 +27,20 @@ import removals from "./data/member-removals.json";
 const prisma = new PrismaClient();
 
 /**
- * Responsables de grupo confirmados por el IUCE (jul-2026); GRIAL, OCA y
- * VisualMed ya venían en la semilla. Los 9 grupos tienen responsable.
- * Mismo estilo abreviado que el resto («J. J. Igartua»).
+ * Responsables de los 9 grupos, confirmados por el IUCE (jul-2026). Nombre
+ * completo tal y como figura en su ficha de miembro: así la tarjeta del grupo
+ * puede emparejarlos y mostrar su retrato, y queda más serio que abreviado.
  */
 const GROUP_LEADS: Array<{ acronym: string; lead: string }> = [
-  { acronym: "CaUSAL", lead: "C. López San Segundo" },
-  { acronym: "DIDEROT", lead: "J. F. Merchán" },
-  { acronym: "EduDIG", lead: "S. Casillas" },
-  { acronym: "GROUSAL", lead: "V. Moreno" },
-  { acronym: "INDIE", lead: "J. J. Mena" },
-  { acronym: "MOVERE", lead: "J. Prieto" },
+  { acronym: "CaUSAL", lead: "Carmen López San Segundo" },
+  { acronym: "DIDEROT", lead: "Javier Félix Merchán Sánchez-Jara" },
+  { acronym: "EduDIG", lead: "Sonia Casillas Martín" },
+  { acronym: "GRIAL", lead: "Francisco José García Peñalvo" },
+  { acronym: "GROUSAL", lead: "Vidal Moreno Rodilla" },
+  { acronym: "INDIE", lead: "Juan José Mena Marcos" },
+  { acronym: "MOVERE", lead: "Josué Prieto Prieto" },
+  { acronym: "OCA", lead: "Juan José Igartua Perosanz" },
+  { acronym: "VisualMed", lead: "Juan Antonio Juanes Méndez" },
 ];
 
 async function main() {

@@ -129,18 +129,37 @@ export const LIST_BLOCKS: ListBlockDef[] = [
   {
     pageSlug: "instituto",
     blockKey: "list:hitos",
-    title: "Perfil — cronología de hitos",
+    title: "Perfil — línea del tiempo",
     itemLabel: "hito",
     fields: [
       ICON_FIELD,
       { key: "etiqueta", label: "Año / etiqueta", type: "text" },
       { key: "texto", label: "Texto", type: "text" },
+      {
+        key: "enlace",
+        label: "Enlace (opcional)",
+        type: "text",
+        hint: "URL del documento o página que respalda el hito",
+      },
+      {
+        key: "enlaceTexto",
+        label: "Texto del enlace (opcional)",
+        type: "text",
+        hint: "p. ej. «Ver el documento»",
+      },
     ],
     defaultItems: [
-      { icon: "landmark", etiqueta: "1969", texto: "creación de los ICE en España" },
-      { icon: "school", etiqueta: "Años 80", texto: "especialización en educación universitaria" },
-      { icon: "shield-check", etiqueta: "2008", texto: "verificación como Instituto de Investigación (ACSUCYL)" },
-      { icon: "file-check", etiqueta: "2023", texto: "nuevo Reglamento del IUCE" },
+      { icon: "landmark", etiqueta: "1969", texto: "Creación de los ICE en España", enlace: "", enlaceTexto: "" },
+      { icon: "school", etiqueta: "Años 80", texto: "Especialización en educación universitaria", enlace: "", enlaceTexto: "" },
+      {
+        icon: "shield-check",
+        etiqueta: "2008",
+        texto: "Verificación como Instituto Universitario de Investigación",
+        enlace:
+          "https://www.acsucyl.es/web/jcyl/binarios/82/991/Tabla%20peri%C3%B3dica%20IUI_.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&blobnocache=true",
+        enlaceTexto: "Institutos universitarios de CyL en ACSUCYL",
+      },
+      { icon: "file-check", etiqueta: "2023", texto: "Nuevo Reglamento del IUCE", enlace: "", enlaceTexto: "" },
     ],
   },
   {

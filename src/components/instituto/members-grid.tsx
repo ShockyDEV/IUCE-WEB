@@ -98,18 +98,20 @@ export function MembersGrid({
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((m) => {
+          // 80px: retrato más presente sin descuadrar la tarjeta (el bloque
+          // de nombre + área + badge mide algo más que eso).
           const avatar = m.photo ? (
             <Image
               src={m.photo}
               alt=""
-              width={64}
-              height={64}
-              className="h-16 w-16 flex-none rounded-full object-cover"
+              width={80}
+              height={80}
+              className="h-20 w-20 flex-none rounded-full object-cover"
             />
           ) : (
             <InitialsAvatar
               initials={initialsOf(m.name)}
-              className="h-16 w-16 flex-none text-lg"
+              className="h-20 w-20 flex-none text-xl"
             />
           );
           const nombreArea = (
