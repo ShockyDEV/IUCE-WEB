@@ -22,8 +22,14 @@
  */
 import { PrismaClient } from "@prisma/client";
 import assignments from "./data/member-groups.json";
+import removals from "./data/member-removals.json";
 
 const prisma = new PrismaClient();
+
+/** Responsables de grupo fijados a mano (el seed también los lleva). */
+const GROUP_LEADS: Array<{ acronym: string; lead: string }> = [
+  { acronym: "CaUSAL", lead: "C. López San Segundo" },
+];
 
 async function main() {
   const groups = await prisma.researchGroup.findMany({
@@ -61,13 +67,40 @@ async function main() {
     console.log(`  ${a.group.padEnd(10)} → ${a.name}`);
   }
 
+  // Bajas de la web pública (active=false; reversible desde el panel).
+  let bajas = 0;
+  for (const name of removals.desactivar) {
+    const r = await prisma.member.updateMany({
+      where: { name, active: true },
+      data: { active: false },
+    });
+    if (r.count > 0) {
+      bajas++;
+      console.log(`  BAJA       → ${name}`);
+    }
+  }
+
+  // Responsables de grupo. OJO: un `NOT: { lead }` a secas NO captura los
+  // NULL (en SQL, NULL != 'x' evalúa a NULL) — de ahí el OR explícito.
+  for (const { acronym, lead } of GROUP_LEADS) {
+    const r = await prisma.researchGroup.updateMany({
+      where: {
+        acronym,
+        OR: [{ lead: null }, { NOT: { lead } }],
+      },
+      data: { lead },
+    });
+    if (r.count > 0) console.log(`  LEAD       → ${acronym}: ${lead}`);
+  }
+
   const conGrupo = await prisma.member.count({
     where: { active: true, NOT: { groupId: null } },
   });
+  const activos = await prisma.member.count({ where: { active: true } });
   console.log(
-    `\nAsignados ahora: ${asignados} · ya tenían grupo: ${yaTenian} · no encontrados: ${noEncontrados}`,
+    `\nAsignados ahora: ${asignados} · ya tenían grupo: ${yaTenian} · no encontrados: ${noEncontrados} · bajas aplicadas: ${bajas}`,
   );
-  console.log(`Miembros activos con grupo: ${conGrupo}`);
+  console.log(`Miembros activos: ${activos} · con grupo: ${conGrupo}`);
 }
 
 main()

@@ -1,0 +1,11 @@
+{
+  "_nota": "Miembros dados de baja de la web pública a indicación del usuario (17-jul-2026). El script los desactiva (active=false), no los borra; reactivables desde el panel. Se re-aplica en el deploy por si la migración los recrea activos.",
+  "desactivar": [
+    "María Collado Sánchez",
+    "Alfredo García Pérez Omaña",
+    "Margarita González Sánchez",
+    "Sonsoles Ramos Ahijado",
+    "María Serena Rivetta",
+    "Sara Sandonís Camarero"
+  ]
+}

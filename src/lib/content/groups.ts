@@ -70,6 +70,7 @@ export const groups: GroupSeed[] = [
     acronym: "CaUSAL",
     name: "Cultura académica, patrimonio y memoria social",
     nameEn: "Academic Culture, Heritage and Social Memory",
+    lead: "C. López San Segundo",
     url: "https://causal.usal.es",
     logo: "/images/groups/causal.jpg",
   },

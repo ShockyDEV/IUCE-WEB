@@ -29,12 +29,19 @@ function initialsOf(name: string) {
 
 /**
  * Rejilla pública de miembros del IUCE: buscador + tarjetas compactas con
- * foto (o iniciales si no hay). Los datos salen del gestor.
+ * foto (o iniciales si no hay). Los datos salen del gestor. Con
+ * `searchable={false}` se omiten buscador y contador (p. ej. el consejo
+ * asesor, que son un puñado de tarjetas).
  */
 export function MembersGrid({
   members,
   locale = "es",
-}: Readonly<{ members: PublicMember[]; locale?: Locale }>) {
+  searchable = true,
+}: Readonly<{
+  members: PublicMember[];
+  locale?: Locale;
+  searchable?: boolean;
+}>) {
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
@@ -48,42 +55,46 @@ export function MembersGrid({
 
   return (
     <div>
-      <div className="mb-6 flex h-11 w-full max-w-[360px] items-center gap-2.5 rounded-md border border-gray-300 bg-surface-card px-3.5">
-        <Search
-          className="h-4 w-4 flex-none text-gray-500"
-          aria-hidden="true"
-        />
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={pick(
-            locale,
-            "Buscar por nombre o área…",
-            "Search by name or area…",
-          )}
-          aria-label={pick(
-            locale,
-            "Buscar miembros por nombre o área",
-            "Search members by name or area",
-          )}
-          className="min-w-0 flex-1 border-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-500"
-        />
-      </div>
+      {searchable ? (
+        <>
+          <div className="mb-6 flex h-11 w-full max-w-[360px] items-center gap-2.5 rounded-md border border-gray-300 bg-surface-card px-3.5">
+            <Search
+              className="h-4 w-4 flex-none text-gray-500"
+              aria-hidden="true"
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={pick(
+                locale,
+                "Buscar por nombre o área…",
+                "Search by name or area…",
+              )}
+              aria-label={pick(
+                locale,
+                "Buscar miembros por nombre o área",
+                "Search members by name or area",
+              )}
+              className="min-w-0 flex-1 border-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-500"
+            />
+          </div>
 
-      <p className="mb-4 text-xs text-gray-500" aria-live="polite">
-        {filtered.length === members.length
-          ? pick(
-              locale,
-              `${members.length} miembros`,
-              `${members.length} members`,
-            )
-          : pick(
-              locale,
-              `${filtered.length} de ${members.length} miembros`,
-              `${filtered.length} of ${members.length} members`,
-            )}
-      </p>
+          <p className="mb-4 text-xs text-gray-500" aria-live="polite">
+            {filtered.length === members.length
+              ? pick(
+                  locale,
+                  `${members.length} miembros`,
+                  `${members.length} members`,
+                )
+              : pick(
+                  locale,
+                  `${filtered.length} de ${members.length} miembros`,
+                  `${filtered.length} of ${members.length} members`,
+                )}
+          </p>
+        </>
+      ) : null}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((m) => {

@@ -89,7 +89,10 @@ const T = {
     escribir: "Escribir",
     miembrosTitulo: "Miembros",
     miembrosIntro:
-      "Investigadoras e investigadores de todas las ramas de conocimiento vinculados al Instituto. El listado se gestiona desde el panel de administración.",
+      "Investigadoras e investigadores de todas las ramas de conocimiento vinculados al Instituto.",
+    consejoTitulo: "Consejo asesor",
+    consejoIntro:
+      "Investigadoras e investigadores externos de referencia que asesoran al Instituto.",
     ubicacionTitulo: "Ubicación",
     contactoDireccion: "Dirección",
     contactoDireccionLineas: [
@@ -143,7 +146,10 @@ const T = {
     escribir: "Write",
     miembrosTitulo: "Members",
     miembrosIntro:
-      "Researchers from every branch of knowledge affiliated with the Institute. The list is managed from the administration panel.",
+      "Researchers from every branch of knowledge affiliated with the Institute.",
+    consejoTitulo: "Advisory board",
+    consejoIntro:
+      "Leading external researchers who advise the Institute.",
     ubicacionTitulo: "Location",
     contactoDireccion: "Address",
     contactoDireccionLineas: [
@@ -326,7 +332,11 @@ function initialsOf(name: string) {
   return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
 }
 
-async function getMiembros(locale: Locale): Promise<PublicMember[]> {
+/** Miembros públicos, con el consejo asesor APARTE (se muestra en su propia
+ *  banda, no mezclado en la rejilla de investigadores). */
+async function getMiembros(
+  locale: Locale,
+): Promise<{ miembros: PublicMember[]; consejo: PublicMember[] }> {
   const en = locale === "en";
   // Traduce cada segmento «rol · área» por separado con sus mapas; deja igual
   // lo que no tenga traducción conocida (líneas concretas, nombres propios).
@@ -344,34 +354,43 @@ async function getMiembros(locale: Locale): Promise<PublicMember[]> {
       include: { group: true },
     });
     if (rows.length > 0) {
-      return rows.map((m) => ({
-        name: m.name,
-        area: localizeArea(m.role, m.area),
-        email: m.email,
-        photo: m.photo,
-        portalUrl: m.portalUrl,
-        orcid: m.orcid,
-        group: m.group
-          ? {
-              acronym: m.group.acronym,
-              name: en ? (m.group.nameEn ?? m.group.name) : m.group.name,
-              logo: m.group.logo,
-              url: m.group.url,
-            }
-          : null,
-      }));
+      const esConsejo = (a: string | null) => a === "Consejo asesor";
+      const map = (list: typeof rows): PublicMember[] =>
+        list.map((m) => ({
+          name: m.name,
+          area: localizeArea(m.role, m.area),
+          email: m.email,
+          photo: m.photo,
+          portalUrl: m.portalUrl,
+          orcid: m.orcid,
+          group: m.group
+            ? {
+                acronym: m.group.acronym,
+                name: en ? (m.group.nameEn ?? m.group.name) : m.group.name,
+                logo: m.group.logo,
+                url: m.group.url,
+              }
+            : null,
+        }));
+      return {
+        miembros: map(rows.filter((m) => !esConsejo(m.area))),
+        consejo: map(rows.filter((m) => esConsejo(m.area))),
+      };
     }
   } catch {
     // BD no disponible
   }
-  return miembrosFallback.map((m) => ({
-    ...m,
-    email: null,
-    photo: null,
-    group: null,
-    portalUrl: null,
-    orcid: null,
-  }));
+  return {
+    miembros: miembrosFallback.map((m) => ({
+      ...m,
+      email: null,
+      photo: null,
+      group: null,
+      portalUrl: null,
+      orcid: null,
+    })),
+    consejo: [],
+  };
 }
 
 export default async function InstitutoPage() {
@@ -414,7 +433,7 @@ export default async function InstitutoPage() {
     riie,
     urlRiie,
     citaDirectora,
-    miembros,
+    { miembros, consejo },
     { equipo, ptgas },
     funciones,
     hitos,
@@ -748,6 +767,26 @@ export default async function InstitutoPage() {
             </p>
           </div>
           <MembersGrid members={miembros} locale={locale} />
+
+          {/* Consejo asesor: va APARTE, no mezclado en la rejilla de
+              miembros (petición del usuario). */}
+          {consejo.length > 0 ? (
+            <div className="mt-12 border-t border-gray-200 pt-8">
+              <div className="mb-6">
+                <h3 className="mb-1.5 text-xl font-bold tracking-tight text-gray-900">
+                  {t.consejoTitulo}
+                </h3>
+                <p className="max-w-[70ch] text-sm text-gray-500">
+                  {t.consejoIntro}
+                </p>
+              </div>
+              <MembersGrid
+                members={consejo}
+                locale={locale}
+                searchable={false}
+              />
+            </div>
+          ) : null}
         </div>
       </section>
 
