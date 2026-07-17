@@ -9,8 +9,7 @@
  * web original, por lo que quedan fuera.
  *
  * Los responsables no figuran en la web original: los confirmó el IUCE
- * (jul-2026), salvo el de DIDEROT, aún sin documentar. Editables desde el
- * panel.
+ * (jul-2026). Editables desde el panel.
  */
 export interface GroupSeed {
   acronym: string;
@@ -63,8 +62,7 @@ export const groups: GroupSeed[] = [
     acronym: "DIDEROT",
     name: "Didácticas Digitales de la Expresión Musical y las Artes Performativas",
     nameEn: "Digital Didactics of Musical Expression and the Performing Arts",
-    // El export no documenta responsable; completar desde el panel cuando
-    // el IUCE lo confirme.
+    lead: "J. F. Merchán",
     url: "https://diderot.usal.es/",
     logo: "/images/groups/diderot.png",
   },
