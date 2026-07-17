@@ -26,9 +26,17 @@ import removals from "./data/member-removals.json";
 
 const prisma = new PrismaClient();
 
-/** Responsables de grupo fijados a mano (el seed también los lleva). */
+/**
+ * Responsables de grupo confirmados por el IUCE (jul-2026). GRIAL, OCA y
+ * VisualMed ya venían en la semilla; DIDEROT sigue sin responsable
+ * documentado. Mismo estilo abreviado que el resto («J. J. Igartua»).
+ */
 const GROUP_LEADS: Array<{ acronym: string; lead: string }> = [
   { acronym: "CaUSAL", lead: "C. López San Segundo" },
+  { acronym: "EduDIG", lead: "S. Casillas" },
+  { acronym: "GROUSAL", lead: "V. Moreno" },
+  { acronym: "INDIE", lead: "J. J. Mena" },
+  { acronym: "MOVERE", lead: "J. Prieto" },
 ];
 
 async function main() {

@@ -8,8 +8,9 @@
  * los prototipos del handoff pero NO constan en la lista vigente de la
  * web original, por lo que quedan fuera.
  *
- * Los responsables no figuran en la web original; los que constan aquí
- * proceden del handoff/el equipo directivo y son editables desde el panel.
+ * Los responsables no figuran en la web original: los confirmó el IUCE
+ * (jul-2026), salvo el de DIDEROT, aún sin documentar. Editables desde el
+ * panel.
  */
 export interface GroupSeed {
   acronym: string;
@@ -54,6 +55,7 @@ export const groups: GroupSeed[] = [
     acronym: "GROUSAL",
     name: "Grupo de Robótica y Sociedad",
     nameEn: "Robotics and Society Group",
+    lead: "V. Moreno",
     url: "http://gro.usal.es",
     logo: "/images/groups/grousal.gif",
   },
@@ -78,6 +80,7 @@ export const groups: GroupSeed[] = [
     acronym: "MOVERE",
     name: "Grupo de Investigación sobre Actividad Física, Movimiento y Educación",
     nameEn: "Research Group on Physical Activity, Movement and Education",
+    lead: "J. Prieto",
     url: "https://movere.usal.es/",
     logo: "/images/groups/movere.png",
   },
@@ -85,6 +88,7 @@ export const groups: GroupSeed[] = [
     acronym: "EduDIG",
     name: "Grupo de Investigación en Innovación y Educación Digital",
     nameEn: "Research Group on Digital Innovation and Education",
+    lead: "S. Casillas",
     url: "https://edudig.usal.es/",
     logo: "/images/groups/edudig.png",
   },
@@ -92,6 +96,7 @@ export const groups: GroupSeed[] = [
     acronym: "INDIE",
     name: "Grupo de investigación interdisciplinar sobre inteligencia digital en procesos educativos",
     nameEn: "Interdisciplinary Research Group on Digital Intelligence in Educational Processes",
+    lead: "J. J. Mena",
     url: "https://indieusal.es/",
     logo: "/images/groups/indie.png",
   },
