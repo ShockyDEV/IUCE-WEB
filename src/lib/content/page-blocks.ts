@@ -123,7 +123,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "proyectos-descripcion",
         title: "Proyectos — subtítulo del explorador",
-        defaultContent: `<p>Proyectos de investigación competitivos con participación de investigadores del Instituto. Busca por título, investigador principal, entidad financiadora o grupo.</p>`,
+        defaultContent: `<p>Proyectos de investigación competitivos del Instituto: los que firma el IUCE o en los que más de la mitad del equipo son investigadores del Instituto. Busca por título, investigador principal, entidad financiadora o grupo.</p>`,
       },
       {
         blockKey: "publicaciones-descripcion",

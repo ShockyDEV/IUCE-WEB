@@ -34,7 +34,7 @@ export const PAGE_BLOCKS_EN: Record<string, string> = {
 
   // ── Investigación ──────────────────────────────────────────────────────
   "investigacion:intro": `<p>Interdisciplinary research, both basic and applied, into training processes in Higher Education: educational assessment, technology, communication and transfer to the education system.</p>`,
-  "investigacion:proyectos-descripcion": `<p>Competitive research projects involving the Institute's researchers. Search by title, principal investigator, funding body or group.</p>`,
+  "investigacion:proyectos-descripcion": `<p>The Institute's competitive research projects: those signed by the IUCE or in which more than half of the team are Institute researchers. Search by title, principal investigator, funding body or group.</p>`,
   "investigacion:publicaciones-descripcion": `<p>The scientific output of the Institute's members is available on the Research Portal of the University of Salamanca. The IUCE also publishes the journal Education in the Knowledge Society (EKS).</p>`,
   "investigacion:muestra-titulo": `<p>Read the latest articles by the IUCE's management team</p>`,
   "investigacion:portal-descripcion": `<p>Articles, books, chapters, projects and supervised theses by IUCE researchers, always up to date on the USAL Research Portal.</p>`,

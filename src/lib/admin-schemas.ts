@@ -77,6 +77,7 @@ export const projectInputSchema = z.object({
   startYear: z.number().int().min(1990).max(2100).optional().nullable(),
   endYear: z.number().int().min(1990).max(2100).optional().nullable(),
   active: z.boolean().optional(),
+  iuceLed: z.boolean().optional(),
 });
 
 export const contentBlockInputSchema = z.object({

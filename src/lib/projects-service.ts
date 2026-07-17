@@ -17,11 +17,16 @@ export interface PublicProject {
  * Proyectos visibles en la web pública (los gestiona el panel: Instituto →
  * Proyectos), ordenados por año de fin descendente (los vigentes primero).
  * Sin BD devuelve lista vacía: la sección muestra su estado vacío.
+ *
+ * Solo los proyectos DEL IUCE (`iuceLed`): los firmados por el Instituto o
+ * con más del 50% del equipo del IUCE, según la Tabla 4 de la memoria. Los
+ * proyectos en los que el Instituto solo participa con un porcentaje mínimo
+ * se conservan en la BD (estadísticas, panel), pero no se listan aquí.
  */
 export async function getPublicProjects(): Promise<PublicProject[]> {
   try {
     const rows = await prisma.project.findMany({
-      where: { active: true },
+      where: { active: true, iuceLed: true },
       orderBy: [
         { endYear: { sort: "desc", nulls: "last" } },
         { startYear: { sort: "desc", nulls: "last" } },

@@ -38,6 +38,7 @@ export async function POST(request: Request) {
       startYear: d.startYear ?? null,
       endYear: d.endYear ?? null,
       active: d.active ?? true,
+      iuceLed: d.iuceLed ?? false,
     },
   });
   return NextResponse.json({ item: created }, { status: 201 });

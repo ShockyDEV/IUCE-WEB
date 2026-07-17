@@ -37,6 +37,7 @@ export async function PUT(request: Request, { params }: Params) {
       startYear: d.startYear ?? null,
       endYear: d.endYear ?? null,
       active: d.active ?? existing.active,
+      iuceLed: d.iuceLed ?? existing.iuceLed,
     },
   });
   return NextResponse.json({ item: updated });

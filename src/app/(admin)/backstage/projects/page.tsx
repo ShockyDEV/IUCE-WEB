@@ -23,6 +23,7 @@ export default async function AdminProjectsPage() {
     startYear: p.startYear,
     endYear: p.endYear,
     active: p.active,
+    iuceLed: p.iuceLed,
   }));
 
   return <ProjectsSection rows={rows} />;

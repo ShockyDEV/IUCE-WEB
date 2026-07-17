@@ -24,6 +24,7 @@ export interface ProjectRow {
   startYear: number | null;
   endYear: number | null;
   active: boolean;
+  iuceLed: boolean;
 }
 
 interface FormState {
@@ -38,6 +39,7 @@ interface FormState {
   startYear: string;
   endYear: string;
   active: boolean;
+  iuceLed: boolean;
 }
 
 const EMPTY: FormState = {
@@ -51,6 +53,7 @@ const EMPTY: FormState = {
   startYear: "",
   endYear: "",
   active: true,
+  iuceLed: true,
 };
 
 function toForm(p: ProjectRow): FormState {
@@ -66,6 +69,7 @@ function toForm(p: ProjectRow): FormState {
     startYear: p.startYear?.toString() ?? "",
     endYear: p.endYear?.toString() ?? "",
     active: p.active,
+    iuceLed: p.iuceLed,
   };
 }
 
@@ -105,6 +109,7 @@ export function ProjectsSection({ rows }: Readonly<{ rows: ProjectRow[] }>) {
         startYear: form.startYear ? Number(form.startYear) : null,
         endYear: form.endYear ? Number(form.endYear) : null,
         active: form.active,
+        iuceLed: form.iuceLed,
       };
       const res = await fetch(
         form.id ? `/api/admin/projects/${form.id}` : "/api/admin/projects",
@@ -375,6 +380,22 @@ export function ProjectsSection({ rows }: Readonly<{ rows: ProjectRow[] }>) {
                 />
               </div>
             </div>
+            <label className="flex cursor-pointer items-start gap-2.5 text-sm text-gray-700">
+              <input
+                type="checkbox"
+                checked={form.iuceLed}
+                onChange={(e) => setForm({ ...form, iuceLed: e.target.checked })}
+                className="mt-0.5 h-4 w-4 accent-iuce-blue-dark"
+              />
+              <span>
+                Proyecto del IUCE
+                <span className="block text-xs text-gray-500">
+                  Lo firma el Instituto o más de la mitad del equipo son
+                  investigadores del IUCE. Solo estos se listan en la web
+                  pública; los demás se guardan pero no se muestran.
+                </span>
+              </span>
+            </label>
             <label className="flex cursor-pointer items-center gap-2.5 text-sm text-gray-700">
               <input
                 type="checkbox"

@@ -98,6 +98,11 @@ model Project {
   startYear Int?
   endYear   Int?
   active    Boolean  @default(true) // visible en la web
+  // ¿Es un proyecto DEL IUCE? La Tabla 4 de la memoria separa dos bloques:
+  // los que cumplen los criterios del Instituto (firmados por el IUCE o con
+  // más del 50% del equipo del IUCE) y aquellos en los que solo se participa
+  // con un porcentaje mínimo. La web pública solo lista los primeros.
+  iuceLed   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
