@@ -443,8 +443,8 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "texto", label: "Texto", type: "textarea" },
     ],
     defaultItems: [
-      { cifra: "114", texto: "proyectos de investigación con participación del IUCE" },
-      { cifra: "11,9M€", texto: "de financiación en los proyectos en los que participa" },
+      { cifra: "57", texto: "proyectos de investigación competitivos del IUCE" },
+      { cifra: "2,9M€", texto: "de financiación en convocatorias competitivas" },
       { cifra: "101", texto: "tesis doctorales defendidas" },
       { cifra: "213", texto: "trabajos fin de máster dirigidos" },
       { cifra: "420", texto: "actividades de formación continua" },
@@ -460,18 +460,20 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "etiqueta", label: "Año", type: "text" },
       { key: "valor", label: "Proyectos", type: "text" },
     ],
-    // Año de inicio según la columna «Periodo de duración» de la Tabla 4, las
-    // dos secciones sumadas. Los tramos «Hasta 2019» y «2026» hacen que el
-    // total cuadre con los 114 proyectos del contador de cabecera.
+    // Año de inicio según la columna «Periodo de duración» de la Tabla 4,
+    // bloque principal (proyectos DEL IUCE, filas 3-59: firmados por el
+    // Instituto o con más del 50% del equipo). Los tramos «Hasta 2019» y
+    // «2026» hacen que el total cuadre con los 57 del contador de cabecera
+    // y con los que lista /investigacion.
     defaultItems: [
-      { etiqueta: "Hasta 2019", valor: "23" },
-      { etiqueta: "2020", valor: "14" },
-      { etiqueta: "2021", valor: "13" },
-      { etiqueta: "2022", valor: "20" },
-      { etiqueta: "2023", valor: "20" },
-      { etiqueta: "2024", valor: "8" },
-      { etiqueta: "2025", valor: "6" },
-      { etiqueta: "2026", valor: "10" },
+      { etiqueta: "Hasta 2019", valor: "10" },
+      { etiqueta: "2020", valor: "7" },
+      { etiqueta: "2021", valor: "8" },
+      { etiqueta: "2022", valor: "12" },
+      { etiqueta: "2023", valor: "8" },
+      { etiqueta: "2024", valor: "3" },
+      { etiqueta: "2025", valor: "3" },
+      { etiqueta: "2026", valor: "6" },
     ],
   },
   {
@@ -484,14 +486,14 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "valor", label: "Importe (miles €)", type: "text" },
     ],
     defaultItems: [
-      { etiqueta: "Hasta 2019", valor: "1514" },
-      { etiqueta: "2020", valor: "748" },
-      { etiqueta: "2021", valor: "320" },
-      { etiqueta: "2022", valor: "1115" },
-      { etiqueta: "2023", valor: "6767" },
-      { etiqueta: "2024", valor: "350" },
-      { etiqueta: "2025", valor: "610" },
-      { etiqueta: "2026", valor: "464" },
+      { etiqueta: "Hasta 2019", valor: "636" },
+      { etiqueta: "2020", valor: "328" },
+      { etiqueta: "2021", valor: "203" },
+      { etiqueta: "2022", valor: "406" },
+      { etiqueta: "2023", valor: "448" },
+      { etiqueta: "2024", valor: "97" },
+      { etiqueta: "2025", valor: "350" },
+      { etiqueta: "2026", valor: "421" },
     ],
   },
   {
@@ -504,13 +506,12 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { key: "valor", label: "Proyectos", type: "text" },
     ],
     defaultItems: [
-      { etiqueta: "Comisión Europea / UE", valor: "39" },
-      { etiqueta: "Ministerio (Gob. de España)", valor: "27" },
-      { etiqueta: "Universidad de Salamanca", valor: "19" },
-      { etiqueta: "FECYT", valor: "8" },
-      { etiqueta: "Junta de Castilla y León", valor: "7" },
-      { etiqueta: "INCIBE", valor: "5" },
-      { etiqueta: "Otras", valor: "9" },
+      { etiqueta: "Comisión Europea / UE", valor: "25" },
+      { etiqueta: "Universidad de Salamanca", valor: "12" },
+      { etiqueta: "Ministerio (Gob. de España)", valor: "8" },
+      { etiqueta: "FECYT", valor: "6" },
+      { etiqueta: "Junta de Castilla y León", valor: "3" },
+      { etiqueta: "Otras", valor: "3" },
     ],
   },
   {

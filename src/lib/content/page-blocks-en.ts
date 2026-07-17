@@ -90,7 +90,7 @@ export const PAGE_BLOCKS_EN: Record<string, string> = {
   // ── Estadísticas ───────────────────────────────────────────────────────
   "estadisticas:hero-eyebrow": `<p>2020–2025 Report</p>`,
   "estadisticas:intro": `<p>The Institute's activity over the 2020–2025 period, in figures: projects, knowledge transfer, theses, training, networks and management. The figures come from the IUCE's accreditation report.</p>`,
-  "estadisticas:proyectos-descripcion": `<p>114 research projects involving the IUCE, mobilising €11.9 million. The European Commission is the main funder, followed by the Government of Spain.</p>`,
+  "estadisticas:proyectos-descripcion": `<p>57 competitive research projects of the Institute — those signed by the IUCE or in which more than half of the team are Institute researchers — with €2.9 million in funding. The European Commission is the main funder, followed by the University of Salamanca itself. The IUCE also takes part in a further 56 projects led from outside.</p>`,
   "estadisticas:transferencia-descripcion": `<p>64 knowledge transfer contracts and agreements (art. 60 LOSU) worth a total of €766,970, with foundations, public authorities and companies (2020–2025).</p>`,
   "estadisticas:doctorado-descripcion": `<p>101 doctoral theses defended — 91% awarded Cum Laude and 4 in 10 with International Mention — and 213 master's dissertations supervised, with a clearly rising trend.</p>`,
   "estadisticas:formacion-descripcion": `<p>More than 2,600 hours of continuing training: the IUCE's teaching staff not only carry out research on teaching, they also deliver it and train continuously under the Training Plan for PDI (teaching and research staff).</p>`,

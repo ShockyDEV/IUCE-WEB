@@ -54,11 +54,11 @@ const T = {
     proyectosTitulo: "Proyectos de investigación",
     proyectosAnoTitulo: "Proyectos iniciados por año",
     proyectosAnoInsight:
-      "23 ya estaban en marcha antes de 2020 y 10 arrancan en 2026",
+      "10 ya estaban en marcha antes de 2020 y 6 arrancan en 2026",
     proyectosSerie: "Proyectos",
     importeAnoTitulo: "Importe concedido por año",
     importeAnoInsight:
-      "En miles de euros — 2023 concentra la mayor financiación",
+      "En miles de euros — 2023 es el mejor año del periodo",
     importeSerie: "Importe",
     financiadorasTitulo: "¿Quién financia la investigación del IUCE?",
     financiadorasInsight: "Proyectos por entidad financiadora (2020–2025)",
@@ -129,11 +129,11 @@ const T = {
     proyectosTitulo: "Research projects",
     proyectosAnoTitulo: "Projects started per year",
     proyectosAnoInsight:
-      "23 were already running before 2020 and 10 start in 2026",
+      "10 were already running before 2020 and 6 start in 2026",
     proyectosSerie: "Projects",
     importeAnoTitulo: "Funding awarded per year",
     importeAnoInsight:
-      "In thousands of euros — 2023 accounts for the largest share of funding",
+      "In thousands of euros — 2023 is the period's best year",
     importeSerie: "Amount",
     financiadorasTitulo: "Who funds IUCE research?",
     financiadorasInsight: "Projects by funding body (2020–2025)",

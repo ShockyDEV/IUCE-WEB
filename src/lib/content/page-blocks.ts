@@ -376,7 +376,7 @@ export const PAGE_BLOCKS: PageDef[] = [
       {
         blockKey: "proyectos-descripcion",
         title: "Sección Proyectos — lectura rápida",
-        defaultContent: `<p>114 proyectos de investigación con participación del IUCE, que movilizan 11,9 millones de euros. La Comisión Europea es la principal financiadora, seguida del Gobierno de España.</p>`,
+        defaultContent: `<p>57 proyectos de investigación competitivos del Instituto —los que firma el IUCE o en los que más de la mitad del equipo son investigadores del Instituto—, con 2,9 millones de euros de financiación. La Comisión Europea es la principal financiadora, seguida de la propia Universidad de Salamanca. El IUCE participa además en otros 56 proyectos liderados desde fuera.</p>`,
       },
       {
         blockKey: "transferencia-descripcion",
