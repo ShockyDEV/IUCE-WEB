@@ -332,6 +332,11 @@ export const PAGE_BLOCKS: PageDef[] = [
         defaultContent: `<p>El artículo 60 de la LOSU reconoce la transferencia como una función esencial de la universidad. El IUCE la ejerce poniendo su investigación (evaluación educativa, tecnología, formación, comunicación) al servicio de quien la necesita: mediante contratos y convenios, desarrollos a medida, formación especializada y asesoramiento experto.</p>`,
       },
       {
+        blockKey: "gtc-intro",
+        title: "Transferencia — párrafo de los Grupos de Transferencia (GTC)",
+        defaultContent: `<p>En la convocatoria de creación de <strong>Grupos de Transferencia del Conocimiento (GTC)</strong> del curso 2024/2025, varios grupos vinculados al IUCE obtuvieron resolución favorable. Estos grupos llevan la investigación del Instituto directamente al tejido educativo, social y empresarial.</p>`,
+      },
+      {
         blockKey: "url-otc",
         title: "Transferencia — URL de la Oficina de Transferencia de la USAL",
         defaultContent: `<p>https://transferencia.usal.es</p>`,

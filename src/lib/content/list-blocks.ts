@@ -414,6 +414,29 @@ export const LIST_BLOCKS: ListBlockDef[] = [
     ],
   },
 
+  {
+    pageSlug: "transferencia",
+    blockKey: "list:gtc",
+    title: "Grupos de Transferencia del Conocimiento (GTC)",
+    itemLabel: "GTC",
+    fields: [
+      { key: "acronimo", label: "Acrónimo", type: "text", hint: "p. ej. ConectaEDU, TOCA (vacío = sin distintivo)" },
+      { key: "nombre", label: "Nombre del GTC", type: "text" },
+      { key: "director", label: "Dirección", type: "text", hint: "vacío = no se muestra" },
+      { key: "grupo", label: "Grupo de investigación vinculado", type: "text", hint: "acrónimo del GIR (GRIAL, OCA…)" },
+      { key: "adscrito", label: "Adscrito al IUCE (no solo colaboración)", type: "check" },
+    ],
+    defaultItems: [
+      { acronimo: "ConectaEDU", nombre: "Aprendizaje en Entornos Digitales", director: "Sonia Casillas Martín", grupo: "EduDIG", adscrito: true },
+      { acronimo: "DyS", nombre: "Discurso y Sociedad", director: "Carmen Vanesa Álvarez Rosa", grupo: "IDEA", adscrito: true },
+      { acronimo: "GRIALE2", nombre: "Evaluación Educativa", director: "Susana Olmos Migueláñez", grupo: "GRIAL", adscrito: true },
+      { acronimo: "GRIALhci", nombre: "Human-Computer Interaction, Artificial Intelligence and Gender Perspective", director: "Roberto Therón Sánchez", grupo: "GRIAL", adscrito: true },
+      { acronimo: "TOCA", nombre: "Observatorio de Contenidos Audiovisuales", director: "Juan José Igartua Perosanz", grupo: "OCA", adscrito: true },
+      { acronimo: "CRUCIAL", nombre: "Cultura, Comunicación y Creatividad", director: "", grupo: "CaUSAL", adscrito: false },
+      { acronimo: "", nombre: "DIDEROT TransferLab", director: "", grupo: "DIDEROT", adscrito: false },
+    ],
+  },
+
   // ── Seminario IUCE ────────────────────────────────────────────────────────
   {
     pageSlug: "seminario",

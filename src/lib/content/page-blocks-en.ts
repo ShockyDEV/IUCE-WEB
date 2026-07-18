@@ -82,6 +82,7 @@ export const PAGE_BLOCKS_EN: Record<string, string> = {
   // ── Transferencia ──────────────────────────────────────────────────────
   "transferencia:intro": `<p>Transferring knowledge to society is one of the IUCE's main objectives: ensuring that educational research does not stay in scientific journals, but improves the practice of public authorities, educational institutions, companies and social organisations.</p>`,
   "transferencia:mision": `<p>Article 60 of the LOSU recognises knowledge transfer as an essential function of the university. The IUCE exercises it by placing its research (educational assessment, technology, training, communication) at the service of those who need it: through contracts and agreements, tailor-made developments, specialised training and expert advice.</p>`,
+  "transferencia:gtc-intro": `<p>In the 2024/2025 call for the creation of <strong>Knowledge Transfer Groups (GTC)</strong>, several groups linked to the IUCE received a favourable resolution. These groups take the Institute’s research directly to the educational, social and business community.</p>`,
   "transferencia:otc-descripcion": `<p>The Knowledge Transfer Office of the University of Salamanca channels Article 60 contracts, patents and collaboration with companies and institutions.</p>`,
   "transferencia:datos-descripcion": `<p>60 contracts and 4 agreements with foundations, public authorities and companies during 2020–2025.</p>`,
   "transferencia:cta": `<p><strong>Does your organisation face an educational challenge?</strong></p>

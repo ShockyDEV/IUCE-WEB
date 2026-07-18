@@ -1,11 +1,13 @@
 import { metadataBilingue } from "@/lib/metadata";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Building2 } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Building2, Share2, UserRound } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { buttonClassName } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { ChartCard } from "@/components/stats/chart-card";
 import { BarsChart, DonutChart, type Datum } from "@/components/stats/stat-charts";
+import { GroupBadge, type MemberGroup } from "@/components/instituto/group-badge";
+import { groups } from "@/lib/content/groups";
 import { getBlock, getBlockText, getListBlock } from "@/lib/content-blocks-service";
 import { iconFor } from "@/lib/icon-map";
 import { withLocale } from "@/lib/locale";
@@ -37,6 +39,12 @@ const T = {
     eyebrow: "Investigación al servicio de la sociedad",
     titulo: "Transferencia de conocimiento",
     comoTransferimos: "Cómo transferimos",
+    gtcConvocatoria: "Convocatoria GTC 2024/2025",
+    gtcTitulo: "Grupos de Transferencia del Conocimiento",
+    gtcAdscritos: "Adscritos al IUCE",
+    gtcColaboracion: "Con participación de miembros del IUCE",
+    gtcDireccion: "Dirección",
+    gtcVinculado: "Vinculado a",
     datosTitulo: "La transferencia, en datos",
     verEstadisticas: "Ver todas las estadísticas",
     importeTitulo: "Importe contratado por año",
@@ -56,6 +64,12 @@ const T = {
     eyebrow: "Research at the service of society",
     titulo: "Knowledge transfer",
     comoTransferimos: "How we transfer knowledge",
+    gtcConvocatoria: "GTC 2024/2025 call",
+    gtcTitulo: "Knowledge Transfer Groups",
+    gtcAdscritos: "Attached to the IUCE",
+    gtcColaboracion: "With participation of IUCE members",
+    gtcDireccion: "Head",
+    gtcVinculado: "Linked to",
     datosTitulo: "Knowledge transfer in figures",
     verEstadisticas: "See all the statistics",
     importeTitulo: "Contracted amount per year",
@@ -93,24 +107,88 @@ export default async function TransferenciaPage() {
   const [
     intro,
     mision,
+    gtcIntro,
     urlOtc,
     otcDescripcion,
     datosDescripcion,
     cta,
     vias,
+    gtc,
     importe,
     implicacion,
   ] = await Promise.all([
     getBlock("transferencia", "intro"),
     getBlock("transferencia", "mision"),
+    getBlock("transferencia", "gtc-intro"),
     getBlockText("transferencia", "url-otc"),
     getBlock("transferencia", "otc-descripcion"),
     getBlock("transferencia", "datos-descripcion"),
     getBlock("transferencia", "cta"),
     getListBlock("transferencia", "list:vias"),
+    getListBlock("transferencia", "list:gtc"),
     getListBlock("estadisticas", "list:contratos-importe"),
     getListBlock("estadisticas", "list:contratos-implicacion"),
   ]);
+
+  // Vínculo de cada GTC a su grupo de investigación (badge con logo). Si el
+  // grupo no está en la web (p. ej. IDEA), se muestra el acrónimo a secas.
+  const norm = (x: string) => x.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const grupoPorAcronimo = (acr: string): MemberGroup | null => {
+    const g = groups.find((gr) => norm(gr.acronym) === norm(acr));
+    return g
+      ? { acronym: g.acronym, name: g.name, logo: g.logo ?? null, url: g.url ?? null }
+      : null;
+  };
+  const esAdscrito = (g: (typeof gtc)[number]) =>
+    g.adscrito === true || g.adscrito === "true";
+  const gtcAdscritos = gtc.filter(esAdscrito);
+  const gtcColaboracion = gtc.filter((g) => !esAdscrito(g));
+
+  const tarjetaGtc = (v: (typeof gtc)[number], i: number) => {
+    const acr = String(v.acronimo ?? "").trim();
+    const nombre = String(v.nombre ?? "").trim();
+    const director = String(v.director ?? "").trim();
+    const grupoAcr = String(v.grupo ?? "").trim();
+    const grupo = grupoPorAcronimo(grupoAcr);
+    return (
+      <Reveal key={i} delay={i * 70} className="h-full">
+        <article className="card-lift flex h-full flex-col gap-3 rounded-xl border border-gray-200 bg-surface-card p-6 shadow-sm hover:shadow-md">
+          {acr ? (
+            <span className="inline-flex w-fit items-center rounded-md bg-iuce-blue-pale px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-iuce-blue-dark">
+              {acr}
+            </span>
+          ) : null}
+          <h4 className="text-base font-semibold leading-snug text-gray-900">
+            {nombre}
+          </h4>
+          {director ? (
+            <p className="flex items-start gap-1.5 text-sm text-gray-600">
+              <UserRound
+                className="mt-0.5 h-4 w-4 flex-none text-gray-400"
+                aria-hidden="true"
+              />
+              <span>
+                <span className="text-gray-500">{t.gtcDireccion}: </span>
+                <span className="font-medium text-gray-800">{director}</span>
+              </span>
+            </p>
+          ) : null}
+          {grupoAcr ? (
+            <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
+              <span className="text-xs text-gray-500">{t.gtcVinculado}</span>
+              {grupo ? (
+                <GroupBadge group={grupo} />
+              ) : (
+                <span className="inline-flex items-center rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-xs font-semibold text-gray-700">
+                  {grupoAcr}
+                </span>
+              )}
+            </div>
+          ) : null}
+        </article>
+      </Reveal>
+    );
+  };
 
   return (
     <>
@@ -178,6 +256,51 @@ export default async function TransferenciaPage() {
           </div>
         </div>
       </section>
+
+      {/* Grupos de Transferencia del Conocimiento (GTC) */}
+      {gtc.length > 0 ? (
+        <section className="border-t border-gray-200 bg-surface-tinted">
+          <div id="gtc" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-14">
+            <div className="mb-2.5 flex items-center gap-2.5">
+              <span className="flex h-9 w-9 flex-none items-center justify-center rounded-md bg-usal-red/10 text-usal-red">
+                <Share2 className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <p className="text-xs font-bold uppercase tracking-wider text-usal-red">
+                {t.gtcConvocatoria}
+              </p>
+            </div>
+            <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900">
+              {t.gtcTitulo}
+            </h2>
+            <div
+              className="page-block mb-9 max-w-[80ch] text-base leading-relaxed text-gray-600"
+              dangerouslySetInnerHTML={{ __html: gtcIntro }}
+            />
+
+            {gtcAdscritos.length > 0 ? (
+              <div className="mb-10">
+                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  {t.gtcAdscritos}
+                </h3>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {gtcAdscritos.map(tarjetaGtc)}
+                </div>
+              </div>
+            ) : null}
+
+            {gtcColaboracion.length > 0 ? (
+              <div>
+                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  {t.gtcColaboracion}
+                </h3>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {gtcColaboracion.map(tarjetaGtc)}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
 
       {/* La transferencia, en datos */}
       <section className="border-y border-gray-200 bg-surface-card">

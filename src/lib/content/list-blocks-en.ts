@@ -172,6 +172,16 @@ export const LIST_BLOCKS_EN: Record<string, ListItem[]> = {
     { icon: "megaphone", titulo: "Outreach and scientific culture", texto: "Conferences, publications and activities that bring educational research closer to society." },
   ],
 
+  "transferencia:list:gtc": [
+    { acronimo: "ConectaEDU", nombre: "Learning in Digital Environments", director: "Sonia Casillas Martín", grupo: "EduDIG", adscrito: true },
+    { acronimo: "DyS", nombre: "Discourse and Society", director: "Carmen Vanesa Álvarez Rosa", grupo: "IDEA", adscrito: true },
+    { acronimo: "GRIALE2", nombre: "Educational Assessment", director: "Susana Olmos Migueláñez", grupo: "GRIAL", adscrito: true },
+    { acronimo: "GRIALhci", nombre: "Human-Computer Interaction, Artificial Intelligence and Gender Perspective", director: "Roberto Therón Sánchez", grupo: "GRIAL", adscrito: true },
+    { acronimo: "TOCA", nombre: "Audiovisual Content Observatory", director: "Juan José Igartua Perosanz", grupo: "OCA", adscrito: true },
+    { acronimo: "CRUCIAL", nombre: "Culture, Communication and Creativity", director: "", grupo: "CaUSAL", adscrito: false },
+    { acronimo: "", nombre: "DIDEROT TransferLab", director: "", grupo: "DIDEROT", adscrito: false },
+  ],
+
   // ── Seminario IUCE ────────────────────────────────────────────────────────
   "seminario:list:ediciones": [
     {
