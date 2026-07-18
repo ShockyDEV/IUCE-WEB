@@ -178,8 +178,8 @@ export const LIST_BLOCKS_EN: Record<string, ListItem[]> = {
     { acronimo: "GRIALE2", nombre: "Educational Assessment", director: "Susana Olmos Migueláñez", grupo: "GRIAL", adscrito: true },
     { acronimo: "GRIALhci", nombre: "Human-Computer Interaction, Artificial Intelligence and Gender Perspective", director: "Roberto Therón Sánchez", grupo: "GRIAL", adscrito: true },
     { acronimo: "TOCA", nombre: "Audiovisual Content Observatory", director: "Juan José Igartua Perosanz", grupo: "OCA", adscrito: true },
-    { acronimo: "CRUCIAL", nombre: "Culture, Communication and Creativity", director: "", grupo: "CaUSAL", adscrito: false },
-    { acronimo: "", nombre: "DIDEROT TransferLab", director: "", grupo: "DIDEROT", adscrito: false },
+    { acronimo: "CRUCIAL", nombre: "Culture, Communication and Creativity", director: "", grupo: "CaUSAL", adscrito: true },
+    { acronimo: "", nombre: "DIDEROT TransferLab", director: "Javier Félix Merchán Sánchez-Jara", grupo: "DIDEROT", adscrito: true },
   ],
 
   // ── Seminario IUCE ────────────────────────────────────────────────────────

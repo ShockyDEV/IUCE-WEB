@@ -1,8 +1,10 @@
 import { metadataBilingue } from "@/lib/metadata";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Building2, Share2, UserRound } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { buttonClassName } from "@/components/ui/button";
+import { InitialsAvatar } from "@/components/ui/initials-avatar";
 import { Reveal } from "@/components/ui/reveal";
 import { ChartCard } from "@/components/stats/chart-card";
 import { BarsChart, DonutChart, type Datum } from "@/components/stats/stat-charts";
@@ -10,6 +12,7 @@ import { GroupBadge, type MemberGroup } from "@/components/instituto/group-badge
 import { groups } from "@/lib/content/groups";
 import { getBlock, getBlockText, getListBlock } from "@/lib/content-blocks-service";
 import { iconFor } from "@/lib/icon-map";
+import { prisma } from "@/lib/prisma";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
@@ -144,12 +147,65 @@ export default async function TransferenciaPage() {
   const gtcAdscritos = gtc.filter(esAdscrito);
   const gtcColaboracion = gtc.filter((g) => !esAdscrito(g));
 
+  // Retrato de la dirección de cada GTC: son miembros del IUCE, así que el
+  // nombre se empareja con su ficha para usar su foto. Sin BD (o sin match
+  // inequívoco), la tarjeta cae al icono genérico.
+  let miembros: Array<{ name: string; photo: string | null }> = [];
+  try {
+    miembros = await prisma.member.findMany({
+      where: { active: true },
+      select: { name: true, photo: true },
+    });
+  } catch {
+    // BD no disponible.
+  }
+  const sinTildes = (x: string) =>
+    x.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const fichaDirector = (nombre: string) => {
+    const a = sinTildes(nombre).split(/[\s-]+/).filter(Boolean);
+    const hits = miembros.filter((m) => {
+      const b = sinTildes(m.name).split(/[\s-]+/).filter(Boolean);
+      // Un nombre contiene al otro (la ficha puede omitir el segundo nombre).
+      return a.every((x) => b.includes(x)) || b.every((x) => a.includes(x));
+    });
+    // Ante ambigüedad, mejor el icono que la foto de otra persona.
+    return hits.length === 1 ? hits[0] : null;
+  };
+  const iniciales = (name: string) =>
+    name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((p) => p[0])
+      .join("")
+      .toUpperCase();
+
   const tarjetaGtc = (v: (typeof gtc)[number], i: number) => {
     const acr = String(v.acronimo ?? "").trim();
     const nombre = String(v.nombre ?? "").trim();
     const director = String(v.director ?? "").trim();
     const grupoAcr = String(v.grupo ?? "").trim();
     const grupo = grupoPorAcronimo(grupoAcr);
+    const ficha = director ? fichaDirector(director) : null;
+    const retrato = ficha?.photo ? (
+      <Image
+        src={ficha.photo}
+        alt=""
+        width={28}
+        height={28}
+        className="h-7 w-7 flex-none rounded-full object-cover"
+      />
+    ) : ficha ? (
+      <InitialsAvatar
+        initials={iniciales(ficha.name)}
+        className="h-7 w-7 flex-none text-[10px]"
+      />
+    ) : (
+      <UserRound
+        className="h-4 w-4 flex-none text-gray-400"
+        aria-hidden="true"
+      />
+    );
     return (
       <Reveal key={i} delay={i * 70} className="h-full">
         <article className="card-lift flex h-full flex-col gap-3 rounded-xl border border-gray-200 bg-surface-card p-6 shadow-sm hover:shadow-md">
@@ -162,11 +218,8 @@ export default async function TransferenciaPage() {
             {nombre}
           </h4>
           {director ? (
-            <p className="flex items-start gap-1.5 text-sm text-gray-600">
-              <UserRound
-                className="mt-0.5 h-4 w-4 flex-none text-gray-400"
-                aria-hidden="true"
-              />
+            <p className="flex items-center gap-2 text-sm text-gray-600">
+              {retrato}
               <span>
                 <span className="text-gray-500">{t.gtcDireccion}: </span>
                 <span className="font-medium text-gray-800">{director}</span>
@@ -277,27 +330,32 @@ export default async function TransferenciaPage() {
               dangerouslySetInnerHTML={{ __html: gtcIntro }}
             />
 
-            {gtcAdscritos.length > 0 ? (
-              <div className="mb-10">
-                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500">
-                  {t.gtcAdscritos}
-                </h3>
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {gtcAdscritos.map(tarjetaGtc)}
+            {/* Subtítulos solo si conviven adscritos y colaboraciones; hoy
+                todos los GTC están adscritos al IUCE → una sola rejilla. */}
+            {gtcAdscritos.length > 0 && gtcColaboracion.length > 0 ? (
+              <>
+                <div className="mb-10">
+                  <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                    {t.gtcAdscritos}
+                  </h3>
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {gtcAdscritos.map(tarjetaGtc)}
+                  </div>
                 </div>
-              </div>
-            ) : null}
-
-            {gtcColaboracion.length > 0 ? (
-              <div>
-                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500">
-                  {t.gtcColaboracion}
-                </h3>
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {gtcColaboracion.map(tarjetaGtc)}
+                <div>
+                  <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                    {t.gtcColaboracion}
+                  </h3>
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {gtcColaboracion.map(tarjetaGtc)}
+                  </div>
                 </div>
+              </>
+            ) : (
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {gtc.map(tarjetaGtc)}
               </div>
-            ) : null}
+            )}
           </div>
         </section>
       ) : null}

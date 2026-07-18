@@ -432,8 +432,8 @@ export const LIST_BLOCKS: ListBlockDef[] = [
       { acronimo: "GRIALE2", nombre: "Evaluación Educativa", director: "Susana Olmos Migueláñez", grupo: "GRIAL", adscrito: true },
       { acronimo: "GRIALhci", nombre: "Human-Computer Interaction, Artificial Intelligence and Gender Perspective", director: "Roberto Therón Sánchez", grupo: "GRIAL", adscrito: true },
       { acronimo: "TOCA", nombre: "Observatorio de Contenidos Audiovisuales", director: "Juan José Igartua Perosanz", grupo: "OCA", adscrito: true },
-      { acronimo: "CRUCIAL", nombre: "Cultura, Comunicación y Creatividad", director: "", grupo: "CaUSAL", adscrito: false },
-      { acronimo: "", nombre: "DIDEROT TransferLab", director: "", grupo: "DIDEROT", adscrito: false },
+      { acronimo: "CRUCIAL", nombre: "Cultura, Comunicación y Creatividad", director: "", grupo: "CaUSAL", adscrito: true },
+      { acronimo: "", nombre: "DIDEROT TransferLab", director: "Javier Félix Merchán Sánchez-Jara", grupo: "DIDEROT", adscrito: true },
     ],
   },
 
