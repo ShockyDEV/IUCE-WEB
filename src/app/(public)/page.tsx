@@ -198,44 +198,48 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Estadísticas del IUCE (teaser hacia /estadisticas) */}
-      <section className="border-b border-gray-200 bg-surface-tinted">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-7 px-6 py-10 lg:flex-row lg:items-center lg:justify-between">
-          <div className="max-w-[38ch]">
-            <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-usal-red">
-              {memoriaEyebrow}
-            </p>
-            <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-              {t.estadisticasTitulo}
-            </h2>
-            <div
-              className="page-block mb-4 text-sm leading-relaxed text-gray-600"
-              dangerouslySetInnerHTML={{ __html: estadisticasTeaser }}
-            />
-            <Link
-              href={href("/estadisticas")}
-              className={buttonClassName() + " gap-1.5"}
-            >
-              {t.explorarEstadisticas}
-              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+      {/* Estadísticas del IUCE (teaser hacia /estadisticas). Si esa página
+          está oculta desde el panel, el teaser entero desaparece con ella:
+          son las mismas cifras y su botón llevaría a un 404. */}
+      {hiddenPaths.includes("/estadisticas") ? null : (
+        <section className="border-b border-gray-200 bg-surface-tinted">
+          <div className="mx-auto flex max-w-6xl flex-col items-start gap-7 px-6 py-10 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-[38ch]">
+              <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-usal-red">
+                {memoriaEyebrow}
+              </p>
+              <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                {t.estadisticasTitulo}
+              </h2>
+              <div
+                className="page-block mb-4 text-sm leading-relaxed text-gray-600"
+                dangerouslySetInnerHTML={{ __html: estadisticasTeaser }}
+              />
+              <Link
+                href={href("/estadisticas")}
+                className={buttonClassName() + " gap-1.5"}
+              >
+                {t.explorarEstadisticas}
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </div>
+            <div className="grid w-full grid-cols-3 gap-3.5 lg:w-auto">
+              {cifras.slice(0, 3).map((k, i) => (
+                <Reveal key={i} from="right" delay={i * 110}>
+                  <div className="rounded-xl border border-gray-200 bg-surface-card p-5 text-center shadow-sm lg:w-[168px]">
+                    <p className="text-[26px] font-bold leading-tight text-ink">
+                      <CountUp value={String(k.cifra)} />
+                    </p>
+                    <p className="mt-1 text-[11px] leading-snug text-gray-500">
+                      {String(k.texto)}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
-          <div className="grid w-full grid-cols-3 gap-3.5 lg:w-auto">
-            {cifras.slice(0, 3).map((k, i) => (
-              <Reveal key={i} from="right" delay={i * 110}>
-                <div className="rounded-xl border border-gray-200 bg-surface-card p-5 text-center shadow-sm lg:w-[168px]">
-                  <p className="text-[26px] font-bold leading-tight text-ink">
-                    <CountUp value={String(k.cifra)} />
-                  </p>
-                  <p className="mt-1 text-[11px] leading-snug text-gray-500">
-                    {String(k.texto)}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Actualidad */}
       <section className="bg-surface-card">

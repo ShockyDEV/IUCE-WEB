@@ -16,7 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { withLocale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
-import { assertVisible } from "@/lib/page-visibility";
+import { assertVisible, getHiddenPages } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
@@ -105,6 +105,9 @@ export default async function TransferenciaPage() {
   const locale = getLocale();
   const t = T[locale];
   const href = (path: string) => withLocale(path, locale);
+  // Si /estadisticas está oculta desde el panel, su enlace de entrada
+  // desaparece (las gráficas propias de esta página se quedan).
+  const estadisticasOculta = (await getHiddenPages()).has("estadisticas");
   // Textos editables (Contenido → Páginas → Transferencia). Las gráficas
   // leen las MISMAS listas que /estadisticas: un solo lugar que actualizar.
   const [
@@ -373,13 +376,15 @@ export default async function TransferenciaPage() {
                 dangerouslySetInnerHTML={{ __html: datosDescripcion }}
               />
             </div>
-            <Link
-              href={href("/estadisticas#transferencia")}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
-            >
-              {t.verEstadisticas}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+            {estadisticasOculta ? null : (
+              <Link
+                href={href("/estadisticas#transferencia")}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-iuce-blue hover:underline"
+              >
+                {t.verEstadisticas}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            )}
           </div>
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
             <ChartCard title={t.importeTitulo} insight={t.importeInsight}>
