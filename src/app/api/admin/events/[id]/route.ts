@@ -34,6 +34,7 @@ export async function PUT(request: Request, { params }: Params) {
       location: d.location || null,
       url: d.url || null,
       image: d.image || null,
+      newsSlug: d.newsSlug || null,
       status: d.status,
     },
   });

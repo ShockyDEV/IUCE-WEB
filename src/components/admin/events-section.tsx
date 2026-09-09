@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Upload } from "lucide-react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/admin/modal";
@@ -21,7 +21,13 @@ export interface EventRow {
   location: string | null;
   url: string | null;
   image: string | null;
+  newsSlug: string | null;
   status: "UPCOMING" | "PAST" | "CANCELLED";
+}
+
+export interface NewsOption {
+  slug: string;
+  title: string;
 }
 
 const STATUS_STYLES: Record<
@@ -41,6 +47,7 @@ interface FormState {
   location: string;
   url: string;
   image: string;
+  newsSlug: string;
   status: EventRow["status"];
 }
 
@@ -51,6 +58,7 @@ const EMPTY: FormState = {
   location: "",
   url: "",
   image: "",
+  newsSlug: "",
   status: "UPCOMING",
 };
 
@@ -64,15 +72,44 @@ function formatDate(iso: string) {
     .replace(".", "");
 }
 
-export function EventsSection({ rows }: Readonly<{ rows: EventRow[] }>) {
+export function EventsSection({
+  rows,
+  newsOptions,
+}: Readonly<{ rows: EventRow[]; newsOptions: NewsOption[] }>) {
   const router = useRouter();
   const [form, setForm] = useState<FormState | null>(null);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleImageUpload(file: File) {
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/admin/files", { method: "POST", body: fd });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error ?? "No se pudo subir la imagen");
+      setForm((f) => (f ? { ...f, image: json.item?.url ?? "" } : f));
+      toast.success("Imagen subida");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "No se pudo subir la imagen",
+      );
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function handleSave() {
     if (!form) return;
     if (form.title.trim().length < 3 || !form.date) {
       toast.error("Título y fecha son obligatorios");
+      return;
+    }
+    if (!form.image.trim()) {
+      toast.error(
+        "Cada evento necesita una imagen: súbela o pega su URL antes de guardar",
+      );
       return;
     }
     setSaving(true);
@@ -84,6 +121,8 @@ export function EventsSection({ rows }: Readonly<{ rows: EventRow[] }>) {
         endsAt: null,
         location: form.location || null,
         url: form.url || "",
+        image: form.image.trim(),
+        newsSlug: form.newsSlug || null,
         status: form.status,
       };
       const res = await fetch(
@@ -199,6 +238,7 @@ export function EventsSection({ rows }: Readonly<{ rows: EventRow[] }>) {
                             location: row.location ?? "",
                             url: row.url ?? "",
                             image: row.image ?? "",
+                            newsSlug: row.newsSlug ?? "",
                             status: row.status,
                           })
                         }
@@ -332,17 +372,81 @@ export function EventsSection({ rows }: Readonly<{ rows: EventRow[] }>) {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <label htmlFor="e-image" className={labelClass}>
-                Imagen (URL)
-              </label>
+              <label className={labelClass}>Imagen del evento (obligatoria)</label>
+              <div className="flex items-center gap-3">
+                {form.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={form.image}
+                    alt=""
+                    className="h-16 w-24 flex-none rounded-md border border-gray-200 object-cover"
+                  />
+                ) : (
+                  <span className="flex h-16 w-24 flex-none items-center justify-center rounded-md border border-dashed border-gray-300 text-[11px] text-gray-400">
+                    Sin imagen
+                  </span>
+                )}
+                <label
+                  className={cn(
+                    "inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-md border border-gray-300 bg-white px-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50",
+                    uploading && "pointer-events-none opacity-60",
+                  )}
+                >
+                  <Upload className="h-4 w-4" aria-hidden="true" />
+                  {uploading
+                    ? "Subiendo…"
+                    : form.image
+                      ? "Cambiar imagen"
+                      : "Subir imagen"}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    className="hidden"
+                    disabled={uploading}
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) handleImageUpload(f);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+              </div>
               <input
                 id="e-image"
                 type="text"
                 value={form.image}
                 onChange={(e) => setForm({ ...form, image: e.target.value })}
-                placeholder="súbela en Archivos y pega aquí la URL"
+                placeholder="…o pega una URL (/uploads/…)"
                 className={inputClass}
               />
+              <p className="text-xs text-gray-500">
+                Se muestra en la agenda, en el destacado y junto a los eventos
+                celebrados; no se puede guardar un evento sin imagen.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="e-news" className={labelClass}>
+                Crónica asociada (noticia, opcional)
+              </label>
+              <select
+                id="e-news"
+                value={form.newsSlug}
+                onChange={(e) =>
+                  setForm({ ...form, newsSlug: e.target.value })
+                }
+                className={inputClass}
+              >
+                <option value="">— Sin crónica —</option>
+                {newsOptions.map((n) => (
+                  <option key={n.slug} value={n.slug}>
+                    {n.title.length > 90 ? `${n.title.slice(0, 90)}…` : n.title}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-500">
+                En la web pública, el evento mostrará «Leer la crónica» con el
+                enlace a esa noticia.
+              </p>
             </div>
             <div className="flex items-center gap-3 border-t border-gray-100 pt-4">
               <Button variant="primary" onClick={handleSave} disabled={saving}>

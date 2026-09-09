@@ -7,9 +7,16 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function AdminEventsPage() {
-  const events = await prisma.event.findMany({
-    orderBy: { startsAt: "desc" },
-  });
+  const [events, news] = await Promise.all([
+    prisma.event.findMany({ orderBy: { startsAt: "desc" } }),
+    // Para el selector de crónica: noticias publicadas, recientes primero.
+    prisma.news.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: { publishedAt: "desc" },
+      select: { slug: true, title: true },
+      take: 300,
+    }),
+  ]);
 
   const rows: EventRow[] = events.map((e) => ({
     id: e.id,
@@ -20,8 +27,9 @@ export default async function AdminEventsPage() {
     location: e.location,
     url: e.url,
     image: e.image,
+    newsSlug: e.newsSlug,
     status: e.status,
   }));
 
-  return <EventsSection rows={rows} />;
+  return <EventsSection rows={rows} newsOptions={news} />;
 }

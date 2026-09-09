@@ -35,6 +35,7 @@ export async function POST(request: Request) {
       location: d.location || null,
       url: d.url || null,
       image: d.image || null,
+      newsSlug: d.newsSlug || null,
       status: d.status,
     },
   });

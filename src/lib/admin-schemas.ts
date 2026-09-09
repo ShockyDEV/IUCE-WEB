@@ -71,6 +71,8 @@ export const eventInputSchema = z.object({
   location: z.string().trim().max(300).optional().nullable(),
   url: z.string().trim().url().max(300).optional().nullable().or(z.literal("")),
   image: z.string().trim().max(500).optional().nullable(),
+  // Slug de la noticia que hace de crónica del evento («leer más»).
+  newsSlug: z.string().trim().max(300).optional().nullable().or(z.literal("")),
   status: z.enum(["UPCOMING", "PAST", "CANCELLED"]),
 });
 

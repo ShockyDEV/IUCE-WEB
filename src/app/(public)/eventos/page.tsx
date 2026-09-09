@@ -1,5 +1,6 @@
 import { metadataBilingue } from "@/lib/metadata";
 import Link from "next/link";
+import Image from "next/image";
 import { Calendar, ChevronRight, MapPin, Users2 } from "lucide-react";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { CoverImage } from "@/components/news/cover-image";
@@ -47,6 +48,7 @@ const T = {
     destacado: "Destacado",
     proximo: "Próximo",
     webEvento: "Web del evento ↗",
+    leerCronica: "Leer la crónica",
     proximos: "Próximos",
     celebrados: "Celebrados",
     celebrado: "Celebrado",
@@ -63,6 +65,7 @@ const T = {
     destacado: "Featured",
     proximo: "Upcoming",
     webEvento: "Event website ↗",
+    leerCronica: "Read the report",
     proximos: "Upcoming",
     celebrados: "Past events",
     celebrado: "Past",
@@ -88,6 +91,7 @@ interface EventVM {
   location: string | null;
   url: string | null;
   image: string | null;
+  newsSlug: string | null;
 }
 
 function monthShort(d: Date, locale: Locale): string {
@@ -173,6 +177,7 @@ export default async function EventosPage() {
     location: string;
     url: string | null;
     image: string | null;
+    newsHref: string | null;
     photoLabel: string;
   } | null = null;
   let upcomingRest: Array<{
@@ -181,12 +186,15 @@ export default async function EventosPage() {
     meta: string;
     top: string;
     bottom: string;
+    newsHref: string | null;
   }> = [];
   let past: Array<{
     key: string;
     title: string;
     meta: string;
     dateRange: string;
+    image: string | null;
+    newsHref: string | null;
   }> = [];
 
   if (eventos) {
@@ -194,6 +202,8 @@ export default async function EventosPage() {
       eventos.upcoming.find((e) => e.type === "Congreso") ??
       eventos.upcoming[0] ??
       null;
+    const cronicaHref = (e: { newsSlug: string | null }) =>
+      e.newsSlug ? href(`/noticias/${e.newsSlug}`) : null;
     if (destacado) {
       featured = {
         id: destacado.id,
@@ -203,6 +213,7 @@ export default async function EventosPage() {
         location: destacado.location ?? "Salamanca",
         url: destacado.url,
         image: destacado.image,
+        newsHref: cronicaHref(destacado),
         photoLabel: `${t.imagen} — ${eventTitle(destacado)}`,
       };
     }
@@ -214,12 +225,15 @@ export default async function EventosPage() {
         meta: [typeLabel(e.type), e.location].filter(Boolean).join(" · "),
         top: String(e.startsAt.getDate()),
         bottom: monthShort(e.startsAt, locale),
+        newsHref: cronicaHref(e),
       }));
     past = eventos.past.map((e) => ({
       key: e.id,
       title: eventTitle(e),
       meta: [typeLabel(e.type), e.location].filter(Boolean).join(" · "),
       dateRange: dayMonth(e.startsAt, locale),
+      image: e.image,
+      newsHref: cronicaHref(e),
     }));
   } else {
     // Fallback estático (BD no disponible): contenido semilla en español.
@@ -231,6 +245,7 @@ export default async function EventosPage() {
       location: featuredFallback.location,
       url: featuredFallback.url,
       image: null,
+      newsHref: null,
       photoLabel: featuredFallback.photoLabel,
     };
     upcomingRest = upcomingFallback.map((e) => ({
@@ -239,12 +254,15 @@ export default async function EventosPage() {
       meta: e.meta,
       top: e.dateBlock?.top ?? "",
       bottom: e.dateBlock?.bottom ?? "",
+      newsHref: null,
     }));
     past = pastFallback.map((e) => ({
       key: e.title,
       title: e.title,
       meta: e.meta,
       dateRange: e.dateRange ?? "",
+      image: null,
+      newsHref: null,
     }));
   }
 
@@ -352,6 +370,14 @@ export default async function EventosPage() {
                       {t.webEvento}
                     </a>
                   ) : null}
+                  {featured.newsHref ? (
+                    <Link
+                      href={featured.newsHref}
+                      className={buttonClassName({ variant: "outline" })}
+                    >
+                      {t.leerCronica} →
+                    </Link>
+                  ) : null}
                 </div>
               </div>
               {featured.image ? (
@@ -397,7 +423,20 @@ export default async function EventosPage() {
                     <h3 className="mb-[3px] text-base font-semibold text-gray-900">
                       {e.title}
                     </h3>
-                    <p className="text-xs text-gray-500">{e.meta}</p>
+                    <p className="text-xs text-gray-500">
+                      {e.meta}
+                      {e.newsHref ? (
+                        <>
+                          {" · "}
+                          <Link
+                            href={e.newsHref}
+                            className="font-medium text-iuce-blue hover:underline"
+                          >
+                            {t.leerCronica} →
+                          </Link>
+                        </>
+                      ) : null}
+                    </p>
                   </div>
                   <ChevronRight
                     className="h-[18px] w-[18px] flex-none text-gray-500"
@@ -422,18 +461,45 @@ export default async function EventosPage() {
               <Reveal key={e.key} delay={Math.min(i, 5) * 60}>
               <article
                 className={cn(
-                  "grid grid-cols-1 items-center gap-2 border-t border-gray-100 py-4 sm:grid-cols-[120px_1fr_auto] sm:gap-5",
+                  "grid grid-cols-1 items-center gap-2 border-t border-gray-100 py-4 sm:grid-cols-[86px_92px_1fr_auto] sm:gap-5",
                   i === past.length - 1 && "border-b",
                 )}
               >
                 <span className="text-xs uppercase tracking-wider text-gray-500">
                   {e.dateRange}
                 </span>
+                {e.image ? (
+                  <Image
+                    src={e.image}
+                    alt=""
+                    width={184}
+                    height={128}
+                    className="h-16 w-[92px] rounded-md border border-gray-100 bg-white object-contain"
+                  />
+                ) : (
+                  <span
+                    aria-hidden="true"
+                    className="hidden h-16 w-[92px] rounded-md border border-dashed border-gray-200 sm:block"
+                  />
+                )}
                 <div>
                   <h3 className="mb-0.5 text-base font-medium text-gray-900">
                     {e.title}
                   </h3>
-                  <p className="text-xs text-gray-500">{e.meta}</p>
+                  <p className="text-xs text-gray-500">
+                    {e.meta}
+                    {e.newsHref ? (
+                      <>
+                        {" · "}
+                        <Link
+                          href={e.newsHref}
+                          className="font-medium text-iuce-blue hover:underline"
+                        >
+                          {t.leerCronica} →
+                        </Link>
+                      </>
+                    ) : null}
+                  </p>
                 </div>
                 <span className="justify-self-start rounded-full bg-gray-100 px-3 py-[3px] text-xs font-medium text-gray-700 sm:justify-self-auto">
                   {t.celebrado}
