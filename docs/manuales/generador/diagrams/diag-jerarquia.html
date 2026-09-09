@@ -1,0 +1,37 @@
+<!doctype html><meta charset="utf-8">
+<body style="margin:0;width:900px;height:560px;background:#fff;font-family:Arial">
+<svg width="900" height="560" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 z" fill="#8b98a5"/>
+    </marker>
+  </defs>
+  <text x="450" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1F4257">Jerarquía de actores y permisos</text>
+
+  <!-- flecha permisos acumulativos -->
+  <line x1="140" y1="490" x2="140" y2="80" stroke="#8b98a5" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="122" y="285" font-size="12" font-style="italic" fill="#6b7683" transform="rotate(-90 122 285)" text-anchor="middle">permisos acumulativos</text>
+
+  <!-- Superadministrador -->
+  <rect x="200" y="64" width="640" height="88" rx="10" fill="#1F4257"/>
+  <text x="224" y="98" font-size="15" font-weight="bold" fill="#fff">Superadministrador (SUPER_ADMIN)</text>
+  <text x="224" y="126" font-size="12.5" fill="#dbe6ee">+ Gestión de las cuentas de administración del panel.</text>
+
+  <!-- Administrador -->
+  <rect x="200" y="172" width="640" height="88" rx="10" fill="#3D6B8E"/>
+  <text x="224" y="206" font-size="15" font-weight="bold" fill="#fff">Administrador (ADMIN)</text>
+  <text x="224" y="234" font-size="12.5" fill="#e8eff5">+ Panel /backstage: contenido, visibilidad de páginas, archivos, mensajes y área de miembros.</text>
+
+  <!-- Miembro -->
+  <rect x="200" y="280" width="640" height="102" rx="10" fill="#7FA8C9"/>
+  <text x="224" y="314" font-size="15" font-weight="bold" fill="#12293a">Miembro del IUCE (rol INTRANET)</text>
+  <text x="224" y="342" font-size="12.5" fill="#12293a">+ Área de miembros: documentos internos, noticias internas y edición del propio perfil.</text>
+  <text x="224" y="364" font-size="12" font-style="italic" fill="#12293a">La sesión de miembro no da acceso al panel de administración.</text>
+
+  <!-- Visitante -->
+  <rect x="200" y="402" width="640" height="88" rx="10" fill="#D7E3EE"/>
+  <text x="224" y="436" font-size="15" font-weight="bold" fill="#1F4257">Visitante</text>
+  <text x="224" y="464" font-size="12.5" fill="#1F4257">Sitio público completo, en español y en inglés, sin cuenta.</text>
+
+  <text x="450" y="530" text-anchor="middle" font-size="11.5" font-style="italic" fill="#8b98a5">Cada nivel añade capacidades sobre el anterior; el acceso al panel exige rol de administración.</text>
+</svg>

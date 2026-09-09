@@ -1,0 +1,59 @@
+<!doctype html><meta charset="utf-8">
+<body style="margin:0;width:1060px;height:470px;background:#fff;font-family:Arial">
+<svg width="1060" height="470" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="an" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 z" fill="#5a6b78"/>
+    </marker>
+  </defs>
+  <text x="530" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1F4257">Resolución de la versión inglesa (/en) sin duplicar rutas</text>
+
+  <!-- petición -->
+  <rect x="30" y="90" width="200" height="70" rx="10" fill="#1F4257"/>
+  <text x="130" y="119" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Petición</text>
+  <text x="130" y="140" text-anchor="middle" font-size="12" fill="#dbe6ee">GET /en/instituto</text>
+
+  <line x1="230" y1="125" x2="286" y2="125" stroke="#5a6b78" stroke-width="2" marker-end="url(#an)"/>
+
+  <!-- middleware -->
+  <rect x="292" y="76" width="240" height="98" rx="10" fill="#3D6B8E"/>
+  <text x="412" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Middleware</text>
+  <text x="412" y="126" text-anchor="middle" font-size="12" fill="#e8eff5">reescribe a /instituto</text>
+  <text x="412" y="146" text-anchor="middle" font-size="12" fill="#e8eff5">+ cabecera x-locale: en</text>
+
+  <line x1="532" y1="125" x2="588" y2="125" stroke="#5a6b78" stroke-width="2" marker-end="url(#an)"/>
+
+  <!-- página -->
+  <rect x="594" y="76" width="200" height="98" rx="10" fill="#7FA8C9"/>
+  <text x="694" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#12293a">Página (RSC)</text>
+  <text x="694" y="126" text-anchor="middle" font-size="12" fill="#12293a">getLocale() = "en"</text>
+  <text x="694" y="146" text-anchor="middle" font-size="12" fill="#12293a">enlaces con withLocale()</text>
+
+  <line x1="794" y1="125" x2="850" y2="125" stroke="#5a6b78" stroke-width="2" marker-end="url(#an)"/>
+
+  <!-- salida -->
+  <rect x="856" y="90" width="180" height="70" rx="10" fill="#3E8E5A"/>
+  <text x="946" y="119" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">HTML en inglés</text>
+  <text x="946" y="140" text-anchor="middle" font-size="12" fill="#e6f3ea">en /en/instituto</text>
+
+  <!-- cascada -->
+  <line x1="694" y1="174" x2="694" y2="204" stroke="#5a6b78" stroke-width="2" marker-end="url(#an)"/>
+  <rect x="420" y="208" width="548" height="150" rx="10" fill="#f6f9fb" stroke="#c3ccd4"/>
+  <text x="694" y="232" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#1F4257">Resolución en cascada de cada texto</text>
+  <g font-size="12" fill="#3d4852">
+    <rect x="444" y="244" width="500" height="30" rx="6" fill="#fff" stroke="#7FA8C9"/>
+    <text x="458" y="264">1 · Base de datos: fila editada con clave «bloque:en» (o campo titleEn…)</text>
+    <rect x="444" y="280" width="500" height="30" rx="6" fill="#fff" stroke="#7FA8C9"/>
+    <text x="458" y="300">2 · Registro estático en inglés (page-blocks-en.ts, list-blocks-en.ts)</text>
+    <rect x="444" y="316" width="500" height="30" rx="6" fill="#fff" stroke="#7FA8C9"/>
+    <text x="458" y="336">3 · Texto español como reserva (la página nunca queda rota)</text>
+  </g>
+
+  <text x="80" y="228" font-size="12" font-weight="bold" fill="#1F4257">Excepciones:</text>
+  <text x="80" y="250" font-size="11.5" fill="#3d4852">/backstage, /miembros y /api</text>
+  <text x="80" y="268" font-size="11.5" fill="#3d4852">no tienen versión inglesa:</text>
+  <text x="80" y="286" font-size="11.5" fill="#3d4852">/en/... redirige a la ruta ES.</text>
+
+  <text x="530" y="404" text-anchor="middle" font-size="12" font-style="italic" fill="#6b7683">El conmutador ES|EN de la cabecera es un enlace de documento completo (&lt;a&gt;): ambos idiomas comparten el árbol</text>
+  <text x="530" y="424" text-anchor="middle" font-size="12" font-style="italic" fill="#6b7683">de rutas interno y una navegación de cliente reutilizaría la página ya renderizada en el idioma anterior.</text>
+</svg>

@@ -28,7 +28,7 @@ npm run db:seed             # contenido real + cuenta SUPER_ADMIN
 npm run dev                 # http://localhost:3000
 ```
 
-**Panel de administración**: `http://localhost:3000/admin`. La cuenta inicial
+**Panel de administración**: `http://localhost:3000/backstage`. La cuenta inicial
 la crea el seed (variables `ADMIN_EMAIL` / `ADMIN_PASSWORD`; por defecto
 `iuce@usal.es` / `iuce-admin-2026` — cámbiala en producción). Desde
 Configuración, la cuenta SUPER_ADMIN da de alta al resto.
@@ -85,7 +85,7 @@ página por página. Para verlos, servir esa carpeta con un estático
       grupos, eventos) y **formulario de contacto** end-to-end
       (validación zod → ContactMessage → email Resend)
 - [x] **Autenticación** NextAuth v5 Credentials (bcrypt, roles
-      ADMIN/SUPER_ADMIN, middleware sobre `/admin/**` y `/api/admin/**`)
+      ADMIN/SUPER_ADMIN, middleware sobre `/backstage/**` y `/api/admin/**`)
 - [x] **Panel de administración completo** (patrón mupes): dashboard con
       recuentos reales, CRUD de noticias con editor TipTap y slug
       automático, Páginas por bloques (ContentEditor), Equipo y miembros,
@@ -93,7 +93,7 @@ página por página. Para verlos, servir esa carpeta con un estático
       Configuración (datos del sitio + cuentas)
 - [x] **Web pública conectada al gestor**: noticias, bloques de página y
       miembros salen de la BD (con fallback al contenido semilla)
-- [x] SEO (`sitemap.xml`, `robots.txt`, metadata OG), tests Vitest (22) y
+- [x] SEO (`sitemap.xml`, `robots.txt`, metadata OG), tests Vitest (27) y
       build de producción verificado
 - [x] **Histórico migrado desde la web original** (export WordPress
       2010–2026): 212 noticias con sus imágenes (`scripts/
@@ -112,5 +112,10 @@ página por página. Para verlos, servir esa carpeta con un estático
       estructuradas** (Contenido → Páginas): 24 bloques + 14 listas con
       añadir/eliminar/reordenar e iconos seleccionables. El editor
       TipTap sube imágenes a Archivos directamente.
-- [ ] Rutas públicas `/en/...` que sirvan los campos `*En` — pendiente
-- [ ] Despliegue (Docker app + Apache + SSL) y repo en GitHub
+- [x] **Versión en inglés completa** (`/en/...`): middleware con reescritura y
+      cabecera de idioma, registros ES/EN, histórico de noticias traducido;
+      área de miembros (`/miembros`, magic link) y panel en `/backstage`
+- [x] Repo en GitHub (`ShockyDEV/IUCE-WEB`) y **documentación del proyecto**
+      en [`docs/manuales/`](docs/manuales) (memoria, requisitos, diseño,
+      documentación técnica y de usuario)
+- [ ] Despliegue (Docker app + Apache + SSL) — pendiente

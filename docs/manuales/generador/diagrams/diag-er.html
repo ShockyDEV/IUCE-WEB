@@ -1,0 +1,120 @@
+<!doctype html><meta charset="utf-8">
+<body style="margin:0;width:1080px;height:730px;background:#fff;font-family:Arial">
+<svg width="1080" height="730" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ae" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 z" fill="#5a6b78"/>
+    </marker>
+  </defs>
+  <text x="540" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1F4257">Modelo de datos (vista lógica)</text>
+
+  <!-- helper de entidad: título + campos -->
+  <!-- CONTENIDO -->
+  <rect x="30" y="56" width="640" height="470" rx="12" fill="#f6f9fb" stroke="#c3ccd4"/>
+  <text x="52" y="84" font-size="13.5" font-weight="bold" fill="#1F4257">CONTENIDO</text>
+
+  <g font-size="11.5" fill="#3d4852">
+    <!-- News -->
+    <rect x="52" y="100" width="186" height="120" rx="8" fill="#fff" stroke="#3D6B8E" stroke-width="1.6"/>
+    <rect x="52" y="100" width="186" height="26" rx="8" fill="#3D6B8E"/>
+    <text x="145" y="118" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#fff">News</text>
+    <text x="64" y="144">slug único · title/titleEn</text>
+    <text x="64" y="161">content (HTML) · category</text>
+    <text x="64" y="178">status · internal</text>
+    <text x="64" y="195">coverImage · publishedAt</text>
+
+    <!-- ContentBlock -->
+    <rect x="258" y="100" width="186" height="120" rx="8" fill="#fff" stroke="#3D6B8E" stroke-width="1.6"/>
+    <rect x="258" y="100" width="186" height="26" rx="8" fill="#3D6B8E"/>
+    <text x="351" y="118" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#fff">ContentBlock</text>
+    <text x="270" y="144">(pageSlug, blockKey) únicos</text>
+    <text x="270" y="161">content (texto o JSON)</text>
+    <text x="270" y="178">sufijo «:en» = traducción</text>
+    <text x="270" y="195">prefijo «list:» = lista</text>
+
+    <!-- Event -->
+    <rect x="464" y="100" width="186" height="120" rx="8" fill="#fff" stroke="#3D6B8E" stroke-width="1.6"/>
+    <rect x="464" y="100" width="186" height="26" rx="8" fill="#3D6B8E"/>
+    <text x="557" y="118" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#fff">Event</text>
+    <text x="476" y="144">title/titleEn · type</text>
+    <text x="476" y="161">startsAt · endsAt · location</text>
+    <text x="476" y="178">url · image</text>
+    <text x="476" y="195">status (próximo/pasado/…)</text>
+
+    <!-- Member -->
+    <rect x="52" y="250" width="186" height="130" rx="8" fill="#fff" stroke="#3D6B8E" stroke-width="1.6"/>
+    <rect x="52" y="250" width="186" height="26" rx="8" fill="#3D6B8E"/>
+    <text x="145" y="268" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#fff">Member</text>
+    <text x="64" y="294">name · area · role (cargo)</text>
+    <text x="64" y="311">email · extension · photo</text>
+    <text x="64" y="328">portalUrl · orcid · scopus</text>
+    <text x="64" y="345">active · order</text>
+    <text x="64" y="362">groupId (FK)</text>
+
+    <!-- ResearchGroup -->
+    <rect x="330" y="255" width="186" height="115" rx="8" fill="#fff" stroke="#3D6B8E" stroke-width="1.6"/>
+    <rect x="330" y="255" width="186" height="26" rx="8" fill="#3D6B8E"/>
+    <text x="423" y="273" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#fff">ResearchGroup</text>
+    <text x="342" y="299">acronym · name/nameEn</text>
+    <text x="342" y="316">lead (responsable) · url</text>
+    <text x="342" y="333">logo · chip («UIC 081»)</text>
+
+    <!-- relación -->
+    <line x1="238" y1="315" x2="324" y2="315" stroke="#5a6b78" stroke-width="1.8" marker-end="url(#ae)"/>
+    <text x="281" y="303" text-anchor="middle" font-size="11" font-style="italic" fill="#6b7683">N · · 1</text>
+    <text x="281" y="333" text-anchor="middle" font-size="11" font-style="italic" fill="#6b7683">pertenece a</text>
+
+    <!-- Project -->
+    <rect x="52" y="405" width="240" height="105" rx="8" fill="#fff" stroke="#3D6B8E" stroke-width="1.6"/>
+    <rect x="52" y="405" width="240" height="26" rx="8" fill="#3D6B8E"/>
+    <text x="172" y="423" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#fff">Project</text>
+    <text x="64" y="449">title · funder · ip · line · scope</text>
+    <text x="64" y="466">amount y period (texto original)</text>
+    <text x="64" y="483">startYear/endYear · active</text>
+    <text x="64" y="500">iuceLed («proyecto del IUCE»)</text>
+
+    <text x="330" y="470" font-size="11" font-style="italic" fill="#6b7683">La web pública solo lista</text>
+    <text x="330" y="486" font-size="11" font-style="italic" fill="#6b7683">active = true · iuceLed = true</text>
+  </g>
+
+  <!-- SOPORTE -->
+  <rect x="700" y="56" width="350" height="280" rx="12" fill="#f6f9fb" stroke="#c3ccd4"/>
+  <text x="722" y="84" font-size="13.5" font-weight="bold" fill="#1F4257">SOPORTE</text>
+  <g font-size="11.5" fill="#3d4852">
+    <rect x="722" y="100" width="306" height="38" rx="8" fill="#fff" stroke="#7FA8C9" stroke-width="1.4"/>
+    <text x="734" y="117" font-weight="bold" fill="#1F4257">User</text>
+    <text x="734" y="132">email único · passwordHash · rol de administración</text>
+    <rect x="722" y="146" width="306" height="38" rx="8" fill="#fff" stroke="#7FA8C9" stroke-width="1.4"/>
+    <text x="734" y="163" font-weight="bold" fill="#1F4257">FileAsset</text>
+    <text x="734" y="178">biblioteca de archivos (nombre, tipo, tamaño, URL)</text>
+    <rect x="722" y="192" width="306" height="38" rx="8" fill="#fff" stroke="#7FA8C9" stroke-width="1.4"/>
+    <text x="734" y="209" font-weight="bold" fill="#1F4257">ContactMessage</text>
+    <text x="734" y="224">mensajes del formulario · estado NEW/REPLIED</text>
+    <rect x="722" y="238" width="306" height="38" rx="8" fill="#fff" stroke="#7FA8C9" stroke-width="1.4"/>
+    <text x="734" y="255" font-weight="bold" fill="#1F4257">PageVisibility</text>
+    <text x="734" y="270">slug de página + hidden (sin fila = visible)</text>
+    <rect x="722" y="284" width="306" height="38" rx="8" fill="#fff" stroke="#7FA8C9" stroke-width="1.4"/>
+    <text x="734" y="301" font-weight="bold" fill="#1F4257">PageView</text>
+    <text x="734" y="316">analítica ligera (ruta, referencia, visitante, día)</text>
+  </g>
+
+  <!-- ÁREA DE MIEMBROS -->
+  <rect x="700" y="360" width="350" height="230" rx="12" fill="#f6f9fb" stroke="#c3ccd4"/>
+  <text x="722" y="388" font-size="13.5" font-weight="bold" fill="#1F4257">ÁREA DE MIEMBROS</text>
+  <g font-size="11.5" fill="#3d4852">
+    <rect x="722" y="404" width="306" height="50" rx="8" fill="#fff" stroke="#7FA8C9" stroke-width="1.4"/>
+    <text x="734" y="421" font-weight="bold" fill="#1F4257">IntranetUser</text>
+    <text x="734" y="436">email único · active (falso = vetado)</text>
+    <text x="734" y="449">alta manual o automática en el primer acceso</text>
+    <rect x="722" y="462" width="306" height="38" rx="8" fill="#fff" stroke="#7FA8C9" stroke-width="1.4"/>
+    <text x="734" y="479" font-weight="bold" fill="#1F4257">IntranetToken</text>
+    <text x="734" y="494">token de un solo uso · caduca a los 30 minutos</text>
+    <rect x="722" y="508" width="306" height="50" rx="8" fill="#fff" stroke="#7FA8C9" stroke-width="1.4"/>
+    <text x="734" y="525" font-weight="bold" fill="#1F4257">IntranetDocument</text>
+    <text x="734" y="540">título · descripción · fichero en storage/intranet</text>
+    <text x="734" y="553">(fuera de public/, servido solo con sesión)</text>
+  </g>
+
+  <text x="540" y="640" text-anchor="middle" font-size="11.5" fill="#3d4852">Enumeraciones: Role (ADMIN, SUPER_ADMIN) · NewsStatus (DRAFT, PUBLISHED, ARCHIVED) · EventStatus (UPCOMING, PAST, CANCELLED).</text>
+  <text x="540" y="662" text-anchor="middle" font-size="11.5" font-style="italic" fill="#8b98a5">Única relación entre entidades: Member → ResearchGroup; el resto son entidades independientes consultadas por los servicios.</text>
+</svg>

@@ -1,0 +1,77 @@
+<!doctype html><meta charset="utf-8">
+<body style="margin:0;width:1000px;height:700px;background:#fff;font-family:Arial">
+<svg width="1000" height="700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ac" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 z" fill="#5a6b78"/>
+    </marker>
+  </defs>
+  <text x="500" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1F4257">Arquitectura en capas y componentes</text>
+
+  <!-- Navegador -->
+  <rect x="230" y="52" width="420" height="52" rx="10" fill="#1F4257"/>
+  <text x="440" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Navegador</text>
+  <text x="440" y="95" text-anchor="middle" font-size="11.5" fill="#dbe6ee">HTML renderizado en servidor · JavaScript solo donde hay interactividad</text>
+
+  <line x1="440" y1="104" x2="440" y2="128" stroke="#5a6b78" stroke-width="2" marker-end="url(#ac)"/>
+
+  <!-- Middleware -->
+  <rect x="230" y="132" width="420" height="52" rx="10" fill="#3D6B8E"/>
+  <text x="440" y="156" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Middleware</text>
+  <text x="440" y="174" text-anchor="middle" font-size="11.5" fill="#e8eff5">/en → ruta ES + cabecera x-locale · autorización de /backstage y APIs privadas</text>
+
+  <line x1="440" y1="184" x2="440" y2="208" stroke="#5a6b78" stroke-width="2" marker-end="url(#ac)"/>
+
+  <!-- App Router -->
+  <rect x="90" y="212" width="700" height="120" rx="10" fill="#eef3f7" stroke="#3D6B8E" stroke-width="1.6"/>
+  <text x="440" y="236" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#1F4257">App Router (src/app)</text>
+  <rect x="112" y="250" width="200" height="62" rx="8" fill="#fff" stroke="#7FA8C9"/>
+  <text x="212" y="274" text-anchor="middle" font-size="12" font-weight="bold" fill="#1F4257">Sitio público (RSC)</text>
+  <text x="212" y="292" text-anchor="middle" font-size="11" fill="#3d4852">páginas ES/EN + área de miembros</text>
+  <rect x="340" y="250" width="200" height="62" rx="8" fill="#fff" stroke="#7FA8C9"/>
+  <text x="440" y="274" text-anchor="middle" font-size="12" font-weight="bold" fill="#1F4257">Panel /backstage</text>
+  <text x="440" y="292" text-anchor="middle" font-size="11" fill="#3d4852">gestión para personal no técnico</text>
+  <rect x="568" y="250" width="200" height="62" rx="8" fill="#fff" stroke="#7FA8C9"/>
+  <text x="668" y="274" text-anchor="middle" font-size="12" font-weight="bold" fill="#1F4257">API REST (/api)</text>
+  <text x="668" y="292" text-anchor="middle" font-size="11" fill="#3d4852">admin · intranet · contacto · auth</text>
+
+  <line x1="440" y1="332" x2="440" y2="356" stroke="#5a6b78" stroke-width="2" marker-end="url(#ac)"/>
+
+  <!-- Servicios -->
+  <rect x="90" y="360" width="700" height="76" rx="10" fill="#eef3f7" stroke="#3D6B8E" stroke-width="1.6"/>
+  <text x="440" y="386" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#1F4257">Servicios (src/lib)</text>
+  <text x="440" y="406" text-anchor="middle" font-size="11.5" fill="#3d4852">noticias · bloques y listas · proyectos · visibilidad · regla de acceso al área · correo · traducción</text>
+  <text x="440" y="424" text-anchor="middle" font-size="11.5" fill="#3d4852">validaciones (Zod) · límites de tasa · idioma · metadatos · Prisma singleton</text>
+
+  <line x1="440" y1="436" x2="440" y2="460" stroke="#5a6b78" stroke-width="2" marker-end="url(#ac)"/>
+
+  <!-- Datos -->
+  <rect x="230" y="464" width="420" height="52" rx="10" fill="#3D6B8E"/>
+  <text x="440" y="488" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Prisma 6 (cliente tipado)</text>
+  <text x="440" y="506" text-anchor="middle" font-size="11.5" fill="#e8eff5">schema.prisma = fuente única de verdad</text>
+  <line x1="440" y1="516" x2="440" y2="540" stroke="#5a6b78" stroke-width="2" marker-end="url(#ac)"/>
+  <rect x="230" y="544" width="420" height="52" rx="10" fill="#1F4257"/>
+  <text x="440" y="568" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">PostgreSQL 16</text>
+  <text x="440" y="586" text-anchor="middle" font-size="11.5" fill="#dbe6ee">contenedor Docker (5433 en desarrollo)</text>
+
+  <!-- laterales -->
+  <g font-size="11.5">
+    <rect x="820" y="360" width="150" height="46" rx="8" fill="#fff" stroke="#c3ccd4"/>
+    <text x="895" y="379" text-anchor="middle" font-weight="bold" fill="#1F4257">Resend</text>
+    <text x="895" y="396" text-anchor="middle" fill="#6b7683">correo transaccional</text>
+    <line x1="790" y1="392" x2="818" y2="386" stroke="#8b98a5" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ac)"/>
+
+    <rect x="820" y="418" width="150" height="46" rx="8" fill="#fff" stroke="#c3ccd4"/>
+    <text x="895" y="437" text-anchor="middle" font-weight="bold" fill="#1F4257">DeepL (opcional)</text>
+    <text x="895" y="454" text-anchor="middle" fill="#6b7683">traducción al guardar</text>
+    <line x1="790" y1="428" x2="818" y2="436" stroke="#8b98a5" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ac)"/>
+
+    <rect x="20" y="360" width="52" height="106" rx="8" fill="#fff" stroke="#c3ccd4"/>
+    <text x="46" y="415" text-anchor="middle" font-weight="bold" fill="#1F4257" transform="rotate(-90 46 415)">disco</text>
+    <line x1="90" y1="410" x2="74" y2="410" stroke="#8b98a5" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ac)"/>
+    <text x="46" y="486" text-anchor="middle" fill="#6b7683" font-size="10.5">uploads/</text>
+    <text x="46" y="502" text-anchor="middle" fill="#6b7683" font-size="10.5">storage/</text>
+  </g>
+
+  <text x="500" y="646" text-anchor="middle" font-size="11.5" font-style="italic" fill="#8b98a5">public/uploads (imágenes) y storage/intranet (documentos internos) viven fuera de git y forman parte de la copia de seguridad.</text>
+</svg>

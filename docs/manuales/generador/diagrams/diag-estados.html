@@ -1,0 +1,45 @@
+<!doctype html><meta charset="utf-8">
+<body style="margin:0;width:940px;height:380px;background:#fff;font-family:Arial">
+<svg width="940" height="380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ag" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 z" fill="#8b98a5"/>
+    </marker>
+  </defs>
+  <text x="470" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1F4257">Ciclo de vida de una noticia</text>
+
+  <!-- inicio -->
+  <circle cx="70" cy="165" r="9" fill="#1F4257"/>
+  <line x1="82" y1="165" x2="130" y2="165" stroke="#8b98a5" stroke-width="2" marker-end="url(#ag)"/>
+  <text x="104" y="152" text-anchor="middle" font-size="11" fill="#6b7683">crear</text>
+
+  <!-- BORRADOR -->
+  <rect x="136" y="130" width="200" height="70" rx="10" fill="#E8A13D"/>
+  <text x="236" y="160" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">BORRADOR</text>
+  <text x="236" y="182" text-anchor="middle" font-size="11.5" fill="#fff">DRAFT · no visible</text>
+
+  <!-- PUBLICADA -->
+  <rect x="416" y="130" width="200" height="70" rx="10" fill="#3E8E5A"/>
+  <text x="516" y="160" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">PUBLICADA</text>
+  <text x="516" y="182" text-anchor="middle" font-size="11.5" fill="#fff">PUBLISHED · web, RSS, sitemap</text>
+
+  <!-- ARCHIVADA -->
+  <rect x="696" y="130" width="200" height="70" rx="10" fill="#6B7683"/>
+  <text x="796" y="160" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">ARCHIVADA</text>
+  <text x="796" y="182" text-anchor="middle" font-size="11.5" fill="#fff">ARCHIVED · retirada sin borrar</text>
+
+  <!-- transiciones -->
+  <line x1="336" y1="150" x2="410" y2="150" stroke="#8b98a5" stroke-width="2" marker-end="url(#ag)"/>
+  <text x="373" y="138" text-anchor="middle" font-size="11" fill="#6b7683">publicar (fija la fecha)</text>
+  <path d="M410,185 L336,185" stroke="#8b98a5" stroke-width="2" marker-end="url(#ag)" fill="none"/>
+  <text x="373" y="203" text-anchor="middle" font-size="11" fill="#6b7683">volver a borrador</text>
+
+  <line x1="616" y1="150" x2="690" y2="150" stroke="#8b98a5" stroke-width="2" marker-end="url(#ag)"/>
+  <text x="653" y="138" text-anchor="middle" font-size="11" fill="#6b7683">archivar</text>
+  <path d="M690,185 L616,185" stroke="#8b98a5" stroke-width="2" marker-end="url(#ag)" fill="none"/>
+  <text x="653" y="203" text-anchor="middle" font-size="11" fill="#6b7683">restaurar</text>
+
+  <text x="470" y="268" text-anchor="middle" font-size="12" fill="#3d4852">El estado se cambia libremente desde el editor del panel; al publicar por primera vez se fija la fecha de publicación.</text>
+  <text x="470" y="296" text-anchor="middle" font-size="12" font-style="italic" fill="#6b7683">La marca «interna» es independiente del estado: una noticia interna publicada solo se muestra en el área de miembros</text>
+  <text x="470" y="314" text-anchor="middle" font-size="12" font-style="italic" fill="#6b7683">y queda excluida de la web pública, del RSS y del sitemap.</text>
+</svg>
