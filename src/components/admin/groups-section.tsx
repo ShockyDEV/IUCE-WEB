@@ -41,7 +41,10 @@ const EMPTY: FormState = {
   chip: "",
 };
 
-export function GroupsSection({ rows }: Readonly<{ rows: GroupRow[] }>) {
+export function GroupsSection({
+  rows,
+  memberNames,
+}: Readonly<{ rows: GroupRow[]; memberNames: string[] }>) {
   const router = useRouter();
   const [form, setForm] = useState<FormState | null>(null);
   const [saving, setSaving] = useState(false);
@@ -218,10 +221,22 @@ export function GroupsSection({ rows }: Readonly<{ rows: GroupRow[] }>) {
                 <input
                   id="g-lead"
                   type="text"
+                  list="g-lead-miembros"
                   value={form.lead}
+                  placeholder="Empieza a escribir un nombre…"
                   onChange={(e) => setForm({ ...form, lead: e.target.value })}
                   className={inputClass}
                 />
+                {/* Sugerencias: los miembros activos del Instituto */}
+                <datalist id="g-lead-miembros">
+                  {memberNames.map((n) => (
+                    <option key={n} value={n} />
+                  ))}
+                </datalist>
+                <p className="text-xs text-gray-500">
+                  Al escribir se sugieren los miembros del IUCE; elige uno de
+                  la lista (admite también un nombre externo).
+                </p>
               </div>
             </div>
             <div className="flex flex-col gap-2">

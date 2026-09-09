@@ -133,6 +133,29 @@ export function MembersSection({
     );
   }, [rows, query]);
 
+  // El equipo (quienes tienen cargo: dirección y administración) se gestiona
+  // separado del resto de miembros.
+  const equipo = useMemo(() => filtered.filter((r) => r.role), [filtered]);
+  const miembros = useMemo(() => filtered.filter((r) => !r.role), [filtered]);
+
+  function openEdit(row: MemberRow) {
+    setForm({
+      id: row.id,
+      name: row.name,
+      area: row.area ?? "",
+      email: row.email ?? "",
+      extension: row.extension ?? "",
+      role: row.role ?? "",
+      photo: row.photo ?? "",
+      portalUrl: row.portalUrl ?? "",
+      orcid: row.orcid ?? "",
+      scopus: row.scopus ?? "",
+      order: row.order,
+      groupId: row.groupId ?? "",
+      active: row.active,
+    });
+  }
+
   async function handleSave() {
     if (!form) return;
     if (form.name.trim().length < 2) {
@@ -206,123 +229,129 @@ export function MembersSection({
         </Button>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-        <div className="p-6">
-          <h3 className="text-base font-semibold text-gray-900">
-            Equipo y miembros ({filtered.length})
-          </h3>
-        </div>
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-t border-gray-100">
-              <th scope="col" className="px-6 py-3 text-left text-[13px] font-medium text-gray-500">
-                Nombre
-              </th>
-              <th scope="col" className="px-4 py-3 text-left text-[13px] font-medium text-gray-500">
-                Cargo / Área
-              </th>
-              <th scope="col" className="px-4 py-3 text-left text-[13px] font-medium text-gray-500">
-                Email
-              </th>
-              <th scope="col" className="px-4 py-3 text-left text-[13px] font-medium text-gray-500">
-                Estado
-              </th>
-              <th scope="col" className="w-[110px] px-6 py-3 text-left text-[13px] font-medium text-gray-500">
-                Acciones
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((row) => (
-              <tr key={row.id} className="border-t border-gray-100">
-                <td className="px-6 py-3">
-                  <div className="flex items-center gap-3">
-                    {row.photo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={row.photo}
-                        alt=""
-                        className="h-[34px] w-[34px] flex-none rounded-full object-cover"
-                      />
-                    ) : (
-                      <span
-                        aria-hidden="true"
-                        className="flex h-[34px] w-[34px] flex-none items-center justify-center rounded-full bg-iuce-blue-pale text-xs font-bold text-iuce-blue-dark"
-                      >
-                        {initialsOf(row.name)}
-                      </span>
-                    )}
-                    <span className="text-sm font-medium text-gray-900">
-                      {row.name}
-                    </span>
-                  </div>
-                </td>
-                <td className="px-4 py-3 text-[13px] text-gray-600">
-                  {[row.role, row.area].filter(Boolean).join(" · ") || "—"}
-                </td>
-                <td className="px-4 py-3 text-[13px] text-gray-500">
-                  {row.email ?? "—"}
-                </td>
-                <td className="px-4 py-3">
-                  <span
-                    className={cn(
-                      "inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium",
-                      row.active
-                        ? "bg-[#DCFCE7] text-[#15803D]"
-                        : "bg-gray-100 text-gray-700",
-                    )}
-                  >
-                    {row.active ? "Activo" : "Inactivo"}
-                  </span>
-                </td>
-                <td className="px-6 py-3">
-                  <div className="flex gap-1">
-                    <button
-                      type="button"
-                      aria-label="Editar"
-                      onClick={() =>
-                        setForm({
-                          id: row.id,
-                          name: row.name,
-                          area: row.area ?? "",
-                          email: row.email ?? "",
-                          extension: row.extension ?? "",
-                          role: row.role ?? "",
-                          photo: row.photo ?? "",
-                          portalUrl: row.portalUrl ?? "",
-                          orcid: row.orcid ?? "",
-                          scopus: row.scopus ?? "",
-                          order: row.order,
-                          groupId: row.groupId ?? "",
-                          active: row.active,
-                        })
-                      }
-                      className="flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      <Pencil className="h-4 w-4" aria-hidden="true" />
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="Eliminar"
-                      onClick={() => handleDelete(row)}
-                      className="flex h-8 w-8 items-center justify-center rounded-md text-red-600 transition-colors hover:bg-red-50"
-                    >
-                      <Trash2 className="h-4 w-4" aria-hidden="true" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-            {filtered.length === 0 ? (
-              <tr className="border-t border-gray-100">
-                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
-                  Sin resultados.
-                </td>
-              </tr>
+      {[
+        {
+          titulo: "Equipo de dirección y administración",
+          descripcion:
+            "Miembros con cargo (Directora, Subdirector, Secretaría, personal técnico…). El cargo se asigna al editar la ficha.",
+          subset: equipo,
+          vacio: "Nadie con cargo asignado.",
+        },
+        {
+          titulo: "Miembros",
+          descripcion: null,
+          subset: miembros,
+          vacio: "Sin resultados.",
+        },
+      ].map(({ titulo, descripcion, subset, vacio }) => (
+        <div
+          key={titulo}
+          className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"
+        >
+          <div className="p-6">
+            <h3 className="text-base font-semibold text-gray-900">
+              {titulo} ({subset.length})
+            </h3>
+            {descripcion ? (
+              <p className="mt-1 text-[13px] text-gray-500">{descripcion}</p>
             ) : null}
-          </tbody>
-        </table>
-      </div>
+          </div>
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-t border-gray-100">
+                <th scope="col" className="px-6 py-3 text-left text-[13px] font-medium text-gray-500">
+                  Nombre
+                </th>
+                <th scope="col" className="px-4 py-3 text-left text-[13px] font-medium text-gray-500">
+                  Cargo / Área
+                </th>
+                <th scope="col" className="px-4 py-3 text-left text-[13px] font-medium text-gray-500">
+                  Email
+                </th>
+                <th scope="col" className="px-4 py-3 text-left text-[13px] font-medium text-gray-500">
+                  Estado
+                </th>
+                <th scope="col" className="w-[150px] px-6 py-3 text-left text-[13px] font-medium text-gray-500">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {subset.map((row) => (
+                <tr key={row.id} className="border-t border-gray-100">
+                  <td className="px-6 py-3">
+                    <div className="flex items-center gap-3">
+                      {row.photo ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={row.photo}
+                          alt=""
+                          className="h-[34px] w-[34px] flex-none rounded-full object-cover"
+                        />
+                      ) : (
+                        <span
+                          aria-hidden="true"
+                          className="flex h-[34px] w-[34px] flex-none items-center justify-center rounded-full bg-iuce-blue-pale text-xs font-bold text-iuce-blue-dark"
+                        >
+                          {initialsOf(row.name)}
+                        </span>
+                      )}
+                      <span className="text-sm font-medium text-gray-900">
+                        {row.name}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-[13px] text-gray-600">
+                    {[row.role, row.area].filter(Boolean).join(" · ") || "—"}
+                  </td>
+                  <td className="px-4 py-3 text-[13px] text-gray-500">
+                    {row.email ?? "—"}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={cn(
+                        "inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium",
+                        row.active
+                          ? "bg-[#DCFCE7] text-[#15803D]"
+                          : "bg-gray-100 text-gray-700",
+                      )}
+                    >
+                      {row.active ? "Activo" : "Inactivo"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-3">
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => openEdit(row)}
+                        className="inline-flex h-8 items-center gap-1.5 rounded-md border border-gray-300 bg-white px-2.5 text-[13px] font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                      >
+                        <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                        Editar
+                      </button>
+                      <button
+                        type="button"
+                        aria-label={`Eliminar a ${row.name}`}
+                        onClick={() => handleDelete(row)}
+                        className="flex h-8 w-8 items-center justify-center rounded-md text-red-600 transition-colors hover:bg-red-50"
+                      >
+                        <Trash2 className="h-4 w-4" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {subset.length === 0 ? (
+                <tr className="border-t border-gray-100">
+                  <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
+                    {vacio}
+                  </td>
+                </tr>
+              ) : null}
+            </tbody>
+          </table>
+        </div>
+      ))}
 
       {form ? (
         <Modal

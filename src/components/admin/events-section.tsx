@@ -311,6 +311,11 @@ export function EventsSection({ rows }: Readonly<{ rows: EventRow[] }>) {
                   <option value="PAST">Celebrado</option>
                   <option value="CANCELLED">Cancelado</option>
                 </select>
+                <p className="text-xs text-gray-500">
+                  En la web, «próximo» o «celebrado» se calcula solo a partir
+                  de las fechas; este campo únicamente hace falta para
+                  «Cancelado».
+                </p>
               </div>
             </div>
             <div className="flex flex-col gap-2">

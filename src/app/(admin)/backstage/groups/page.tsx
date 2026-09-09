@@ -7,10 +7,18 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function AdminGroupsPage() {
-  const groups = await prisma.researchGroup.findMany({
-    orderBy: { acronym: "asc" },
-    include: { _count: { select: { members: true } } },
-  });
+  const [groups, members] = await Promise.all([
+    prisma.researchGroup.findMany({
+      orderBy: { acronym: "asc" },
+      include: { _count: { select: { members: true } } },
+    }),
+    // Para el selector de responsable: los miembros activos del Instituto.
+    prisma.member.findMany({
+      where: { active: true },
+      orderBy: { name: "asc" },
+      select: { name: true },
+    }),
+  ]);
 
   const rows: GroupRow[] = groups.map((g) => ({
     id: g.id,
@@ -23,5 +31,7 @@ export default async function AdminGroupsPage() {
     memberCount: g._count.members,
   }));
 
-  return <GroupsSection rows={rows} />;
+  return (
+    <GroupsSection rows={rows} memberNames={members.map((m) => m.name)} />
+  );
 }
