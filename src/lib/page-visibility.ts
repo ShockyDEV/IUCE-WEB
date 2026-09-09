@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { PUBLIC_PAGES } from "@/lib/content/public-pages";
+import { PUBLIC_PAGES, PUBLIC_SECTIONS } from "@/lib/content/public-pages";
 
 const ADMIN_ROLES = new Set(["ADMIN", "SUPER_ADMIN"]);
 
@@ -50,4 +50,20 @@ export async function assertVisible(slug: string): Promise<void> {
 /** ¿Está oculta? (para avisar a la administración que la está previsualizando) */
 export async function isPageHidden(slug: string): Promise<boolean> {
   return (await getHiddenPages()).has(slug);
+}
+
+/**
+ * ¿Se muestra una sección ocultable (registro PUBLIC_SECTIONS)? Sin fila en
+ * BD manda su defaultHidden; sin BD, también (mejor el valor previsto que
+ * romper).
+ */
+export async function isSectionVisible(slug: string): Promise<boolean> {
+  const def = PUBLIC_SECTIONS.find((s) => s.slug === slug);
+  const fallback = !(def?.defaultHidden ?? false);
+  try {
+    const row = await prisma.pageVisibility.findUnique({ where: { slug } });
+    return row ? !row.hidden : fallback;
+  } catch {
+    return fallback;
+  }
 }

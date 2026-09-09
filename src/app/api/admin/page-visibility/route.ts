@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-guard";
-import { PUBLIC_PAGES } from "@/lib/content/public-pages";
+import { PUBLIC_PAGES, PUBLIC_SECTIONS } from "@/lib/content/public-pages";
 
 const inputSchema = z.object({
   slug: z.string().trim().min(1),
@@ -21,6 +21,11 @@ export async function GET() {
       ...p,
       hidden: state.get(p.slug) ?? false,
     })),
+    // Las secciones pueden nacer ocultas: sin fila manda su defaultHidden.
+    sections: PUBLIC_SECTIONS.map((s) => ({
+      ...s,
+      hidden: state.get(s.slug) ?? s.defaultHidden,
+    })),
   });
 }
 
@@ -36,8 +41,11 @@ export async function PUT(request: Request) {
   }
   const { slug, hidden } = parsed.data;
 
-  // Solo páginas del registro: nada de ocultar rutas arbitrarias.
-  if (!PUBLIC_PAGES.some((p) => p.slug === slug)) {
+  // Solo páginas o secciones del registro: nada de ocultar claves arbitrarias.
+  if (
+    !PUBLIC_PAGES.some((p) => p.slug === slug) &&
+    !PUBLIC_SECTIONS.some((s) => s.slug === slug)
+  ) {
     return NextResponse.json({ error: "Página desconocida" }, { status: 404 });
   }
 

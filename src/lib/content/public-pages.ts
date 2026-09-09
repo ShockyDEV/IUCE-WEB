@@ -17,6 +17,33 @@ export interface PublicPageDef {
   hint: string;
 }
 
+/**
+ * Secciones DENTRO de páginas que se pueden ocultar desde el panel. A
+ * diferencia de las páginas, una sección oculta simplemente no se pinta (la
+ * página sigue existiendo, sin 404) y puede nacer oculta por defecto
+ * (defaultHidden) hasta que la administración decida mostrarla.
+ */
+export interface PublicSectionDef {
+  /** Clave estable (comparte la tabla PageVisibility con las páginas). */
+  slug: string;
+  label: string;
+  /** Ruta con ancla, para el enlace «ver» del panel. */
+  path: string;
+  hint: string;
+  /** Estado cuando nadie ha tocado el interruptor todavía. */
+  defaultHidden: boolean;
+}
+
+export const PUBLIC_SECTIONS: PublicSectionDef[] = [
+  {
+    slug: "seccion-proyectos",
+    label: "Investigación — Proyectos",
+    path: "/investigacion#proyectos",
+    hint: "Explorador de proyectos (se mantiene a mano desde el panel; oculto por defecto)",
+    defaultHidden: true,
+  },
+];
+
 export const PUBLIC_PAGES: PublicPageDef[] = [
   {
     slug: "instituto",

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { PUBLIC_PAGES } from "@/lib/content/public-pages";
+import { PUBLIC_PAGES, PUBLIC_SECTIONS } from "@/lib/content/public-pages";
 import {
   VisibilitySection,
   type VisibilityRow,
@@ -19,5 +19,14 @@ export default async function AdminVisibilidadPage() {
     hidden: state.get(p.slug) ?? false,
   }));
 
-  return <VisibilitySection rows={rows} />;
+  // Secciones dentro de páginas: sin fila en BD manda su defaultHidden.
+  const sections: VisibilityRow[] = PUBLIC_SECTIONS.map((s) => ({
+    slug: s.slug,
+    label: s.label,
+    path: s.path,
+    hint: s.hint,
+    hidden: state.get(s.slug) ?? s.defaultHidden,
+  }));
+
+  return <VisibilitySection rows={rows} sections={sections} />;
 }

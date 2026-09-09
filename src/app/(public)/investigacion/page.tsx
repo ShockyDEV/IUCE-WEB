@@ -19,7 +19,7 @@ import { ProjectsExplorer } from "@/components/investigacion/projects-explorer";
 import { withLocale, type Locale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
 
-import { assertVisible } from "@/lib/page-visibility";
+import { assertVisible, isSectionVisible } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
@@ -174,12 +174,18 @@ async function getGrupos(locale: Locale): Promise<GroupCard[]> {
 export default async function InvestigacionPage() {
   await assertVisible("investigacion");
 
+  // La sección de Proyectos se mantiene a mano: solo se pinta si la
+  // administración la ha activado en el panel (Visualización → Secciones).
+  const proyectosVisibles = await isSectionVisible("seccion-proyectos");
+
   const locale = getLocale();
   const t = T[locale];
   const href = (path: string) => withLocale(path, locale);
   const subnav = [
     { id: "grupos", label: t.subnavGrupos },
-    { id: "proyectos", label: t.subnavProyectos },
+    ...(proyectosVisibles
+      ? [{ id: "proyectos", label: t.subnavProyectos }]
+      : []),
     { id: "publicaciones", label: t.subnavPublicaciones },
   ];
   // Contenido editable desde el gestor (Contenido → Páginas → Investigación).
@@ -207,7 +213,7 @@ export default async function InvestigacionPage() {
     getBlockText("investigacion", "url-eks"),
     getBlock("investigacion", "proyectos-descripcion"),
     getBlockText("investigacion", "muestra-titulo"),
-    getPublicProjects(),
+    proyectosVisibles ? getPublicProjects() : Promise.resolve([]),
     getListBlock("investigacion", "list:publicaciones"),
     // Última publicación de cada miembro de la dirección vía la API pública
     // de ORCID (caché de 24 h). Si falla, se usa la lista editable de abajo.
@@ -345,26 +351,28 @@ export default async function InvestigacionPage() {
         </div>
       </section>
 
-      {/* Proyectos */}
-      <section
-        id="proyectos"
-        className="scroll-mt-20 border-y border-gray-200 bg-surface-card"
-      >
-        <div className="mx-auto max-w-6xl px-6 py-14">
-          <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
-            {t.proyectosTitulo}
-          </h2>
-          <div
-            className="page-block mb-6 max-w-[80ch] text-sm text-gray-500"
-            dangerouslySetInnerHTML={{ __html: proyectosDescripcion }}
-          />
-          <ProjectsExplorer
-            projects={proyectos}
-            currentYear={new Date().getFullYear()}
-            locale={locale}
-          />
-        </div>
-      </section>
+      {/* Proyectos (solo si la sección está activada en el panel) */}
+      {proyectosVisibles ? (
+        <section
+          id="proyectos"
+          className="scroll-mt-20 border-y border-gray-200 bg-surface-card"
+        >
+          <div className="mx-auto max-w-6xl px-6 py-14">
+            <h2 className="mb-1.5 text-2xl font-bold tracking-tight text-gray-900">
+              {t.proyectosTitulo}
+            </h2>
+            <div
+              className="page-block mb-6 max-w-[80ch] text-sm text-gray-500"
+              dangerouslySetInnerHTML={{ __html: proyectosDescripcion }}
+            />
+            <ProjectsExplorer
+              projects={proyectos}
+              currentYear={new Date().getFullYear()}
+              locale={locale}
+            />
+          </div>
+        </section>
+      ) : null}
 
       {/* Publicaciones */}
       <section id="publicaciones" className="scroll-mt-20">
