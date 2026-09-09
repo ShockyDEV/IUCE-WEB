@@ -1,5 +1,7 @@
 // Anexo A — Especificación de Requisitos (web institucional del IUCE).
+const path = require("path");
 const { DocCtx, t, b, i, c, cellLines } = require("./lib");
+const DIAG = (f) => path.join(__dirname, "diagrams", f);
 
 function build(ctx) {
   ctx.h1("Anexo A", "Especificación de Requisitos");
@@ -9,10 +11,10 @@ function build(ctx) {
   ctx.h3("A.1.1. Propósito");
   ctx.p("Este anexo especifica los requisitos de la web institucional del IUCE: qué debe hacer el sistema (requisitos funcionales), con qué calidad (requisitos no funcionales), quiénes lo usan (actores), bajo qué reglas de negocio opera y cuáles son sus casos de uso principales. Sirve de referencia doble: deja constancia del análisis realizado y orienta a quien mantenga el sistema en el futuro sobre qué debe hacer el software y por qué. Los requisitos aquí recogidos reflejan el sistema realmente construido.");
   ctx.h3("A.1.2. Ámbito del sistema");
-  ctx.p("El Instituto Universitario de Ciencias de la Educación (IUCE) es un instituto interdisciplinar de investigación de la Universidad de Salamanca, especializado en investigación en Educación Superior, que además ofrece formación al profesorado universitario, coordina programas de doctorado y desarrolla actividad de transferencia. Su web institucional (iuce.usal.es) es su carta de presentación pública: recoge quiénes lo forman, sus grupos y proyectos de investigación, su oferta formativa, sus noticias y eventos, y sus vías de contacto.");
+  ctx.p("El Instituto Universitario de Ciencias de la Educación (IUCE) es un instituto interdisciplinar de investigación de la Universidad de Salamanca, especializado en investigación en Educación Superior, que además ofrece formación al profesorado universitario, participa en el Programa de Doctorado «Formación en la Sociedad del Conocimiento» y desarrolla actividad de transferencia. Su web institucional (iuce.usal.es) es su carta de presentación pública: recoge quiénes lo forman, sus grupos y proyectos de investigación, su oferta formativa, sus noticias y eventos, y sus vías de contacto.");
   ctx.p("El sistema especificado sustituye a la web anterior (WordPress, 2010–2026) y cubre tres áreas: el sitio público bilingüe, el panel de administración con el que el personal del Instituto gestiona todo el contenido, y el área privada de miembros. La gestión de reservas de espacios queda fuera: la cubre la aplicación IUCE Reservas, con la que la web enlaza.");
   ctx.h3("A.1.3. Origen de los requisitos");
-  ctx.p("Los requisitos no se fijaron de una vez, sino que se elicitaron y refinaron de forma incremental a partir de cuatro fuentes: (1) la web antigua, cuya estructura y contenido se auditaron página a página como línea base de lo que no podía perderse; (2) una fase de diseño previa con prototipos navegables de todas las páginas, revisados por la dirección del Instituto, que fijó la estructura, la identidad visual y buena parte del alcance; (3) la memoria de acreditación 2020–2025 del Instituto, como fuente de datos verificada para miembros, grupos, proyectos y estadísticas; y (4) las indicaciones de la dirección y del personal durante el desarrollo (jerarquía de contenidos, responsables de grupos, textos institucionales, visibilidad de secciones), incorporadas de forma continua sobre la aplicación ya operativa.");
+  ctx.p("Los requisitos no se fijaron de una vez, sino que se elicitaron y refinaron de forma incremental a partir de cuatro fuentes: (1) la web antigua, cuya estructura y contenido se auditaron página a página como línea base de lo que no podía perderse; (2) una fase de diseño previa con prototipos navegables de todas las páginas (conservados en docs/design), que fijó la estructura, la identidad visual y buena parte del alcance; (3) la memoria de acreditación 2020–2025 del Instituto, como fuente de datos verificada para miembros, grupos, proyectos y estadísticas; y (4) las indicaciones de la dirección y del personal durante el desarrollo (jerarquía de contenidos, responsables de grupos, textos institucionales, visibilidad de secciones), incorporadas de forma continua sobre la aplicación ya operativa.");
   ctx.h3("A.1.4. Restricciones");
   ctx.bullets([
     "El tratamiento de datos personales queda sujeto al RGPD (Reglamento UE 2016/679) y a la LOPDGDD (Ley Orgánica 3/2018): publicación únicamente de datos profesionales de los miembros, con edición y baja a su alcance o al de la administración.",
@@ -52,12 +54,12 @@ function build(ctx) {
     headers: ["Código", "Requisito"],
     widths: [0.13, 0.87],
     rows: [
-      ["RF-01", "El sitio público ofrece navegación completa por secciones (Instituto, Investigación, Transferencia, Formación, Doctorado, Eventos, Noticias, Contacto) con menú responsivo accesible y pie institucional."],
-      ["RF-02", "Todas las páginas públicas existen en español y en inglés (/en/…); un conmutador ES|EN mantiene la página actual y sus filtros al cambiar de idioma."],
-      ["RF-03", "El sitio ofrece tema claro y oscuro conmutables; la preferencia del visitante se recuerda en su navegador."],
-      ["RF-04", "La interfaz es responsiva (móvil, tableta y escritorio) e incluye enlace de salto al contenido para lectores de pantalla."],
-      ["RF-05", "La administración puede ocultar temporalmente páginas completas; una página oculta desaparece de menús, portada y sitemap y devuelve 404 al público, pero sigue siendo previsualizable con sesión de administración."],
-      ["RF-06", "Las direcciones de la web antigua redirigen de forma permanente (HTTP 308) a sus equivalentes nuevas, incluidas las 212 noticias del histórico y el feed RSS."],
+      ["RF-01", "Navegación pública completa por secciones (Instituto, Investigación, Transferencia, Formación, Doctorado, Eventos, Noticias, Contacto), con menú responsivo accesible y pie institucional."],
+      ["RF-02", "Versión inglesa de todo el sitio público bajo /en/…, con conmutador ES|EN que conserva la página actual y sus filtros."],
+      ["RF-03", "Tema claro y oscuro conmutables, con la preferencia recordada en el navegador del visitante."],
+      ["RF-04", "Interfaz responsiva (móvil, tableta y escritorio) con enlace de salto al contenido."],
+      ["RF-05", "Ocultación temporal de páginas completas desde el panel: fuera de menú, portada y sitemap, y URL en 404 para el público, con previsualización para la administración."],
+      ["RF-06", "Redirección permanente (HTTP 308) de todas las direcciones de la web antigua, incluidas las 212 noticias del histórico y el feed RSS."],
     ],
   });
 
@@ -66,11 +68,11 @@ function build(ctx) {
     headers: ["Código", "Requisito"],
     widths: [0.13, 0.87],
     rows: [
-      ["RF-07", "Listado público de noticias con paginación, buscador por texto y filtros por año y categoría (operativos sin JavaScript)."],
-      ["RF-08", "Cada noticia tiene página propia con URL estable (slug), imagen de portada, categoría y fecha; si carece de imagen, se muestra una portada de marca generada."],
-      ["RF-09", "Las noticias marcadas como internas no aparecen en ningún punto del sitio público; solo en el área de miembros."],
-      ["RF-10", "El sitio publica un canal RSS 2.0 con las últimas noticias."],
-      ["RF-11", "Sección de eventos con próximos y pasados, tipo, fechas, lugar e imagen opcional; página del Seminario del IUCE con sus ediciones por año (crónica y actas)."],
+      ["RF-07", "Listado público de noticias con paginación, búsqueda por texto y filtros por año y categoría (operativos sin JavaScript)."],
+      ["RF-08", "Página propia de cada noticia con URL estable (slug), imagen de portada, categoría y fecha; portada de marca generada cuando no hay imagen."],
+      ["RF-09", "Exclusión de las noticias internas de todo el sitio público: solo visibles en el área de miembros."],
+      ["RF-10", "Canal RSS 2.0 con las últimas noticias."],
+      ["RF-11", "Agenda de eventos con próximos y celebrados derivados automáticamente de las fechas (tipo, fechas, lugar e imagen opcional; solo «cancelado» es manual) y página del Seminario del IUCE por ediciones anuales, con crónica y actas."],
     ],
   });
 
@@ -79,13 +81,13 @@ function build(ctx) {
     headers: ["Código", "Requisito"],
     widths: [0.13, 0.87],
     rows: [
-      ["RF-12", "Página del Instituto con historia documentada del edificio, vídeo institucional, equipo de dirección (con fotografía, ORCID y extensión), personal de administración, instalaciones y cómo llegar."],
-      ["RF-13", "Directorio de miembros con buscador, fotografía, área, distintivo de su grupo de investigación y enlaces a su perfil del Portal de la Investigación, ORCID y Scopus; el correo se ofrece con botón de copiar (no mailto). El consejo asesor se muestra en banda propia."],
-      ["RF-14", "Página de Investigación con los nueve grupos oficiales (logo, responsable, distintivo UIC y enlace), publicaciones destacadas de la dirección y acceso a la producción científica del Portal de la Investigación."],
-      ["RF-15", "Explorador de proyectos de investigación con búsqueda y filtros por estado y ámbito; la web pública lista únicamente los proyectos del IUCE (criterio de la memoria de acreditación), marcados como tales en el gestor."],
+      ["RF-12", "Página del Instituto: historia documentada del edificio con vídeo, equipo de dirección (fotografía, ORCID y extensión), personal de administración, instalaciones y cómo llegar."],
+      ["RF-13", "Directorio de miembros con buscador, fotografía, área, distintivo del grupo de investigación y enlaces al perfil del Portal de la Investigación, ORCID y Scopus; correo con botón de copiar (sin mailto) y consejo asesor en banda propia."],
+      ["RF-14", "Presentación de los nueve grupos de investigación oficiales (logo, responsable, distintivo UIC y enlace) y de los últimos artículos de la dirección, actualizados automáticamente desde sus perfiles públicos de ORCID (con lista editable de reserva), con acceso a la producción científica del Portal de la Investigación."],
+      ["RF-15", "Explorador de proyectos con búsqueda y filtros por estado y ámbito, limitado a los proyectos del IUCE (criterio de la memoria de acreditación) marcados como tales en el gestor."],
       ["RF-16", "Página de Transferencia con misión, indicadores y los Grupos de Transferencia del Conocimiento (GTC), cada uno con su dirección (con fotografía si es miembro) y su grupo de investigación vinculado."],
-      ["RF-17", "Página de Estadísticas con seis indicadores de cabecera y quince gráficas interactivas por secciones (proyectos, publicaciones, formación, doctorado, transferencia, gestión), con animación de entrada y respeto de la preferencia de movimiento reducido."],
-      ["RF-18", "Páginas de Formación (portal de formación, módulos FDI, manuales) y Doctorado (programas, grupos participantes) con subnavegación propia y documentos PDF embebidos."],
+      ["RF-17", "Página de Estadísticas con seis indicadores de cabecera y quince gráficas interactivas en seis secciones (Proyectos, Transferencia, Doctorado, Formación, Redes y movilidad, y Gestión y posgrado), con animación de entrada y respeto de la preferencia de movimiento reducido."],
+      ["RF-18", "Páginas de Formación (portal de formación, módulos FDI, manuales) y Doctorado (Programa «Formación en la Sociedad del Conocimiento» y grupos participantes), con subnavegación propia y documentos PDF embebidos."],
     ],
   });
 
@@ -94,9 +96,9 @@ function build(ctx) {
     headers: ["Código", "Requisito"],
     widths: [0.13, 0.87],
     rows: [
-      ["RF-19", "Formulario de contacto con validación; cada envío queda registrado, notifica a la administración por correo (con responder-a al remitente) y devuelve un acuse de recibo automático."],
-      ["RF-20", "Páginas legales editables: aviso legal, declaración de accesibilidad (RD 1112/2018) y política de cookies, enlazadas desde el pie."],
-      ["RF-21", "SEO técnico: sitemap.xml (incluidas rutas /en), robots.txt (que excluye el área privada), metadatos y título por página en ambos idiomas, imagen OpenGraph institucional, datos estructurados JSON-LD y página 404 propia."],
+      ["RF-19", "Formulario de contacto con validación, registro del mensaje, aviso por correo a la administración (responder-a al remitente) y acuse de recibo automático."],
+      ["RF-20", "Páginas legales editables (aviso legal, declaración de accesibilidad conforme al RD 1112/2018 y política de cookies), enlazadas desde el pie."],
+      ["RF-21", "SEO técnico: sitemap.xml con las rutas /en, robots.txt que excluye el área privada, metadatos y título bilingües por página, imagen OpenGraph institucional, datos estructurados JSON-LD y página 404 propia."],
     ],
   });
 
@@ -105,11 +107,11 @@ function build(ctx) {
     headers: ["Código", "Requisito"],
     widths: [0.13, 0.87],
     rows: [
-      ["RF-22", "El acceso al área privada se realiza mediante enlace de un solo uso enviado al correo, con caducidad de 30 minutos y sin contraseñas."],
-      ["RF-23", "Cualquier miembro del Instituto cuya ficha pública tenga correo accede automáticamente (alta silenciosa en el primer acceso); la administración puede autorizar direcciones adicionales y vetar cuentas concretas."],
-      ["RF-24", "El área ofrece los documentos internos publicados por la administración; los ficheros se almacenan fuera del directorio público y solo se sirven con sesión válida."],
-      ["RF-25", "El área muestra las noticias internas del Instituto."],
-      ["RF-26", "Cada miembro puede editar su propia ficha pública (área, ORCID, enlaces, fotografía, que se redimensiona automáticamente) desde «Mi perfil»."],
+      ["RF-22", "Acceso al área privada mediante enlace de un solo uso enviado al correo, con caducidad de 30 minutos y sin contraseñas."],
+      ["RF-23", "Entrada automática de los miembros con correo en su ficha pública (alta silenciosa en el primer acceso); autorización manual de direcciones adicionales y veto de cuentas concretas."],
+      ["RF-24", "Documentos internos publicados por la administración, almacenados fuera del directorio público y servidos únicamente con sesión válida."],
+      ["RF-25", "Consulta de las noticias internas del Instituto dentro del área."],
+      ["RF-26", "Edición del propio perfil público por cada miembro desde «Mi perfil» (área, ORCID, enlaces y fotografía con redimensionado automático)."],
     ],
   });
 
@@ -118,14 +120,14 @@ function build(ctx) {
     headers: ["Código", "Requisito"],
     widths: [0.13, 0.87],
     rows: [
-      ["RF-27", "El panel (/backstage) requiere inicio de sesión con correo y contraseña; existen dos roles: ADMIN y SUPER_ADMIN (este último gestiona además las cuentas de administración)."],
-      ["RF-28", "Gestión completa de noticias con editor visual (negritas, enlaces, tablas, imágenes subidas directamente), extracto, categoría, imagen de portada, estado (borrador/publicada/archivada), marca de interna y campos en inglés."],
-      ["RF-29", "Gestión de miembros: datos de la ficha, área, correo, extensión, ORCID, Scopus, portal de investigación, grupo, orden y estado; la fotografía puede subirse, elegirse de las ya existentes o referenciarse por URL."],
-      ["RF-30", "Gestión de grupos de investigación (nombre bilingüe, responsable, logo, distintivo, enlace), de eventos (con imagen), de proyectos (con la casilla «Proyecto del IUCE» y visibilidad) y de archivos (subida y biblioteca de ficheros)."],
-      ["RF-31", "Edición de las páginas estáticas por piezas: 69 bloques de texto y 35 listas estructuradas (con campos tipados, iconos y reordenación), cada pieza con botón de «Restablecer original»."],
+      ["RF-27", "Acceso al panel (/backstage) con correo y contraseña, y modelo de dos roles: ADMIN y SUPER_ADMIN (gestión de cuentas reservada al segundo)."],
+      ["RF-28", "Gestión completa de noticias con editor visual (formato, enlaces, tablas e imágenes subidas desde el propio editor), extracto, categoría, imagen de portada, estado (borrador/publicada/archivada), marca de interna y campos en inglés."],
+      ["RF-29", "Gestión de miembros (datos de la ficha, área, correo, extensión, ORCID, Scopus, portal de investigación, grupo, orden y estado), con fotografía subida, elegida de la biblioteca o referenciada por URL."],
+      ["RF-30", "Gestión de grupos de investigación (nombre bilingüe, responsable, logo, distintivo, enlace), de eventos (con imagen), de proyectos (casilla «Proyecto del IUCE» y visibilidad) y de archivos (subida y biblioteca de ficheros)."],
+      ["RF-31", "Edición de las páginas estáticas por piezas: 69 bloques de texto y 35 listas estructuradas (campos tipados, iconos y reordenación), con botón de «Restablecer original» por pieza."],
       ["RF-32", "Bandeja de mensajes del formulario de contacto con estado (nuevo/respondido)."],
-      ["RF-33", "Gestión del área de miembros: usuarios autorizados/vetados y publicación de documentos internos."],
-      ["RF-34", "Si hay clave de DeepL configurada, al guardar noticias y bloques se genera automáticamente su versión inglesa; existe además un punto de traducción bajo demanda."],
+      ["RF-33", "Gestión del área de miembros: usuarios autorizados o vetados y publicación de documentos internos."],
+      ["RF-34", "Traducción automática de noticias y bloques al guardar cuando hay clave de DeepL configurada, y traducción bajo demanda."],
       ["RF-35", "Panel de inicio (dashboard) con recuentos reales del contenido y accesos directos."],
     ],
   });
@@ -158,9 +160,11 @@ function build(ctx) {
       ["Miembro del IUCE", "Personal investigador o técnico del Instituto. Accede al área privada con su correo institucional y gestiona su propio perfil público."],
       ["ADMIN", "Personal autorizado del Instituto. Gestiona todo el contenido desde el panel."],
       ["SUPER_ADMIN", "Administración técnica. Además de lo anterior, gestiona las cuentas de administración."],
-      ["Sistemas externos", "Resend (entrega de correo transaccional) y, opcionalmente, DeepL (traducción automática al guardar)."],
+      ["Sistemas externos", "Resend (entrega de correo transaccional), la API pública de ORCID (últimos artículos de la dirección) y, opcionalmente, DeepL (traducción automática al guardar)."],
     ],
   });
+  ctx.p("Los roles son acumulativos hacia arriba: cada nivel añade capacidades sobre el anterior, con una única salvedad deliberada — la sesión de miembro nunca da acceso al panel de administración, que exige rol de administración propio. La figura siguiente resume esa jerarquía.");
+  ctx.figure({ caption: "Jerarquía de actores y permisos.", file: DIAG("diag-jerarquia.png"), widthCm: 13 });
   ctx.h3("A.4.2. Reglas de negocio");
   ctx.table({
     caption: "Reglas de negocio.",

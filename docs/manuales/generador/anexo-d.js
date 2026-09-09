@@ -24,7 +24,7 @@ function build(ctx) {
   // ── D.4 Sitio público ────────────────────────────────────────────────────
   ctx.h2("D.4. Guía del sitio público");
   ctx.h4("Portada y navegación");
-  ctx.p("La portada presenta el Instituto con sus accesos principales: la cabecera lleva a todas las secciones (en pantallas pequeñas, mediante el menú desplegable), y bajo ella se suceden la presentación, los accesos rápidos y las últimas noticias y eventos. El pie repite la navegación y añade el contacto y las páginas legales. Dos controles de la cabecera acompañan a toda la web: el conmutador de idioma ES|EN y el interruptor de tema claro/oscuro; junto a ellos, el icono de la llave conduce al área de miembros.");
+  ctx.p("La portada presenta el Instituto con sus accesos principales: la cabecera lleva a todas las secciones (en pantallas pequeñas, mediante el menú desplegable), y bajo ella se suceden la presentación y los accesos rápidos a Investigación, Formación, Doctorado y la reserva de espacios. El pie institucional reúne el contacto, los enlaces institucionales y las páginas legales. Dos controles de la cabecera acompañan a toda la web: el conmutador de idioma ES|EN y el interruptor de tema claro/oscuro; junto a ellos, el icono de la llave conduce al área de miembros.");
   ctx.figure({ caption: "Portada del sitio público.", file: fig("home.png"), widthCm: W });
   ctx.figure({ caption: "La misma portada con el tema oscuro activado; la preferencia se recuerda entre visitas.", file: fig("home-dark.png"), widthCm: W });
   ctx.h4("Versión en inglés");
@@ -43,6 +43,7 @@ function build(ctx) {
   ctx.figure({ caption: "Grupos de investigación del Instituto.", file: fig("investigacion.png"), widthCm: W });
   ctx.p("El explorador de proyectos permite buscar por texto y filtrar por estado (activos o finalizados) y por ámbito (europeo, nacional, autonómico…). Se listan los proyectos del IUCE conforme al criterio de la memoria de acreditación.");
   ctx.figure({ caption: "Explorador de proyectos con búsqueda y filtros.", file: fig("investigacion-proyectos.png"), widthCm: W });
+  ctx.p("Los «últimos artículos de la dirección» se actualizan solos: la web consulta el perfil público de ORCID de la directora, el subdirector y el secretario académico (una vez al día) y muestra el artículo más reciente de cada uno, con su revista y su enlace. No hay que mantener esa banda a mano; la lista del panel queda únicamente como reserva por si ORCID no respondiera.");
 
   ctx.h4("Transferencia");
   ctx.p("La página de Transferencia expone la misión y los indicadores del Instituto en este ámbito y presenta los Grupos de Transferencia del Conocimiento (GTC), cada uno con su dirección y el grupo de investigación al que está vinculado.");
@@ -54,12 +55,12 @@ function build(ctx) {
   ctx.figure({ caption: "Detalle de una noticia.", file: fig("noticia-detalle.png"), widthCm: W });
 
   ctx.h4("Eventos y Seminario del IUCE");
-  ctx.p("La página de Eventos separa los próximos de los pasados, con tipo, fechas y lugar. Desde ella se accede a la página del Seminario del IUCE, el encuentro anual de los grupos, organizada por ediciones anuales con su crónica y sus actas.");
+  ctx.p("La página de Eventos separa los próximos de los celebrados automáticamente a partir de sus fechas (no hay que actualizar nada cuando un evento pasa; solo «Cancelado» se marca a mano en el panel), con tipo, fechas, lugar e imagen. Desde ella se accede a la página del Seminario del IUCE, el encuentro anual de los grupos, organizada por ediciones anuales con su crónica y sus actas.");
   ctx.figure({ caption: "Eventos del Instituto.", file: fig("eventos.png"), widthCm: W });
   ctx.figure({ caption: "Página del Seminario del IUCE por ediciones.", file: fig("seminario.png"), widthCm: W });
 
   ctx.h4("Formación y Doctorado");
-  ctx.p("Formación recoge el plan de formación docente del profesorado (con el acceso al portal de inscripciones, los módulos del plan FDI y los manuales), y Doctorado presenta los programas en los que participa el Instituto y los grupos implicados; ambas con subnavegación propia y documentos consultables sin salir de la página.");
+  ctx.p("Formación recoge el plan de formación docente del profesorado (con el acceso al portal de inscripciones, los módulos del plan FDI y los manuales), y Doctorado presenta el Programa de Doctorado «Formación en la Sociedad del Conocimiento» y los grupos del Instituto que participan en él; ambas con subnavegación propia y documentos consultables sin salir de la página.");
   ctx.figure({ caption: "Página de Formación.", file: fig("formacion.png"), widthCm: W });
   ctx.figure({ caption: "Página de Doctorado.", file: fig("doctorado.png"), widthCm: W });
 
@@ -68,16 +69,16 @@ function build(ctx) {
   ctx.figure({ caption: "Contacto: datos, cómo llegar y formulario.", file: fig("contacto.png"), widthCm: W });
 
   ctx.h4("Estadísticas");
-  ctx.p("La página de Estadísticas («El IUCE en cifras») presenta los indicadores del Instituto del periodo 2020–2025 con gráficas interactivas: proyectos y financiación, publicaciones, formación, doctorado, transferencia y gestión. Nota: la dirección puede mantener esta página (o cualquier otra) temporalmente oculta al público mediante el panel (véase «Visualización» en D.6); en ese estado, la administración sigue pudiendo previsualizarla.");
+  ctx.p("La página de Estadísticas presenta los indicadores del Instituto del periodo 2020–2025 con seis indicadores de cabecera y quince gráficas interactivas en seis secciones: Proyectos, Transferencia, Doctorado, Formación, Redes y movilidad, y Gestión y posgrado. Nota: la dirección puede mantener esta página (o cualquier otra) temporalmente oculta al público mediante el panel (véase «Visualización» en D.6); en ese estado, la administración sigue pudiendo previsualizarla.");
   ctx.figure({ caption: "Estadísticas interactivas del Instituto.", file: fig("estadisticas.png"), widthCm: W });
 
   // ── D.5 Área de miembros ─────────────────────────────────────────────────
   ctx.h2("D.5. Guía del área de miembros");
   ctx.h4("Acceder al área");
-  ctx.p("El área de miembros se abre desde el icono de la llave de la cabecera (o directamente en /miembros). No hay contraseñas: se escribe el correo institucional y el sistema envía un enlace de acceso de un solo uso, válido durante 30 minutos. Puede entrar cualquier miembro del Instituto cuyo correo figure en su ficha pública; además, la administración puede autorizar otras direcciones. Si el sistema no reconoce la dirección, indica a quién escribir para solicitar el acceso.");
+  ctx.p("El área de miembros se abre desde el icono de la llave de la cabecera (o directamente en /miembros). No hay contraseñas: se escribe el correo institucional y el sistema envía un enlace de acceso de un solo uso, válido durante 30 minutos. Puede entrar cualquier miembro del Instituto cuyo correo figure en su ficha pública; además, la administración puede autorizar otras direcciones. Si el sistema no reconoce la dirección, indica a quién escribir para solicitar el acceso. El área es solo en español (por eso el conmutador ES|EN no se muestra dentro de ella).");
   ctx.figure({ caption: "Acceso al área de miembros: se solicita el enlace con el correo institucional.", file: fig("miembros-acceso.png"), widthCm: W });
   ctx.h4("Documentos");
-  ctx.p("La pestaña de Documentos reúne los ficheros internos publicados por la administración (planes, memorias, reglamentos, plantillas). Solo son accesibles con sesión iniciada: sus enlaces no funcionan fuera del área.");
+  ctx.p("La pestaña de Documentos reúne los ficheros internos publicados por la administración: actas, convocatorias, normativa interna y otra documentación de uso interno. Solo son accesibles con sesión iniciada: sus enlaces no funcionan fuera del área.");
   ctx.figure({ caption: "Documentos internos del área de miembros.", file: fig("area-documentos.png"), widthCm: W });
   ctx.h4("Noticias internas");
   ctx.p("La pestaña de Noticias muestra las comunicaciones internas del Instituto: noticias que la administración marca como internas y que nunca aparecen en la web pública.");
@@ -94,12 +95,12 @@ function build(ctx) {
   ctx.figure({ caption: "Panel de inicio con recuentos y accesos directos.", file: fig("backstage-dashboard.png"), widthCm: W });
 
   ctx.h4("Noticias");
-  ctx.p("La sección de Noticias lista todas las existentes (con su estado: borrador, publicada o archivada) y permite crear nuevas. El editor es visual: negritas, títulos, enlaces, tablas e imágenes que se suben arrastrándolas o desde el botón correspondiente, sin salir del editor. Cada noticia admite extracto, categoría, imagen de portada y los campos en inglés; la casilla «Noticia interna» la reserva para el área de miembros. Al guardar, si hay traducción automática configurada, la versión inglesa se rellena sola y puede retocarse.");
+  ctx.p("La sección de Noticias lista todas las existentes (con su estado: borrador, publicada o archivada) y permite crear nuevas. El editor es visual: negritas, títulos, enlaces, tablas e imágenes que se suben desde el propio editor y quedan guardadas en la biblioteca de Archivos; la imagen de portada admite también pegar una URL. Cada noticia admite extracto, categoría, imagen de portada y los campos en inglés; la casilla «Noticia interna» la reserva para el área de miembros. Al guardar, si hay traducción automática configurada, la versión inglesa se rellena sola y puede retocarse.");
   ctx.figure({ caption: "Gestión de noticias.", file: fig("bs-news.png"), widthCm: W });
   ctx.figure({ caption: "Editor visual de una noticia.", file: fig("bs-news-editor.png"), widthCm: W });
 
   ctx.h4("Contenido → Páginas (bloques y listas)");
-  ctx.p("Todos los textos de las páginas «fijas» (Instituto, Formación, Transferencia, Estadísticas…) se editan aquí, organizados por página. Hay dos tipos de pieza: bloques de texto y listas estructuradas (elementos con campos como etiqueta y valor, icono seleccionable y flechas para reordenar; con los botones de añadir y eliminar). Cada pieza tiene su botón «Restablecer original» para volver al texto de fábrica. Los cambios se publican al guardar, sin pasos intermedios.");
+  ctx.p("Todos los textos de las páginas «fijas» (Instituto, Formación, Transferencia, Estadísticas…) se editan aquí, organizados por página y agrupados por secciones (Cabecera, Perfil, Edificio histórico…). Hay tres tipos de pieza, cada una con el control adecuado: bloques de texto con editor visual, enlaces (un campo de URL con botón «Abrir» para probarlo; vacío = ocultar el elemento en la web) y listas estructuradas (elementos con campos como etiqueta y valor, icono seleccionable y flechas para reordenar; con los botones de añadir y eliminar). Cada pieza tiene su botón «Restablecer original» para volver al valor de fábrica. Los cambios se publican al guardar, sin pasos intermedios.");
   ctx.figure({ caption: "Edición por bloques y listas de las páginas estáticas.", file: fig("bs-pages.png"), widthCm: W });
 
   ctx.h4("Visualización");
@@ -107,17 +108,17 @@ function build(ctx) {
   ctx.figure({ caption: "Visualización: ocultar y mostrar páginas completas.", file: fig("bs-visualizacion.png"), widthCm: W });
 
   ctx.h4("Miembros");
-  ctx.p("La sección de Miembros gestiona el directorio: datos de la ficha (nombre, área, cargo, correo, extensión), enlaces de investigación (portal, ORCID, Scopus), grupo de investigación, orden y visibilidad. La fotografía puede subirse desde el equipo (se recorta y optimiza automáticamente), elegirse de las ya existentes en la biblioteca o indicarse por URL. Los miembros del consejo asesor se gestionan igual, asignándoles su área.");
+  ctx.p("La sección de Miembros separa el directorio en dos bloques: «Equipo de dirección y administración» (quienes tienen cargo: Directora, Subdirector, Secretario Académico, personal técnico y administrativo) y «Miembros» (el resto). Cada fila tiene su botón «Editar», que abre la ficha completa: nombre, cargo (lo que decide en qué bloque aparece), área, correo, extensión, enlaces de investigación (portal, ORCID, Scopus), grupo, orden y visibilidad. La fotografía puede subirse desde el equipo (se recorta y optimiza automáticamente), elegirse de las ya existentes en la biblioteca o indicarse por URL. Los miembros del consejo asesor se gestionan igual, asignándoles su área.");
   ctx.figure({ caption: "Gestión de miembros.", file: fig("bs-members.png"), widthCm: W });
 
   ctx.h4("Grupos, Eventos y Proyectos");
-  ctx.p("Grupos mantiene los grupos de investigación (nombre en ambos idiomas, responsable, logo, distintivo y enlace). Eventos gestiona la agenda (tipo, fechas, lugar, enlace e imagen ilustrativa). Proyectos administra el catálogo importado de la memoria de acreditación: la casilla «Proyecto del IUCE» decide si un proyecto aparece en la web pública, y cada ficha admite editar financiador, investigadores principales, ámbito, importe y periodo.");
+  ctx.p("Grupos mantiene los grupos de investigación (nombre en ambos idiomas, responsable, logo, distintivo y enlace); al escribir el responsable se sugieren los miembros del IUCE para elegirlo de la lista (admite también un nombre externo). Eventos gestiona la agenda (tipo, fechas, lugar, enlace e imagen ilustrativa); en la web, «próximo» o «celebrado» se calcula solo con las fechas, así que el estado únicamente se toca para cancelar. Proyectos administra el catálogo importado de la memoria de acreditación: la casilla «Proyecto del IUCE» decide si un proyecto aparece en la web pública, y cada ficha admite editar financiador, investigadores principales, ámbito, importe y periodo.");
   ctx.figure({ caption: "Gestión de grupos de investigación.", file: fig("bs-groups.png"), widthCm: W });
   ctx.figure({ caption: "Gestión de eventos.", file: fig("bs-events.png"), widthCm: W });
   ctx.figure({ caption: "Gestión de proyectos, con la casilla «Proyecto del IUCE».", file: fig("bs-projects.png"), widthCm: W });
 
   ctx.h4("Archivos y Mensajes");
-  ctx.p("Archivos es la biblioteca de ficheros de la web: imágenes y documentos subidos desde el panel o desde el editor de noticias, con su dirección lista para copiar. Mensajes recoge lo enviado desde el formulario de contacto, con su estado (nuevo o respondido); el aviso llega también por correo con «responder» apuntando directamente al remitente.");
+  ctx.p("Archivos es la biblioteca de ficheros de la web: imágenes y documentos subidos desde el panel o desde el editor de noticias, con su dirección (URL) para reutilizarla en el contenido. Mensajes recoge lo enviado desde el formulario de contacto, con su estado (nuevo o respondido); el aviso llega también por correo con «responder» apuntando directamente al remitente.");
   ctx.figure({ caption: "Biblioteca de archivos.", file: fig("bs-files.png"), widthCm: W });
   ctx.figure({ caption: "Mensajes del formulario de contacto.", file: fig("bs-messages.png"), widthCm: W });
 

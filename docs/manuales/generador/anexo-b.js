@@ -1,5 +1,7 @@
 // Anexo B — Especificación de Diseño (web institucional del IUCE).
+const path = require("path");
 const { DocCtx, t, b, i, c, cellLines } = require("./lib");
+const DIAG = (f) => path.join(__dirname, "diagrams", f);
 
 function build(ctx) {
   ctx.h1("Anexo B", "Especificación de diseño");
@@ -20,6 +22,7 @@ function build(ctx) {
       ["Autenticación", "NextAuth.js v5 con dos proveedores de credenciales: panel (email + contraseña bcrypt) y área de miembros (magic link)"],
       ["Editor", "TipTap 3 (HTML como formato de almacenamiento)"],
       ["Email", "Resend, con plantillas HTML propias y logo incrustado"],
+      ["Publicaciones", "API pública de ORCID: último artículo de cada miembro de la dirección, con caché de 24 horas y lista editable de reserva"],
       ["Gráficas", "Recharts (página de Estadísticas)"],
       ["Imágenes", "sharp (fotos de miembros a 512 px, imagen OpenGraph)"],
       ["Despliegue", "Desarrollo: Docker (solo PostgreSQL, puerto 5433) + servidor de desarrollo · Producción: Docker (app + PostgreSQL) tras Apache 2 con Let's Encrypt en el CPD-USAL"],
@@ -89,7 +92,7 @@ function build(ctx) {
     rows: [
       ["ResearchGroup", "acronym, name/nameEn, lead (responsable), url, logo, chip (distintivo, p. ej. «UIC 081») y relación 1–N con Member. Los nueve grupos oficiales se siembran desde código y son editables."],
       ["Project", "title, funder, ip, line, scope (ámbito), amount y period (textos originales de la memoria de acreditación), startYear/endYear, active (visible) e iuceLed («proyecto del IUCE»: la web pública solo lista los que lo tienen activado)."],
-      ["Event", "title/titleEn, type (Congreso, Seminario, Jornada), startsAt/endsAt, location, url, image y status (UPCOMING/PAST/CANCELLED)."],
+      ["Event", "title/titleEn, type (Congreso, Seminario, Jornada), startsAt/endsAt, location, url, image y status. En la web pública, «próximo» o «celebrado» se deriva de las fechas; el campo status solo se aplica manualmente para CANCELLED."],
     ],
   });
 
@@ -119,6 +122,8 @@ function build(ctx) {
     ],
   });
 
+  ctx.p("La figura siguiente reúne la vista lógica completa: las entidades de contenido (con la única relación del modelo, la pertenencia del miembro a su grupo), las de soporte y las del área de miembros.");
+  ctx.figure({ caption: "Modelo de datos (vista lógica): entidades, campos principales y relación Member–ResearchGroup.", file: DIAG("diag-er.png"), widthCm: 15 });
   ctx.h3("B.2.5. Decisiones de diseño de datos");
   ctx.bullets([
     [b("HTML como formato de contenido. "), t("El cuerpo de las noticias y los bloques largos almacenan el HTML que produce TipTap, el mismo formato heredado de WordPress en la migración: permite conservar el histórico intacto y editar cualquier noticia, antigua o nueva, con el mismo editor.")],
@@ -141,17 +146,22 @@ function build(ctx) {
     "4. El enlace vuelve a la aplicación, que consume el token (se borra al usarse) e inicia sesión mediante el proveedor «intranet» de NextAuth; la sesión JWT lleva el rol INTRANET.",
     "5. El rol INTRANET da acceso al área y a sus ficheros, pero nunca al panel de administración; los roles de administración, a la inversa, también pueden entrar en el área.",
   ]);
+  ctx.figure({ caption: "Diagrama de secuencia del acceso al área de miembros.", file: DIAG("diag-secuencia.png"), widthCm: 14.6 });
   ctx.h3("B.3.3. Resolución de una pieza de contenido editable");
   ctx.p("Cuando una página pública pide un bloque o una lista, el servicio resuelve el texto en cascada: (1) fila editada en base de datos —con clave «:en» si la petición llega en inglés—; (2) registro estático del idioma correspondiente; (3) registro español como última reserva. El resultado práctico: lo editado prevalece, lo no editado siempre tiene texto, y la ruta /en jamás rompe aunque falte una traducción.");
   ctx.h3("B.3.4. Formulario de contacto");
   ctx.p("El envío valida los campos (Zod), aplica limitación de tasa, guarda el mensaje (ContactMessage), notifica por correo a la administración con responder-a apuntando al remitente y devuelve un acuse de recibo automático con la plantilla institucional. Los errores del proveedor de correo se comprueban explícitamente: si el envío falla, el usuario no recibe un falso «enviado».");
   ctx.h3("B.3.5. Ciclo de vida de la noticia");
   ctx.p("Una noticia nace como borrador (DRAFT), pasa a publicada (PUBLISHED) cuando se aprueba —momento en el que se fija su fecha de publicación si no la tenía— y puede archivarse (ARCHIVED) para retirarla del sitio sin borrarla. La marca interna es ortogonal al estado: una noticia interna publicada es visible solo en el área de miembros.");
+  ctx.figure({ caption: "Ciclo de vida de una noticia (estados y transiciones).", file: DIAG("diag-estados.png"), widthCm: 13.5 });
+  ctx.h3("B.3.6. Últimos artículos de la dirección (ORCID)");
+  ctx.p("La banda de publicaciones de /investigacion se alimenta de la API pública de ORCID (pub.orcid.org, sin clave): para la directora, el subdirector y el secretario académico se consulta su lista de obras, se toma la más reciente por fecha de publicación y se completa con revista, autores y enlace (DOI). Las respuestas se cachean 24 horas con el revalidate de fetch, de modo que la banda se renueva sola cuando la dirección publica algo nuevo, sin cron ni edición manual. Si ORCID no responde o algún perfil no devuelve resultados, la página cae a la lista editable del panel, que se conserva como reserva.");
 
   // ── B.4 Diseño arquitectónico ────────────────────────────────────────────
   ctx.h2("B.4. Diseño arquitectónico");
   ctx.h3("B.4.1. Arquitectura en capas");
   ctx.p("La aplicación se organiza en cuatro capas dentro de un único proyecto: (1) la capa de presentación, con páginas y componentes React renderizados en servidor por defecto (los componentes de cliente se reservan para interactividad: menú, editor, gráficas, formularios); (2) la capa de API, con Route Handlers REST bajo /api para las operaciones del panel, el contacto y el área de miembros; (3) la capa de servicios (src/lib), donde reside la lógica de negocio y de acceso a datos (servicios de noticias, contenido, proyectos, visibilidad, acceso al área, correo, validaciones, límites de tasa); y (4) la capa de datos, el cliente Prisma sobre PostgreSQL. El middleware, en el borde, resuelve idioma y autorización antes de que la petición llegue a las capas anteriores.");
+  ctx.figure({ caption: "Arquitectura en capas y componentes del sistema.", file: DIAG("diag-capas.png"), widthCm: 13.5 });
 
   ctx.h3("B.4.2. Mapa de rutas");
   ctx.table({
@@ -177,13 +187,14 @@ function build(ctx) {
   ctx.h3("B.4.3. Arquitectura de la versión inglesa");
   ctx.p([t("La versión inglesa no duplica el árbol de rutas: el middleware reescribe "), c("/en/*"), t(" a la ruta española equivalente añadiendo la cabecera "), c("x-locale: en"), t(", que los Server Components leen a través de un helper de servidor; los componentes de cliente reciben el idioma como propiedad. Los helpers de cliente construyen los enlaces internos con el prefijo correcto, de modo que navegar por /en se mantiene siempre en inglés. El panel, el área de miembros y las API no tienen versión inglesa: sus rutas /en/* redirigen a la española.")]);
   ctx.p([b("Decisión relevante: "), t("el conmutador ES|EN de la cabecera es un enlace de documento completo ("), c("<a>"), t(" nativo), no un enlace de cliente de Next. Como ambos idiomas comparten el mismo árbol de rutas interno, la navegación de cliente reutilizaría la página ya renderizada en el otro idioma (se comprobó durante el desarrollo: cambiaba la URL pero no el contenido); la navegación completa vacía la caché del router y garantiza la coherencia. Cualquier enlace futuro que cruce idiomas debe seguir la misma regla.")]);
+  ctx.figure({ caption: "Resolución de la versión inglesa: reescritura del middleware y cascada de contenido.", file: DIAG("diag-en.png"), widthCm: 15 });
 
   ctx.h3("B.4.4. Presentación y experiencia de usuario");
   ctx.bullets([
-    "Identidad visual propia sobre tokens de marca (variables CSS consumidas por Tailwind), derivada de los prototipos aprobados en la fase de diseño.",
+    "Identidad visual propia sobre tokens de marca (variables CSS consumidas por Tailwind), derivada de los prototipos de la fase de diseño (docs/design).",
     "Tema claro y oscuro en el sitio público: la preferencia se guarda en el navegador y se aplica sin parpadeo mediante un script previo al renderizado; las gráficas de Estadísticas se recolorean en vivo al cambiar de tema. El panel es solo claro.",
     "Editor TipTap con barra de formato, tablas, enlaces e imágenes que se suben directamente a la biblioteca de archivos.",
-    "Accesibilidad: enlace de salto, navegación por teclado, foco visible, textos alternativos, contraste verificado en ambos temas y animaciones que respetan la preferencia de movimiento reducido.",
+    "Accesibilidad: enlace de salto al contenido, navegación por teclado, textos alternativos y animaciones que respetan la preferencia de movimiento reducido; los tokens de color definen ambos temas de forma consistente.",
     "Correo institucional con plantillas HTML coherentes con la web (cabecera con logo incrustado como adjunto en línea, botón de acción, versión de texto plano).",
   ]);
 

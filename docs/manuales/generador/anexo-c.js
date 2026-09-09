@@ -42,7 +42,7 @@ function build(ctx) {
   // ── C.3 Puesta en marcha ─────────────────────────────────────────────────
   ctx.h2("C.3. Puesta en marcha, compilación y ejecución");
   ctx.h3("C.3.1. Requisitos e instalación en local");
-  ctx.p("Se necesitan Node.js 20 o superior, Docker con Docker Compose y Git. Docker se emplea únicamente para la base de datos en desarrollo; la aplicación corre con el servidor de desarrollo de Next.js:");
+  ctx.p("Se necesitan Node.js (18.17 o superior, requisito de Next.js 14), Docker con Docker Compose y Git. Docker se emplea únicamente para la base de datos en desarrollo; la aplicación corre con el servidor de desarrollo de Next.js:");
   ctx.code([
     "git clone https://github.com/ShockyDEV/IUCE-WEB.git",
     "cd iuce-web",
@@ -94,7 +94,7 @@ function build(ctx) {
   ctx.h2("C.4. Manual del programador");
   ctx.h3("C.4.1. Convenciones generales");
   ctx.bullets([
-    "TypeScript estricto en todo el proyecto; sin any salvo fronteras inevitables.",
+    "TypeScript en modo estricto en todo el proyecto.",
     "Server Components por defecto; los componentes de cliente (\"use client\") se reservan para interactividad y reciben el idioma y los datos como propiedades (nunca importan helpers de servidor).",
     "La lógica de negocio y el acceso a datos viven en src/lib (servicios), no en las páginas; las páginas orquestan y presentan.",
     "Toda entrada de usuario se valida en servidor con Zod; los esquemas del panel están centralizados en lib/admin-schemas.ts.",
@@ -118,6 +118,7 @@ function build(ctx) {
       [[c("auth.ts"), t(" · "), c("auth.config.ts")], "NextAuth v5: proveedor de credenciales del panel (bcrypt) y proveedor «intranet» (magic link) con rol INTRANET; configuración edge-safe para el middleware."],
       [[c("email.ts")], "Plantillas HTML institucionales (enlace de acceso, aviso y acuse de contacto) con logo incrustado (adjunto en línea) y versión de texto plano."],
       [[c("translate.ts")], "Cliente de DeepL para la traducción al guardar y bajo demanda (se omite sin clave)."],
+      [[c("orcid.ts")], "Últimos artículos de la dirección vía la API pública de ORCID (caché de 24 h; null si falla, y la página usa la lista editable de reserva)."],
       [[c("rate-limit.ts")], "Limitación de tasa en memoria para los puntos sensibles."],
       [[c("metadata.ts")], "metadataBilingue: títulos y descripciones de página en el idioma de la petición."],
       [[c("locale.ts"), t(" · "), c("locale-server.ts")], "Idioma en cliente (pathLocale, withLocale, pick) y en servidor (getLocale desde la cabecera x-locale)."],
@@ -187,6 +188,7 @@ function build(ctx) {
       [[c("assign-member-groups.ts")], "Asigna grupo y responsables a los miembros según la evidencia recopilada (scripts/data/member-groups.json) y aplica las bajas dictadas por la dirección."],
       [[c("patch-member-contacts.ts")], "Completa extensiones telefónicas y ORCID verificados de la dirección y el personal."],
       [[c("apply-news-en.ts")], "Aplica los lotes de traducción de noticias (scripts/data/news-en/batch-*.json); solo-relleno, con --force para regenerar."],
+      [[c("import-late-news.ts")], "Noticias publicadas en la web antigua DESPUÉS del export congelado (scripts/data/late-news/*.json, con ES y EN); solo-relleno, con --force para pisar. Mientras la web antigua siga viva, las noticias nuevas se añaden aquí."],
       [[c("backfill-news-en.ts")], "Vía alternativa: traduce con DeepL las noticias sin versión inglesa (requiere clave)."],
       [[c("fetch-orcids.py")], "Auxiliar de verificación de ORCID contra la API pública."],
     ],
