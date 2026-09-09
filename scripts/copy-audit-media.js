@@ -9,7 +9,8 @@ const fs = require("node:fs");
 const path = require("node:path");
 const sharp = require("sharp");
 
-const MEDIA = "C:/Users/USUARIO/Desktop/IUCE/NUEVA WEB IUCE/export/media";
+// La carpeta del export vive junto al repo (sin trackear en git).
+const MEDIA = path.join(__dirname, "..", "NUEVA WEB IUCE", "export", "media");
 const PUB = path.join(__dirname, "..", "public");
 
 const IMAGES = [

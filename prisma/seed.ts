@@ -35,9 +35,29 @@ async function main() {
   });
   console.log(`✓ Usuario SUPER_ADMIN: ${adminEmail}`);
 
+  // La cuenta técnica del Instituto SIEMPRE está de alta como SUPER_ADMIN.
+  // Si ya existe se garantiza el rol sin tocar su contraseña.
+  const techEmail = "iuce.tecnico@usal.es";
+  const techHash = await bcrypt.hash(
+    process.env.TECH_ADMIN_PASSWORD ?? adminPassword,
+    10,
+  );
+  await prisma.user.upsert({
+    where: { email: techEmail },
+    update: { role: "SUPER_ADMIN" },
+    create: {
+      email: techEmail,
+      name: "Enrique González Gutiérrez (técnico)",
+      passwordHash: techHash,
+      role: "SUPER_ADMIN",
+    },
+  });
+  console.log(`✓ Usuario SUPER_ADMIN técnico: ${techEmail}`);
+
   // --- Lista blanca inicial de la intranet ----------------------------------
   const intranetEmails = [
     { email: "iuce@usal.es", name: "Administración IUCE" },
+    { email: "iuce.tecnico@usal.es", name: "Enrique González Gutiérrez (técnico)" },
     { email: "enriquemico8@gmail.com", name: "Enrique (técnico)" },
   ];
   for (const u of intranetEmails) {

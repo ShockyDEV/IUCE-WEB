@@ -62,3 +62,6 @@ logs
 
 # Documentos de la intranet (privados, fuera de public/)
 /storage/
+
+# Material fuente de la migración (export de WordPress y zips; solo local)
+/NUEVA WEB IUCE/

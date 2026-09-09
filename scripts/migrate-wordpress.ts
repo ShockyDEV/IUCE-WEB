@@ -20,7 +20,8 @@ import { groups as officialGroups } from "../src/lib/content/groups";
 
 const EXPORT_DIR =
   process.env.MIGRATION_EXPORT_DIR ??
-  "C:/Users/USUARIO/Desktop/IUCE/NUEVA WEB IUCE/export";
+  // La carpeta del export vive junto al repo (sin trackear en git).
+  path.join(__dirname, "..", "NUEVA WEB IUCE", "export");
 const MEDIA_DIR = path.join(EXPORT_DIR, "media");
 const PUBLIC_DIR = path.join(__dirname, "..", "public");
 const LEGACY_DIR = path.join(PUBLIC_DIR, "uploads", "legacy");
@@ -343,7 +344,7 @@ async function migrateMembers(groupIds: Map<string, string>) {
 
   // Orden: equipo directivo primero, luego el orden de la página original.
   const roleOrder = (m: ExportMember) =>
-    m.role === "Directora" ? 1 : m.role === "Subdirector" ? 2 : m.role === "Secretario" ? 3 : 10;
+    m.role === "Directora" ? 1 : m.role === "Subdirector" ? 2 : m.role?.startsWith("Secretario") ? 3 : 10;
 
   let order = 0;
   let created = 0;
