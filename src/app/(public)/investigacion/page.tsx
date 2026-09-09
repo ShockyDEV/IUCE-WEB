@@ -14,6 +14,7 @@ import {
 import { prisma } from "@/lib/prisma";
 import { groups as groupsFallback } from "@/lib/content/groups";
 import { getPublicProjects } from "@/lib/projects-service";
+import { getArticulosDireccion } from "@/lib/orcid";
 import { ProjectsExplorer } from "@/components/investigacion/projects-explorer";
 import { withLocale, type Locale } from "@/lib/locale";
 import { getLocale } from "@/lib/locale-server";
@@ -195,6 +196,7 @@ export default async function InvestigacionPage() {
     muestraTitulo,
     proyectos,
     articulos,
+    articulosOrcid,
   ] = await Promise.all([
     getGrupos(locale),
     getBlock("investigacion", "intro"),
@@ -207,7 +209,11 @@ export default async function InvestigacionPage() {
     getBlockText("investigacion", "muestra-titulo"),
     getPublicProjects(),
     getListBlock("investigacion", "list:publicaciones"),
+    // Última publicación de cada miembro de la dirección vía la API pública
+    // de ORCID (caché de 24 h). Si falla, se usa la lista editable de abajo.
+    getArticulosDireccion(locale),
   ]);
+  const articulosVista = articulosOrcid ?? articulos;
 
   return (
     <>
@@ -412,7 +418,7 @@ export default async function InvestigacionPage() {
             </h3>
           ) : null}
           <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {articulos.map((a, i) => {
+            {articulosVista.map((a, i) => {
               const enlace = String(a.enlace ?? "");
               const tarjeta = (
                 <article className="card-lift h-full rounded-xl border border-gray-200 bg-surface-card p-5 shadow-sm hover:shadow-md">
@@ -428,7 +434,8 @@ export default async function InvestigacionPage() {
                     ) : null}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {String(a.autores)} — <em>{String(a.revista)}</em>
+                    {a.autores ? <>{String(a.autores)} — </> : null}
+                    <em>{String(a.revista)}</em>
                   </p>
                 </article>
               );

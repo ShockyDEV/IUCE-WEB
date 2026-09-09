@@ -126,11 +126,19 @@ async function getEventos(): Promise<{
       where: { status: { not: "CANCELLED" } },
     });
     if (rows.length === 0) return null;
+    // Próximo/pasado se deriva de las fechas (nadie tiene que actualizarlo a
+    // mano); «Cancelado» sí se respeta como estado manual. Un evento cuenta
+    // como pasado cuando su fin (o su inicio, si no tiene fin) es anterior a
+    // hoy; el día del propio evento sigue apareciendo entre los próximos.
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const isPast = (e: (typeof rows)[number]) =>
+      (e.endsAt ?? e.startsAt).getTime() < hoy.getTime();
     const upcoming = rows
-      .filter((e) => e.status === "UPCOMING")
+      .filter((e) => !isPast(e))
       .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
     const past = rows
-      .filter((e) => e.status === "PAST")
+      .filter(isPast)
       .sort((a, b) => b.startsAt.getTime() - a.startsAt.getTime());
     return { upcoming, past };
   } catch {

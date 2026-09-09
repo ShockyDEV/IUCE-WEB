@@ -31,7 +31,9 @@ export const members: MemberSeed[] = [
   },
   {
     name: "Javier Félix Merchán Sánchez-Jara",
-    role: "Secretario",
+    // OJO: «Secretario Académico», no confundir con la Secretaría
+    // Administrativa; la banda de dirección de /instituto busca este cargo.
+    role: "Secretario Académico",
     email: "javiermerchan@usal.es",
     area: "Humanidades digitales",
     order: 3,

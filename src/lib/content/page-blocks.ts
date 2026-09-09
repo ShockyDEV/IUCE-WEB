@@ -179,8 +179,8 @@ export const PAGE_BLOCKS: PageDef[] = [
       },
       {
         blockKey: "destacado-descripcion",
-        title: "Eventos — descripción del evento destacado",
-        defaultContent: `<p>Salamanca acoge el congreso internacional de referencia en desarrollo educativo universitario, organizado con la participación del IUCE. Tres días de conferencias, talleres y comunicaciones en torno a la formación docente en Educación Superior.</p>`,
+        title: "Eventos — descripción del evento destacado (revísala cuando cambie el evento en cabeza)",
+        defaultContent: `<p>El IUCE acoge la Semana Doctoral del Programa de Doctorado «Formación en la Sociedad del Conocimiento», con las presentaciones y el seguimiento de los trabajos de los doctorandos del programa.</p>`,
       },
     ],
   },

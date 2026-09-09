@@ -212,6 +212,9 @@ export function SiteHeader({
   // El área de miembros y el panel no tienen versión EN.
   const localizedHref = (href: string) =>
     href === "/miembros" ? href : withLocale(href, locale);
+  // Dentro del área de miembros se oculta el conmutador ES|EN: el área es
+  // solo en español y el botón daba a entender que «no traducía».
+  const enAreaMiembros = basePath.startsWith("/miembros");
 
   // Cierra el menú móvil al navegar a otra página.
   useEffect(() => {
@@ -345,12 +348,15 @@ export function SiteHeader({
             {/* Selector de idioma: misma página en el otro idioma. El
                 useSearchParams del conmutador exige Suspense al prerender
                 (la 404 estática monta este header); el fallback pinta el
-                mismo conmutador sin query. */}
-            <Suspense
-              fallback={<LanguageToggleView basePath={basePath} locale={locale} qs="" />}
-            >
-              <LanguageToggle basePath={basePath} locale={locale} />
-            </Suspense>
+                mismo conmutador sin query. En el área de miembros (solo ES)
+                no se muestra. */}
+            {enAreaMiembros ? null : (
+              <Suspense
+                fallback={<LanguageToggleView basePath={basePath} locale={locale} qs="" />}
+              >
+                <LanguageToggle basePath={basePath} locale={locale} />
+              </Suspense>
+            )}
             {/* Hamburguesa (móvil y tablet) */}
             <button
               type="button"
