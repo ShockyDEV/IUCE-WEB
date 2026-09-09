@@ -123,7 +123,7 @@ function build(ctx) {
   });
 
   ctx.p("La figura siguiente reúne la vista lógica completa: las entidades de contenido (con la única relación del modelo, la pertenencia del miembro a su grupo), las de soporte y las del área de miembros.");
-  ctx.figure({ caption: "Modelo de datos (vista lógica): entidades, campos principales y relación Member–ResearchGroup.", file: DIAG("diag-er.png"), widthCm: 15 });
+  ctx.figure({ caption: "Modelo de datos: entidades y campos, relación Member–ResearchGroup, reglas y unicidades.", file: DIAG("uml-er-datos.png"), widthCm: 15.2 });
   ctx.h3("B.2.5. Decisiones de diseño de datos");
   ctx.bullets([
     [b("HTML como formato de contenido. "), t("El cuerpo de las noticias y los bloques largos almacenan el HTML que produce TipTap, el mismo formato heredado de WordPress en la migración: permite conservar el histórico intacto y editar cualquier noticia, antigua o nueva, con el mismo editor.")],
@@ -146,14 +146,14 @@ function build(ctx) {
     "4. El enlace vuelve a la aplicación, que consume el token (se borra al usarse) e inicia sesión mediante el proveedor «intranet» de NextAuth; la sesión JWT lleva el rol INTRANET.",
     "5. El rol INTRANET da acceso al área y a sus ficheros, pero nunca al panel de administración; los roles de administración, a la inversa, también pueden entrar en el área.",
   ]);
-  ctx.figure({ caption: "Diagrama de secuencia del acceso al área de miembros.", file: DIAG("diag-secuencia.png"), widthCm: 14.6 });
+  ctx.figure({ caption: "Diagrama de secuencia del acceso al área de miembros.", file: DIAG("uml-secuencia-acceso.png"), widthCm: 15 });
   ctx.h3("B.3.3. Resolución de una pieza de contenido editable");
   ctx.p("Cuando una página pública pide un bloque o una lista, el servicio resuelve el texto en cascada: (1) fila editada en base de datos —con clave «:en» si la petición llega en inglés—; (2) registro estático del idioma correspondiente; (3) registro español como última reserva. El resultado práctico: lo editado prevalece, lo no editado siempre tiene texto, y la ruta /en jamás rompe aunque falte una traducción.");
   ctx.h3("B.3.4. Formulario de contacto");
   ctx.p("El envío valida los campos (Zod), aplica limitación de tasa, guarda el mensaje (ContactMessage), notifica por correo a la administración con responder-a apuntando al remitente y devuelve un acuse de recibo automático con la plantilla institucional. Los errores del proveedor de correo se comprueban explícitamente: si el envío falla, el usuario no recibe un falso «enviado».");
   ctx.h3("B.3.5. Ciclo de vida de la noticia");
   ctx.p("Una noticia nace como borrador (DRAFT), pasa a publicada (PUBLISHED) cuando se aprueba —momento en el que se fija su fecha de publicación si no la tenía— y puede archivarse (ARCHIVED) para retirarla del sitio sin borrarla. La marca interna es ortogonal al estado: una noticia interna publicada es visible solo en el área de miembros.");
-  ctx.figure({ caption: "Ciclo de vida de una noticia (estados y transiciones).", file: DIAG("diag-estados.png"), widthCm: 13.5 });
+  ctx.figure({ caption: "Diagrama de estados de una noticia (transiciones y reglas).", file: DIAG("uml-estados-noticia.png"), widthCm: 14.2 });
   ctx.h3("B.3.6. Últimos artículos de la dirección (ORCID)");
   ctx.p("La banda de publicaciones de /investigacion se alimenta de la API pública de ORCID (pub.orcid.org, sin clave): para la directora, el subdirector y el secretario académico se consulta su lista de obras, se toma la más reciente por fecha de publicación y se completa con revista, autores y enlace (DOI). Las respuestas se cachean 24 horas con el revalidate de fetch, de modo que la banda se renueva sola cuando la dirección publica algo nuevo, sin cron ni edición manual. Si ORCID no responde o algún perfil no devuelve resultados, la página cae a la lista editable del panel, que se conserva como reserva.");
 
@@ -161,7 +161,7 @@ function build(ctx) {
   ctx.h2("B.4. Diseño arquitectónico");
   ctx.h3("B.4.1. Arquitectura en capas");
   ctx.p("La aplicación se organiza en cuatro capas dentro de un único proyecto: (1) la capa de presentación, con páginas y componentes React renderizados en servidor por defecto (los componentes de cliente se reservan para interactividad: menú, editor, gráficas, formularios); (2) la capa de API, con Route Handlers REST bajo /api para las operaciones del panel, el contacto y el área de miembros; (3) la capa de servicios (src/lib), donde reside la lógica de negocio y de acceso a datos (servicios de noticias, contenido, proyectos, visibilidad, acceso al área, correo, validaciones, límites de tasa); y (4) la capa de datos, el cliente Prisma sobre PostgreSQL. El middleware, en el borde, resuelve idioma y autorización antes de que la petición llegue a las capas anteriores.");
-  ctx.figure({ caption: "Arquitectura en capas y componentes del sistema.", file: DIAG("diag-capas.png"), widthCm: 13.5 });
+  ctx.figure({ caption: "Diagrama de componentes del sistema (cliente, servidor Next.js y servicios externos).", file: DIAG("uml-componentes.png"), widthCm: 15 });
 
   ctx.h3("B.4.2. Mapa de rutas");
   ctx.table({

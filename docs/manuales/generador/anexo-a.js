@@ -184,7 +184,8 @@ function build(ctx) {
   });
 
   ctx.h3("A.4.3. Casos de uso principales");
-  ctx.p("Se documentan los casos de uso que cubren los flujos más representativos del sistema; el resto de operaciones del panel siguen el mismo patrón CRUD.");
+  ctx.p("Se documentan los casos de uso que cubren los flujos más representativos del sistema; el resto de operaciones del panel siguen el mismo patrón CRUD. El diagrama siguiente proyecta la jerarquía de actores sobre esas operaciones: cada actor añade sus casos de uso a los del rol del que hereda.");
+  ctx.figure({ caption: "Diagrama de casos de uso por rol.", file: DIAG("uml-casos-uso.png"), widthCm: 13.8 });
 
   const cu = (num, titulo, rows) => ctx.table({
     caption: `CU-${num} ${titulo}.`,
@@ -295,6 +296,9 @@ function build(ctx) {
     ["Postcondición", "Navegación íntegra en inglés con URL indexables propias."],
   ]);
 
+  ctx.h3("A.4.4. Modelo de contexto (DFD)");
+  ctx.p("El diagrama de flujo de datos de contexto ofrece la vista complementaria a los casos de uso: en lugar de qué hace cada actor, muestra qué datos cruzan la frontera del sistema y con qué entidades externas. Deja explícitas las dependencias de servicios externos: el servicio de correo (Resend), del que dependen el acceso al área de miembros y los avisos del formulario de contacto; la API pública de ORCID, de la que se obtienen los últimos artículos de la dirección; y DeepL como servicio opcional de traducción al guardar.");
+  ctx.figure({ caption: "Diagrama de flujo de datos de contexto (nivel 0).", file: DIAG("uml-dfd-contexto.png"), widthCm: 15 });
 }
 
 async function main() {
