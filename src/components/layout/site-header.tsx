@@ -300,13 +300,21 @@ export function SiteHeader({
                       `Apartados de ${label}`,
                       `${label} sections`,
                     )}
-                    items={item.sub.map((s) => ({
-                      label: pick(locale, s.label, s.labelEn),
-                      href:
-                        s.externalHref ??
-                        `${localizedHref(item.href)}#${s.hash}`,
-                      external: Boolean(s.externalHref),
-                    }))}
+                    items={item.sub
+                      // Fuera los apartados de secciones ocultas (p. ej.
+                      // /investigacion#proyectos desde Visualización).
+                      .filter(
+                        (s) =>
+                          s.externalHref ||
+                          !hiddenPaths.includes(`${item.href}#${s.hash}`),
+                      )
+                      .map((s) => ({
+                        label: pick(locale, s.label, s.labelEn),
+                        href:
+                          s.externalHref ??
+                          `${localizedHref(item.href)}#${s.hash}`,
+                        external: Boolean(s.externalHref),
+                      }))}
                   />
                 );
               }
@@ -427,7 +435,13 @@ export function SiteHeader({
                         hay hover, así que se muestran siempre. */}
                     {item.sub ? (
                       <div className="mb-1 flex flex-col border-l-2 border-transparent pl-3">
-                        {item.sub.map((s) => {
+                        {item.sub
+                          .filter(
+                            (s) =>
+                              s.externalHref ||
+                              !hiddenPaths.includes(`${item.href}#${s.hash}`),
+                          )
+                          .map((s) => {
                           const clase =
                             "py-1.5 pl-3 text-[13px] text-gray-500 transition-colors hover:text-gray-900";
                           if (s.externalHref) {

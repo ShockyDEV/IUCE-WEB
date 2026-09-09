@@ -233,6 +233,49 @@ body {
   padding-left: 1.5rem;
 }
 
+/* Medios dentro de una noticia: imágenes y vídeos incrustados (embeds del
+   histórico de WordPress o pegados en el editor) se comportan como bloques
+   centrados, igual que una imagen de portada. */
+.news-body img {
+  display: block;
+  margin: 4px auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+.news-body figure {
+  /* OJO: nada de márgenes «auto» aquí — .news-body es un flex en columna y
+     los márgenes auto anulan el stretch (la figura colapsaría al ancho
+     intrínseco del iframe, 300px). El centrado lo ponen los hijos. */
+  margin: 4px 0;
+  width: 100%;
+}
+
+.news-body figcaption {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--gray-500, #6b7280);
+}
+
+/* Los iframes (YouTube…) llegan con ancho y alto fijos: se fuerzan a bloque
+   centrado a lo ancho del texto con proporción 16:9 adaptable. */
+.news-body iframe {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin: 4px auto;
+  border: 0;
+  border-radius: 0.75rem;
+  background: #000;
+}
+
+.news-body .wp-block-embed__wrapper {
+  margin: 0 auto;
+}
+
 /* --------------------------------------------------------------------------
    Bloques de página editables desde el gestor (Contenido → Páginas).
    -------------------------------------------------------------------------- */

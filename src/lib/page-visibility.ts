@@ -23,10 +23,24 @@ export async function getHiddenPages(): Promise<Set<string>> {
   }
 }
 
-/** Rutas ocultas (para filtrar el menú de navegación). */
+/** Rutas ocultas (para filtrar el menú de navegación). Incluye tanto páginas
+ *  como secciones ocultables (sus rutas con ancla, p. ej.
+ *  «/investigacion#proyectos»), de modo que el menú y sus desplegables se
+ *  filtran con una única lista. */
 export async function getHiddenPaths(): Promise<string[]> {
-  const hidden = await getHiddenPages();
-  return PUBLIC_PAGES.filter((p) => hidden.has(p.slug)).map((p) => p.path);
+  try {
+    const rows = await prisma.pageVisibility.findMany();
+    const state = new Map(rows.map((r) => [r.slug, r.hidden]));
+    const paths = PUBLIC_PAGES.filter((p) => state.get(p.slug) === true).map(
+      (p) => p.path,
+    );
+    for (const s of PUBLIC_SECTIONS) {
+      if (state.get(s.slug) ?? s.defaultHidden) paths.push(s.path);
+    }
+    return paths;
+  } catch {
+    return [];
+  }
 }
 
 /**
