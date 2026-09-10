@@ -44,7 +44,7 @@ function build(ctx) {
   ctx.h3("C.3.1. Requisitos e instalación en local");
   ctx.p("Se necesitan Node.js (18.17 o superior, requisito de Next.js 14), Docker con Docker Compose y Git. Docker se emplea únicamente para la base de datos en desarrollo; la aplicación corre con el servidor de desarrollo de Next.js:");
   ctx.code([
-    "git clone https://github.com/ShockyDEV/IUCE-WEB.git",
+    "git clone <URL-del-repositorio> iuce-web",
     "cd iuce-web",
     "npm install              # instala dependencias y genera el cliente Prisma",
     "cp .env.example .env     # rellenar variables (véase C.3.2)",
